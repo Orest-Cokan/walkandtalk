@@ -11,49 +11,56 @@ import LinksScreen from "../screens/LinksScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import FormScreen from "../screens/FormScreen";
 import ProfileScreen from "../screens/ProfileScreen";
-
 const HomeStack = createStackNavigator({
   Home: HomeScreen
 });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: "Home",
+  tabBarLabel: " ",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
         Platform.OS === "ios"
-          ? `ios-information-circle${focused ? "" : "-outline"}`
-          : "md-information-circle"
+          ? `ios-home-outline{focused ? "" : "-outline"}`
+          : "ios-home"
       }
     />
   )
 };
 
-const LinksStack = createStackNavigator({
+const SearchStack = createStackNavigator({
   Links: LinksScreen
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: "Links",
+SearchStack.navigationOptions = {
+  tabBarLabel: " ",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+      name={
+        Platform.OS === "ios"
+          ? `ios-search-outline{focused ? "" : "-outline"}`
+          : "md-search"
+      }
     />
   )
 };
 
-const SettingsStack = createStackNavigator({
+const AddEventStack = createStackNavigator({
   Settings: SettingsScreen
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Settings",
+AddEventStack.navigationOptions = {
+  tabBarLabel: " ",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+      name={
+        Platform.OS === "ios"
+          ? `ios-add-circle-outline{focused ? "" : "-outline"}`
+          : "md-add-circle"
+      }
     />
   )
 };
@@ -63,11 +70,15 @@ const FormStack = createStackNavigator({
 });
 
 FormStack.navigationOptions = {
-  tabBarLabel: "Forms",
+  tabBarLabel: " ",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+      name={
+        Platform.OS === "ios"
+          ? `ios-list-box-outline{focused ? "" : "-outline"}`
+          : "md-list"
+      }
     />
   )
 };
@@ -81,15 +92,15 @@ ProfileStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+      name={Platform.OS === "ios" ? "ios-person-outline" : "md-person"}
     />
   )
 };
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  SearchStack,
+  AddEventStack,
   FormStack,
   ProfileStack
 });
