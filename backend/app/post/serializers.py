@@ -9,7 +9,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('username', 'profile_pic')
+        fields = ('profile_pic')
 
 
 class CommentSerializer(serializers.ModelSerializer):
