@@ -1,5 +1,6 @@
 import uuid
 import os
+import datetime
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
@@ -16,21 +17,18 @@ def image_file_path(instance, filename):
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, username, password=None, **extra_fields):
+    def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError('Users must have an email address')
-        if not username:
-            raise ValueError('Users must have a username')
         user = self.model(email=self.normalize_email(email),
-                          username=username.lower(),
                           **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, email, username, password):
-        user = self.create_user(email, username, password)
+    def create_superuser(self, email, password, **extra_fields):
+        user = self.create_user(email, password, **extra_fields)
         user.is_staff = True
         user.is_superuser = True
         user.save(using=self._db)
@@ -39,44 +37,36 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(max_length=255, unique=True)
     fullname = models.CharField(max_length=60, blank=True)
-    bio = models.TextField(blank=True)
     profile_pic = models.ImageField(
         upload_to=image_file_path,
         default='avatar.png')
-    followers = models.ManyToManyField(settings.AUTH_USER_MODEL,
-                                       related_name="user_followers",
-                                       blank=True,
-                                       symmetrical=False)
-    following = models.ManyToManyField(settings.AUTH_USER_MODEL,
-                                       related_name="user_following",
-                                       blank=True,
-                                       symmetrical=False)
-    is_active = models.BooleanField(default=True)
+    date_of_birth = models.DateField(("Date"), default=datetime.date.today)
+    menopause_stage = models.CharField(max_length=30, default="test")
+    length_of_walk_distance = models.IntegerField(default=10)
+    length_of_walk_duration = models.IntegerField(default=10)
+    intensity = models.CharField(max_length=10, default="test")
+    indoor = models.BooleanField(default=True)
+    location = models.CharField(max_length=30, default="test")
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
-
-    def number_of_followers(self):
-        if self.followers.count():
-            return self.followers.count()
-        else:
-            return 0
-
-    def number_of_following(self):
-        if self.following.count():
-            return self.following.count()
-        else:
-            return 0
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['fullname',
+                       'date_of_birth',
+                       'menopause_stage',
+                       'length_of_walk_distance',
+                       'length_of_walk_duration',
+                       'intensity',
+                       'indoor',
+                       'location'
+                       ]
 
     def __str__(self):
-        return self.username
+        return self.email
 
 
 class Post(models.Model):
@@ -133,6 +123,7 @@ class Comment(models.Model):
 class WalkingEvent(models.Model):
     title = models.CharField(max_length=30)
     date = models.DateField()
+    description = models.CharField(max_length=300)
     is_indoor = models.BooleanField()
     walking_intensity = models.TextField()
     weather = models.TextField()

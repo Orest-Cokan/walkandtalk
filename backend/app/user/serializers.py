@@ -10,10 +10,11 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'fullname', 'username', 'password')
+        fields = ('id', 'email', 'fullname', 'password', 'menopause_stage',
+                  'length_of_walk_distance', 'length_of_walk_duration', 'intensity',
+                  'indoor', 'location', )
         extra_kwargs = {'password': {'write_only': True,
-                                     'min_length': 5},
-                        'username': {'min_length': 3}}
+                                     'min_length': 5}}
 
     def create(self, validated_data):
         """Create a new user with encrypted password and return it"""
@@ -25,11 +26,10 @@ class UserInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('id', 'email', 'username', 'password',
-                  'fullname', 'bio', 'profile_pic')
+        fields = ('id', 'email', 'password',
+                  'fullname', 'profile_pic')
         extra_kwargs = {'password': {'write_only': True,
-                                     'min_length': 5},
-                        'username': {'min_length': 3}}
+                                     'min_length': 5}}
 
     def update(self, instance, validated_data):
         """Update a user, setting the password correctly and return it"""
@@ -58,16 +58,11 @@ class UserPostsSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     """Serializer for viewing a user posts"""
-    number_of_posts = serializers.SerializerMethodField()
-    followed_by_req_user = serializers.SerializerMethodField()
-    user_posts = serializers.SerializerMethodField('paginated_user_posts')
 
     class Meta:
         model = get_user_model()
-        fields = ('id', 'username', 'fullname',
-                  'bio', 'profile_pic', 'number_of_followers',
-                  'number_of_following', 'number_of_posts',
-                  'user_posts', 'followed_by_req_user')
+        fields = ('id', 'fullname', 'email',
+                  'profile_pic',)
 
     def get_number_of_posts(self, obj):
         return Post.objects.filter(author=obj).count()
@@ -82,14 +77,10 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
         return serializer.data
 
-    def get_followed_by_req_user(self, obj):
-        user = self.context['request'].user
-        return user in obj.followers.all()
-
 
 class FollowSerializer(serializers.ModelSerializer):
     """Serializer for listing all followers"""
 
     class Meta:
         model = get_user_model()
-        fields = ('username', 'profile_pic')
+        fields = ('profile_pic')

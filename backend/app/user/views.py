@@ -22,7 +22,7 @@ class ManageUserView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class UserProfileView(generics.RetrieveAPIView):
-    lookup_field = 'username'
+    lookup_field = 'fullname'
     queryset = get_user_model().objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = (permissions.AllowAny,)
@@ -30,8 +30,8 @@ class UserProfileView(generics.RetrieveAPIView):
 
 class FollowUserView(APIView):
 
-    def get(self, request, format=None, username=None):
-        to_user = get_user_model().objects.get(username=username)
+    def get(self, request, format=None, email=None):
+        to_user = get_user_model().objects.get(email=email)
         from_user = self.request.user
         follow = None
         if from_user.is_authenticated:
@@ -56,9 +56,9 @@ class GetFollowersView(generics.ListAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def get_queryset(self):
-        username = self.kwargs['username']
+        email = self.kwargs['email']
         queryset = get_user_model().objects.get(
-            username=username).followers.all()
+            email=email).followers.all()
         return queryset
 
 
@@ -68,7 +68,7 @@ class GetFollowingView(generics.ListAPIView):
     permission_classes = (permissions.AllowAny,)
 
     def get_queryset(self):
-        username = self.kwargs['username']
+        email = self.kwargs['email']
         queryset = get_user_model().objects.get(
-            username=username).following.all()
+            email=email).following.all()
         return queryset
