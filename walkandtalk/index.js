@@ -1,21 +1,25 @@
-/**
- * @format
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
 import { Navigation } from "react-native-navigation";
+import AuthScreen from "./src/screens/AuthScreen";
+import HomeScreen from "./src/screens/HomeScreen";
+import SearchScreen from "./src/screens/SearchScreen";
+import AddEventScreen from "./src/screens/AddEventScreen";
+import FormScreen from "./src/screens/FormScreen";
+import ProfileScreen from "./src/screens/ProfileScreen";
 
-import App from "./App";
+// Register the screens
+Navigation.registerComponent("walkandtalk.AuthScreen", () => AuthScreen);
+Navigation.registerComponent("walkandtalk.HomeScreen", () => HomeScreen);
+Navigation.registerComponent("walkandtalk.SearchScreen", () => SearchScreen);
+Navigation.registerComponent(
+  "walkandtalk.AddEventScreen",
+  () => AddEventScreen
+);
+Navigation.registerComponent("walkandtalk.FormScreen", () => FormScreen);
+Navigation.registerComponent("walkandtalk.ProfileScreen", () => ProfileScreen);
 
-Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => App);
-
-Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => App);
-
-Navigation.events().registerAppLaunchedListener(() => {
-  Navigation.setRoot({
-    root: {
-      component: {
-        name: "navigation.playground.WelcomeScreen"
-      }
-    }
-  });
+Navigation.startSingleScreenApp({
+  screen: {
+    screen: "walkandtalk.AuthScreen",
+    title: "Login"
+  }
 });
