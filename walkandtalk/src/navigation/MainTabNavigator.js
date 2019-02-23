@@ -10,7 +10,10 @@ const startTabs = () => {
               children: [
                 {
                   component: {
-                    name: "walkandtalk.HomeScreen"
+                    name: "walkandtalk.HomeScreen",
+                    passProps: {
+                      text: "This is tab 1"
+                    }
                   }
                 }
               ],
@@ -62,6 +65,7 @@ const startTabs = () => {
               options: {
                 bottomTab: {
                   text: "Tab 4",
+                  label: "ree",
                   icon: require("../assets/images/person.png"),
                   testID: "FORTH_TAB_BAR_BUTTON"
                 }
