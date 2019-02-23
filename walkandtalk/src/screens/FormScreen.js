@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native-navigation";
+import { View, Text } from "react-native";
 
 class FormScreen extends Component {
   render() {
-    render(
+    return (
       <View>
         <Text>On Form Screen!</Text>
       </View>

@@ -1,34 +1,91 @@
 import { Navigation } from "react-native-navigation";
 
 const startTabs = () => {
-  Navigation.startTabBasedApp({
-    tabs: [
-      {
-        screen: "walkandtalk.HomeScreen",
-        label: "Home Screen",
-        title: "Home Screen"
-      },
-      {
-        screen: "walkandtalk.SearchScreen",
-        label: "Search Screen",
-        title: "Search Screen"
-      },
-      {
-        screen: "walkandtalk.AddEventScreen",
-        label: "Add Event",
-        title: "Add Event"
-      },
-      {
-        screen: "walkandtalk.FormScreen",
-        label: "Form Screen",
-        title: "Form Screen"
-      },
-      {
-        screen: "walkandtalk.ProfileScreen",
-        label: "Profile Screen",
-        title: "Profile Screen"
+  Navigation.setRoot({
+    root: {
+      bottomTabs: {
+        children: [
+          {
+            stack: {
+              children: [
+                {
+                  component: {
+                    name: "walkandtalk.HomeScreen"
+                  }
+                }
+              ],
+              options: {
+                bottomTab: {
+                  text: "Tab 1",
+                  icon: require("../assets/images/person.png"),
+                  testID: "FIRST_TAB_BAR_BUTTON"
+                }
+              }
+            }
+          },
+          {
+            component: {
+              name: "walkandtalk.SearchScreen",
+              passProps: {
+                text: "This is tab 2"
+              },
+              options: {
+                bottomTab: {
+                  text: "Tab 2",
+                  icon: require("../assets/images/person.png"),
+                  testID: "SECOND_TAB_BAR_BUTTON"
+                }
+              }
+            }
+          },
+          {
+            component: {
+              name: "walkandtalk.AddEventScreen",
+              passProps: {
+                text: "This is tab 3"
+              },
+              options: {
+                bottomTab: {
+                  text: "Tab 3",
+                  icon: require("../assets/images/person.png"),
+                  testID: "THIRD_TAB_BAR_BUTTON"
+                }
+              }
+            }
+          },
+          {
+            component: {
+              name: "walkandtalk.FormScreen",
+              passProps: {
+                text: "This is tab 4"
+              },
+              options: {
+                bottomTab: {
+                  text: "Tab 4",
+                  icon: require("../assets/images/person.png"),
+                  testID: "FORTH_TAB_BAR_BUTTON"
+                }
+              }
+            }
+          },
+          {
+            component: {
+              name: "walkandtalk.ProfileScreen",
+              passProps: {
+                text: "This is tab 5"
+              },
+              options: {
+                bottomTab: {
+                  text: "Tab 5",
+                  icon: require("../assets/images/person.png"),
+                  testID: "FIFTH_TAB_BAR_BUTTON"
+                }
+              }
+            }
+          }
+        ]
       }
-    ]
+    }
   });
 };
 

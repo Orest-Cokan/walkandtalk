@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native-navigation";
+import { View, Text } from "react-native";
 
 class HomeScreen extends Component {
   render() {
-    render(
+    return (
       <View>
         <Text>On Home Screen!</Text>
       </View>

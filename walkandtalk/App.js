@@ -17,9 +17,12 @@ Navigation.registerComponent(
 Navigation.registerComponent("walkandtalk.FormScreen", () => FormScreen);
 Navigation.registerComponent("walkandtalk.ProfileScreen", () => ProfileScreen);
 
-Navigation.startSingleScreenApp({
-  screen: {
-    screen: "walkandtalk.AuthScreen",
-    title: "Login"
-  }
+Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setRoot({
+    root: {
+      component: {
+        name: "walkandtalk.AuthScreen"
+      }
+    }
+  });
 });
