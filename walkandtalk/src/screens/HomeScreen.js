@@ -1,14 +1,20 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
+import BaseCard from "../cardview/baseCard";
 
 class HomeScreen extends Component {
   render() {
     return (
-      <View>
-        <Text>On Home Screen!</Text>
-      </View>
+      <BaseCard
+        time = "WED, MAR 3 AT 10:00PM"
+        title = "walking with meeee"
+        location = "VVC University"
+      >
+      </BaseCard>
+
     );
   }
 }
+
 
 export default HomeScreen;
