@@ -64,9 +64,9 @@ const startTabs = () => {
               },
               options: {
                 bottomTab: {
-                  text: "Tab 4",
+                  text: "Forms",
                   label: "ree",
-                  icon: require("../assets/images/person.png"),
+                  icon: require("../assets/images/form.png"),
                   testID: "FORTH_TAB_BAR_BUTTON"
                 }
               }
