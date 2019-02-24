@@ -21,10 +21,9 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
-      top: 10 
     },
     card: {
-      borderWidth: 3,
+      borderWidth: 1,
       borderRadius: 3,
       borderColor: 'grey',
       width: 380,
