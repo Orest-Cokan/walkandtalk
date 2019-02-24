@@ -1,4 +1,7 @@
-import { Navigation } from "react-native-navigation";
+import {
+  Navigation,
+  OptionsModalPresentationStyle
+} from "react-native-navigation";
 import AuthScreen from "./src/screens/AuthScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import SearchScreen from "./src/screens/SearchScreen";
@@ -19,7 +22,20 @@ Navigation.registerComponent(
 Navigation.registerComponent("walkandtalk.FormScreen", () => FormScreen);
 Navigation.registerComponent("walkandtalk.ProfileScreen", () => ProfileScreen);
 
+// Create a navigation event to launch the navigation bar
 Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setDefaultOptions({
+    bottomTabs: {
+      animate: false,
+      backgroundColor: "#d9a4ff"
+    },
+    topBar: {
+      visible: false,
+      height: 0
+    }
+  });
+
+  // Initialize the root of the navigation bar
   Navigation.setRoot({
     root: {
       component: {

@@ -19,9 +19,10 @@ const startTabs = () => {
               ],
               options: {
                 bottomTab: {
-                  text: "Tab 1",
-                  icon: require("../assets/images/person.png"),
-                  testID: "FIRST_TAB_BAR_BUTTON"
+                  icon: require("../assets/icons/home.png"),
+                  animation: false,
+                  testID: "FIRST_TAB_BAR_BUTTON",
+                  text: "Home"
                 }
               }
             }
@@ -34,8 +35,8 @@ const startTabs = () => {
               },
               options: {
                 bottomTab: {
-                  text: "Tab 2",
-                  icon: require("../assets/images/person.png"),
+                  text: "Search",
+                  icon: require("../assets/icons/search.png"),
                   testID: "SECOND_TAB_BAR_BUTTON"
                 }
               }
@@ -49,8 +50,8 @@ const startTabs = () => {
               },
               options: {
                 bottomTab: {
-                  text: "Tab 3",
-                  icon: require("../assets/images/person.png"),
+                  text: "Add Event",
+                  icon: require("../assets/icons/plus.png"),
                   testID: "THIRD_TAB_BAR_BUTTON"
                 }
               }
@@ -65,8 +66,7 @@ const startTabs = () => {
               options: {
                 bottomTab: {
                   text: "Forms",
-                  label: "ree",
-                  icon: require("../assets/images/form.png"),
+                  icon: require("../assets/icons/form.png"),
                   testID: "FORTH_TAB_BAR_BUTTON"
                 }
               }
@@ -80,8 +80,8 @@ const startTabs = () => {
               },
               options: {
                 bottomTab: {
-                  text: "Tab 5",
-                  icon: require("../assets/images/person.png"),
+                  text: "Profile",
+                  icon: require("../assets/icons/profile.png"),
                   testID: "FIFTH_TAB_BAR_BUTTON"
                 }
               }

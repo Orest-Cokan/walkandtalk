@@ -47,6 +47,15 @@ Navigation.registerComponent(
 );
 
 Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setDefaultOptions({
+    topBar: {
+      visible: false
+    },
+    bottomTabs: {
+      animate: false
+    }
+  });
+
   Navigation.setRoot({
     root: {
       component: {
