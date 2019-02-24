@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     marginTop: 40
   },
   avatar: {
-    width: 80,
-    height: 80,
+    width: 75,
+    height: 75,
     borderRadius: 60,
     borderWidth: 3,
     borderColor: 'black',
