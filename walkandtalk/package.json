@@ -11,10 +11,7 @@
     "native-base": "^2.12.0",
     "react": "16.6.3",
     "react-native": "0.58.5",
-<<<<<<< HEAD
     "react-native-firebase": "^5.2.2",
-=======
->>>>>>> signup
     "react-native-form-builder": "^1.0.16",
     "react-native-navigation": "^2.12.0",
     "react-native-vector-icons": "^6.3.0",
