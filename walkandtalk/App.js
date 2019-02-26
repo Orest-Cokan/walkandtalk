@@ -5,7 +5,6 @@ import SearchScreen from "./src/screens/SearchScreen";
 import AddEventScreen from "./src/screens/AddEventScreen";
 import FormScreen from "./src/screens/FormScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
-import { Provider } from "react-redux";
 
 // Register the screens
 Navigation.registerComponent("walkandtalk.AuthScreen", () => AuthScreen);
@@ -39,6 +38,8 @@ Navigation.events().registerAppLaunchedListener(() => {
   });
 });
 
+
+/*
 import firebase from "react-native-firebase";
 
 firebase
@@ -49,3 +50,4 @@ firebase
       console.log("default app user ->", credential.user.toJSON());
     }
   });
+*/
