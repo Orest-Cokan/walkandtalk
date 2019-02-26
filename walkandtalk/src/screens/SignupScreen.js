@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, Button, TouchableOpacity, ScrollView, Alert } from "react-native";
+import { View, Text, Button, TouchableOpacity, ScrollView, Alert, Picker } from "react-native";
 import { Form, Separator,InputField, LinkField, SwitchField, PickerField,DatePickerField,TimePickerField} from 'react-native-form-builder';
 import GenerateForm from 'react-native-form-builder';
 import { goSignup, goHome, goLogin } from '../initialNavigation/index';
@@ -10,8 +10,10 @@ export default class SignupScreen extends Component {
 
   constructor(props) {
     	super(props);
-
-     }
+      this.state = {
+          stage: ''
+        }
+      }
 
   loginHandler = () => {
     startMainTabs();
@@ -21,7 +23,15 @@ export default class SignupScreen extends Component {
     goLogin();
   };
 
+  updateStage = (stage) => {
+      this.setState({ stage: stage })
+   };
+
+
   render() {
+    const buttons = ['Pre', 'Peri', 'Post']
+    const { selectedIndex } = this.state
+
     return (
 
       <ScrollView>
@@ -36,6 +46,13 @@ export default class SignupScreen extends Component {
           fields={fields}
         />
       </View>
+      <View>
+          <Picker style={styles.picker} selectedValue = {this.state.stage} onValueChange = {this.updateStage}>
+             <Picker.Item label = "Menopause Stage - Pre" value = "pre" />
+             <Picker.Item label = "Menopause Stage - Peri" value = "peri" />
+             <Picker.Item label = "Menopause Stage - Post" value = "post" />
+          </Picker>
+       </View>
         <View style={styles.nestedButtonView}>
             <TouchableOpacity
             style= {styles.cancelButton}
@@ -64,7 +81,7 @@ export default class SignupScreen extends Component {
 const styles = {
   wrapper: {
     flex: 1,
-    marginTop: 150
+    marginTop: 100
   },
   header:{
     backgroundColor: '#c391d0',
@@ -103,12 +120,19 @@ const styles = {
     color: 'white',
     textAlign: 'center',
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    paddingLeft:25,
+    paddingRight:25
   },
   nestedButtonView: {
   flexDirection: 'row',
   alignItems: 'center',
   alignSelf:'center'
+},
+picker:{
+  marginTop:15,
+  marginRight:5,
+  marginLeft:5
 }
 };
 // These Fields will create a login form with three fields
