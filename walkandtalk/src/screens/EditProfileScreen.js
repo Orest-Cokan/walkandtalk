@@ -5,37 +5,33 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  TextInput
 } from 'react-native';
 
-// PROFILE TAB
-class ProfileScreen extends Component {
-
-  constructor(props) {
-    super(props);
-    // SET STATE ON INITIAL PROFILE SIGNUP
-    this.state = { 
-      name: 'Brittany Taylor',
-      dob: 'January 1, 1955',
-      menopausalStage: 'Peri',
-      distance: 10,
-      duration: 60,
-      intensity: 'Intermediate',
-      venue: 'Indoor',
-      location: 'Riverbend Area'
-    };
-  }
-
+class EditProfileScreen extends Component {
   render() {
     return (
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.headerContent}>
-          <View style={styles.edit}>
-            <Image style={styles.editIcon} source={require('../assets/icons/edit.png')}/>
-          </View>
             <Image style={styles.avatar} source={require('../assets/icons/profile.png')}/>
-              <Text style={styles.name}>{this.state.name}</Text>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.textInfo}>
+              <Text style={styles.textInfoStyle}>Full Name *</Text>
+            </View>
+            <View style={styles.textInfo}>
+              <TextInput style={styles.textInputStyle}>Brittany Taylor</TextInput>
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.textInfo}>
+              <Text style={styles.textInfoStyle}>Email Address</Text>
+            </View>
+            <View style={styles.textInfo}>
+              <TextInput style={styles.textInputStyle} editable={false}>btaylor@example.com</TextInput>
+            </View>
           </View>
 
           <View style={styles.seperator}/>
@@ -50,24 +46,15 @@ class ProfileScreen extends Component {
               <Text style={styles.textInfoStyle}>Date of Birth</Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textInput}>{this.state.dob}</Text>
+              <TextInput style={styles.textInputStyle} editable={false}>January 1, 1955</TextInput>
             </View>
           </View>
           <View style={styles.row}>
             <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Age</Text>
+              <Text style={styles.textInfoStyle}>Menopausal Stage *</Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textInput}>
-              {Math.floor((new Date().getTime()-Date.parse(this.state['dob']))/31557600000)}</Text>
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Menopausal Stage</Text>
-            </View>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInput}>{this.state.menopausalStage}</Text>
+              <Text style={styles.textInputStyle}>Import react-native-radio-buttons</Text>
             </View>
           </View>
 
@@ -83,7 +70,8 @@ class ProfileScreen extends Component {
               <Text style={styles.textInfoStyle}>Length of Walk (by distance)</Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textInput}>{this.state.distance} km</Text>
+              <Text style={styles.textInputNumber}>10</Text>
+              <Text style={styles.textInput}>km</Text>
             </View>
           </View>
           <View style={styles.row}>
@@ -91,7 +79,8 @@ class ProfileScreen extends Component {
               <Text style={styles.textInfoStyle}>Length of Walk (by duration)</Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textInput}>{this.state.duration} min</Text>
+              <Text style={styles.textInputNumber}>60</Text>
+              <Text style={styles.textInput}>min</Text>
             </View>
           </View>
           <View style={styles.row}>
@@ -99,7 +88,7 @@ class ProfileScreen extends Component {
               <Text style={styles.textInfoStyle}>Intensity</Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textInput}>{this.state.intensity}</Text>
+              <Text style={styles.textInputStyle}>import react-native-radio-buttons</Text>
             </View>
           </View>
           <View style={styles.row}>
@@ -107,7 +96,7 @@ class ProfileScreen extends Component {
               <Text style={styles.textInfoStyle}>Type of Venue</Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textInput}>{this.state.venue}</Text>
+              <Text style={styles.textInput}>Indoor</Text>
             </View>
           </View>
           <View style={styles.row}>
@@ -115,16 +104,16 @@ class ProfileScreen extends Component {
               <Text style={styles.textInfoStyle}>Location</Text>
             </View>
             <View style={styles.textInfo}>
-              <Text style={styles.textInput}>{this.state.location}</Text>
+              <Text style={styles.textInputStyle}>Riverbend Area</Text>
             </View>
           </View>
 
           <View style={styles.row}>
             <TouchableOpacity style={styles.buttonContainer}>
-              <Text>Help Line Links</Text>  
+              <Text>Cancel</Text>  
             </TouchableOpacity>              
             <TouchableOpacity style={styles.buttonContainer}>
-              <Text>Past Events</Text> 
+              <Text>Save</Text> 
             </TouchableOpacity>
           </View>
         </View>
@@ -133,7 +122,6 @@ class ProfileScreen extends Component {
   }
 }
 
-// STYLES
 const styles = StyleSheet.create({
   headerContent: {
     padding: 20,
@@ -147,16 +135,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: 'black',
     marginBottom: 10,
-  },
-  edit: {
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    bottom: 100,
-  },
-  editIcon:{
-    height: 30,
-    width: 30,
-    marginRight: 20
   },
   seperator: {
     borderBottomColor: 'gray',
@@ -175,11 +153,6 @@ const styles = StyleSheet.create({
     marginLeft: 15, 
     marginBottom: 5
   },
-  name: {
-    fontSize: 20,
-    color: 'black',
-    fontWeight:'500',
-  },
   textHeader: {
     fontWeight: 'bold',
     fontSize: 13,
@@ -196,9 +169,22 @@ const styles = StyleSheet.create({
     color: 'black'
 
   },
+  textInputStyle: {
+    marginRight: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+  },
+  textInputNumber:{
+    marginRight: 45,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+    textAlign: 'center',
+    marginLeft: 65
+
+  },
   buttonContainer: {
     marginTop: 10,
-    height: 50,
+    height: 30,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
@@ -213,4 +199,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default ProfileScreen;
+export default EditProfileScreen;
