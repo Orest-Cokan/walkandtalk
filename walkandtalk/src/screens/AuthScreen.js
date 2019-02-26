@@ -1,27 +1,46 @@
 import React, { Component } from "react";
 import { StyleSheet, AppRegistry, View, Text,TextInput, Button, TouchableOpacity, Image} from "react-native";
-
+import { createStackNavigator, createAppContainer, stackNavigator } from 'react-native-navigation';
+import {
+  Navigation,
+  OptionsModalPresentationStyle
+} from "react-native-navigation";
+import GenerateForm from 'react-native-form-builder';
+import { goSignup } from '../initialNavigation/index';
 import startMainTabs from "../navigation/MainTabNavigator";
 
+
 class AuthScreen extends Component {
+
+  constructor(props) {
+    	super(props);
+
+     }
+
   loginHandler = () => {
     startMainTabs();
   };
 
+  signupHandler = () => {
+    goSignup();
+  };
+
+
+
+
   render() {
+
     return (
       <View>
         <Text style={styles.logo}>WALK AND TALK</Text>
-        <TextInput
-          style={styles.inputBox}
-          placeholder="Email Address"
-          onChangeText={(text) => this.setState({text})}
-        />
-        <TextInput style={styles.inputBox}
-          style={styles.inputBox}
-          placeholder="Password"
-          onChangeText={(text) => this.setState({text})}
-        />
+        <View>
+          <GenerateForm
+            ref={(c) => {
+              this.formGenerator = c;
+            }}
+            fields={fields}
+          />
+        </View>
 
         <TouchableOpacity
          style={styles.loginButton}
@@ -32,19 +51,44 @@ class AuthScreen extends Component {
        <Text style={styles.signUp}>New to Walk and Talk?</Text>
 
          <View style={styles.nestedButtonView}>
-         <Text style={styles.signUp}>Sign up</Text>
-         <TouchableOpacity
-          style={styles.signupButton}
-          onPress={this.loginHandler}>
-          <Text style={styles.here}> Here </Text>
-        </TouchableOpacity>
+
+           <Text style={styles.signUp}>Sign up</Text>
+
+           <TouchableOpacity
+            style={styles.signupButton}
+            onPress={this.signupHandler}>
+            <Text style={styles.here}> Here </Text>
+          </TouchableOpacity>
+
         </View>
       </View>
     );
   }
 }
 
+
+const fields = [
+  {
+    type: 'text',
+    name: 'Email',
+    required: true,
+    label: 'Email',
+  },
+  {
+    type: 'password',
+    name: 'password',
+    required: true,
+    label: 'Password',
+  }
+];
+
+
+
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    marginTop: 150
+  },
     logo:{
       fontWeight: 'bold',
       fontSize: 50,
@@ -69,7 +113,7 @@ const styles = StyleSheet.create({
     },
     loginButton:{
       marginTop: 30,
-      marginBottom:120,
+      marginBottom:80,
       marginRight:50,
       marginLeft:50,
       padding: 10,
@@ -91,7 +135,7 @@ const styles = StyleSheet.create({
     },
     here:{
       fontSize: 18,
-      color:'black',
+      color:'#c391d0',
       textDecorationLine: 'underline',
       textAlign: 'right'
     },
