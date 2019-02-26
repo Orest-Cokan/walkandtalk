@@ -5,6 +5,11 @@ import SearchScreen from "./src/screens/SearchScreen";
 import AddEventScreen from "./src/screens/AddEventScreen";
 import FormScreen from "./src/screens/FormScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
+import SignupScreen from "./src/screens/SignupScreen";
+import { Provider } from "react-redux";
+import configurestore from "./src/store/configureStore";
+
+const store = configurestore();
 
 // Register the screens
 Navigation.registerComponent("walkandtalk.AuthScreen", () => AuthScreen);
@@ -14,8 +19,24 @@ Navigation.registerComponent(
   "walkandtalk.AddEventScreen",
   () => AddEventScreen
 );
-Navigation.registerComponent("walkandtalk.FormScreen", () => FormScreen);
-Navigation.registerComponent("walkandtalk.ProfileScreen", () => ProfileScreen);
+Navigation.registerComponent(
+  "walkandtalk.FormScreen",
+  () => FormScreen,
+  store,
+  Provider
+);
+Navigation.registerComponent(
+  "walkandtalk.ProfileScreen",
+  () => ProfileScreen,
+  store,
+  Provider
+);
+Navigation.registerComponent(
+  "walkandtalk.SignupScreen",
+  () => SignupScreen,
+  store,
+  Provider
+);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setDefaultOptions({
