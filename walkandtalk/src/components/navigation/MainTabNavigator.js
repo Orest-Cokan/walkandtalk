@@ -19,7 +19,7 @@ const startTabs = () => {
               ],
               options: {
                 bottomTab: {
-                  icon: require("../assets/icons/home.png"),
+                  icon: require("../../assets/icons/home.png"),
                   animation: false,
                   testID: "FIRST_TAB_BAR_BUTTON",
                   text: "Home"
@@ -36,7 +36,7 @@ const startTabs = () => {
               options: {
                 bottomTab: {
                   text: "Search",
-                  icon: require("../assets/icons/search.png"),
+                  icon: require("../../assets/icons/search.png"),
                   testID: "SECOND_TAB_BAR_BUTTON"
                 }
               }
@@ -51,7 +51,7 @@ const startTabs = () => {
               options: {
                 bottomTab: {
                   text: "Add Event",
-                  icon: require("../assets/icons/plus.png"),
+                  icon: require("../../assets/icons/plus.png"),
                   testID: "THIRD_TAB_BAR_BUTTON"
                 }
               }
@@ -66,7 +66,7 @@ const startTabs = () => {
               options: {
                 bottomTab: {
                   text: "Forms",
-                  icon: require("../assets/icons/form.png"),
+                  icon: require("../../assets/icons/form.png"),
                   testID: "FORTH_TAB_BAR_BUTTON"
                 }
               }
@@ -81,7 +81,7 @@ const startTabs = () => {
               options: {
                 bottomTab: {
                   text: "Profile",
-                  icon: require("../assets/icons/profile.png"),
+                  icon: require("../../assets/icons/profile.png"),
                   testID: "FIFTH_TAB_BAR_BUTTON"
                 }
               }

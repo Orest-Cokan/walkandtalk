@@ -6,53 +6,27 @@ import AddEventScreen from "./src/screens/AddEventScreen";
 import FormScreen from "./src/screens/FormScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import { Provider } from "react-redux";
-import configurestore from "./src/store/configureStore";
-
-const store = configurestore();
 
 // Register the screens
-Navigation.registerComponent(
-  "walkandtalk.AuthScreen",
-  () => AuthScreen,
-  store,
-  Provider
-);
-Navigation.registerComponent(
-  "walkandtalk.HomeScreen",
-  () => HomeScreen,
-  store,
-  Provider
-);
-Navigation.registerComponent(
-  "walkandtalk.SearchScreen",
-  () => SearchScreen,
-  store,
-  Provider
-);
+Navigation.registerComponent("walkandtalk.AuthScreen", () => AuthScreen);
+Navigation.registerComponent("walkandtalk.HomeScreen", () => HomeScreen);
+Navigation.registerComponent("walkandtalk.SearchScreen", () => SearchScreen);
 Navigation.registerComponent(
   "walkandtalk.AddEventScreen",
   () => AddEventScreen
 );
-Navigation.registerComponent(
-  "walkandtalk.FormScreen",
-  () => FormScreen,
-  store,
-  Provider
-);
-Navigation.registerComponent(
-  "walkandtalk.ProfileScreen",
-  () => ProfileScreen,
-  store,
-  Provider
-);
+Navigation.registerComponent("walkandtalk.FormScreen", () => FormScreen);
+Navigation.registerComponent("walkandtalk.ProfileScreen", () => ProfileScreen);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setDefaultOptions({
     topBar: {
-      visible: false
+      visible: false,
+      height: 0
     },
     bottomTabs: {
-      animate: false
+      animate: false,
+      backgroundColor: "#d9a4ff"
     }
   });
 
@@ -64,3 +38,14 @@ Navigation.events().registerAppLaunchedListener(() => {
     }
   });
 });
+
+import firebase from "react-native-firebase";
+
+firebase
+  .auth()
+  .signInAnonymously()
+  .then(credential => {
+    if (credential) {
+      console.log("default app user ->", credential.user.toJSON());
+    }
+  });
