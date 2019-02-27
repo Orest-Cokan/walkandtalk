@@ -4,50 +4,47 @@ import { StyleSheet, View, Text } from "react-native";
 class BaseCard extends Component {
     render() {
         return (
-          <View style={styles.container}>
-              <View style={styles.card}>
-                <View style={styles.eventInfo}>
-                  <Text style={styles.eventTime}>{this.props.time}</Text>
-                  <Text style={styles.eventTitle}>{this.props.title}</Text>
-                  <Text style={styles.eventLocation}>{this.props.location}</Text>
-                </View>
-              </View>
+          <View style={styles.card}>
+            <View style={styles.eventInfo}>
+              <Text style={styles.eventTime}>{this.props.time}</Text>
+              <Text style={styles.eventTitle}>{this.props.title}</Text>
+              <Text style={styles.eventLocation}>{this.props.location}</Text>
+            </View>
           </View>
         );
       }
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'center',
-    },
     card: {
       borderWidth: 1,
       borderRadius: 3,
       borderColor: 'grey',
-      width: 380,
+      width: "90%",
       height: 100,
-      padding: 10,
-      margin: 10
+      paddingLeft: "5%",
+      margin:"5%",
+      justifyContent: 'center',
     },
     eventInfo:{
-        justifyContent: 'center',
-        top: 10
+      justifyContent: 'center',
     },
     eventTime: {
+      fontSize:20,
       left:0,
       top:0,
       color: 'purple'
     },
     eventTitle: {
-        left:0,
-        top:0,
-        fontWeight: 'bold'
+      fontSize:20,
+      left:0,
+      top:0,
+      fontWeight: 'bold'
     },
     eventLocation: {
-    left:0,
-    top:0
+      fontSize:20,
+      left:0,
+      top:0
     }
 });
 
