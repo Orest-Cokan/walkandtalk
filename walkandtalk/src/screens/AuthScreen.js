@@ -15,6 +15,7 @@ class AuthScreen extends Component {
 
   loginHandler() {
     const formValues = this.refs.formGenerator.getValues();
+    console.log(formValues.email, formValues.password);
     firebaseService
       .load(formValues.email, formValues.password)
       .then(data => {

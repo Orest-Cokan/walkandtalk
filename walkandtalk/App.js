@@ -7,6 +7,7 @@ import AddEventScreen from "./src/screens/AddEventScreen";
 import FormScreen from "./src/screens/FormScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import SignupScreen from "./src/screens/SignupScreen";
+import EditProfileScreen from "./src/screens/EditProfileScreen"
 import { Provider } from "react-redux";
 import store from "./src/store/store";
 import firebase from "react-native-firebase";
@@ -70,7 +71,15 @@ Navigation.registerComponent(
   ),
   () => ProfileScreen
 );
-
+Navigation.registerComponent(
+  "walkandtalk.EditProfileScreen",
+  () => props => (
+    <Provider store={store}>
+      <EditProfileScreen {...props} />
+    </Provider>
+  ),
+  () => EditProfileScreen
+);
 Navigation.registerComponent(
   "walkandtalk.SignupScreen",
   () => props => (
