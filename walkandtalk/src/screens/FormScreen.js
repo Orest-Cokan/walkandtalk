@@ -1,61 +1,64 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import BaseCard from "../cardview/baseCard";
-import QuestionnaireCard from "../cardview/questionnaireCard";
-
+import { connect } from "react-redux";
 
 class FormScreen extends Component {
   render() {
     return (
-      <View> 
-        <View style={styles.header}>
-          <Text style={styles.headerText}> Your Forms </Text>
+      <View>
+        <Text style={styles.heading}>Questionnaires</Text>
+        <View style={styles.questionnaires}>
+          <Text style={styles.quesText}>Questionnaire A</Text>
         </View>
-        <Text style={styles.title}>Questionnaires</Text>
-        <QuestionnaireCard
-          quesOne = "MENQOL"
-          quesTwo = "Symptom Severity"
-        >
-        </QuestionnaireCard>
-        <View style={styles.seperator}/>
-        <Text style={styles.title}>Records</Text>
+        <View style={styles.questionnaires}>
+          <Text style={styles.quesText}>Questionnaire B</Text>
+        </View>
+        <View style={styles.line} />
+        <Text style={styles.heading}>Records</Text>
         <BaseCard
-          time = "WED, MAR 3 AT 10:00PM"
-          title = "walking with meeee"
-          location = "VVC University"
-        >
-        </BaseCard>
+          time="WED, MAR 3 AT 10:00PM"
+          title="walking with meeee"
+          location="VVC University"
+        />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  header:{
-    backgroundColor: '#c391d0',
-    width: '100%',
+  line: {
+    borderWidth: 0.5,
+    borderColor: "grey",
+    width: 380,
+    height: 0,
+    margin: 10
+  },
+  heading: {
+    fontSize: 25,
+    top: 0,
+    bottom: 0,
+    marginLeft: 20
+  },
+  questionnaires: {
+    borderWidth: 1,
+    borderRadius: 3,
+    borderColor: "grey",
+    width: 380,
     height: 50,
-    justifyContent: 'center',
+    padding: 10,
+    margin: 10
   },
-  headerText:{
-    textAlign: 'center',
-    color: 'white',
-    fontSize: 30,
-    fontWeight: 'bold'
-  },
-  seperator: {
-    borderBottomColor: 'gray',
-    borderBottomWidth: 0.5,
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 5,
-    marginTop: 5
-  },
-  title: {
-    fontSize:25,
-    marginTop:"5%",
-    marginLeft: "5%",
-  },
+  quesText: {
+    fontWeight: "bold",
+    fontSize: 20,
+    margin: "auto"
+  }
 });
 
-export default FormScreen;
+const mapStateToProps = state => state;
+
+export default connect(
+  mapStateToProps,
+  null
+)(FormScreen);
