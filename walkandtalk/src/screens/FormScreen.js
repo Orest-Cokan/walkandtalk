@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import BaseCard from "../cardview/baseCard";
 import QuestionnaireCard from "../cardview/questionnaireCard";
+import { connect } from "react-redux";
+
 
 
 class FormScreen extends Component {

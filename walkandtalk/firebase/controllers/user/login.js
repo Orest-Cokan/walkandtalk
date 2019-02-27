@@ -6,13 +6,14 @@ class FirebaseService {
   }
   async load(email, password) {
     const doc = await this.ref.doc(email).get();
-    console.log(doc.data().password, password);
+    console.log(doc.data().password, "password " + password);
 
-    if (doc.exists && doc.data().password == password) {
-      console.log(doc.data().password, password);
+    if (doc.exists && doc.data().password === password) {
+      console.log(doc.data().password, "password:" +password);
       return doc.data();
     }
-    console.log(doc.data().password, password);
+    console.log(doc.data().password, "password not in if statement: "+password);
+    return null;
   }
 }
 

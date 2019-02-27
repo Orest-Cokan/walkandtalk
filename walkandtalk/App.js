@@ -10,7 +10,6 @@ import SignupScreen from "./src/screens/SignupScreen";
 import { Provider } from "react-redux";
 import store from "./src/store/store";
 import firebase from "react-native-firebase";
-import firebaseservice from "./firebase/controllers/user/login";
 
 // Register the screens
 Navigation.registerComponent(
