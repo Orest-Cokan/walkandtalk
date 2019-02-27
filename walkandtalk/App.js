@@ -1,4 +1,5 @@
 import { Navigation } from "react-native-navigation";
+import React from "react";
 import AuthScreen from "./src/screens/AuthScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import SearchScreen from "./src/screens/SearchScreen";
@@ -6,18 +7,79 @@ import AddEventScreen from "./src/screens/AddEventScreen";
 import FormScreen from "./src/screens/FormScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import SignupScreen from "./src/screens/SignupScreen";
+import { Provider } from "react-redux";
+import store from "./src/store/store";
+import firebase from "react-native-firebase";
 
 // Register the screens
-Navigation.registerComponent("walkandtalk.AuthScreen", () => AuthScreen);
-Navigation.registerComponent("walkandtalk.HomeScreen", () => HomeScreen);
-Navigation.registerComponent("walkandtalk.SearchScreen", () => SearchScreen);
+Navigation.registerComponent(
+  "walkandtalk.AuthScreen",
+  () => props => (
+    <Provider store={store}>
+      <AuthScreen {...props} />
+    </Provider>
+  ),
+  () => AuthScreen
+);
+
+Navigation.registerComponent(
+  "walkandtalk.HomeScreen",
+  () => props => (
+    <Provider store={store}>
+      <HomeScreen {...props} />
+    </Provider>
+  ),
+  () => HomeScreen
+);
+
+Navigation.registerComponent(
+  "walkandtalk.SearchScreen",
+  () => props => (
+    <Provider store={store}>
+      <SearchScreen {...props} />
+    </Provider>
+  ),
+  () => SearchScreen
+);
+
 Navigation.registerComponent(
   "walkandtalk.AddEventScreen",
+  () => props => (
+    <Provider store={store}>
+      <AddEventScreen {...props} />
+    </Provider>
+  ),
   () => AddEventScreen
 );
-Navigation.registerComponent("walkandtalk.FormScreen", () => FormScreen);
-Navigation.registerComponent("walkandtalk.ProfileScreen", () => ProfileScreen);
-Navigation.registerComponent("walkandtalk.SignupScreen", () => SignupScreen);
+
+Navigation.registerComponent(
+  "walkandtalk.FormScreen",
+  () => props => (
+    <Provider store={store}>
+      <FormScreen {...props} />
+    </Provider>
+  ),
+  () => FormScreen
+);
+Navigation.registerComponent(
+  "walkandtalk.ProfileScreen",
+  () => props => (
+    <Provider store={store}>
+      <ProfileScreen {...props} />
+    </Provider>
+  ),
+  () => ProfileScreen
+);
+
+Navigation.registerComponent(
+  "walkandtalk.SignupScreen",
+  () => props => (
+    <Provider store={store}>
+      <SignupScreen {...props} />
+    </Provider>
+  ),
+  () => SignupScreen
+);
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setDefaultOptions({
@@ -40,10 +102,6 @@ Navigation.events().registerAppLaunchedListener(() => {
   });
 });
 
-
-/*
-import firebase from "react-native-firebase";
-
 firebase
   .auth()
   .signInAnonymously()
@@ -52,4 +110,3 @@ firebase
       console.log("default app user ->", credential.user.toJSON());
     }
   });
-*/

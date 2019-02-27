@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import BaseCard from "../cardview/baseCard";
 import QuestionnaireCard from "../cardview/questionnaireCard";
+import { connect } from "react-redux";
+
 
 
 class FormScreen extends Component {
@@ -20,11 +22,10 @@ class FormScreen extends Component {
         <View style={styles.seperator}/>
         <Text style={styles.title}>Records</Text>
         <BaseCard
-          time = "WED, MAR 3 AT 10:00PM"
-          title = "walking with meeee"
-          location = "VVC University"
-        >
-        </BaseCard>
+          time="WED, MAR 3 AT 10:00PM"
+          title="walking with meeee"
+          location="VVC University"
+        />
       </View>
     );
   }
@@ -58,4 +59,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FormScreen;
+const mapStateToProps = state => state;
+
+export default connect(
+  mapStateToProps,
+  null
+)(FormScreen);

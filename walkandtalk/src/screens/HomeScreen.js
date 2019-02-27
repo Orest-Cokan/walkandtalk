@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import BaseCard from "../cardview/baseCard";
+import { connect } from "react-redux";
 
 class HomeScreen extends Component {
   render() {
@@ -26,6 +27,13 @@ class HomeScreen extends Component {
   }
 }
 
+const mapStateToProps = state => state;
+
+export default connect(
+  mapStateToProps,
+  null
+)(HomeScreen);
+
 const styles = StyleSheet.create({
   scroll: {
     width: "100%",
@@ -38,17 +46,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#f3edfa"
   },
-  header:{
-    backgroundColor: '#c391d0',
-    width: '100%',
+  header: {
+    backgroundColor: "#c391d0",
+    width: "100%",
     height: 50
   },
-  headerText:{
-    textAlign: 'center',
-    color: 'white',
+  headerText: {
+    textAlign: "center",
+    color: "white",
     fontSize: 30,
-    fontWeight: 'bold'
+    fontWeight: "bold"
   }
 });
-
-export default HomeScreen;
