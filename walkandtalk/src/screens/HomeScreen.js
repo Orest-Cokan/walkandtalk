@@ -9,17 +9,17 @@ class HomeScreen extends Component {
         <View style={styles.header}>
           <Text style={styles.headerText}> Your Events </Text>
         </View>
-        <ScrollView>
-        <BaseCard
-          time="WED, MAR 3 AT 10:00PM"
-          title="Walk with me!"
-          location="VVC University"
-        />
-        <BaseCard
-          time="SAT, MAR 17 AT 9:00AM"
-          title="Morning Stroll"
-          location="River Valley"
-        />
+        <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContainer}>
+          <BaseCard
+            time="WED, MAR 3 AT 10:00PM"
+            title="Walk with me!"
+            location="VVC University"
+          />
+          <BaseCard
+            time="SAT, MAR 17 AT 9:00AM"
+            title="Morning Stroll"
+            location="River Valley"
+          />
         </ScrollView>
       </View>
     );
@@ -27,6 +27,12 @@ class HomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+  scroll: {
+    width: "100%",
+  },
+  scrollContainer: {
+    width: "100%",
+  },
   container: {
     flex: 1,
     alignItems: "center",
