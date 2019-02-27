@@ -4,15 +4,12 @@ class FirebaseService {
   constructor() {
     this.ref = firebase.firestore().collection("User");
   }
-
-  async loadUser(email) {
-    const profile = await this.ref.doc(email).get();
-    console.log(profile.data());
-    if (profile.exists) {
-      console.log(profile.data());
-      return profile;
+  async load(email, password) {
+    const doc = await this.ref.doc(email).get();
+    if (doc.exists && doc.data().password == password) {
+      console.log(doc.data().password, password);
+      return doc.data();
     }
-    return null;
   }
 }
 

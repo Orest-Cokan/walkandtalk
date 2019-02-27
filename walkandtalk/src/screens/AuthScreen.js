@@ -5,8 +5,7 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
 import { goSignup } from "../components/navigation/InitialNavigator";
 import startMainTabs from "../components/navigation/MainTabNavigator";
-import login from "../../firebase/controllers/user/login";
-import firebaseService from "../../firebase/controllers/user/login";
+import { firebaseService } from "../../firebase/controllers/user/login";
 
 class AuthScreen extends Component {
   constructor(props) {
@@ -16,14 +15,13 @@ class AuthScreen extends Component {
 
   loginHandler() {
     const formValues = this.refs.formGenerator.getValues();
-    console.log(formValues.email, formValues.password);
-    const profile = firebaseService.loadUser(email);
-    console.log(profile.data());
-    if (profile != null && profile.data().password == formValues.password) {
-      this.props.dispatch(setProfile(profile));
-      startMainTabs();
-    }
-    // do popup here saying invlaid login
+    firebaseService
+      .load(formValues.email, formValues.password)
+      .then(data => {
+        this.props.dispatch(setProfile(data));
+        startMainTabs();
+      })
+      .catch(error => console.log("API call error"));
   }
 
   signupHandler = () => {
