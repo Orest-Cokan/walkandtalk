@@ -1,13 +1,9 @@
 import React, { Component } from "react";
-<<<<<<< HEAD
 import { View, Text, TextInput, StyleSheet,TouchableHighlight,Alert } from "react-native";
 import Ionicon from "react-native-vector-icons/Ionicons"
 import Entypo from "react-native-vector-icons/Entypo"
 import BaseCard from "../cardview/baseCard";
-=======
-import { View, Text } from "react-native";
 import { connect } from "react-redux";
->>>>>>> firebase
 
 class SearchScreen extends Component {
   state = {
@@ -51,7 +47,6 @@ class SearchScreen extends Component {
   }
 }
 
-<<<<<<< HEAD
 
 const styles = StyleSheet.create({
   modalView: {
@@ -111,12 +106,9 @@ const styles = StyleSheet.create({
 });
 
 
-export default SearchScreen;
-=======
 const mapStateToProps = state => state;
 
 export default connect(
   mapStateToProps,
   null
 )(SearchScreen);
->>>>>>> firebase
