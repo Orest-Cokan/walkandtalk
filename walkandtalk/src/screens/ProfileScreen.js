@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,23 +6,23 @@ import {
   Image,
   TouchableOpacity,
   ScrollView
-} from 'react-native';
+} from "react-native";
+import { connect } from "react-redux";
 
 // PROFILE TAB
 class ProfileScreen extends Component {
-
   constructor(props) {
     super(props);
     // SET STATE ON INITIAL PROFILE SIGNUP
-    this.state = { 
-      name: 'Brittany Taylor',
-      dob: 'January 1, 1955',
-      menopausalStage: 'Peri',
+    this.state = {
+      name: "Brittany Taylor",
+      dob: "January 1, 1955",
+      menopausalStage: "Peri",
       distance: 10,
       duration: 60,
-      intensity: 'Intermediate',
-      venue: 'Indoor',
-      location: 'Riverbend Area'
+      intensity: "Intermediate",
+      venue: "Indoor",
+      location: "Riverbend Area"
     };
   }
 
@@ -31,14 +31,20 @@ class ProfileScreen extends Component {
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.headerContent}>
-          <View style={styles.edit}>
-            <Image style={styles.editIcon} source={require('../assets/icons/edit.png')}/>
-          </View>
-            <Image style={styles.avatar} source={require('../assets/icons/profile.png')}/>
-              <Text style={styles.name}>{this.state.name}</Text>
+            <View style={styles.edit}>
+              <Image
+                style={styles.editIcon}
+                source={require("../assets/icons/edit.png")}
+              />
+            </View>
+            <Image
+              style={styles.avatar}
+              source={require("../assets/icons/profile.png")}
+            />
+            <Text style={styles.name}>{this.state.name}</Text>
           </View>
 
-          <View style={styles.seperator}/>
+          <View style={styles.seperator} />
 
           <View style={styles.row}>
             <View style={styles.textInfo}>
@@ -59,7 +65,11 @@ class ProfileScreen extends Component {
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textInput}>
-              {Math.floor((new Date().getTime()-Date.parse(this.state['dob']))/31557600000)}</Text>
+                {Math.floor(
+                  (new Date().getTime() - Date.parse(this.state["dob"])) /
+                    31557600000
+                )}
+              </Text>
             </View>
           </View>
           <View style={styles.row}>
@@ -71,7 +81,7 @@ class ProfileScreen extends Component {
             </View>
           </View>
 
-          <View style={styles.seperator}/>
+          <View style={styles.seperator} />
 
           <View style={styles.row}>
             <View style={styles.textInfo}>
@@ -80,7 +90,9 @@ class ProfileScreen extends Component {
           </View>
           <View style={styles.row}>
             <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Length of Walk (by distance)</Text>
+              <Text style={styles.textInfoStyle}>
+                Length of Walk (by distance)
+              </Text>
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textInput}>{this.state.distance} km</Text>
@@ -88,7 +100,9 @@ class ProfileScreen extends Component {
           </View>
           <View style={styles.row}>
             <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Length of Walk (by duration)</Text>
+              <Text style={styles.textInfoStyle}>
+                Length of Walk (by duration)
+              </Text>
             </View>
             <View style={styles.textInfo}>
               <Text style={styles.textInput}>{this.state.duration} min</Text>
@@ -121,10 +135,10 @@ class ProfileScreen extends Component {
 
           <View style={styles.row}>
             <TouchableOpacity style={styles.buttonContainer}>
-              <Text>Help Line Links</Text>  
-            </TouchableOpacity>              
+              <Text>Help Line Links</Text>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.buttonContainer}>
-              <Text>Past Events</Text> 
+              <Text>Past Events</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -133,11 +147,18 @@ class ProfileScreen extends Component {
   }
 }
 
+const mapStateToProps = state => state;
+
+export default connect(
+  mapStateToProps,
+  null
+)(ProfileScreen);
+
 // STYLES
 const styles = StyleSheet.create({
   headerContent: {
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 40
   },
   avatar: {
@@ -145,21 +166,21 @@ const styles = StyleSheet.create({
     height: 75,
     borderRadius: 60,
     borderWidth: 3,
-    borderColor: 'black',
-    marginBottom: 10,
+    borderColor: "black",
+    marginBottom: 10
   },
   edit: {
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    bottom: 100,
+    alignSelf: "flex-end",
+    position: "absolute",
+    bottom: 100
   },
-  editIcon:{
+  editIcon: {
     height: 30,
     width: 30,
     marginRight: 20
   },
   seperator: {
-    borderBottomColor: 'gray',
+    borderBottomColor: "gray",
     borderBottomWidth: 0.5,
     marginLeft: 10,
     marginRight: 10,
@@ -167,50 +188,45 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   row: {
-    flex: 1, 
-    flexDirection: 'row'
+    flex: 1,
+    flexDirection: "row"
   },
   textInfo: {
-    flex: 1, 
-    marginLeft: 15, 
+    flex: 1,
+    marginLeft: 15,
     marginBottom: 5
   },
   name: {
     fontSize: 20,
-    color: 'black',
-    fontWeight:'500',
+    color: "black",
+    fontWeight: "500"
   },
   textHeader: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 13,
-    color: 'gray',
+    color: "gray"
   },
   textInfoStyle: {
     fontSize: 13,
-    color: "gray",
-
+    color: "gray"
   },
   textInput: {
-    textAlign: 'right',
+    textAlign: "right",
     marginRight: 15,
-    color: 'black'
-
+    color: "black"
   },
   buttonContainer: {
     marginTop: 10,
     height: 50,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 10,
     width: 150,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: "black",
     marginLeft: 15,
     marginRight: 10
-  },
-
+  }
 });
-
-export default ProfileScreen;
