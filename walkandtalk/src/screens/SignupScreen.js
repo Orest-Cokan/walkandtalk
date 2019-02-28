@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  Picker
-} from "react-native";
+import {View,Text,TouchableOpacity,ScrollView,Alert,Picker} from "react-native";
 import {} from "react-native-form-builder";
 import GenerateForm from "react-native-form-builder";
 import { goLogin } from "../components/navigation/InitialNavigator";
@@ -21,20 +14,23 @@ class SignupScreen extends Component {
     };
   }
 
+  //Direct user to home screen
   loginHandler() {
     startMainTabs();
   }
 
+  //Direct user to login screen
   authHandler = () => {
     goLogin();
   };
 
+  //Update selected stage of Menopause
   updateStage = stage => {
     this.setState({ stage: stage });
   };
 
+//render the screen
   render() {
-    const buttons = ["Pre", "Peri", "Post"];
     const { selectedIndex } = this.state;
 
     return (
@@ -94,6 +90,7 @@ export default connect(
   null
 )(SignupScreen);
 
+//Styles
 const styles = {
   wrapper: {
     flex: 1,
@@ -151,7 +148,7 @@ const styles = {
     marginLeft: 5
   }
 };
-// These Fields will create a login form with three fields
+// These Fields will create a login form
 const fields = [
   {
     type: "text",
