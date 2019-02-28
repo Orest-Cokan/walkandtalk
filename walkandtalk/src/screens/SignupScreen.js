@@ -12,16 +12,30 @@ import GenerateForm from "react-native-form-builder";
 import { goLogin } from "../components/navigation/InitialNavigator";
 import startMainTabs from "../components/navigation/MainTabNavigator";
 import { connect } from "react-redux";
+import { firebaseService } from "../../firebase/controllers/user/login";
+import dateFormat from "dateformat";
+import { setProfile } from "../store/actions/actions";
 
 class SignupScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stage: ""
+      stage: "peri"
     };
+    this.signUpHandler = this.signUpHandler.bind(this);
   }
 
-  loginHandler() {
+  signUpHandler() {
+    const formValues = this.refs.formGenerator.getValues();
+    let date = new Date(formValues.birthday);
+    let profile = {
+      fullname: formValues.full_name,
+      email: formValues.email,
+      password: formValues.password,
+      dateOfBirth: dateFormat(date, "yyyy mm dd")
+    };
+    firebaseService.save(profile);
+    this.props.dispatch(setProfile(profile));
     startMainTabs();
   }
 
@@ -34,21 +48,13 @@ class SignupScreen extends Component {
   };
 
   render() {
-    const buttons = ["Pre", "Peri", "Post"];
-    const { selectedIndex } = this.state;
-
     return (
       <ScrollView>
         <View style={styles.header}>
           <Text style={styles.headerText}> Sign Up </Text>
         </View>
         <View>
-          <GenerateForm
-            ref={c => {
-              this.formGenerator = c;
-            }}
-            fields={fields}
-          />
+          <GenerateForm ref="formGenerator" fields={fields} />
         </View>
         <View>
           <Picker
@@ -74,7 +80,7 @@ class SignupScreen extends Component {
               Alert.alert(
                 "Success!",
                 "Thank you for signing up!\nYour information has been forwarded to our researchers for evaluation.\nExpect to recieve an email within 7 days.",
-                [{ text: "OK", onPress: this.authHandler }],
+                [{ text: "OK", onPress: this.signUpHandler }],
                 { cancelable: false }
               )
             }

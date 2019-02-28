@@ -18,6 +18,11 @@ class FirebaseService {
     );
     return null;
   }
+
+  async save(user) {
+    // do checks
+    await this.ref.doc(user.email).set(user);
+  }
 }
 
 export const firebaseService = new FirebaseService();

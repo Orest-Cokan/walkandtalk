@@ -16,10 +16,10 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SET_PROFILE:
-      return { ...state };
-
-    case types.ADD_PROFILE:
-      return {};
+      return {
+        ...state,
+        ...payload.action
+      };
 
     default:
       return state;
