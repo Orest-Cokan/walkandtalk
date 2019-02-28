@@ -23,7 +23,7 @@ export function setEvents(events) {
 
 export function editEvent(event, index) {
   return {
-    type: types.SET_EVENTS,
+    type: types.EDIT_EVENT,
     payload: {
       event,
       index
