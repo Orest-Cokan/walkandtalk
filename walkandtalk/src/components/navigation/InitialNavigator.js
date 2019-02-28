@@ -47,3 +47,19 @@ export const goLogin = () =>
       }
     }
   });
+
+export const goEditProfile = () =>
+  Navigation.setRoot({
+    root: {
+      stack: {
+        id: "App",
+        children: [
+          {
+            component: {
+              name: "walkandtalk.EditProfileScreen"
+            }
+          }
+        ]
+      }
+    }
+  });
