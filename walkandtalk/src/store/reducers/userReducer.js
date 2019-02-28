@@ -13,6 +13,7 @@ const initialState = {
   registered: false
 };
 
+// UserReducer
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SET_PROFILE:

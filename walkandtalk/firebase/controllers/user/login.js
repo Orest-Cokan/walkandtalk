@@ -1,4 +1,5 @@
 import firebase from "react-native-firebase";
+import "firebase/firestore";
 
 class FirebaseService {
   constructor() {
