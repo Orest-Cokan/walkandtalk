@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setProfile } from "../store/actions/user";
+import { setProfile } from "../store/actions/actions";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
 import { goSignup } from "../components/navigation/InitialNavigator";

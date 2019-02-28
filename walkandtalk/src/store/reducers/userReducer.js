@@ -18,7 +18,7 @@ const userReducer = (state = initialState, action) => {
     case types.SET_PROFILE:
       return {
         ...state,
-        ...payload.action
+        ...action.payload
       };
 
     default:
