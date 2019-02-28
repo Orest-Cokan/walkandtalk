@@ -15,11 +15,13 @@ class HomeScreen extends Component {
             time="WED, MAR 3 AT 10:00PM"
             title="Walk with me!"
             location="VVC University"
+            badge="GOING"
           />
           <BaseCard
             time="SAT, MAR 17 AT 9:00AM"
             title="Morning Stroll"
             location="River Valley"
+            badge="HOSTING"
           />
         </ScrollView>
       </View>

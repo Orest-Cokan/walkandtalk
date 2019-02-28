@@ -5,10 +5,13 @@ import Entypo from "react-native-vector-icons/Entypo"
 import BaseCard from "../cardview/baseCard";
 import { connect } from "react-redux";
 
+/* 
+This is the search screen. Users can search for events in this screen. 
+*/
 class SearchScreen extends Component {
+  //text stores the input from user which is initalized to an empty string.
   state = {
       text: '',
-      modalVisible: false
   };
   render() {
     return (
@@ -49,10 +52,6 @@ class SearchScreen extends Component {
 
 
 const styles = StyleSheet.create({
-  modalView: {
-    height: "50%",
-    width: "60%",
-  },
   header:{
     backgroundColor: '#c391d0',
     width: '100%',
@@ -66,39 +65,32 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   box: {
-    height:50,
-    borderWidth: 1,
-    borderRadius: 2,
-    borderColor: 'grey',
-    alignItems: 'center',
-    padding: 10,
-    margin: 20,
-    flexDirection: 'row'
-  },
-  searchIcon: {
-    fontSize: 40, 
-  },
-  placeHolder:{
-    height: 80, 
-    fontSize:25,
-    color: 'grey'
-  },
-  filterIcon:{
-    fontSize: 30, 
-    marginLeft: 'auto',
-    transform: [{ rotate: '90deg'}]
-  },
-  popUp:{
+    height:40,
     borderWidth: 1,
     borderRadius: 3,
     borderColor: 'grey',
-    width: 380,
-    height: 500,
-    padding: 10,
-    margin: 100
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: "5%",
+    paddingBottom:"5%",
+    margin: "5%",
+    flexDirection: 'row'
+  },
+  searchIcon: {
+    fontSize: 30, 
+  },
+  placeHolder:{
+    height: 80, 
+    fontSize:15,
+    color: 'grey',
+  },
+  filterIcon:{
+    fontSize: 25, 
+    marginLeft: 'auto',
+    transform: [{ rotate: '90deg'}]
   },
   eventNearYou: {
-    fontSize:25,
+    fontSize:20,
     top: 0,
     bottom: 0,
     marginLeft: 20

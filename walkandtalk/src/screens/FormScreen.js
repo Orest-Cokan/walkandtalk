@@ -4,8 +4,9 @@ import BaseCard from "../cardview/baseCard";
 import QuestionnaireCard from "../cardview/questionnaireCard";
 import { connect } from "react-redux";
 
-
-
+/* 
+This is the forms screen. Users will see the two static questionnaires and event records to be completed. 
+*/
 class FormScreen extends Component {
   render() {
     return (
@@ -53,8 +54,8 @@ const styles = StyleSheet.create({
     marginTop: 5
   },
   title: {
-    fontSize:25,
-    marginTop:"5%",
+    fontSize:20,
+    marginTop:"3%",
     marginLeft: "5%",
   },
 });
