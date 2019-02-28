@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text } from "react-native";
 
+/* 
+This is the view for the two questionnaires.
+Parameters: The titles of the questionnaires.
+Returns: The list view that contains the questionnaires.
+*/
+
 class QuestionnaireCard extends Component {
     render() {
         return (
@@ -29,19 +35,17 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 3,
         borderColor: 'grey',
-        height: "40%",
+        height: 40,
         width :"90%",
         marginBottom: "5%",
-        marginLeft: "5%",
-        marginRight: "5%",
+        marginHorizontal: "5%",
         paddingLeft: "5%",
         justifyContent: 'center',
 
       },
       quesText: {
         fontWeight: 'bold',
-        fontSize:20,
-        justifyContent: 'center',
+        fontSize:15,
       }
 });
 

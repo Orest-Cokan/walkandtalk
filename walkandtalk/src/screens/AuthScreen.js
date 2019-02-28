@@ -15,14 +15,18 @@ class AuthScreen extends Component {
 
   loginHandler() {
     const formValues = this.refs.formGenerator.getValues();
+    console.log(formValues.email, formValues.password);
     firebaseService
       .load(formValues.email, formValues.password)
       .then(data => {
-        this.props.dispatch(setProfile(data));
-        startMainTabs();
+        if (data != null) {
+          this.props.dispatch(setProfile(data));
+          startMainTabs();
+        }
       })
       .catch(error => console.log("API call error"));
   }
+  //
 
   signupHandler = () => {
     goSignup();

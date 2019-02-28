@@ -1,21 +1,23 @@
 import React, { Component } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import BaseCard from "../cardview/baseCard";
+import QuestionnaireCard from "../cardview/questionnaireCard";
 import { connect } from "react-redux";
 
+/* 
+This is the forms screen. Users will see the two static questionnaires and event records to be completed. 
+*/
 class FormScreen extends Component {
   render() {
     return (
       <View>
-        <Text style={styles.heading}>Questionnaires</Text>
-        <View style={styles.questionnaires}>
-          <Text style={styles.quesText}>Questionnaire A</Text>
+        <View style={styles.header}>
+          <Text style={styles.headerText}> Your Forms </Text>
         </View>
-        <View style={styles.questionnaires}>
-          <Text style={styles.quesText}>Questionnaire B</Text>
-        </View>
-        <View style={styles.line} />
-        <Text style={styles.heading}>Records</Text>
+        <Text style={styles.title}>Questionnaires</Text>
+        <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
+        <View style={styles.seperator} />
+        <Text style={styles.title}>Records</Text>
         <BaseCard
           time="WED, MAR 3 AT 10:00PM"
           title="walking with meeee"
@@ -27,32 +29,30 @@ class FormScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  line: {
-    borderWidth: 0.5,
-    borderColor: "grey",
-    width: 380,
-    height: 0,
-    margin: 10
-  },
-  heading: {
-    fontSize: 25,
-    top: 0,
-    bottom: 0,
-    marginLeft: 20
-  },
-  questionnaires: {
-    borderWidth: 1,
-    borderRadius: 3,
-    borderColor: "grey",
-    width: 380,
+  header: {
+    backgroundColor: "#c391d0",
+    width: "100%",
     height: 50,
-    padding: 10,
-    margin: 10
+    justifyContent: "center"
   },
-  quesText: {
-    fontWeight: "bold",
+  headerText: {
+    textAlign: "center",
+    color: "white",
+    fontSize: 30,
+    fontWeight: "bold"
+  },
+  seperator: {
+    borderBottomColor: "gray",
+    borderBottomWidth: 0.5,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 5,
+    marginTop: 5
+  },
+  title: {
     fontSize: 20,
-    margin: "auto"
+    marginTop: "3%",
+    marginLeft: "5%"
   }
 });
 
