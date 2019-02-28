@@ -8,9 +8,12 @@ class HomeScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
+        {/*Header */}
           <Text style={styles.headerText}> Your Events </Text>
         </View>
         <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContainer}>
+        {/*Scroll View of Events */}
+        {/*Cardview of events */}
           <BaseCard
             time="WED, MAR 3 AT 10:00PM"
             title="Walk with me!"
@@ -36,6 +39,7 @@ export default connect(
   null
 )(HomeScreen);
 
+//StyleSheet
 const styles = StyleSheet.create({
   scroll: {
     width: "100%",

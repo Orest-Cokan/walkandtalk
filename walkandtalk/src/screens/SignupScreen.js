@@ -36,9 +36,11 @@ class SignupScreen extends Component {
     return (
       <ScrollView>
         <View style={styles.header}>
+        {/*Header */}
           <Text style={styles.headerText}> Sign Up </Text>
         </View>
         <View>
+        {/*Create form used to gather info from user when signing up*/}
           <GenerateForm
             ref={c => {
               this.formGenerator = c;
@@ -47,6 +49,7 @@ class SignupScreen extends Component {
           />
         </View>
         <View>
+        {/*Picker for Menopause stage */}
           <Picker
             style={styles.picker}
             selectedValue={this.state.stage}
@@ -58,13 +61,17 @@ class SignupScreen extends Component {
           </Picker>
         </View>
         <View style={styles.nestedButtonView}>
+        {/*Cancel Button - redirects user to Login Screen on press */}
+        {/*Login Button - redirects user to Login Screen on press */}
           <TouchableOpacity
             style={styles.cancelButton}
             onPress={this.authHandler}
           >
             <Text style={styles.buttonText}> CANCEL </Text>
           </TouchableOpacity>
+
           <TouchableOpacity
+
             style={styles.submitButton}
             onPress={() =>
               Alert.alert(

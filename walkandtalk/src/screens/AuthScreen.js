@@ -43,6 +43,7 @@ class AuthScreen extends Component {
   render() {
     return (
       <View>
+      {/*Header Text*/}
         <Text style={styles.logo}>WALK AND TALK</Text>
         <View>
           <GenerateForm ref="formGenerator" fields={fields} />
@@ -51,10 +52,12 @@ class AuthScreen extends Component {
           style={styles.loginButton}
           onPress={this.loginHandler}
         >
+        {/*Login Button - redirect user to home screen if successfull*/}
           <Text style={styles.buttonText}> LOGIN </Text>
         </TouchableOpacity>
         <Text style={styles.signUp}>New to Walk and Talk?</Text>
         <View style={styles.nestedButtonView}>
+        {/*Signup Button - redirect user to signup screen if successfull*/}
           <Text style={styles.signUp}>Sign up</Text>
           <TouchableOpacity
             style={styles.signupButton}
