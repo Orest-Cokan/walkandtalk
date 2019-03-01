@@ -1,28 +1,30 @@
 import React from "react";
-import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
+import { View } from "react-native";
+import {
+  Router,
+  Stack,
+  Scene,
+  Tabs,
+  StatusBar
+} from "react-native-router-flux";
 
-import AuthScreen from "./screens/AuthScreen";
-import SignupScreen from "./screens/SignupScreen";
-import AddEventScreen from "./screens/AddEventScreen";
-import ConfigPost from "./components/post/ConfigPost";
-import HomeScreen from "./screens/HomeScreen";
-import SearchScreen from "./screens/SearchScreen";
-import ProfileScreen from "./screens/ProfileScreen";
+import AuthScreen from "./components/login/AuthScreen";
+import SignupScreen from "./components/login/SignupScreen";
+import AddEventScreen from "./components/event/AddEventScreen";
+import HomeScreen from "./components/home/HomeScreen";
+import SearchScreen from "./components/search/SearchScreen";
+import ProfileScreen from "./components/profile/ProfileScreen";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import Icon from "react-native-vector-icons/FontAwesome";
+import FormScreen from "./components/form/FormScreen";
 
-//import EditProfile from "./components/profile/EditProfile";
-//import CreateHighlight from "./components/highlighteds/CreateHighlight";
-//import EditHighlight from "./components/highlighteds/EditHighlight";
-//import Highlight from "./components/highlighteds/Highlight";
-
-const HomeIcon = () => <Ionicons name="md-home" size={25} />;
-const ExploreIcon = () => <Ionicons name="md-search" size={25} />;
-const AddPostIcon = () => <EvilIcons name="plus" size={25} />;
-const ProfileIcon = () => <Icon name="user" size={25} />;
-
+const HomeIcon = () => <Ionicons name="ios-home" size={34} />;
+const ExploreIcon = () => <Ionicons name="md-search" size={34} />;
+const AddEventIcon = () => <EvilIcons name="plus" size={34} />;
+const ProfileIcon = () => <Icon name="user" size={34} />;
+const FormIcon = () => <Ionicons name="md-clipboard" size={34} />;
 const RouterComponent = () => (
   <Router>
     <Stack key="root">
@@ -30,34 +32,53 @@ const RouterComponent = () => (
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
       </Stack>
-      <Stack key="app" hideNavBar panHandlers={null}>
-        <Tabs showLabel={false}>
+      <Stack
+        key="app"
+        hideNavBar
+        panHandlers={null}
+        navigationBarStyle={{ backgroundColor: "#A680B8" }}
+      >
+        <Tabs
+          showLabel={false}
+          navigationBarStyle={{ backgroundColor: "#A680B8" }}
+        >
           <Scene
             key="home"
             component={HomeScreen}
             icon={HomeIcon}
             title="Home"
+            navigationBarStyle={{ backgroundColor: "#A680B8" }}
+            hideNavBar
           />
           <Scene
-            key="addpost"
-            component={AddEventScreen}
-            icon={AddPostIcon}
+            key="search"
+            component={SearchScreen}
+            icon={ExploreIcon}
+            navigationBarStyle={{ backgroundColor: "#A680B8" }}
             hideNavBar
-            hideTabBar
           />
-          <Scene key="search" component={SearchScreen} icon={ExploreIcon} />
+          <Scene
+            key="addevent"
+            component={AddEventScreen}
+            icon={AddEventIcon}
+            hideNavBar
+            navigationBarStyle={{ backgroundColor: "#A680B8" }}
+          />
+          <Scene
+            key="form"
+            component={FormScreen}
+            icon={FormIcon}
+            hideNavBar
+            navigationBarStyle={{ backgroundColor: "#A680B8" }}
+          />
           <Scene
             key="profile"
             component={ProfileScreen}
             icon={ProfileIcon}
+            navigationBarStyle={{ backgroundColor: "#A680B8" }}
             hideNavBar
           />
         </Tabs>
-        <Scene key="configPost" component={ConfigPost} />
-        <Scene key="editProfile" component={EditProfile} />
-        <Scene key="createHighlight" component={CreateHighlight} />
-        <Scene key="editHighlight" component={EditHighlight} />
-        <Scene key="highlight" component={Highlight} />
       </Stack>
     </Stack>
   </Router>

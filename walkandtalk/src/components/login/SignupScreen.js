@@ -9,47 +9,35 @@ import {
 } from "react-native";
 import {} from "react-native-form-builder";
 import GenerateForm from "react-native-form-builder";
-import { goLogin } from "../components/navigation/InitialNavigator";
-import startMainTabs from "../components/navigation/MainTabNavigator";
+import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
-import { firebaseService } from "../../firebase/controllers/user/login";
+import { createUser } from "../../actions/AuthActions";
 import dateFormat from "dateformat";
-import { setProfile } from "../store/actions/actions";
 
 class SignupScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      stage: "peri"
-    };
-    this.signUpHandler = this.signUpHandler.bind(this);
-  }
+  state = {
+    user: "",
+    password: ""
+  };
 
-  async signUpHandler() {
-    const formValues = this.refs.formGenerator.getValues();
-    let date = new Date(formValues.birthday);
-    let profile = {
-      fullname: formValues.full_name,
-      email: formValues.email,
-      password: formValues.password,
-      dateOfBirth: dateFormat(date, "yyyy mm dd")
-    };
-    const check = firebaseService.save(profile);
-    if (check != null) {
-      this.props.dispatch(setProfile(profile));
-      startMainTabs();
-    } else {
-      ToastAndroid.showWithGravity(
-        "User Exists!",
-        ToastAndroid.LONG,
-        ToastAndroid.CENTER
-      );
-    }
-  }
+  onChangeUser = text => {
+    this.setState({
+      user: text
+    });
+  };
 
-  //Direct user to login screen
-  authHandler = () => {
-    goLogin();
+  onChangePassword = text => {
+    this.setState({
+      password: text
+    });
+  };
+
+  onPressSignUp = () => {
+    this.props.createUser(this.state.user, this.state.password);
+  };
+
+  onGoBack = () => {
+    Actions.pop();
   };
 
   //Update selected stage of Menopause
@@ -83,10 +71,7 @@ class SignupScreen extends Component {
         <View style={styles.nestedButtonView}>
           {/*Cancel Button - redirects user to Login Screen on press */}
           {/*Login Button - redirects user to Login Screen on press */}
-          <TouchableOpacity
-            style={styles.cancelButton}
-            onPress={this.authHandler}
-          >
+          <TouchableOpacity style={styles.cancelButton} onPress={this.onGoBack}>
             <Text style={styles.buttonText}> CANCEL </Text>
           </TouchableOpacity>
 
@@ -96,7 +81,7 @@ class SignupScreen extends Component {
               Alert.alert(
                 "Success!",
                 "Thank you for signing up!\nYour information has been forwarded to our researchers for evaluation.\nExpect to recieve an email within 7 days.",
-                [{ text: "OK", onPress: this.signUpHandler }],
+                [{ text: "OK", onPress: this.onPressSignUp }],
                 { cancelable: false }
               )
             }
@@ -109,11 +94,13 @@ class SignupScreen extends Component {
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => ({
+  auth: state.auth
+});
 
 export default connect(
   mapStateToProps,
-  null
+  { createUser }
 )(SignupScreen);
 
 //Styles

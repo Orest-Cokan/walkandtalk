@@ -1,10 +1,17 @@
 import React, { Component } from "react";
-import { View, ScrollView} from "react-native";
+import { View, ScrollView } from "react-native";
 import { connect } from "react-redux";
-import { Container, Header, Left, Body, Title, Right, Content } from "native-base";
-import ScreenStyleSheet from "../constants/ScreenStyleSheet";
-import BaseCard from "../cardview/baseCard";
-
+import {
+  Container,
+  Header,
+  Left,
+  Body,
+  Title,
+  Right,
+  Content
+} from "native-base";
+import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import BaseCard from "../../cardview/baseCard";
 
 class HomeScreen extends Component {
   render() {

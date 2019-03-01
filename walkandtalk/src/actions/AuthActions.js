@@ -6,7 +6,8 @@ import {
   AUTH_LOGIN_USER_FAIL,
   AUTH_LOGIN_USER_SUCCESS
 } from "./types";
-import firebase from "firebase";
+import firebase from "@firebase/app";
+import "@firebase/auth";
 import { Actions } from "react-native-router-flux";
 
 export const createUser = (email, password) => {
@@ -23,23 +24,21 @@ export const createUser = (email, password) => {
       .then(() => {
         const { currentUser } = firebase.auth();
         try {
+          console.log(email, password);
           firebase
             .database()
-            .ref(`/users/${currentUser.uid}/`)
+            .firestore()
+            .collection("User")
+            .doc(email)
             .set({
-              profile: {
-                name_profile: username,
-                email,
-                username,
-                password,
-                userpic:
-                  "https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png",
-                posts_number: 0,
-                followers: 0,
-                following: 0,
-                bio: null,
-                sex: null
-              }
+              fullname: username,
+              email,
+              username,
+              password,
+              userpic:
+                "https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png",
+              intensity,
+              location
             });
         } catch (error) {
           alert(error);
@@ -65,7 +64,7 @@ const createUserSuccess = (dispatch, user) => {
 export const loginUser = (email, password) => {
   return dispatch => {
     dispatch({ type: AUTH_LOGIN_USER });
-
+    console.log(email, password);
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)

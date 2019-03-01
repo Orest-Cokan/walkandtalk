@@ -1,46 +1,43 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setProfile } from "../store/actions/actions";
+import { loginUser } from "../../actions/AuthActions";
+import { Actions } from "react-native-router-flux";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
-import { goSignup } from "../components/navigation/InitialNavigator";
-import startMainTabs from "../components/navigation/MainTabNavigator";
-import { firebaseService } from "../../firebase/controllers/user/login";
 import { ToastAndroid } from "react-native";
 
 class AuthScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.loginHandler = this.loginHandler.bind(this);
-  }
-
-  //Determines if valid user
-  loginHandler() {
-    const formValues = this.refs.formGenerator.getValues();
-    console.log(formValues.email, formValues.password);
-    firebaseService
-      .load(formValues.email, formValues.password)
-      .then(data => {
-        if (data != null) {
-          this.props.dispatch(setProfile(data));
-          startMainTabs();
-        }
-      })
-      .catch(error => {
-        console.log("API error call"),
-          ToastAndroid.showWithGravity(
-            "Incorrect email and/or password",
-            ToastAndroid.LONG,
-            ToastAndroid.CENTER
-          );
-      });
-  }
-
-  //Directs user to the signup screen
-  signupHandler = () => {
-    goSignup();
+  state = {
+    email: "",
+    password: ""
   };
 
+  onChangeUser = text => {
+    this.setState({
+      email: text
+    });
+  };
+
+  onChangePassword = text => {
+    this.setState({
+      password: text
+    });
+  };
+
+  onPressLogin = () => {
+    const formValues = this.refs.formGenerator.getValues();
+    console.log(formValues.email, formValues.password);
+    this.props.loginUser(
+      this.refs.formGenerator.getValues().email,
+      this.refs.formGenerator.getValues().password
+    );
+  };
+
+  onPressSignUp = () => {
+    Actions.signup();
+  };
+
+  onPressCancel = () => {};
   //render the screen
   render() {
     return (
@@ -52,7 +49,7 @@ class AuthScreen extends Component {
         </View>
         <TouchableOpacity
           style={styles.loginButton}
-          onPress={this.loginHandler}
+          onPress={this.onPressLogin}
         >
           {/*Login Button - redirect user to home screen if successfull*/}
           <Text style={styles.buttonText}> LOGIN </Text>
@@ -63,7 +60,7 @@ class AuthScreen extends Component {
           <Text style={styles.signUp}>Sign up </Text>
           <TouchableOpacity
             style={styles.signupButton}
-            onPress={this.signupHandler}
+            onPress={this.onPressSignUp}
           >
             <Text style={styles.here}>here</Text>
           </TouchableOpacity>
@@ -74,9 +71,13 @@ class AuthScreen extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
 export default connect(
-  null,
-  null
+  mapStateToProps,
+  { loginUser }
 )(AuthScreen);
 
 //Fields the form builder takes in

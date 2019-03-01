@@ -1,25 +1,35 @@
 // Create Event Screen View
 import React, { Component } from "react";
-import { AppRegistry, StyleSheet, View, Text, Button, StatusBar } from "react-native";
+import {
+  AppRegistry,
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  StatusBar
+} from "react-native";
 import { connect } from "react-redux";
-import { Container, Header, Left, Body, Title, Right, Content } from "native-base";
+import {
+  Container,
+  Header,
+  Left,
+  Body,
+  Title,
+  Right,
+  Content
+} from "native-base";
 import GenerateForm from "react-native-form-builder";
-import startMainTabs from "../components/navigation/MainTabNavigator";
-import ScreenStyleSheet from "../constants/ScreenStyleSheet";
+import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 
 class AddEventScreen extends Component {
-
   // Screen switches to Home page while saving form values
   finish() {
     const formValues = this.formGenerator.getValues();
     console.log("FORM VALUES", formValues);
-    startMainTabs();
   }
 
   // Screen switches to Home page without saving form values
-  cancel() {
-    startMainTabs();
-  }
+  cancel() {}
 
   render() {
     return (
@@ -52,7 +62,7 @@ class AddEventScreen extends Component {
               <Button
                 onPress={() => this.finish()}
                 title="Finish"
-                color='#A680B8'
+                color="#A680B8"
               />
             </View>
           </View>
