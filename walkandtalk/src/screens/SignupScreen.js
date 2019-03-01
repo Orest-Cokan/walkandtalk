@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import {View,Text,TouchableOpacity,ScrollView,Alert,Picker} from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+  Picker
+} from "react-native";
 import {} from "react-native-form-builder";
 import GenerateForm from "react-native-form-builder";
 import { goLogin } from "../components/navigation/InitialNavigator";
@@ -18,7 +25,7 @@ class SignupScreen extends Component {
     this.signUpHandler = this.signUpHandler.bind(this);
   }
 
-  signUpHandler() {
+  async signUpHandler() {
     const formValues = this.refs.formGenerator.getValues();
     let date = new Date(formValues.birthday);
     let profile = {
@@ -27,9 +34,17 @@ class SignupScreen extends Component {
       password: formValues.password,
       dateOfBirth: dateFormat(date, "yyyy mm dd")
     };
-    firebaseService.save(profile);
-    this.props.dispatch(setProfile(profile));
-    startMainTabs();
+    const check = firebaseService.save(profile);
+    if (check != null) {
+      this.props.dispatch(setProfile(profile));
+      startMainTabs();
+    } else {
+      ToastAndroid.showWithGravity(
+        "User Exists!",
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER
+      );
+    }
   }
 
   //Direct user to login screen
@@ -42,19 +57,19 @@ class SignupScreen extends Component {
     this.setState({ stage: stage });
   };
 
-//render the screen
+  //render the screen
   render() {
     return (
       <ScrollView>
         <View style={styles.header}>
-        {/*Header */}
+          {/*Header */}
           <Text style={styles.headerText}> Sign Up </Text>
         </View>
         <View>
           <GenerateForm ref="formGenerator" fields={fields} />
         </View>
         <View>
-        {/*Picker for Menopause stage */}
+          {/*Picker for Menopause stage */}
           <Picker
             style={styles.picker}
             selectedValue={this.state.stage}
@@ -66,8 +81,8 @@ class SignupScreen extends Component {
           </Picker>
         </View>
         <View style={styles.nestedButtonView}>
-        {/*Cancel Button - redirects user to Login Screen on press */}
-        {/*Login Button - redirects user to Login Screen on press */}
+          {/*Cancel Button - redirects user to Login Screen on press */}
+          {/*Login Button - redirects user to Login Screen on press */}
           <TouchableOpacity
             style={styles.cancelButton}
             onPress={this.authHandler}
@@ -76,7 +91,6 @@ class SignupScreen extends Component {
           </TouchableOpacity>
 
           <TouchableOpacity
-
             style={styles.submitButton}
             onPress={() =>
               Alert.alert(

@@ -1,4 +1,5 @@
-import { AppRegistry, YellowBox } from "react-native";
+import { AppRegistry } from "react-native";
 import App from "./App";
-YellowBox.ignoreWarnings(["Require cycle:"]);
-AppRegistry.registerComponent("walkandtalk", () => App);
+import { name as appName } from "./app.json";
+
+AppRegistry.registerComponent(appName, () => App);

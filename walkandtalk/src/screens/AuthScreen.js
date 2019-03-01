@@ -6,7 +6,7 @@ import GenerateForm from "react-native-form-builder";
 import { goSignup } from "../components/navigation/InitialNavigator";
 import startMainTabs from "../components/navigation/MainTabNavigator";
 import { firebaseService } from "../../firebase/controllers/user/login";
-import {ToastAndroid} from 'react-native';
+import { ToastAndroid } from "react-native";
 
 class AuthScreen extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class AuthScreen extends Component {
     this.loginHandler = this.loginHandler.bind(this);
   }
 
-//Determines if valid user
+  //Determines if valid user
   loginHandler() {
     const formValues = this.refs.formGenerator.getValues();
     console.log(formValues.email, formValues.password);
@@ -26,23 +26,26 @@ class AuthScreen extends Component {
           startMainTabs();
         }
       })
-      .catch(error => console.log("API call error"));
-      /*ToastAndroid.showWithGravity('Incorrect email and/or password',
-        ToastAndroid.LONG,
-        ToastAndroid.CENTER,
-        */
-  };
+      .catch(error => {
+        console.log("API error call"),
+          ToastAndroid.showWithGravity(
+            "Incorrect email and/or password",
+            ToastAndroid.LONG,
+            ToastAndroid.CENTER
+          );
+      });
+  }
 
   //Directs user to the signup screen
   signupHandler = () => {
     goSignup();
   };
 
-//render the screen
+  //render the screen
   render() {
     return (
       <View>
-      {/*Header Text*/}
+        {/*Header Text*/}
         <Text style={styles.logo}>WALK AND TALK</Text>
         <View>
           <GenerateForm ref="formGenerator" fields={fields} />
@@ -51,12 +54,12 @@ class AuthScreen extends Component {
           style={styles.loginButton}
           onPress={this.loginHandler}
         >
-        {/*Login Button - redirect user to home screen if successfull*/}
+          {/*Login Button - redirect user to home screen if successfull*/}
           <Text style={styles.buttonText}> LOGIN </Text>
         </TouchableOpacity>
         <Text style={styles.signUp}>New to Walk and Talk?</Text>
         <View style={styles.nestedButtonView}>
-        {/*Signup Button - redirect user to signup screen if successfull*/}
+          {/*Signup Button - redirect user to signup screen if successfull*/}
           <Text style={styles.signUp}>Sign up </Text>
           <TouchableOpacity
             style={styles.signupButton}
@@ -101,7 +104,7 @@ const styles = StyleSheet.create({
   logo: {
     fontWeight: "bold",
     fontSize: 40,
-    color: '#A680B8',
+    color: "#A680B8",
     textAlign: "center",
     marginBottom: 60,
     marginTop: 80
@@ -126,7 +129,7 @@ const styles = StyleSheet.create({
     marginRight: 50,
     marginLeft: 50,
     padding: 10,
-    backgroundColor: '#A680B8',
+    backgroundColor: "#A680B8",
     borderRadius: 8
   },
   buttonText: {
@@ -142,7 +145,7 @@ const styles = StyleSheet.create({
   },
   here: {
     fontSize: 15,
-    color: '#A680B8',
+    color: "#A680B8",
     textDecorationLine: "underline",
     textAlign: "right"
   },
