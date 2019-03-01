@@ -118,7 +118,7 @@ class EditProfileScreen extends Component {
           {/* React-Native radio button as multi option button */}
           <View style={styles.segmentedControls}>
             <SegmentedControls 
-              tint={'#ab76ba'}
+              tint={'#A680B8'}
               backTint= {'#ffffff'}
               optionStyle={{fontFamily: 'AvenirNext-Medium',}}
               selectedOption={ this.state.menopausalStage }
@@ -165,7 +165,7 @@ class EditProfileScreen extends Component {
           {/* React-Native radio button as multi option button */}
           <View style={styles.segmentedControls}>
             <SegmentedControls 
-              tint={'#ab76ba'}
+              tint={'#A680B8'}
               backTint= {'#ffffff'}
               optionStyle={{fontFamily: 'AvenirNext-Medium',}}
               selectedOption={ this.state.intensity }
@@ -182,7 +182,7 @@ class EditProfileScreen extends Component {
           {/* React-Native radio button as multi option button */}
           <View style={styles.segmentedControls}>
             <SegmentedControls 
-              tint={'#ab76ba'}
+              tint={'#A680B8'}
               backTint= {'#ffffff'}
               optionStyle={{fontFamily: 'AvenirNext-Medium',}}
               selectedOption={ this.state.venue }
