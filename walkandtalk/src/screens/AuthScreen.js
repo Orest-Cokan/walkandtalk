@@ -31,7 +31,6 @@ class AuthScreen extends Component {
         ToastAndroid.LONG,
         ToastAndroid.CENTER,
         */
-      );
   };
 
   //Directs user to the signup screen
