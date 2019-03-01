@@ -2,6 +2,9 @@ import * as types from "../types";
 
 const initialState = [];
 
+
+// Universal reducer for events, handles setting events,
+// editing an event and adding an event
 const eventReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SET_EVENTS:
@@ -13,9 +16,9 @@ const eventReducer = (state = initialState, action) => {
       return s;
 
     case types.ADD_EVENT:
-      let s = [...state];
-      s.push(action.payload.event);
-      return s;
+      let p = [...state];
+      p.push(action.payload.event);
+      return p;
 
     default:
       return state;

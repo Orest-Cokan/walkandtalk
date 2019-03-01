@@ -1,5 +1,6 @@
 import * as types from "../types";
 
+// Initial model of the a profile
 const initialState = {
   email: "",
   password: "",
@@ -13,7 +14,7 @@ const initialState = {
   registered: false
 };
 
-// UserReducer
+// Universal user reducer
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.SET_PROFILE:

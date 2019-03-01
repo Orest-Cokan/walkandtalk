@@ -1,9 +1,12 @@
 import userReducer from "../reducers/userReducer";
+import eventReducer from "../reducers/eventReducer";
 import * as types from '../types';
 
 
 /* Below we will be testing around reducers */
 
+
+// User reducer tests
 describe('user reducer', () => {
     it('should return the initial state', () => {
       expect(userReducer(undefined, {})).toEqual(
@@ -115,4 +118,29 @@ describe('user reducer', () => {
             registered: false
         }
       )
+    })
+
+    // Tests for event reducer
+    describe('event reducer', () => {
+        it('should return the initial state', () => {
+            expect(eventReducer(undefined, {})).toEqual([
+            ])
+        })
+
+        it('should handle ADD_EVENT', () => {
+            expect(
+              eventReducer([], {
+                type: types.ADD_EVENT,
+                payload: {
+                  title: "title",
+                  description: "a description"
+                }
+              })
+            ).toEqual([
+              {
+                title: "title",
+                description: "a description"
+              }
+            ])
+          })
     })

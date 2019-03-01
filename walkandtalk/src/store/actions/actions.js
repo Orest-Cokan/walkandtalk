@@ -1,5 +1,6 @@
 import * as types from "../types.js";
 
+// Action for setting a profile
 export function setProfile(profile) {
   return {
     type: types.SET_PROFILE,
@@ -7,6 +8,7 @@ export function setProfile(profile) {
   };
 }
 
+// Action for adding an event
 export function addEvent(event) {
   return {
     type: types.ADD_EVENT,
@@ -14,6 +16,7 @@ export function addEvent(event) {
   };
 }
 
+// Action for setting all events
 export function setEvents(events) {
   return {
     type: types.SET_EVENTS,
@@ -21,6 +24,7 @@ export function setEvents(events) {
   };
 }
 
+// Action for editing an event
 export function editEvent(event, index) {
   return {
     type: types.EDIT_EVENT,

@@ -56,7 +56,7 @@ describe('actions', () => {
     })
   })
 
-  // Test if editting a single event works
+  // Test if editing a single event works
   describe('actions', () => {
     it('should edit a single event', () => {
       const event = {
