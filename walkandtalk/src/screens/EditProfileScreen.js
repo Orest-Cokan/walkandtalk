@@ -10,6 +10,9 @@ import {
 } from 'react-native';
 import startMainTabs from "../components/navigation/MainTabNavigator";
 import { SegmentedControls } from 'react-native-radio-buttons'
+import ScreenStyleSheet from "../constants/ScreenStyleSheet";
+import { Container, Header, Left, Body, Title, Right, Content } from "native-base";
+
 
 class EditProfileScreen extends Component {
 
@@ -56,55 +59,60 @@ class EditProfileScreen extends Component {
     ];
     // Screen
     return (
-      <ScrollView>
-        {/* Main container */}
-        <View style={styles.container}>
-          {/* Header container */}
-          <View style={styles.headerContent}>
+      <Container>
+        {/* Header */}
+        <Header style={ScreenStyleSheet.header}>
+          <Body style={ScreenStyleSheet.headerBody}>
+            <Title>Edit Profile</Title>
+          </Body>
+        </Header>
+
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
+          <View style={ScreenStyleSheet.profileHeader}>
             {/* Profile picture */}
-            <Image style={styles.avatar} source={require('../assets/icons/profile.png')}/>
+            <Image style={ScreenStyleSheet.avatar} source={require('../assets/icons/profile.png')}/>
             {/* Add + for changing profile picture */}
           </View>
           {/* Name */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Full Name *</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Full Name *</Text>
             </View>
-            <View style={styles.textInputContainer}>
-              <TextInput style={styles.textInputStyle}>Brittany Taylor</TextInput>
+            <View style={ScreenStyleSheet.profileInputContainer}>
+              <TextInput style={ScreenStyleSheet.profileInputStyle}>Brittany Taylor</TextInput>
             </View>
           </View>
           {/* Email */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Email Address</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Email Address</Text>
             </View>
-            <View style={styles.textInputContainer}>
-              <TextInput style={styles.textInputStyle} editable={false}>btaylor@example.com</TextInput>
+            <View style={ScreenStyleSheet.profileInputContainer}>
+              <TextInput style={ScreenStyleSheet.profileInputStyle} editable={false}>btaylor@example.com</TextInput>
             </View>
           </View>
 
-          {/* On screen seperator */}
-          <View style={styles.seperator}/>
+          {/* On screen separator */}
+          <View style={ScreenStyleSheet.lineSeparator}/>
           {/* Info Header */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textHeader}>Basic Info</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileSectionTitle}>Basic Info</Text>
             </View>
           </View>
           {/* Date of birth */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Date of Birth</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Date of Birth</Text>
             </View>
-            <View style={styles.textInfo}>
-              <TextInput style={styles.textInputStyle} editable={false}>January 1, 1955</TextInput>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <TextInput style={ScreenStyleSheet.profileInputStyle} editable={false}>January 1, 1955</TextInput>
             </View>
           </View>
           {/* Menopausal Stage */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Menopausal Stage *</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Menopausal Stage *</Text>
             </View>
           </View>
           {/* React-Native radio button as multi option button */}
@@ -120,38 +128,38 @@ class EditProfileScreen extends Component {
           </View>
 
           {/* On screen seperator */}
-          <View style={styles.seperator}/>
+          <View style={ScreenStyleSheet.lineSeparator}/>
 
           {/* Preferences header */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textHeader}>My Preferences</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileSectionTitle}>My Preferences</Text>
             </View>
           </View>
           {/* Distance */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Length of Walk (by distance)*</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Length of Walk (by distance)*</Text>
             </View>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInputNumber}>10</Text>
-              <Text style={styles.textInput}>km</Text>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInputNumber}>10</Text>
+              <Text style={ScreenStyleSheet.profileInput}>km</Text>
             </View>
           </View>
           {/* Duration */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Length of Walk (by duration)*</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Length of Walk (by duration)*</Text>
             </View>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInputNumber}>60</Text>
-              <Text style={styles.textInput}>min</Text>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInputNumber}>60</Text>
+              <Text style={ScreenStyleSheet.profileInput}>min</Text>
             </View>
           </View>
           {/* Intensity */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Intensity *</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Intensity *</Text>
             </View>
           </View>
           {/* React-Native radio button as multi option button */}
@@ -166,9 +174,9 @@ class EditProfileScreen extends Component {
               />
           </View>
           {/* Venue */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Type of Venue *</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Type of Venue *</Text>
             </View>
           </View>
           {/* React-Native radio button as multi option button */}
@@ -183,16 +191,16 @@ class EditProfileScreen extends Component {
               />
           </View>
           {/* Location */}
-          <View style={styles.row}>
-            <View style={styles.textInfo}>
-              <Text style={styles.textInfoStyle}>Location *</Text>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Location *</Text>
             </View>
           </View>
-          <View style={styles.textInfo}>
-              <Text style={styles.textInputStyle}>Riverbend Area</Text>
+          <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInputStyle}>Riverbend Area</Text>
           </View>
           {/* Options */}
-          <View style={styles.row}>
+          <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}
             <TouchableOpacity style={[styles.buttonContainer, {borderWidth: 1, borderColor: 'black'}]}>
               <Text>Cancel</Text> 
@@ -202,60 +210,14 @@ class EditProfileScreen extends Component {
               <Text style={{color: 'white'}}>Save Changes</Text>
             </TouchableOpacity>
           </View>
-        </View>
-      </ScrollView>
+        </Content>
+      </Container>
     );
   }
 }
 
 // Styles
 const styles = StyleSheet.create({
-  headerContent: {
-    padding: 20,
-    alignItems: 'center',
-    marginTop: 40
-  },
-  avatar: {
-    width: 75,
-    height: 75,
-    borderRadius: 60,
-    borderWidth: 3,
-    borderColor: 'black',
-    marginBottom: 10,
-  },
-  seperator: {
-    borderBottomColor: 'gray',
-    borderBottomWidth: 0.5,
-    marginLeft: 10,
-    marginRight: 10,
-    marginBottom: 5,
-    marginTop: 5
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  textInfo: {
-    flex: 1,
-    marginLeft: 15,
-    marginBottom: 5
-  },
-  textHeader: {
-    fontWeight: 'bold',
-    fontSize: 13,
-    color: 'gray',
-  },
-  textInfoStyle: {
-    fontSize: 13,
-    color: "gray",
-
-  },
-  textInput: {
-    textAlign: 'right',
-    marginRight: 15,
-    color: 'black'
-
-  },
   textInputContainer: {
     height: 40,
     marginTop: -15,
@@ -280,17 +242,13 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   buttonContainer: {
-    marginTop: 10,
-    height: 30,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-    width: 150,
-    borderRadius: 10,
-    marginLeft: 15,
-    marginRight: 10,
-  }
+   marginVertical: 10,
+   height: 50,
+   justifyContent: 'center',
+   alignItems: 'center',
+   width: "48%",
+   borderRadius: 10,
+  },
 });
 
 export default EditProfileScreen;
