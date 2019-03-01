@@ -57,13 +57,14 @@ class AuthScreen extends Component {
         <Text style={styles.signUp}>New to Walk and Talk?</Text>
         <View style={styles.nestedButtonView}>
         {/*Signup Button - redirect user to signup screen if successfull*/}
-          <Text style={styles.signUp}>Sign up</Text>
+          <Text style={styles.signUp}>Sign up </Text>
           <TouchableOpacity
             style={styles.signupButton}
             onPress={this.signupHandler}
           >
-            <Text style={styles.here}> Here </Text>
+            <Text style={styles.here}>here</Text>
           </TouchableOpacity>
+          <Text style={styles.signUp}>.</Text>
         </View>
       </View>
     );
@@ -99,8 +100,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     fontWeight: "bold",
-    fontSize: 50,
-    color: "#c391d0",
+    fontSize: 40,
+    color: '#A680B8',
     textAlign: "center",
     marginBottom: 60,
     marginTop: 80
@@ -125,24 +126,23 @@ const styles = StyleSheet.create({
     marginRight: 50,
     marginLeft: 50,
     padding: 10,
-    backgroundColor: "#c391d0",
+    backgroundColor: '#A680B8',
     borderRadius: 8
   },
-  signupButton: {},
   buttonText: {
     color: "white",
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: "bold"
   },
   signUp: {
-    fontSize: 18,
+    fontSize: 15,
     color: "black",
     textAlign: "center"
   },
   here: {
-    fontSize: 18,
-    color: "#c391d0",
+    fontSize: 15,
+    color: '#A680B8',
     textDecorationLine: "underline",
     textAlign: "right"
   },

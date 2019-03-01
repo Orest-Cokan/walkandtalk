@@ -1,23 +1,28 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, ScrollView } from "react-native";
-import BaseCard from "../cardview/baseCard";
+import { View, ScrollView} from "react-native";
 import { connect } from "react-redux";
+import { Container, Header, Left, Body, Title, Right, Content } from "native-base";
+import ScreenStyleSheet from "../constants/ScreenStyleSheet";
+import BaseCard from "../cardview/baseCard";
+
 
 class HomeScreen extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-        {/*Header */}
-          <Text style={styles.headerText}> Your Events </Text>
-        </View>
-        <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContainer}>
-        {/*Scroll View of Events */}
-        {/*Cardview of events */}
+      <Container>
+        {/* Header */}
+        <Header style={ScreenStyleSheet.header}>
+          <Body style={ScreenStyleSheet.headerBody}>
+            <Title>Home</Title>
+          </Body>
+        </Header>
+
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
+          {/* Card List View */}
           <BaseCard
             time="WED, MAR 3 AT 10:00PM"
-            title="Walk with me!"
-            location="VVC University"
+            title="Walk in the park"
+            location="Hawrelak Park"
             badge="GOING"
           />
           <BaseCard
@@ -26,8 +31,14 @@ class HomeScreen extends Component {
             location="River Valley"
             badge="HOSTING"
           />
-        </ScrollView>
-      </View>
+          <BaseCard
+            time="MON, MAR 19 AT 11:00AM"
+            title="Betty's Evening Stroll"
+            location="Van Vliet Centre"
+            badge="GOING"
+          />
+        </Content>
+      </Container>
     );
   }
 }
@@ -38,29 +49,3 @@ export default connect(
   mapStateToProps,
   null
 )(HomeScreen);
-
-//StyleSheet
-const styles = StyleSheet.create({
-  scroll: {
-    width: "100%"
-  },
-  scrollContainer: {
-    width: "100%"
-  },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#f3edfa"
-  },
-  header: {
-    backgroundColor: "#c391d0",
-    width: "100%",
-    height: 50
-  },
-  headerText: {
-    textAlign: "center",
-    color: "white",
-    fontSize: 30,
-    fontWeight: "bold"
-  }
-});

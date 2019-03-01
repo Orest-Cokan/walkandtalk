@@ -1,60 +1,58 @@
+// Create Event Screen View
 import React, { Component } from "react";
-import { AppRegistry, StyleSheet, View, Text, Button } from "react-native";
-import GenerateForm from "react-native-form-builder";
-import {
-  Container,
-  Header,
-  Title,
-  Content,
-  Body,
-  Left,
-  Right
-} from "native-base";
-import startMainTabs from "../components/navigation/MainTabNavigator";
+import { AppRegistry, StyleSheet, View, Text, Button, StatusBar } from "react-native";
 import { connect } from "react-redux";
+import { Container, Header, Left, Body, Title, Right, Content } from "native-base";
+import GenerateForm from "react-native-form-builder";
+import startMainTabs from "../components/navigation/MainTabNavigator";
+import ScreenStyleSheet from "../constants/ScreenStyleSheet";
 
 class AddEventScreen extends Component {
-  next() {
+
+  // Screen switches to Home page while saving form values
+  finish() {
     const formValues = this.formGenerator.getValues();
     console.log("FORM VALUES", formValues);
-
     startMainTabs();
   }
 
+  // Screen switches to Home page without saving form values
   cancel() {
     startMainTabs();
   }
+
   render() {
     return (
       <Container>
-        <Header style={{ backgroundColor: "#8262C6" }}>
-          <Left style={{ flex: 1 }} />
-          <Body style={{ flex: 1, alignItems: "center" }}>
+        {/* Header */}
+        <Header style={ScreenStyleSheet.header}>
+          <Body style={ScreenStyleSheet.headerBody}>
             <Title>Create Event</Title>
           </Body>
-          <Right style={{ flex: 1 }} />
         </Header>
 
         <Content>
+          {/* Generates the form */}
           <GenerateForm
             ref={c => {
               this.formGenerator = c;
             }}
             fields={fields}
           />
-          <View style={styles.buttonContainer}>
-            <View style={styles.button}>
+          {/* Finish and cancel buttons */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.leftRightButton}>
               <Button
-                onPress={() => this.next()}
+                onPress={() => this.cancel()}
                 title="Cancel"
                 color="#9B9B9B"
               />
             </View>
-            <View style={styles.button}>
+            <View style={ScreenStyleSheet.leftRightButton}>
               <Button
-                onPress={() => this.next()}
+                onPress={() => this.finish()}
                 title="Finish"
-                color="#8262C6"
+                color='#A680B8'
               />
             </View>
           </View>
@@ -71,22 +69,7 @@ export default connect(
   null
 )(AddEventScreen);
 
-const styles = StyleSheet.create({
-  wrapper: {
-    flex: 1,
-    margin: 0
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around"
-  },
-  button: {
-    width: "45%",
-    height: 30,
-    margin: 30
-  }
-});
-
+// Fields for the form
 const fields = [
   {
     type: "text",

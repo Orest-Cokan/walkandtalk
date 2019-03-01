@@ -92,13 +92,17 @@ Navigation.registerComponent(
 
 Navigation.events().registerAppLaunchedListener(() => {
   Navigation.setDefaultOptions({
+    statusBar: {
+      visible: true,
+      style: 'light',
+      backgroundColor: "#A680B8"
+    },
     topBar: {
-      visible: false,
       height: 0
     },
     bottomTabs: {
       animate: false,
-      backgroundColor: "#d9a4ff"
+      backgroundColor: "#A680B8"
     }
   });
 
