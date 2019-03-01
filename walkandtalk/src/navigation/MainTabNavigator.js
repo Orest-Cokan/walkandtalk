@@ -1,5 +1,5 @@
 import { Navigation } from "react-native-navigation";
-
+ // Setting nav bar tabs and icons
 const startTabs = () => {
   Navigation.setRoot({
     root: {
@@ -8,6 +8,7 @@ const startTabs = () => {
           {
             stack: {
               children: [
+                // Homes tab
                 {
                   component: {
                     name: "walkandtalk.HomeScreen",
@@ -27,6 +28,7 @@ const startTabs = () => {
             }
           },
           {
+            // Search tab
             component: {
               name: "walkandtalk.SearchScreen",
               passProps: {
@@ -42,6 +44,7 @@ const startTabs = () => {
             }
           },
           {
+            // Add event tab
             component: {
               name: "walkandtalk.AddEventScreen",
               passProps: {
@@ -57,6 +60,7 @@ const startTabs = () => {
             }
           },
           {
+            // Forms tab
             component: {
               name: "walkandtalk.FormScreen",
               passProps: {
@@ -73,6 +77,7 @@ const startTabs = () => {
             }
           },
           {
+            // Profile tab
             component: {
               name: "walkandtalk.ProfileScreen",
               passProps: {
