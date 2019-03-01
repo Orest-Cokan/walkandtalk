@@ -12,7 +12,7 @@ import { Provider } from "react-redux";
 import store from "./src/store/store";
 import firebase from "react-native-firebase";
 
-// Register the screens
+// Registering the screens
 Navigation.registerComponent(
   "walkandtalk.AuthScreen",
   () => props => (

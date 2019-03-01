@@ -8,6 +8,7 @@ import * as types from '../types';
 
 // User reducer tests
 describe('user reducer', () => {
+    // Initial user parameters on sign up
     it('should return the initial state', () => {
       expect(userReducer(undefined, {})).toEqual(
         {
@@ -26,6 +27,7 @@ describe('user reducer', () => {
     })
 
     it('should handle SET_PROFILE', () => {
+        // Testing of set profile
         expect(
           userReducer([], {
             type: types.SET_PROFILE,
@@ -60,7 +62,7 @@ describe('user reducer', () => {
 
     expect(
         userReducer(
-          
+            // Testing match of empty and non empty profiles
             {
             email: "",
             password: "",
@@ -129,6 +131,7 @@ describe('user reducer', () => {
 
         it('should handle ADD_EVENT', () => {
             expect(
+              // Tests add event
               eventReducer([], {
                 type: types.ADD_EVENT,
                 payload: {
