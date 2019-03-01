@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  Picker
-} from "react-native";
+import {View,Text,TouchableOpacity,ScrollView,Alert,Picker} from "react-native";
 import {} from "react-native-form-builder";
 import GenerateForm from "react-native-form-builder";
 import { goLogin } from "../components/navigation/InitialNavigator";
@@ -39,24 +32,29 @@ class SignupScreen extends Component {
     startMainTabs();
   }
 
+  //Direct user to login screen
   authHandler = () => {
     goLogin();
   };
 
+  //Update selected stage of Menopause
   updateStage = stage => {
     this.setState({ stage: stage });
   };
 
+//render the screen
   render() {
     return (
       <ScrollView>
         <View style={styles.header}>
+        {/*Header */}
           <Text style={styles.headerText}> Sign Up </Text>
         </View>
         <View>
           <GenerateForm ref="formGenerator" fields={fields} />
         </View>
         <View>
+        {/*Picker for Menopause stage */}
           <Picker
             style={styles.picker}
             selectedValue={this.state.stage}
@@ -68,13 +66,17 @@ class SignupScreen extends Component {
           </Picker>
         </View>
         <View style={styles.nestedButtonView}>
+        {/*Cancel Button - redirects user to Login Screen on press */}
+        {/*Login Button - redirects user to Login Screen on press */}
           <TouchableOpacity
             style={styles.cancelButton}
             onPress={this.authHandler}
           >
             <Text style={styles.buttonText}> CANCEL </Text>
           </TouchableOpacity>
+
           <TouchableOpacity
+
             style={styles.submitButton}
             onPress={() =>
               Alert.alert(
@@ -100,6 +102,7 @@ export default connect(
   null
 )(SignupScreen);
 
+//Styles
 const styles = {
   wrapper: {
     flex: 1,
@@ -157,7 +160,7 @@ const styles = {
     marginLeft: 5
   }
 };
-// These Fields will create a login form with three fields
+// These Fields will create a login form
 const fields = [
   {
     type: "text",

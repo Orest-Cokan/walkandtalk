@@ -6,6 +6,7 @@ import GenerateForm from "react-native-form-builder";
 import { goSignup } from "../components/navigation/InitialNavigator";
 import startMainTabs from "../components/navigation/MainTabNavigator";
 import { firebaseService } from "../../firebase/controllers/user/login";
+import {ToastAndroid} from 'react-native';
 
 class AuthScreen extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class AuthScreen extends Component {
     this.loginHandler = this.loginHandler.bind(this);
   }
 
+//Determines if valid user
   loginHandler() {
     const formValues = this.refs.formGenerator.getValues();
     console.log(formValues.email, formValues.password);
@@ -25,33 +27,38 @@ class AuthScreen extends Component {
         }
       })
       .catch(error => console.log("API call error"));
-  }
-  //
+      /*ToastAndroid.showWithGravity('Incorrect email and/or password',
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+        */
+      );
+  };
 
+  //Directs user to the signup screen
   signupHandler = () => {
     goSignup();
   };
 
+//render the screen
   render() {
     return (
       <View>
+      {/*Header Text*/}
         <Text style={styles.logo}>WALK AND TALK</Text>
         <View>
           <GenerateForm ref="formGenerator" fields={fields} />
         </View>
-
         <TouchableOpacity
           style={styles.loginButton}
           onPress={this.loginHandler}
         >
+        {/*Login Button - redirect user to home screen if successfull*/}
           <Text style={styles.buttonText}> LOGIN </Text>
         </TouchableOpacity>
-
         <Text style={styles.signUp}>New to Walk and Talk?</Text>
-
         <View style={styles.nestedButtonView}>
+        {/*Signup Button - redirect user to signup screen if successfull*/}
           <Text style={styles.signUp}>Sign up</Text>
-
           <TouchableOpacity
             style={styles.signupButton}
             onPress={this.signupHandler}
@@ -69,6 +76,7 @@ export default connect(
   null
 )(AuthScreen);
 
+//Fields the form builder takes in
 const fields = [
   {
     type: "text",
@@ -84,6 +92,7 @@ const fields = [
   }
 ];
 
+//Style Sheet
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
