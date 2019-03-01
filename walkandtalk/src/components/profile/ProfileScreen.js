@@ -60,7 +60,6 @@ class ProfileScreen extends Component {
             <View style={ScreenStyleSheet.editProfile}>
               <TouchableHighlight
                 onPress={this.editProfile}
-                underlayColor={"transparent"}
                 activeOpacity={0}
               >
                 <Image

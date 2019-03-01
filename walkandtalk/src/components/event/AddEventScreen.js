@@ -55,14 +55,12 @@ class AddEventScreen extends Component {
               <Button
                 onPress={() => this.cancel()}
                 title="Cancel"
-                color="#9B9B9B"
               />
             </View>
             <View style={ScreenStyleSheet.leftRightButton}>
               <Button
                 onPress={() => this.finish()}
                 title="Finish"
-                color="#A680B8"
               />
             </View>
           </View>
@@ -127,7 +125,6 @@ const fields = [
       style: {
         borderWidth: 1,
         textAlignVertical: "top",
-        borderColor: "#D9D5DC",
         marginTop: 20
       }
     }
