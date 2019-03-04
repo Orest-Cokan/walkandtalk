@@ -14,6 +14,7 @@ import AddEventScreen from "./components/event/AddEventScreen";
 import HomeScreen from "./components/home/HomeScreen";
 import SearchScreen from "./components/search/SearchScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
+import EditProfileScreen from "./components/profile/EditProfileScreen";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
@@ -71,7 +72,9 @@ const RouterComponent = () => (
             icon={ProfileIcon}
             hideNavBar
           />
+      
         </Tabs>
+        <Scene key='editprofile' component={EditProfileScreen} hideNavBar/>
       </Stack>
     </Stack>
   </Router>
