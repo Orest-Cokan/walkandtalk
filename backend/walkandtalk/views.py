@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from rest_framework import viewsets
-from .api.serializers import WalkingEventSerializer
+from .serializers import WalkingEventSerializer
 from .models import WalkingEvent
+from rest_framework import viewsets
 
 # Create your views here.
 
 
-class WalkingEventListView(viewsets.ModelViewSet):
-    queryset = WalkingEvent.objects.all()
+class WalkingEventView(viewsets.ModelViewSet):
+    #lookup_field = 'pk'
     serializer_class = WalkingEventSerializer
+    queryset = WalkingEvent.objects.all()
+    allowed_methods = ["GET", "POST", "PUT"]

@@ -15,10 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .router import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('walkingevent', include('walkandtalk.urls', namespace='walkingevent')),
-    path('api/', include(router.urls), name='api')
+    path('', include('walkandtalk.urls'))
 ]

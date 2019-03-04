@@ -3,8 +3,10 @@ from rest_framework import routers
 from . import views
 
 
-app_name = 'walkandtalk'
+router = routers.DefaultRouter()
+router.register('api/walkingevent', views.WalkingEventView)
+
+
 urlpatterns = [
-    path('', views.WalkingEventListView.as_view(), name='list'),
-    path('<int:pk/', views.Walk)
+    path('', include(router.urls))
 ]
