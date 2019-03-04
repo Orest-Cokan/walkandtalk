@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import WalkingEvent, Attendee
+from .models import WalkingEvent, Attendance
 
 
 class WalkingEventSerializer(serializers.ModelSerializer):
@@ -19,9 +19,9 @@ class WalkingEventSerializer(serializers.ModelSerializer):
         ]
 
 
-class AttendeeSerializer(serializers.ModelSerializer):
+class AttendeanceSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Attendee
+        model = Attendance
         fields = [
             'user'
         ]

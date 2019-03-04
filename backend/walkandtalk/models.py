@@ -3,12 +3,6 @@ from django.conf import settings
 # Create your models here.
 
 
-class Attendee(models.Model):
-    user = models.CharField(max_length=100)
-
-    def __str_(self):
-        return self.user
-
 
 class WalkingEvent(models.Model):
     # pk the ID --> integer/number
@@ -25,4 +19,12 @@ class WalkingEvent(models.Model):
     #attendee = models.ManyToManyField(to=Attendee, blank=True)
 
     def __str__(self):
-        return self.user
+        return self.title
+
+
+
+class Attendance(models.Model):
+    event = models.ForeignKey(WalkingEvent, on_delete=models.CASCADE)
+    is_attending = models.BooleanField(default=False)
+    def __str_(self):
+        return self.event
