@@ -19,6 +19,7 @@ import {
   Right,
   Content
 } from "native-base";
+import { Actions } from "react-native-router-flux";
 
 class EditProfileScreen extends Component {
   // Constructor
@@ -40,9 +41,14 @@ class EditProfileScreen extends Component {
 
   // On save
   saveProfile = () => {
-    // Navigate to homescreen
+    // Navigate back to profile
+    Actions.pop();
   };
-
+  // On cancel
+  cancelProfile = () => {
+    // Navigate back to profile
+    Actions.pop();
+  };
   render() {
     // All the options displayed in radio buttons
     const intensities = ["Slow", "Intermediate", "Brisk"];
@@ -73,7 +79,7 @@ class EditProfileScreen extends Component {
               <Text style={ScreenStyleSheet.profileInfo}>Full Name *</Text>
             </View>
             <View style={ScreenStyleSheet.profileInputContainer}>
-              <TextInput style={ScreenStyleSheet.profileInputStyle}>
+              <TextInput style={ScreenStyleSheet.profileInput}>
                 Brittany Taylor
               </TextInput>
             </View>
@@ -85,7 +91,7 @@ class EditProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileInputContainer}>
               <TextInput
-                style={ScreenStyleSheet.profileInputStyle}
+                style={ScreenStyleSheet.profileInputUneditable}
                 editable={false}
               >
                 btaylor@example.com
@@ -108,9 +114,9 @@ class EditProfileScreen extends Component {
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfo}>Date of Birth</Text>
             </View>
-            <View style={ScreenStyleSheet.profileRowInfo}>
+            <View style={ScreenStyleSheet.profileInputContainer}>
               <TextInput
-                style={ScreenStyleSheet.profileInputStyle}
+                style={ScreenStyleSheet.profileInputUneditable}
                 editable={false}
               >
                 January 1, 1955
@@ -161,8 +167,8 @@ class EditProfileScreen extends Component {
                 Length of Walk (by distance)*
               </Text>
             </View>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInputNumber}>10</Text>
+            <View style={ScreenStyleSheet.profileInputContainer}>
+              <TextInput style={ScreenStyleSheet.profileInput}>10</TextInput>
               <Text style={ScreenStyleSheet.profileInput}>km</Text>
             </View>
           </View>
@@ -174,7 +180,7 @@ class EditProfileScreen extends Component {
               </Text>
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInputNumber}>60</Text>
+              <TextInput style={ScreenStyleSheet.profileInput}>60</TextInput>
               <Text style={ScreenStyleSheet.profileInput}>min</Text>
             </View>
           </View>
@@ -229,12 +235,13 @@ class EditProfileScreen extends Component {
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfo}>Location *</Text>
             </View>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <TextInput style={ScreenStyleSheet.profileInput}>
+                Riverbend Area
+              </TextInput>
+            </View>
           </View>
-          <View style={ScreenStyleSheet.profileRowInfo}>
-            <Text style={ScreenStyleSheet.profileInputStyle}>
-              Riverbend Area
-            </Text>
-          </View>
+
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}
@@ -243,6 +250,7 @@ class EditProfileScreen extends Component {
                 styles.buttonContainer,
                 { borderWidth: 1, borderColor: "black" }
               ]}
+              onPress={this.cancelProfile}
             >
               <Text>Cancel</Text>
             </TouchableOpacity>
