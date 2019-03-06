@@ -4,7 +4,7 @@
   "author": "Lukas Aichbauer <l.aichbauer@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prestart": "npm run drop-sqlite-db || true",
+    "prestart": "npm run drop-sqlite-db || true || (exit 0)",
     "start": "npm run nodemon",
     "poststart": "npm run create-sqlite-db",
     "dev": "cross-env NODE_ENV=development node ./api/api.js",
