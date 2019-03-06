@@ -1,7 +1,5 @@
 const WalkingEvent = require("../models/WalkingEvent");
 const Attendee = require("../models/Attendee");
-const Sequelize = require("sequelize");
-const sequelize = require("../../config/database");
 
 const WalkingEventController = () => {
   const create = async (req, res) => {

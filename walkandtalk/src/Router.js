@@ -1,5 +1,4 @@
 import React from "react";
-import { View } from "react-native";
 import {
   Router,
   Stack,
@@ -25,6 +24,7 @@ const ExploreIcon = () => <Ionicons name="md-search" size={34} />;
 const AddEventIcon = () => <EvilIcons name="plus" size={34} />;
 const ProfileIcon = () => <Icon name="user" size={34} />;
 const FormIcon = () => <Ionicons name="md-clipboard" size={34} />;
+
 const RouterComponent = () => (
   <Router>
     <Stack key="root">
@@ -32,14 +32,8 @@ const RouterComponent = () => (
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
       </Stack>
-      <Stack
-        key="app"
-        hideNavBar
-        panHandlers={null}
-      >
-        <Tabs
-          showLabel={false}
-        >
+      <Stack key="app" hideNavBar panHandlers={null}>
+        <Tabs showLabel={false}>
           <Scene
             key="home"
             component={HomeScreen}
@@ -59,12 +53,7 @@ const RouterComponent = () => (
             icon={AddEventIcon}
             hideNavBar
           />
-          <Scene
-            key="form"
-            component={FormScreen}
-            icon={FormIcon}
-            hideNavBar
-          />
+          <Scene key="form" component={FormScreen} icon={FormIcon} hideNavBar />
           <Scene
             key="profile"
             component={ProfileScreen}
