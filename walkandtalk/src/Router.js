@@ -15,7 +15,6 @@ import HomeScreen from "./components/home/HomeScreen";
 import SearchScreen from "./components/search/SearchScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
 import FormScreen from "./components/form/FormScreen";
-import EditProfileScreen from "./components/profile/EditProfileScreen";
 
 const RouterComponent = () => (
   <Router>

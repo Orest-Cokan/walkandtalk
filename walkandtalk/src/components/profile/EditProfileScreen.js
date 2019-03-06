@@ -21,7 +21,6 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
-import { editProfile } from "../../actions/ProfileActions";
 
 
 class EditProfileScreen extends Component {
