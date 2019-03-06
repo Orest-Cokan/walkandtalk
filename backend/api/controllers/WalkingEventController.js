@@ -1,4 +1,5 @@
 const WalkingEvent = require("../models/WalkingEvent");
+const Attendee = require("../models/Attendee");
 const Sequelize = require("sequelize");
 const sequelize = require("../../config/database");
 
@@ -7,9 +8,6 @@ const WalkingEventController = () => {
     const { body } = req;
     console.log(body.attendees);
 
-    const Attendee = sequelize.define("attendee", {
-      name: Sequelize.STRING
-    });
     WalkingEvent.hasMany(Attendee);
 
     try {
@@ -30,8 +28,6 @@ const WalkingEventController = () => {
           include: [Attendee]
         }
       );
-      console.log("reee");
-      console.log(body.attendees);
 
       return res
         .status(200)
@@ -43,9 +39,6 @@ const WalkingEventController = () => {
   };
 
   const getAll = async (req, res) => {
-    const Attendee = sequelize.define("attendee", {
-      name: Sequelize.STRING
-    });
     try {
       const events = await WalkingEvent.findAll({
         include: [
