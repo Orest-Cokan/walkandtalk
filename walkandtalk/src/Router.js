@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import {
   Router,
   Stack,
@@ -14,17 +14,8 @@ import AddEventScreen from "./components/event/AddEventScreen";
 import HomeScreen from "./components/home/HomeScreen";
 import SearchScreen from "./components/search/SearchScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
-
-import Ionicons from "react-native-vector-icons/Ionicons";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
-import Icon from "react-native-vector-icons/FontAwesome";
 import FormScreen from "./components/form/FormScreen";
 
-const HomeIcon = () => <Ionicons name="ios-home" size={34} />;
-const ExploreIcon = () => <Ionicons name="md-search" size={34} />;
-const AddEventIcon = () => <EvilIcons name="plus" size={34} />;
-const ProfileIcon = () => <Icon name="user" size={34} />;
-const FormIcon = () => <Ionicons name="md-clipboard" size={34} />;
 const RouterComponent = () => (
   <Router>
     <Stack key="root">
@@ -43,32 +34,52 @@ const RouterComponent = () => (
           <Scene
             key="home"
             component={HomeScreen}
-            icon={HomeIcon}
+            icon={({ focused }) => (
+              <Image source = {focused ? require("./assets/icons/home-full.png") : require("./assets/icons/home.png")}
+                 style={{ width: 28, height:28 }}
+              />
+          )}
             title="Home"
             hideNavBar
           />
           <Scene
             key="search"
             component={SearchScreen}
-            icon={ExploreIcon}
+            icon={({ focused }) => (
+              <Image source = {focused ? require("./assets/icons/search-full.png") : require("./assets/icons/search.png")}
+                 style={{ width: 28, height:28 }}
+              />
+          )}
             hideNavBar
           />
           <Scene
             key="addevent"
             component={AddEventScreen}
-            icon={AddEventIcon}
+            icon={({ focused }) => (
+              <Image source = {focused ? require("./assets/icons/plus-full.png") : require("./assets/icons/plus.png")}
+                 style={{ width: 28, height:28 }}
+              />
+          )}
             hideNavBar
           />
           <Scene
             key="form"
             component={FormScreen}
-            icon={FormIcon}
+            icon={({ focused }) => (
+              <Image source = {focused ? require("./assets/icons/form-full.png") : require("./assets/icons/form.png")}
+                 style={{ width: 28, height:28 }}
+              />
+          )}
             hideNavBar
           />
           <Scene
             key="profile"
             component={ProfileScreen}
-            icon={ProfileIcon}
+            icon={({ focused }) => (
+              <Image source = {focused ? require("./assets/icons/profile-full.png") : require("./assets/icons/profile.png")}
+                 style={{ width: 28, height:28 }}
+              />
+          )}
             hideNavBar
           />
         </Tabs>
