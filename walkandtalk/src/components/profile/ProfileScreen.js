@@ -18,6 +18,8 @@ import {
   Right,
   Content
 } from "native-base";
+import { fetchProfile } from "../../actions/ProfileActions";
+import { fetchPosts } from "../../actions/EventActions";
 
 // Profile tab
 class ProfileScreen extends Component {
@@ -37,10 +39,14 @@ class ProfileScreen extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.fetchProfile;
+  }
+
   // When edit profile icon is clicked
   editProfile = () => {
     // Navigate to edit profile
-    goEditProfile();
+    Actions.editProfile(this.props.profile);
   };
 
   render() {
@@ -58,10 +64,7 @@ class ProfileScreen extends Component {
           <View style={ScreenStyleSheet.profileHeader}>
             {/* Edit profile icon  */}
             <View style={ScreenStyleSheet.editProfile}>
-              <TouchableHighlight
-                onPress={this.editProfile}
-                activeOpacity={0}
-              >
+              <TouchableHighlight onPress={this.editProfile} activeOpacity={0}>
                 <Image
                   style={ScreenStyleSheet.editIcon}
                   source={require("../../assets/icons/edit.png")}

@@ -19,6 +19,8 @@ import {
   Right,
   Content
 } from "native-base";
+import { Actions } from "react-native-router-flux";
+import { connect } from "react-redux";
 
 class EditProfileScreen extends Component {
   // Constructor
@@ -27,9 +29,9 @@ class EditProfileScreen extends Component {
 
     // State
     this.state = {
-      name: "Brittany Taylor",
+      fullname: "Brittany Taylor",
       dob: "January 1, 1955",
-      menopausalStage: "Peri",
+      menopausal_stage: "Peri",
       distance: 10,
       duration: 60,
       intensity: "Intermediate",
@@ -38,10 +40,84 @@ class EditProfileScreen extends Component {
     };
   }
 
-  // On save
-  saveProfile = () => {
-    // Navigate to homescreen
-  };
+  cancelEdit() {
+    Actions.pop();
+  }
+
+  onChangeName(text) {
+    this.setState({
+      fullname: text
+    });
+  }
+
+  onChangeDob(text) {
+    this.setState({
+      dob: text
+    });
+  }
+
+  onChangeStage(text) {
+    this.setState({
+      menopausal_stage: text
+    });
+  }
+
+  onChangeDistance(text) {
+    this.setState({
+      distance: text
+    });
+  }
+
+  onChangeDuration(text) {
+    this.setState({
+      duration: text
+    });
+  }
+
+  onChangeIntensity(text) {
+    this.setState({
+      intensity: text
+    });
+  }
+
+  onChangeVenue(text) {
+    this.setState({
+      venue: text
+    });
+  }
+
+  onChangeLocation(text) {
+    this.setState({
+      location: text
+    });
+  }
+
+  componentWillMount() {
+    console.log(this.props);
+    this.setState({
+      fullname: this.props.fullname,
+      dob: this.props.dob,
+      menopausal_stage: this.props.menopausal_stage,
+      distance: this.props.distance,
+      duration: this.props.duration,
+      intensity: this.props.intensity,
+      venue: this.props.venue,
+      location: this.props.location
+    });
+  }
+
+  onSaveChanges() {
+    this.props.onSaveChanges(
+      this.state.fullname,
+      this.state.dob,
+      this.state.menopausal_stage,
+      this.state.distance,
+      this.state.duration,
+      this.state.intensity,
+      this.state.venue,
+      this.state.location
+    );
+  }
 
   render() {
     // All the options displayed in radio buttons
@@ -131,7 +207,7 @@ class EditProfileScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={this.state.menopausalStage}
+              selectedOption={this.state.menopausal_stage}
               optionContainerStyle={{
                 flex: 1,
                 height: 40,
@@ -260,6 +336,11 @@ class EditProfileScreen extends Component {
   }
 }
 
+export default connect(
+  null,
+  { onSaveChanges }(EditProfileScreen)
+);
+
 // Styles
 const styles = StyleSheet.create({
   textInputContainer: {
@@ -293,5 +374,3 @@ const styles = StyleSheet.create({
     borderRadius: 10
   }
 });
-
-export default EditProfileScreen;
