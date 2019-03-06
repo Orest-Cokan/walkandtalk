@@ -18,7 +18,8 @@ import {
   Right,
   Content
 } from "native-base";
-import { Actions } from "react-native-router-flux";
+import { fetchProfile } from "../../actions/ProfileActions";
+import { fetchPosts } from "../../actions/EventActions";
 
 // Profile tab
 class ProfileScreen extends Component {
@@ -38,11 +39,14 @@ class ProfileScreen extends Component {
     };
   }
 
+  componentWillMount() {
+    this.props.fetchProfile;
+  }
+
   // When edit profile icon is clicked
   editProfile = () => {
     // Navigate to edit profile
-    Actions.editprofile();
-
+    Actions.editProfile(this.props.profile);
   };
 
   render() {
@@ -60,11 +64,7 @@ class ProfileScreen extends Component {
           <View style={ScreenStyleSheet.profileHeader}>
             {/* Edit profile icon  */}
             <View style={ScreenStyleSheet.editProfile}>
-              <TouchableHighlight
-                onPress={this.editProfile}
-                activeOpacity={1}
-                underlayColor={'transparent'}
-              >
+              <TouchableHighlight onPress={this.editProfile} activeOpacity={0}>
                 <Image
                   style={ScreenStyleSheet.editIcon}
                   source={require("../../assets/icons/edit.png")}
