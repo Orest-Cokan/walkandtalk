@@ -11,7 +11,7 @@ export default StyleSheet.create({
   // Header
   header: {
     backgroundColor: '#A680B8',
-    height: 40
+    height: 45,
   },
   headerBody:{
     flex: 1,
@@ -101,7 +101,34 @@ export default StyleSheet.create({
       color: 'gray'
 
 
-    }
+    },
+
+   // Forms
+  formInfo: {
+    color: "gray",
+    fontSize: 15
+  },
+  formRowInfo: {
+    flex: 1,
+    marginBottom: 10,
+  },
+  formDescriptionInput: {
+    textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: 'gray',
+    color: 'black',
+    padding: 5,
+    fontSize: 15
+  },
+  formInput: {
+    textAlign: 'left',
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+    color: 'black',
+    padding: 0,
+    fontSize: 15
+  },
+
 
 
   });
