@@ -18,7 +18,11 @@ class HomeScreen extends Component {
     return (
       <Container>
         {/* Header */}
-        <Header style={ScreenStyleSheet.header}>
+        <Header
+          style={ScreenStyleSheet.header}
+          androidStatusBarColor="#A680B8"
+          androidStatusBarStyle="light-content"
+        >
           <Body style={ScreenStyleSheet.headerBody}>
             <Title>Home</Title>
           </Body>
