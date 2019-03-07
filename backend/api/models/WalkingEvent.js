@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../../config/database");
+const Attendee = require("./Attendee");
 
 // table name
 const tableName = "WalkingEvent";

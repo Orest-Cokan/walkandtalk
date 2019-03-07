@@ -70,10 +70,31 @@ const WalkingEventController = () => {
       });
   };
 
+  // delete a walking event
+  const destroy = async (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+    await WalkingEvent.destroy({
+      where: {
+        id: id
+      }
+    })
+      .then(rowDeleted => {
+        if (rowDeleted == 1) {
+          return res.status(200).json({ msg: "Deleted!" });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        return res.status(500).json({ msg: "Unable to delete! REEEE" });
+      });
+  };
+
   return {
     create,
     getAll,
-    updateEvent
+    updateEvent,
+    destroy
   };
 };
 

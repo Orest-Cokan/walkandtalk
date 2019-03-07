@@ -11,7 +11,8 @@ const publicRoutes = {
   //Walkingevent routes
   "GET /walkingevents": "WalkingEventController.getAll",
   "POST /walkingevent": "WalkingEventController.create",
-  "PUT /walkingevent": "WalkingEventController.updateEvent"
+  "PUT /walkingevent": "WalkingEventController.updateEvent",
+  "DELETE /walkingevent/:id": "WalkingEventController.destroy"
 };
 
 module.exports = publicRoutes;
