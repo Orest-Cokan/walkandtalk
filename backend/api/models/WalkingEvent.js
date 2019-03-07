@@ -5,6 +5,11 @@ const sequelize = require("../../config/database");
 const tableName = "WalkingEvent";
 
 const WalkingEvent = sequelize.define(tableName, {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
   organizer: Sequelize.STRING,
   title: Sequelize.STRING,
   description: Sequelize.STRING,

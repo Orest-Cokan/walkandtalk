@@ -1,8 +1,11 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../../config/database");
 
-const Attendee = sequelize.define("attendee", {
+// table name
+const tableName = "Attendees";
+
+const Attendee = sequelize.define(tableName, {
   name: Sequelize.STRING
 });
 
-export default Attendee;
+module.exports = Attendee;

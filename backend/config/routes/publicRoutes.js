@@ -5,10 +5,13 @@ const publicRoutes = {
   "POST /login": "UserController.login",
   "POST /validate": "UserController.validate",
   "GET /users": "UserController.getAll",
+  "GET /user/:email": "UserController.getUser",
+  "PUT /user": "UserController.updateUser",
 
   //Walkingevent routes
   "GET /walkingevents": "WalkingEventController.getAll",
-  "POST /walkingevent": "WalkingEventController.create"
+  "POST /walkingevent": "WalkingEventController.create",
+  "PUT /walkingevent": "WalkingEventController.updateEvent"
 };
 
 module.exports = publicRoutes;

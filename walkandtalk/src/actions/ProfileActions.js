@@ -6,3 +6,7 @@ export const fetchProfile = user => {
 };
 
 //export const onSaveChanges = {fullname, }
+
+export const editProfile = user => {
+
+};

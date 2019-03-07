@@ -52,47 +52,56 @@ export default StyleSheet.create({
     marginTop: 5
   },
 
-   // Profile tab
-   profileHeader: {
-     alignItems: 'center',
-   },
-   avatar: {
-     width: 75,
-     height: 75,
-     borderRadius: 60,
-     borderWidth: 3,
-     borderColor: 'black',
-     marginBottom: 10,
-   },
-   editProfile: {
-     alignSelf: 'flex-end',
-     position: 'absolute',
-   },
-   editIcon:{
-     height: 30,
-     width: 30,
-   },
-   profileName: {
-     fontSize: 18,
-     color: 'black',
-     fontWeight:'500',
-   },
-   profileSectionTitle: {
-     fontWeight: 'bold',
-     color: 'gray',
-   },
-   profileRowInfo: {
-     flex: 1,
-     marginBottom: 5,
-   },
-   profileInfo:{
-     color: "gray"
-   },
-   profileInput: {
-     textAlign: 'right',
-     color: 'black'
-   },
+    // Profile tab
+    profileHeader: {
+      alignItems: 'center',
+    },
+    avatar: {
+      width: 75,
+      height: 75,
+      borderRadius: 60,
+      borderWidth: 3,
+      borderColor: 'black',
+      marginBottom: 10,
+    },
+    editProfile: {
+      alignSelf: 'flex-end',
+      position: 'absolute',
+    },
+    editIcon:{
+      height: 30,
+      width: 30,
+    },
+    profileName: {
+      fontSize: 18,
+      color: 'black',
+      fontWeight:'500',
+    },
+    profileSectionTitle: {
+      fontWeight: 'bold',
+      color: 'gray',
+    },
+    profileRowInfo: {
+      flex: 1,
+      marginBottom: 8,
+    },
+    profileInfo:{
+      color: "gray"
+    },
+    profileInput: {
+      textAlign: 'right',
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray',
+      color: 'black'
+    },
+    profileInputUneditable: {
+      textAlign: 'right',
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray',
+      color: 'gray'
 
 
+    }
 
-});
+
+  });
