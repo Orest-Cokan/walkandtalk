@@ -1,6 +1,6 @@
-const User = require('../models/User');
-const authService = require('../services/auth.service');
-const bcryptService = require('../services/bcrypt.service');
+const User = require("../models/User");
+const authService = require("../services/auth.service");
+const bcryptService = require("../services/bcrypt.service");
 
 const UserController = () => {
   const register = async (req, res) => {
@@ -10,18 +10,23 @@ const UserController = () => {
       try {
         const user = await User.create({
           email: body.email,
+          fullname: body.fullname,
           password: body.password,
+          menopausal_stage: body.menopausal_stage,
+          intensity: body.intensity,
+          venue: body.venue,
+          location: body.location
         });
         const token = authService().issue({ id: user.id });
 
         return res.status(200).json({ token, user });
       } catch (err) {
         console.log(err);
-        return res.status(500).json({ msg: 'Internal server error' });
+        return res.status(500).json({ msg: "Internal server error" });
       }
     }
 
-    return res.status(400).json({ msg: 'Bad Request: Passwords don\'t match' });
+    return res.status(400).json({ msg: "Bad Request: Passwords don't match" });
   };
 
   const login = async (req, res) => {
@@ -29,15 +34,14 @@ const UserController = () => {
 
     if (email && password) {
       try {
-        const user = await User
-          .findOne({
-            where: {
-              email,
-            },
-          });
+        const user = await User.findOne({
+          where: {
+            email
+          }
+        });
 
         if (!user) {
-          return res.status(400).json({ msg: 'Bad Request: User not found' });
+          return res.status(400).json({ msg: "Bad Request: User not found" });
         }
 
         if (bcryptService().comparePassword(password, user.password)) {
@@ -46,22 +50,24 @@ const UserController = () => {
           return res.status(200).json({ token, user });
         }
 
-        return res.status(401).json({ msg: 'Unauthorized' });
+        return res.status(401).json({ msg: "Unauthorized" });
       } catch (err) {
         console.log(err);
-        return res.status(500).json({ msg: 'Internal server error' });
+        return res.status(500).json({ msg: "Internal server error" });
       }
     }
 
-    return res.status(400).json({ msg: 'Bad Request: Email or password is wrong' });
+    return res
+      .status(400)
+      .json({ msg: "Bad Request: Email or password is wrong" });
   };
 
   const validate = (req, res) => {
     const { token } = req.body;
 
-    authService().verify(token, (err) => {
+    authService().verify(token, err => {
       if (err) {
-        return res.status(401).json({ isvalid: false, err: 'Invalid Token!' });
+        return res.status(401).json({ isvalid: false, err: "Invalid Token!" });
       }
 
       return res.status(200).json({ isvalid: true });
@@ -75,16 +81,54 @@ const UserController = () => {
       return res.status(200).json({ users });
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ msg: 'Internal server error' });
+      return res.status(500).json({ msg: "Internal server error" });
     }
   };
 
+  const getUser = async (req, res) => {
+    try {
+      const email = req.params.email;
+      const user = await User.findAll({ where: { email: email } });
+      return res.status(200).json({ user });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
+  const updateUser = async (req, res) => {
+    const { body } = req;
+    console.log(body.id, body.fullname);
+    await User.update(
+      { fullname: body.fullname },
+      { returning: true, where: { id: body.id } }
+    )
+      .then(self => {
+        return res.status(200).json({ self });
+      })
+      .catch(function(err) {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
+  };
+
+  /* Project.update(
+  { title: 'a very different title now' },
+  { where: { _id: 1 } }
+)
+  .then(result =>
+    handleResult(result)
+  )
+  .catch(err =>
+    handleError(err)
+  )*/
 
   return {
     register,
     login,
     validate,
     getAll,
+    getUser,
+    updateUser
   };
 };
 

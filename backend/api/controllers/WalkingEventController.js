@@ -1,4 +1,5 @@
 const WalkingEvent = require("../models/WalkingEvent");
+const Attendee = require("../models/Attendee");
 const Sequelize = require("sequelize");
 const sequelize = require("../../config/database");
 
@@ -7,9 +8,6 @@ const WalkingEventController = () => {
     const { body } = req;
     console.log(body.attendees);
 
-    const Attendee = sequelize.define("attendee", {
-      name: Sequelize.STRING
-    });
     WalkingEvent.hasMany(Attendee);
 
     try {
@@ -43,9 +41,6 @@ const WalkingEventController = () => {
   };
 
   const getAll = async (req, res) => {
-    const Attendee = sequelize.define("attendee", {
-      name: Sequelize.STRING
-    });
     try {
       const events = await WalkingEvent.findAll({
         include: [
@@ -61,9 +56,24 @@ const WalkingEventController = () => {
     }
   };
 
+  const getEvent = async (req, res) => {
+    try {
+      const title = req.params.title;
+      console.log(title + "this is the title");
+      const event = await WalkingEvent.findAll({
+        where: { title: title },
+        include: [{ model: Attendee }]
+      });
+      return res.status(200).json({ event });
+    } catch (err) {
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
   return {
     create,
-    getAll
+    getAll,
+    getEvent
   };
 };
 

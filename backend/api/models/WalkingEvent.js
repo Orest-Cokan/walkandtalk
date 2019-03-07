@@ -9,6 +9,11 @@ const Attendee = sequelize.define("attendee", {
 });
 
 const WalkingEvent = sequelize.define(tableName, {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
   organizer: Sequelize.STRING,
   title: Sequelize.STRING,
   description: Sequelize.STRING,
