@@ -1,13 +1,12 @@
 const WalkingEvent = require("../models/WalkingEvent");
 const Attendee = require("../models/Attendee");
-const Sequelize = require("sequelize");
-const sequelize = require("../../config/database");
 
+// WalkingEvent dontroller
 const WalkingEventController = () => {
+  // Create a new walkingevent
   const create = async (req, res) => {
     const { body } = req;
     console.log(body.attendees);
-
     WalkingEvent.hasMany(Attendee);
 
     try {
@@ -40,6 +39,7 @@ const WalkingEventController = () => {
     }
   };
 
+  // Get all walkingevents
   const getAll = async (req, res) => {
     try {
       const events = await WalkingEvent.findAll({
@@ -56,24 +56,26 @@ const WalkingEventController = () => {
     }
   };
 
-  const getEvent = async (req, res) => {
-    try {
-      const title = req.params.title;
-      console.log(title + "this is the title");
-      const event = await WalkingEvent.findAll({
-        where: { title: title },
-        include: [{ model: Attendee }]
+  // Update an event
+  const updateEvent = async (req, res) => {
+    const { body } = req;
+    console.log(body.id, body.title, body.description);
+    await WalkingEvent.update(
+      { title: body.title, description: body.description },
+      { returning: true, where: { id: body.id } }
+    )
+      .then(self => {
+        return res.status(200).json({ self });
+      })
+      .catch(function(err) {
+        return res.status(500).json({ msg: "Internal server error" });
       });
-      return res.status(200).json({ event });
-    } catch (err) {
-      return res.status(500).json({ msg: "Internal server error" });
-    }
   };
 
   return {
     create,
     getAll,
-    getEvent
+    updateEvent
   };
 };
 

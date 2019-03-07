@@ -5,11 +5,6 @@ const sequelize = require("../../config/database");
 const tableName = "Attendees";
 
 const Attendee = sequelize.define(tableName, {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
   name: Sequelize.STRING
 });
 
