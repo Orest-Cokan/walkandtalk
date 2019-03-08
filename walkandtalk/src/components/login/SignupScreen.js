@@ -1,23 +1,37 @@
 import React, { Component } from "react";
 import {
+  StyleSheet,
   View,
   Text,
+  TextInput,
   TouchableOpacity,
-  ScrollView,
-  Alert,
-  Picker
+  Button,
+  Alert
 } from "react-native";
-import {} from "react-native-form-builder";
-import GenerateForm from "react-native-form-builder";
-import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
+import { Actions } from "react-native-router-flux";
 import { createUser } from "../../actions/AuthActions";
-import dateFormat from "dateformat";
+import {
+  Container,
+  Header,
+  Left,
+  Body,
+  Title,
+  Right,
+  Content,
+  StatusBar
+} from "native-base";
+import { SegmentedControls } from "react-native-radio-buttons";
+import DatePicker from 'react-native-datepicker'
+import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+
+
 
 class SignupScreen extends Component {
   state = {
     user: "",
-    password: ""
+    password: "",
+    dob: null
   };
 
   onChangeUser = text => {
@@ -47,49 +61,228 @@ class SignupScreen extends Component {
 
   //render the screen
   render() {
-    return (
-      <ScrollView>
-        <View style={styles.header}>
-          {/*Header */}
-          <Text style={styles.headerText}> Sign Up </Text>
-        </View>
-        <View>
-          <GenerateForm ref="formGenerator" fields={fields} />
-        </View>
-        <View>
-          {/*Picker for Menopause stage */}
-          <Picker
-            style={styles.picker}
-            selectedValue={this.state.stage}
-            onValueChange={this.updateStage}
-          >
-            <Picker.Item label="Menopause Stage - Pre" value="pre" />
-            <Picker.Item label="Menopause Stage - Peri" value="peri" />
-            <Picker.Item label="Menopause Stage - Post" value="post" />
-          </Picker>
-        </View>
-        <View style={styles.nestedButtonView}>
-          {/*Cancel Button - redirects user to Login Screen on press */}
-          {/*Login Button - redirects user to Login Screen on press */}
-          <TouchableOpacity style={styles.cancelButton} onPress={this.onGoBack}>
-            <Text style={styles.buttonText}> CANCEL </Text>
-          </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={() =>
-              Alert.alert(
-                "Success!",
-                "Thank you for signing up!\nYour information has been forwarded to our researchers for evaluation.\nExpect to recieve an email within 7 days.",
-                [{ text: "OK", onPress: this.onPressSignUp }],
-                { cancelable: false }
-              )
-            }
-          >
-            <Text style={styles.buttonText}> SUBMIT </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+    // All the options displayed in radio buttons
+    const intensities = ["Slow", "Intermediate", "Brisk"];
+    const venues = ["Indoor", "Outdoor"];
+    const menopausal_stage = ["Pre", "Peri", "Post"];
+
+
+    return (
+      <Container>
+        <Header
+          style={ScreenStyleSheet.header}
+          androidStatusBarColor="#A680B8"
+          androidStatusBarStyle="light-content"
+        >
+          <Body style={ScreenStyleSheet.headerBody}>
+            <Title>Sign Up</Title>
+          </Body>
+        </Header>
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={styles.subHeader}>Basic Information</Text>
+            </View>
+          </View>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>First Name *</Text>
+            </View>
+          </View>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <TextInput style={ScreenStyleSheet.formInput}/>
+            </View>
+          </View>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Email Address *</Text>
+            </View>
+          </View>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <TextInput style={ScreenStyleSheet.formInput}/>
+            </View>
+          </View>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Confirm Email Address *</Text>
+            </View>
+          </View>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <TextInput style={ScreenStyleSheet.formInput}/>
+            </View>
+          </View>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Password *</Text>
+            </View>
+          </View>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <TextInput style={ScreenStyleSheet.formInput}/>
+            </View>
+          </View>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Confirm Password *</Text>
+            </View>
+          </View>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <TextInput style={ScreenStyleSheet.formInput}/>
+            </View>
+          </View>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Date of Birth *</Text>
+            </View>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <DatePicker
+                style={{width: "100%"}}
+                date={this.state.dob}
+                mode="date"
+                showIcon={false}
+                placeholder="Select date of birth"
+                format="YYYY-MM-DD"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  placeholderText: {
+                     alignItems: "center",
+                  }
+                }}
+                onDateChange={(date) => {this.setState({dob: date})}}
+              />
+            </View>
+          </View>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Menopause Stage *</Text>
+            </View>
+          </View>
+          {/* React-Native radio button as multi option button */}
+          <View style={styles.segmentedControls}>
+            <SegmentedControls
+              tint={"#A680B8"}
+              backTint={"#ffffff"}
+              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
+              selectedOption={menopausal_stage[0]}
+              optionContainerStyle={{
+                flex: 1,
+                height: 40,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 2
+              }}
+              options={menopausal_stage}
+            />
+          </View>
+
+          <View style={ScreenStyleSheet.lineSeparator} />
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={styles.subHeader}>My Preferences</Text>
+            </View>
+          </View>
+
+          <View style={styles.nestedButtonView}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Length of distance(km) *</Text>
+            </View>
+            <View>
+            <TextInput style={ScreenStyleSheet.formInput}/>
+            </View>
+          </View>
+
+          <View style={styles.nestedButtonView}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Length of distance(min) *</Text>
+            </View>
+            <View>
+            <TextInput style={ScreenStyleSheet.formInput}/>
+            </View>
+          </View>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Intensity</Text>
+            </View>
+          </View>
+          {/* React-Native radio button as multi option button */}
+          <View style={styles.segmentedControls}>
+            <SegmentedControls
+              tint={"#A680B8"}
+              backTint={"#ffffff"}
+              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
+              selectedOption={intensities[0]}
+              optionContainerStyle={{
+                flex: 1,
+                height: 40,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 2
+              }}
+              options={intensities}
+            />
+          </View>
+          {/* Venue */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Type of Venue</Text>
+            </View>
+          </View>
+          {/* React-Native radio button as multi option button */}
+          <View style={styles.segmentedControls}>
+            <SegmentedControls
+              tint={"#A680B8"}
+              backTint={"#ffffff"}
+              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
+              selectedOption={venues[0]}
+              optionContainerStyle={{
+                flex: 1,
+                height: 40,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 2
+              }}
+              options={venues}
+            />
+          </View>
+
+          <View style={ScreenStyleSheet.rowContainer}>
+            {/* Cancel button */}
+            <TouchableOpacity
+              style={[
+                styles.buttonContainer,
+                { borderWidth: 1, borderColor: "black" }
+              ]}
+              onPress={this.onGoBack}
+            >
+              <Text>Cancel</Text>
+            </TouchableOpacity>
+            {/* Finish button */}
+            <TouchableOpacity
+              style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
+              onPress={this.onPressSignUp}
+            >
+              <Text style={{ color: "white" }}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+
+        </Content>
+      </Container>
     );
   }
 }
@@ -124,6 +317,13 @@ const styles = {
     paddingHorizontal: 10,
     paddingTop: 20
   },
+  subHeader:{
+    fontSize:18,
+    color: "black",
+    marginTop: 5,
+    marginBottom:10,
+    textAlign: "left"
+  },
   submitButton: {
     marginTop: 30,
     marginBottom: 30,
@@ -152,52 +352,26 @@ const styles = {
   },
   nestedButtonView: {
     flexDirection: "row",
-    alignItems: "center",
-    alignSelf: "center"
+    alignItems: "stretch",
+    marginBottom: 5
   },
   picker: {
     marginTop: 15,
     marginRight: 5,
     marginLeft: 5
+  },
+
+  segmentedControls: {
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 15
+  },
+  buttonContainer: {
+    marginVertical: 10,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "48%",
+    borderRadius: 10
   }
 };
-// These Fields will create a login form
-const fields = [
-  {
-    type: "text",
-    name: "full_name",
-    required: true,
-    label: "Full Name"
-  },
-  {
-    type: "text",
-    name: "email",
-    required: true,
-    label: "Email Address"
-  },
-  {
-    type: "text",
-    name: "ConfirmEmail",
-    required: true,
-    label: "Confirm Email"
-  },
-  {
-    type: "password",
-    name: "password",
-    required: true,
-    label: "Password"
-  },
-  {
-    type: "password",
-    name: "confirmPass",
-    required: true,
-    label: "Confirm Password"
-  },
-  {
-    type: "date",
-    name: "birthday",
-    required: true,
-    mode: "date",
-    label: "Date of Birth"
-  }
-];
