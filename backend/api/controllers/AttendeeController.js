@@ -4,14 +4,10 @@ const bcryptService = require("../services/bcrypt.service");
 
 // User controller
 const AttendeeController = () => {
-  // update a user
+  // update a walking event
   const add = async (req, res) => {
-    const { body } = req;
-    console.log(body.id, body.fullname);
-    await User.update(
-      { fullname: body.fullname },
-      { returning: true, where: { id: body.id } }
-    )
+    const { id } = req.params;
+    await Attendee.update({ returning: true, where: { id: body.id } })
       .then(self => {
         return res.status(200).json({ self });
       })

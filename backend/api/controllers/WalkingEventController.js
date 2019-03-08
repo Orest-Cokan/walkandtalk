@@ -105,7 +105,7 @@ const WalkingEventController = () => {
           }
         ]
       });
-      console.log(walkingevent.attendees);
+      console.log(walkingevent);
       const user = Attendee.create({
         name: body.name
       });
