@@ -12,6 +12,7 @@ afterAll(() => {
   afterAction();
 });
 
+// test creating a user
 test("User | create", async () => {
   const res = await request(api)
     .post("/public/user")
@@ -33,6 +34,7 @@ test("User | create", async () => {
   await user.destroy();
 });
 
+// test logging in a user
 test("User | login", async () => {
   const user = await User.create({
     email: "martin@mail.com",
@@ -55,6 +57,7 @@ test("User | login", async () => {
   await user.destroy();
 });
 
+// getting all users
 test("User | get all (auth)", async () => {
   const user = await User.build({
     email: "martin@mail.com",
@@ -83,4 +86,28 @@ test("User | get all (auth)", async () => {
   expect(res2.body.users.length).toBe(1);
 
   await user.destroy();
+});
+
+// test duplicate user creation
+test("User | Duplicate User", async () => {
+  await request(api)
+    .post("/public/user")
+    .set("Accept", /json/)
+    .send({
+      email: "martin@mail.com",
+      password: "securepassword",
+      password2: "securepassword"
+    })
+    .expect(200);
+
+  const res2 = await request(api)
+    .post("/public/user")
+    .set("Accept", /json/)
+    .send({
+      email: "martin@mail.com",
+      password: "securepassword",
+      password2: "securepassword"
+    })
+    .expect(500);
+  expect(res2.body.msg).toBe("Internal server error");
 });
