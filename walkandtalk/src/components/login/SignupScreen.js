@@ -22,21 +22,39 @@ import {
   StatusBar
 } from "native-base";
 import { SegmentedControls } from "react-native-radio-buttons";
-import DatePicker from 'react-native-datepicker'
+import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-
-
 
 class SignupScreen extends Component {
   state = {
-    user: "",
-    password: "",
-    dob: null
+    user: null,
+    password: null,
+    confirmPassword: null,
+    email: null,
+    confirmEmail: null,
+    dob: null,
+    emailCheck: false,
+    passwordCheck: false,
+    intensity: null,
+    venue: null,
+    location: null
   };
 
   onChangeUser = text => {
     this.setState({
       user: text
+    });
+  };
+
+  onChangeEmail = text => {
+    this.setState({
+      email: text
+    });
+  };
+
+  onConfirmEmail = text => {
+    this.setState({
+      confirmEmail: text
     });
   };
 
@@ -46,27 +64,59 @@ class SignupScreen extends Component {
     });
   };
 
+  onConfirmPassword = text => {
+    this.setState({
+      confirmPassword: text
+    });
+  };
+
+  checkPassword = () => {
+    if (this.state.password != this.state.confirmPassword) {
+      Alert.alert("Passwords don't match, please check again.");
+      this.setState({ passwordCheck: false });
+    } else {
+      this.setState({ passwordCheck: true });
+    }
+  };
+  checkEmail = () => {
+    if (this.state.email != this.state.confirmEmail) {
+      Alert.alert("Emails don't match, please check again.");
+      this.setState({ emailCheck: false });
+    } else {
+      this.setState({ emailCheck: true });
+    }
+  };
   onPressSignUp = () => {
-    this.props.createUser(this.state.user, this.state.password);
+    if (this.state.emailCheck && this.state.passwordCheck) {
+      this.props.createUser(
+        this.state.email,
+        this.state.password,
+        this.state.confirmPassword
+      );
+      Alert.alert("sent to server");
+    } else {
+      if (this.state.emailCheck == false) {
+        this.checkEmail();
+      }
+      if (this.state.passwordCheck == false) {
+        this.checkPassword();
+      }
+    }
   };
 
   onGoBack = () => {
     Actions.pop();
   };
 
-  //Update selected stage of Menopause
   updateStage = stage => {
     this.setState({ stage: stage });
   };
 
-  //render the screen
   render() {
-
     // All the options displayed in radio buttons
     const intensities = ["Slow", "Intermediate", "Brisk"];
     const venues = ["Indoor", "Outdoor"];
     const menopausal_stage = ["Pre", "Peri", "Post"];
-
 
     return (
       <Container>
@@ -80,7 +130,6 @@ class SignupScreen extends Component {
           </Body>
         </Header>
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={styles.subHeader}>Basic Information</Text>
@@ -94,7 +143,7 @@ class SignupScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <TextInput style={ScreenStyleSheet.formInput}/>
+              <TextInput style={ScreenStyleSheet.formInput} />
             </View>
           </View>
 
@@ -105,18 +154,27 @@ class SignupScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <TextInput style={ScreenStyleSheet.formInput}/>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeEmail}
+              />
             </View>
           </View>
 
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Confirm Email Address *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Confirm Email Address *
+              </Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <TextInput style={ScreenStyleSheet.formInput}/>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onConfirmEmail}
+                onEndEditing={this.checkEmail}
+              />
             </View>
           </View>
 
@@ -127,7 +185,10 @@ class SignupScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <TextInput style={ScreenStyleSheet.formInput}/>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangePassword}
+              />
             </View>
           </View>
 
@@ -138,7 +199,11 @@ class SignupScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <TextInput style={ScreenStyleSheet.formInput}/>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onConfirmPassword}
+                onEndEditing={this.checkPassword}
+              />
             </View>
           </View>
 
@@ -148,7 +213,7 @@ class SignupScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
-                style={{width: "100%"}}
+                style={{ width: "100%" }}
                 date={this.state.dob}
                 mode="date"
                 showIcon={false}
@@ -158,10 +223,12 @@ class SignupScreen extends Component {
                 cancelBtnText="Cancel"
                 customStyles={{
                   placeholderText: {
-                     alignItems: "center",
+                    alignItems: "center"
                   }
                 }}
-                onDateChange={(date) => {this.setState({dob: date})}}
+                onDateChange={date => {
+                  this.setState({ dob: date });
+                }}
               />
             </View>
           </View>
@@ -199,19 +266,23 @@ class SignupScreen extends Component {
 
           <View style={styles.nestedButtonView}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Length of distance(km) *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Length of distance(km) *
+              </Text>
             </View>
             <View>
-            <TextInput style={ScreenStyleSheet.formInput}/>
+              <TextInput style={ScreenStyleSheet.formInput} />
             </View>
           </View>
 
           <View style={styles.nestedButtonView}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Length of distance(min) *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Length of distance(min) *
+              </Text>
             </View>
             <View>
-            <TextInput style={ScreenStyleSheet.formInput}/>
+              <TextInput style={ScreenStyleSheet.formInput} />
             </View>
           </View>
 
@@ -280,7 +351,6 @@ class SignupScreen extends Component {
               <Text style={{ color: "white" }}>Submit</Text>
             </TouchableOpacity>
           </View>
-
         </Content>
       </Container>
     );
@@ -317,11 +387,11 @@ const styles = {
     paddingHorizontal: 10,
     paddingTop: 20
   },
-  subHeader:{
-    fontSize:18,
+  subHeader: {
+    fontSize: 18,
     color: "black",
     marginTop: 5,
-    marginBottom:10,
+    marginBottom: 10,
     textAlign: "left"
   },
   submitButton: {

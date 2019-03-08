@@ -6,45 +6,29 @@ import {
   AUTH_LOGIN_USER_FAIL,
   AUTH_LOGIN_USER_SUCCESS
 } from "./types";
-import firebase from "@firebase/app";
-import "@firebase/auth";
 import { Actions } from "react-native-router-flux";
+import axios from "axios";
 
-export const createUser = (email, password) => {
+export const createUser = (email, password, password2) => {
+  const user = {
+    email: email,
+    password: password,
+    password2: password2
+  };
   return dispatch => {
     dispatch({ type: AUTH_CREATE_USER });
-
-    const tmpString = email.split("@");
-    const username = tmpString[0];
-
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(user => createUserSuccess(dispatch, user))
-      .then(() => {
-        const { currentUser } = firebase.auth();
-        try {
-          console.log(email, password);
-          firebase
-            .database()
-            .firestore()
-            .collection("User")
-            .doc(email)
-            .set({
-              fullname: username,
-              email,
-              username,
-              password,
-              userpic:
-                "https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png",
-              intensity,
-              location
-            });
-        } catch (error) {
-          alert(error);
+    axios
+      .post("http://10.0.2.2:2017/public/user", user)
+      .then(res => {
+        if (res.status === 200) {
+          createUserSuccess(dispatch, res.data);
+          console.log(res.data);
         }
       })
-      .catch(() => createUserFail(dispatch));
+      .catch(err => {
+        createUserFail(dispatch);
+        console.log(err);
+      });
   };
 };
 
@@ -62,14 +46,26 @@ const createUserSuccess = (dispatch, user) => {
 };
 
 export const loginUser = (email, password) => {
+  const user = {
+    email: email,
+    password: password
+  };
   return dispatch => {
     dispatch({ type: AUTH_LOGIN_USER });
     console.log(email, password);
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(user => loginUserSuccess(dispatch, user))
-      .catch(() => loginUserFail(dispatch));
+    axios
+      .post("http://10.0.2.2:2017/public/login", user)
+      .then(res => {
+        if (res.status === 200) {
+          console.log(res.status);
+          loginUserSuccess(dispatch, res.data);
+          console.log(res.data);
+        }
+      })
+      .catch(err => {
+        loginUserFail(dispatch);
+        console.log(err);
+      });
   };
 };
 

@@ -6,10 +6,10 @@ import axios from "axios";
 export const fetchEvents = () => {
   return dispatch => {
     axios
-      .get("http://127.0.0.1:2017/public/walkingevents", walking_event)
-      .then(response => {
-        dispatch({ type: EVENT_FETCH_ALL, response });
-        console.log(response);
+      .get("http://10.0.2.2:2017/public/walkingevents")
+      .then(res => {
+        console.log(res.data);
+        dispatch({ type: EVENT_FETCH_ALL, payload: res.data });
       })
       .catch(err => {
         console.log(err);
@@ -17,9 +17,9 @@ export const fetchEvents = () => {
   };
 };
 
-// add an event
+// create an event
 export const createEvent = (
-  user,
+  organizer,
   title,
   description,
   date,
@@ -31,7 +31,7 @@ export const createEvent = (
 ) => {
   return dispatch => {
     const walking_event = {
-      user: user,
+      organizer: organizer,
       title: title,
       description: description,
       date: date,
@@ -42,10 +42,12 @@ export const createEvent = (
       location: location
     };
     axios
-      .post("http://127.0.0.1:2017/public/walkingevent", walking_event)
-      .then(() => {
-        dispatch({ type: EVENT_CREATE });
-        Actions.reset("app");
+      .post("http://10.0.2.2:2017/public/walkingevent", walking_event)
+      .then(res => {
+        if (res.status === 200) {
+          dispatch({ type: EVENT_CREATE });
+          Actions.reset("app");
+        }
       })
       .catch(err => {
         console.log(err);

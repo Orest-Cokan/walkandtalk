@@ -8,6 +8,7 @@
     "test:watch": "npm test -- --watch"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "dateformat": "^3.0.3",
     "firebase": "^5.0.4",
     "native-base": "^2.12.0",

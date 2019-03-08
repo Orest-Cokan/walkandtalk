@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  Alert
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -20,24 +21,71 @@ import {
   StatusBar
 } from "native-base";
 import { SegmentedControls } from "react-native-radio-buttons";
-import DatePicker from 'react-native-datepicker'
+import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import { createEvent } from "../../actions/EventActions";
 
 class AddEventScreen extends Component {
-  // Screen switches to Home page while saving form values
-
-  // Screen switches to Home page without saving form values
   constructor(props) {
     super(props);
 
     // State
     this.state = {
+      title: null,
+      description: null,
       date: null,
       startTime: null,
-      endTime: null
-    }
-
+      endTime: null,
+      //default values for intensity and venue
+      intensity: "Slow",
+      venue: "Indoor",
+      location: null
+    };
   }
+
+  onChangeTitle = text => {
+    this.setState({
+      title: text
+    });
+  };
+
+  onChangeDescription = text => {
+    this.setState({
+      description: text
+    });
+  };
+
+  setIntensity(selectedOption) {
+    this.setState({
+      intensity: selectedOption
+    });
+  }
+
+  setVenue(selectedOption) {
+    this.setState({
+      venue: selectedOption
+    });
+  }
+
+  onChangeLocation = text => {
+    this.setState({
+      location: text
+    });
+  };
+
+  onFinish = () => {
+    this.props.createEvent(
+      this.state.organizer,
+      this.state.title,
+      this.state.date,
+      this.state.startTime,
+      this.state.endTime,
+      this.state.description,
+      this.state.intensity,
+      this.state.venue,
+      this.state.location
+    );
+  };
 
   render() {
     // All the options displayed in radio buttons
@@ -66,7 +114,10 @@ class AddEventScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <TextInput style={ScreenStyleSheet.formInput}/>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeTitle}
+              />
             </View>
           </View>
           {/* Date */}
@@ -76,7 +127,7 @@ class AddEventScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
-                style={{width: "100%"}}
+                style={{ width: "100%" }}
                 date={this.state.date}
                 mode="date"
                 showIcon={false}
@@ -85,9 +136,10 @@ class AddEventScreen extends Component {
                 minDate={new Date()}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
-                customStyles={{
+                customStyles={{}}
+                onDateChange={date => {
+                  this.setState({ date: date });
                 }}
-                onDateChange={(date) => {this.setState({date: date})}}
               />
             </View>
           </View>
@@ -98,7 +150,7 @@ class AddEventScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
-                style={{width: "100%"}}
+                style={{ width: "100%" }}
                 date={this.state.startTime}
                 mode="time"
                 showIcon={false}
@@ -108,10 +160,12 @@ class AddEventScreen extends Component {
                 cancelBtnText="Cancel"
                 customStyles={{
                   placeholderText: {
-                     alignItems: "center",
+                    alignItems: "center"
                   }
                 }}
-                onDateChange={(date) => {this.setState({startTime: date})}}
+                onDateChange={date => {
+                  this.setState({ startTime: date });
+                }}
               />
             </View>
           </View>
@@ -122,7 +176,7 @@ class AddEventScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
-                style={{width: "100%"}}
+                style={{ width: "100%" }}
                 date={this.state.endTime}
                 mode="time"
                 showIcon={false}
@@ -132,10 +186,12 @@ class AddEventScreen extends Component {
                 cancelBtnText="Cancel"
                 customStyles={{
                   placeholderText: {
-                     alignItems: "center",
+                    alignItems: "center"
                   }
                 }}
-                onDateChange={(date) => {this.setState({endTime: date})}}
+                onDateChange={date => {
+                  this.setState({ endTime: date });
+                }}
               />
             </View>
           </View>
@@ -149,9 +205,10 @@ class AddEventScreen extends Component {
             <View style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formDescriptionInput}
-                multiline = {true}
-                numberOfLines = {4}
-                maxLength = {140}
+                multiline={true}
+                numberOfLines={4}
+                maxLength={140}
+                onChangeText={this.onChangeDescription}
               />
             </View>
           </View>
@@ -167,7 +224,8 @@ class AddEventScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={intensities[0]}
+              selectedOption={this.state.intensity}
+              onSelection={this.setIntensity.bind(this)}
               optionContainerStyle={{
                 flex: 1,
                 height: 40,
@@ -190,7 +248,8 @@ class AddEventScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={venues[0]}
+              selectedOption={this.state.venue}
+              onSelection={this.setVenue.bind(this)}
               optionContainerStyle={{
                 flex: 1,
                 height: 40,
@@ -209,7 +268,10 @@ class AddEventScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <TextInput style={ScreenStyleSheet.formInput}/>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeLocation}
+              />
             </View>
           </View>
           {/* Options */}
@@ -227,7 +289,7 @@ class AddEventScreen extends Component {
             {/* Finish button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
-              //onPress={}
+              onPress={this.onFinish}
             >
               <Text style={{ color: "white" }}>Finish</Text>
             </TouchableOpacity>
@@ -242,7 +304,7 @@ const mapStateToProps = state => state;
 
 export default connect(
   mapStateToProps,
-  null
+  { createEvent }
 )(AddEventScreen);
 
 // Styles
@@ -254,7 +316,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginVertical: 10,
-    marginBottom:10,
+    marginBottom: 10,
     height: 50,
     justifyContent: "center",
     alignItems: "center",
