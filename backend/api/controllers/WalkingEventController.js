@@ -1,14 +1,12 @@
 const WalkingEvent = require("../models/WalkingEvent");
 const Attendee = require("../models/Attendee");
 
-// WalkingEvent dontroller
+// WalkingEvent controller
 const WalkingEventController = () => {
-  // Create a new walkingevent
+  // create a new walkingevent
   const create = async (req, res) => {
     const { body } = req;
     console.log(body.attendees);
-    WalkingEvent.hasMany(Attendee);
-
     try {
       WalkingEvent.create(
         {
@@ -37,8 +35,10 @@ const WalkingEventController = () => {
     }
   };
 
-  // Get all walkingevents
+  // get all walkingevents
   const getAll = async (req, res) => {
+    WalkingEvent.hasMany(Attendee);
+
     try {
       const events = await WalkingEvent.findAll({
         include: [
@@ -54,7 +54,7 @@ const WalkingEventController = () => {
     }
   };
 
-  // Update an event
+  // update an event
   const updateEvent = async (req, res) => {
     const { body } = req;
     console.log(body.id, body.title, body.description);
@@ -86,15 +86,43 @@ const WalkingEventController = () => {
       })
       .catch(err => {
         console.log(err);
-        return res.status(500).json({ msg: "Unable to delete! REEEE" });
+        return res.status(500).json({ msg: "Unable to delete!" });
       });
+  };
+
+  // update an event
+  const addAttendees = async (req, res) => {
+    const { body } = req;
+    console.log(body.id, body.name);
+    try {
+      const walkingevent = await WalkingEvent.findAll({
+        where: {
+          id: body.id
+        },
+        include: [
+          {
+            model: Attendee
+          }
+        ]
+      });
+      console.log(walkingevent.attendees);
+      const user = Attendee.create({
+        name: body.name
+      });
+      walkingevent.addAttendee(user);
+      return res.status(200).json({ walkingevent });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
   };
 
   return {
     create,
     getAll,
     updateEvent,
-    destroy
+    destroy,
+    addAttendees
   };
 };
 

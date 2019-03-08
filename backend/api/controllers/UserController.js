@@ -2,7 +2,9 @@ const User = require("../models/User");
 const authService = require("../services/auth.service");
 const bcryptService = require("../services/bcrypt.service");
 
+// User controller
 const UserController = () => {
+  // register a new user
   const register = async (req, res) => {
     const { body } = req;
 
@@ -29,6 +31,7 @@ const UserController = () => {
     return res.status(400).json({ msg: "Bad Request: Passwords don't match" });
   };
 
+  // login a user
   const login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -62,6 +65,7 @@ const UserController = () => {
       .json({ msg: "Bad Request: Email or password is wrong" });
   };
 
+  // validate  auser
   const validate = (req, res) => {
     const { token } = req.body;
 
@@ -74,6 +78,7 @@ const UserController = () => {
     });
   };
 
+  // get all users
   const getAll = async (req, res) => {
     try {
       const users = await User.findAll();
@@ -85,9 +90,12 @@ const UserController = () => {
     }
   };
 
+  // get a single user
   const getUser = async (req, res) => {
+    console.log("WTF REEEEE");
+    const { email } = req.params;
+    console.log(email);
     try {
-      const email = req.params.email;
       const user = await User.findAll({ where: { email: email } });
       return res.status(200).json({ user });
     } catch (err) {
@@ -96,6 +104,7 @@ const UserController = () => {
     }
   };
 
+  // update a user
   const updateUser = async (req, res) => {
     const { body } = req;
     console.log(body.id, body.fullname);
