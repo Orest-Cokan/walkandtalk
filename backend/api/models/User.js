@@ -16,12 +16,12 @@ const User = sequelize.define(
   {
     id: {
       type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+      autoIncrement: true
     },
     email: {
       type: Sequelize.STRING,
-      unique: true
+      unique: true,
+      primaryKey: true
     },
     password: Sequelize.STRING,
     fullname: Sequelize.STRING,

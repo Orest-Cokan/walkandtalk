@@ -120,17 +120,6 @@ const UserController = () => {
       });
   };
 
-  /* Project.update(
-  { title: 'a very different title now' },
-  { where: { _id: 1 } }
-)
-  .then(result =>
-    handleResult(result)
-  )
-  .catch(err =>
-    handleError(err)
-  )*/
-
   return {
     register,
     login,

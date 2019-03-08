@@ -17,7 +17,7 @@ const WalkingEventController = () => {
           start_time: body.start_time,
           end_time: body.end_time,
           intensity: body.intensity,
-          vanue: body.venue,
+          venue: body.venue,
           location: body.location,
           attendees: body.attendees
         },
@@ -59,7 +59,18 @@ const WalkingEventController = () => {
     const { body } = req;
     console.log(body.id, body.title, body.description);
     await WalkingEvent.update(
-      { title: body.title, description: body.description },
+      {
+        organizer: body.organizer,
+        title: body.title,
+        description: body.description,
+        date: body.date,
+        start_time: body.start_time,
+        end_time: body.end_time,
+        intensity: body.intensity,
+        venue: body.venue,
+        location: body.location,
+        attendees: body.attendees
+      },
       { returning: true, where: { id: body.id } }
     )
       .then(self => {
