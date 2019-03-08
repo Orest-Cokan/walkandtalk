@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   user: null
 };
 
+// auth reducer
 const auth = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case AUTH_CREATE_USER:

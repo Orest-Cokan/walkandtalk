@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   events: []
 };
 
+// event reducer
 const event = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case EVENT_FETCH_ALL:

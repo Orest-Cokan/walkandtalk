@@ -14,6 +14,21 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import BaseCard from "../../cardview/baseCard";
 
 class HomeScreen extends Component {
+  constructor(props) {
+    super(props);
+
+    // State
+    this.state = {
+      title: null,
+      description: null,
+      date: null,
+      startTime: null,
+      endTime: null,
+      intensity: null,
+      venue: null,
+      location: null
+    };
+  }
   render() {
     return (
       <Container>

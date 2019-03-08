@@ -2,7 +2,7 @@ import { EVENT_FETCH_ALL, EVENT_CREATE } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 
-// fetch all events
+// action to fetch all events
 export const fetchEvents = () => {
   return dispatch => {
     axios
@@ -17,7 +17,7 @@ export const fetchEvents = () => {
   };
 };
 
-// create an event
+// action to create an event
 export const createEvent = (
   organizer,
   title,

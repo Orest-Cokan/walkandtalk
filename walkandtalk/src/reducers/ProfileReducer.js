@@ -1,5 +1,6 @@
 import { PROFILE_EDIT, PROFILE_FETCH } from "../actions/types";
 
+// initial state of a profile
 const INITIAL_STATE = {
   profile: {
     fullname: null,
@@ -11,7 +12,8 @@ const INITIAL_STATE = {
   }
 };
 
-const event = (state = INITIAL_STATE, action) => {
+// profile reducer
+const profile = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case PROFILE_EDIT:
       return { ...state, events: action.payload };
@@ -22,4 +24,4 @@ const event = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default event;
+export default profile;

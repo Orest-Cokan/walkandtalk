@@ -9,6 +9,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 
+// action to create a user
 export const createUser = (email, password, password2) => {
   const user = {
     email: email,
@@ -32,10 +33,12 @@ export const createUser = (email, password, password2) => {
   };
 };
 
+// dispatch creating a user failed
 const createUserFail = dispatch => {
   dispatch({ type: AUTH_CREATE_USER_FAIL });
 };
 
+// dispatch creating a user succesful
 const createUserSuccess = (dispatch, user) => {
   dispatch({
     type: AUTH_CREATE_USER_SUCCESS,
@@ -45,6 +48,7 @@ const createUserSuccess = (dispatch, user) => {
   Actions.app();
 };
 
+// action to login a user
 export const loginUser = (email, password) => {
   const user = {
     email: email,
@@ -69,10 +73,12 @@ export const loginUser = (email, password) => {
   };
 };
 
+// dispatch user login fail
 const loginUserFail = dispatch => {
   dispatch({ type: AUTH_LOGIN_USER_FAIL });
 };
 
+// dispatch user login success
 const loginUserSuccess = (dispatch, user) => {
   dispatch({
     type: AUTH_LOGIN_USER_SUCCESS,
