@@ -1,12 +1,10 @@
 import { combineReducers } from "redux";
 import auth from "./AuthReducer";
 import event from "./EventReducer";
-//import profile from "./ProfileReducer";
-//import highlight from "./HighlightReducer";
+import profile from "./ProfileReducer";
 
 export default combineReducers({
   auth: auth,
-  event: event
-  //profile: profile,
-  //highlight: highlight
+  event: event,
+  profile: profile
 });

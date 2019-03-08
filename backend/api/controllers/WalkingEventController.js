@@ -1,17 +1,12 @@
 const WalkingEvent = require("../models/WalkingEvent");
-const Sequelize = require("sequelize");
-const sequelize = require("../../config/database");
+const Attendee = require("../models/Attendee");
 
+// WalkingEvent controller
 const WalkingEventController = () => {
+  // create a new walkingevent
   const create = async (req, res) => {
     const { body } = req;
     console.log(body.attendees);
-
-    const Attendee = sequelize.define("attendee", {
-      name: Sequelize.STRING
-    });
-    WalkingEvent.hasMany(Attendee);
-
     try {
       WalkingEvent.create(
         {
@@ -22,7 +17,7 @@ const WalkingEventController = () => {
           start_time: body.start_time,
           end_time: body.end_time,
           intensity: body.intensity,
-          vanue: body.venue,
+          venue: body.venue,
           location: body.location,
           attendees: body.attendees
         },
@@ -30,8 +25,6 @@ const WalkingEventController = () => {
           include: [Attendee]
         }
       );
-      console.log("reee");
-      console.log(body.attendees);
 
       return res
         .status(200)
@@ -42,10 +35,10 @@ const WalkingEventController = () => {
     }
   };
 
+  // get all walkingevents
   const getAll = async (req, res) => {
-    const Attendee = sequelize.define("attendee", {
-      name: Sequelize.STRING
-    });
+    WalkingEvent.hasMany(Attendee);
+
     try {
       const events = await WalkingEvent.findAll({
         include: [
@@ -61,9 +54,86 @@ const WalkingEventController = () => {
     }
   };
 
+  // update an event
+  const updateEvent = async (req, res) => {
+    const { body } = req;
+    console.log(body.id, body.title, body.description);
+    await WalkingEvent.update(
+      {
+        organizer: body.organizer,
+        title: body.title,
+        description: body.description,
+        date: body.date,
+        start_time: body.start_time,
+        end_time: body.end_time,
+        intensity: body.intensity,
+        venue: body.venue,
+        location: body.location,
+        attendees: body.attendees
+      },
+      { returning: true, where: { id: body.id } }
+    )
+      .then(self => {
+        return res.status(200).json({ self });
+      })
+      .catch(function(err) {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
+  };
+
+  // delete a walking event
+  const destroy = async (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+    await WalkingEvent.destroy({
+      where: {
+        id: id
+      }
+    })
+      .then(rowDeleted => {
+        if (rowDeleted == 1) {
+          return res.status(200).json({ msg: "Deleted!" });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        return res.status(500).json({ msg: "Unable to delete!" });
+      });
+  };
+
+  // update an event
+  const addAttendees = async (req, res) => {
+    const { body } = req;
+    console.log(body.id, body.name);
+    try {
+      const walkingevent = await WalkingEvent.findAll({
+        where: {
+          id: body.id
+        },
+        include: [
+          {
+            model: Attendee
+          }
+        ]
+      });
+      console.log(walkingevent);
+      const user = Attendee.create({
+        name: body.name
+      });
+      walkingevent.addAttendee(user);
+      return res.status(200).json({ walkingevent });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
   return {
     create,
-    getAll
+    getAll,
+    updateEvent,
+    destroy,
+    addAttendees
   };
 };
 

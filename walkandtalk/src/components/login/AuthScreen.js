@@ -4,7 +4,6 @@ import { loginUser } from "../../actions/AuthActions";
 import { Actions } from "react-native-router-flux";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
-import { ToastAndroid } from "react-native";
 
 class AuthScreen extends Component {
   state = {

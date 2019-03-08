@@ -23,22 +23,21 @@ const RouterComponent = () => (
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
       </Stack>
-      <Stack
-        key="app"
-        hideNavBar
-        panHandlers={null}
-      >
-        <Tabs
-          showLabel={false}
-        >
+      <Stack key="app" hideNavBar panHandlers={null}>
+        <Tabs showLabel={false}>
           <Scene
             key="home"
             component={HomeScreen}
             icon={({ focused }) => (
-              <Image source = {focused ? require("./assets/icons/home-full.png") : require("./assets/icons/home.png")}
-                 style={{ width: 28, height:28 }}
+              <Image
+                source={
+                  focused
+                    ? require("./assets/icons/home-full.png")
+                    : require("./assets/icons/home.png")
+                }
+                style={{ width: 28, height: 28 }}
               />
-          )}
+            )}
             title="Home"
             hideNavBar
           />
@@ -46,40 +45,60 @@ const RouterComponent = () => (
             key="search"
             component={SearchScreen}
             icon={({ focused }) => (
-              <Image source = {focused ? require("./assets/icons/search-full.png") : require("./assets/icons/search.png")}
-                 style={{ width: 28, height:28 }}
+              <Image
+                source={
+                  focused
+                    ? require("./assets/icons/search-full.png")
+                    : require("./assets/icons/search.png")
+                }
+                style={{ width: 28, height: 28 }}
               />
-          )}
+            )}
             hideNavBar
           />
           <Scene
             key="addevent"
             component={AddEventScreen}
             icon={({ focused }) => (
-              <Image source = {focused ? require("./assets/icons/plus-full.png") : require("./assets/icons/plus.png")}
-                 style={{ width: 28, height:28 }}
+              <Image
+                source={
+                  focused
+                    ? require("./assets/icons/plus-full.png")
+                    : require("./assets/icons/plus.png")
+                }
+                style={{ width: 28, height: 28 }}
               />
-          )}
+            )}
             hideNavBar
           />
           <Scene
             key="form"
             component={FormScreen}
             icon={({ focused }) => (
-              <Image source = {focused ? require("./assets/icons/form-full.png") : require("./assets/icons/form.png")}
-                 style={{ width: 28, height:28 }}
+              <Image
+                source={
+                  focused
+                    ? require("./assets/icons/form-full.png")
+                    : require("./assets/icons/form.png")
+                }
+                style={{ width: 28, height: 28 }}
               />
-          )}
+            )}
             hideNavBar
           />
           <Scene
             key="profile"
             component={ProfileScreen}
             icon={({ focused }) => (
-              <Image source = {focused ? require("./assets/icons/profile-full.png") : require("./assets/icons/profile.png")}
-                 style={{ width: 28, height:28 }}
+              <Image
+                source={
+                  focused
+                    ? require("./assets/icons/profile-full.png")
+                    : require("./assets/icons/profile.png")
+                }
+                style={{ width: 28, height: 28 }}
               />
-          )}
+            )}
             hideNavBar
           />
         </Tabs>
