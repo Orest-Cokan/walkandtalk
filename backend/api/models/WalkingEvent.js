@@ -5,7 +5,7 @@ const Attendee = require("./Attendee");
 // table name
 const tableName = "WalkingEvent";
 
-// walking event model
+// walkingevent model
 const WalkingEvent = sequelize.define(tableName, {
   id: {
     type: Sequelize.INTEGER,

@@ -9,6 +9,7 @@ const hooks = {
   }
 };
 
+// table name
 const tableName = "users";
 
 // user model
@@ -17,12 +18,12 @@ const User = sequelize.define(
   {
     id: {
       type: Sequelize.INTEGER,
-      autoIncrement: true
+      autoIncrement: true,
+      primaryKey: true
     },
     email: {
       type: Sequelize.STRING,
-      unique: true,
-      primaryKey: true
+      unique: true
     },
     password: Sequelize.STRING,
     fullname: Sequelize.STRING,

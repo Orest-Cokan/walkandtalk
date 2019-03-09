@@ -1,5 +1,5 @@
 const publicRoutes = {
-  //User routes
+  // User routes
   "POST /user": "UserController.register",
   "POST /register": "UserController.register", // alias for POST /user
   "POST /login": "UserController.login",
@@ -8,7 +8,7 @@ const publicRoutes = {
   "GET /user/:email": "UserController.getUser",
   "PUT /user": "UserController.updateUser",
 
-  //Walkingevent routes
+  // Walkingevent routes
   "GET /walkingevents": "WalkingEventController.getAll",
   "POST /walkingevent": "WalkingEventController.create",
   "PUT /walkingevent": "WalkingEventController.updateEvent",
