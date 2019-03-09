@@ -12,6 +12,7 @@ afterAll(() => {
   afterAction();
 });
 
+// test creating a walking event
 test("WalkingEvent | create", async () => {
   const res = await request(api)
     .post("/public/walkingevent")
@@ -37,6 +38,7 @@ test("WalkingEvent | create", async () => {
   await walkingevent.destroy();
 });
 
+// test destroying a walking event
 test("WalkingEvent | destroy", async () => {
   const res = await request(api)
     .post("/public/walkingevent")
