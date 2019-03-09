@@ -11,6 +11,7 @@ const hooks = {
 
 const tableName = "users";
 
+// user model
 const User = sequelize.define(
   "User",
   {

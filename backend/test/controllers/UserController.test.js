@@ -12,6 +12,7 @@ afterAll(() => {
   afterAction();
 });
 
+// / test creating a user
 test("User | create", async () => {
   const res = await request(api)
     .post("/public/user")
@@ -33,6 +34,7 @@ test("User | create", async () => {
   await user.destroy();
 });
 
+// test logging in a user
 test("User | login", async () => {
   const user = await User.create({
     email: "martin@mail.com",
@@ -55,6 +57,7 @@ test("User | login", async () => {
   await user.destroy();
 });
 
+// test getting all users
 test("User | get all (auth)", async () => {
   const user = await User.build({
     email: "martin@mail.com",
