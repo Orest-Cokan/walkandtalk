@@ -22,7 +22,6 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 
-
 class EditProfileScreen extends Component {
   // Constructor
   constructor(props) {
@@ -342,7 +341,7 @@ class EditProfileScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  user: state.user
 });
 
 export default connect(

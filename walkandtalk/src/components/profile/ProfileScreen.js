@@ -18,8 +18,6 @@ import {
   Right,
   Content
 } from "native-base";
-import { fetchProfile } from "../../actions/ProfileActions";
-import { fetchPosts } from "../../actions/EventActions";
 
 // Profile tab
 class ProfileScreen extends Component {

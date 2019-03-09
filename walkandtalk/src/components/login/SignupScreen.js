@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
-import { createUser } from "../../actions/AuthActions";
+import { createUser } from "../../actions/UserActions";
 import {
   Container,
   Header,
@@ -358,7 +358,7 @@ class SignupScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  user: state.user
 });
 
 export default connect(

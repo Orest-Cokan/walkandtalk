@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import { fetchEvents } from "../../actions/EventActions";
 import { connect } from "react-redux";
 import {
   Container,
@@ -16,19 +16,40 @@ import BaseCard from "../../cardview/baseCard";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-
-    // State
-    this.state = {
-      title: null,
-      description: null,
-      date: null,
-      startTime: null,
-      endTime: null,
-      intensity: null,
-      venue: null,
-      location: null
-    };
+    this.props.fetchEvents();
   }
+
+  componentDidMount() {
+    this.props.fetchEvents();
+  }
+
+  getEvents() {
+    let events = [];
+    this.props.events.forEach(event => {
+      let badge = null;
+      if (this.props.fullname == event.organizer) {
+        badge = "HOSTING";
+        console.log(this.props.fullname, events.organizer);
+      } else {
+        for (let i = 0; i < event.attendees.length; i++) {
+          if (event.attendees[i] == this.props.fullname) {
+            badge = "GOING";
+            break;
+          }
+        }
+      }
+      events.push(
+        <BaseCard
+          time={event.date}
+          title={event.title}
+          location={event.location}
+          badge={badge}
+        />
+      );
+    });
+    return events;
+  }
+
   render() {
     return (
       <Container>
@@ -44,34 +65,22 @@ class HomeScreen extends Component {
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {/* Card List View */}
-          <BaseCard
-            time="WED, MAR 3 AT 10:00PM"
-            title="Walk in the park"
-            location="Hawrelak Park"
-            badge="GOING"
-          />
-          <BaseCard
-            time="SAT, MAR 17 AT 9:00AM"
-            title="Morning Stroll"
-            location="River Valley"
-            badge="HOSTING"
-          />
-          <BaseCard
-            time="MON, MAR 19 AT 11:00AM"
-            title="Betty's Evening Stroll"
-            location="Van Vliet Centre"
-            badge="GOING"
-          />
+          {this.getEvents()}
         </Content>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  console.log("homescreen");
+  return {
+    events: state.event.events
+    //fullname: state.user.user.fullname
+  };
+};
 
 export default connect(
   mapStateToProps,
-  null
+  { fetchEvents }
 )(HomeScreen);

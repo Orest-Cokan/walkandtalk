@@ -1,4 +1,4 @@
-import { EVENT_FETCH_ALL, EVENT_CREATE } from "../actions/types";
+import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE } from "../actions/types";
 
 const INITIAL_STATE = {
   events: []
@@ -7,9 +7,11 @@ const INITIAL_STATE = {
 // event reducer
 const event = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case EVENT_FETCH_ALL:
+    case SET_EVENTS:
       return { ...state, events: action.payload };
     case EVENT_CREATE:
+      return { ...state, events: action.payload };
+    case EVENT_DELETE:
       return { ...state, events: action.payload };
     default:
       return state;

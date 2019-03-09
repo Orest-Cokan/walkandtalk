@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loginUser } from "../../actions/AuthActions";
+import { loginUser } from "../../actions/UserActions";
 import { Actions } from "react-native-router-flux";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
@@ -71,7 +71,7 @@ class AuthScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  user: state.user
 });
 
 export default connect(

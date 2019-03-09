@@ -1,55 +1,56 @@
 import {
-  AUTH_LOGIN_USER,
-  AUTH_LOGIN_USER_FAIL,
-  AUTH_LOGIN_USER_SUCCESS,
-  AUTH_CREATE_USER,
-  AUTH_CREATE_USER_FAIL,
-  AUTH_CREATE_USER_SUCCESS
+  USER_LOGIN,
+  USER_LOGIN_FAIL,
+  USER_CREATE_FAIL,
+  USER_CREATE_SUCCESS,
+  USER_CREATE,
+  USER_EDIT
 } from "../actions/types";
 
 const INITIAL_STATE = {
   errorLoging: "",
   errorCreating: "",
   loading: false,
-  user: null
+  user: ""
 };
 
-// auth reducer
-const auth = (state = INITIAL_STATE, action) => {
+// user reducer
+const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case AUTH_CREATE_USER:
+    case USER_CREATE:
       return {
         ...state,
         ...INITIAL_STATE,
         loading: true,
         user: action.payload
       };
-    case AUTH_CREATE_USER_FAIL:
+    case USER_CREATE_FAIL:
       return {
         ...state,
         errorCreating: "Creation failed! Please check the credentials!",
         loading: false
       };
-    case AUTH_CREATE_USER_SUCCESS:
+    case USER_CREATE_SUCCESS:
       return { ...state, loading: false, error: "" };
-    case AUTH_LOGIN_USER:
+    case USER_LOGIN:
+      console.log("reeee", action.payload);
       return {
         ...state,
         ...INITIAL_STATE,
         loading: true,
         user: action.payload
       };
-    case AUTH_LOGIN_USER_FAIL:
+    case USER_LOGIN_FAIL:
       return {
         ...state,
         errorLoging: "Login failed! Please check the credentials!",
         loading: false
       };
-    case AUTH_LOGIN_USER_SUCCESS:
-      return { ...state, loading: false, error: "" };
+    case USER_EDIT:
+      return { ...state, user: action.payload };
     default:
       return state;
   }
 };
 
-export default auth;
+export default user;

@@ -1,4 +1,4 @@
-import { EVENT_FETCH_ALL, EVENT_CREATE } from "./types";
+import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 
@@ -8,8 +8,7 @@ export const fetchEvents = () => {
     axios
       .get("http://10.0.2.2:2017/public/walkingevents")
       .then(res => {
-        console.log(res.data);
-        dispatch({ type: EVENT_FETCH_ALL, payload: res.data });
+        dispatch({ type: SET_EVENTS, payload: res.data.events });
       })
       .catch(err => {
         console.log(err);
@@ -48,6 +47,21 @@ export const createEvent = (
           dispatch({ type: EVENT_CREATE });
           Actions.reset("app");
         }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+// action to delete an event
+export const deleteEvent = id => {
+  return dispatch => {
+    axios
+      .delete("http://10.0.2.2:2017/public/walkingevent/" + id)
+      .then(res => {
+        console.log(res.data);
+        dispatch({ type: EVENT_DELETE, payload: res.data });
       })
       .catch(err => {
         console.log(err);

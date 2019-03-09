@@ -1,10 +1,10 @@
 import {
-  AUTH_CREATE_USER,
-  AUTH_CREATE_USER_FAIL,
-  AUTH_CREATE_USER_SUCCESS,
-  AUTH_LOGIN_USER,
-  AUTH_LOGIN_USER_FAIL,
-  AUTH_LOGIN_USER_SUCCESS
+  USER_CREATE,
+  USER_CREATE_FAIL,
+  USER_CREATE_SUCCESS,
+  USER_LOGIN,
+  USER_LOGIN_FAIL,
+  USER_LOGIN_SUCCESS
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -17,7 +17,7 @@ export const createUser = (email, password, password2) => {
     password2: password2
   };
   return dispatch => {
-    dispatch({ type: AUTH_CREATE_USER });
+    dispatch({ type: USER_CREATE });
     axios
       .post("http://10.0.2.2:2017/public/user", user)
       .then(res => {
@@ -35,13 +35,13 @@ export const createUser = (email, password, password2) => {
 
 // dispatch creating a user failed
 const createUserFail = dispatch => {
-  dispatch({ type: AUTH_CREATE_USER_FAIL });
+  dispatch({ type: USER_CREATE_FAIL });
 };
 
 // dispatch creating a user succesful
 const createUserSuccess = (dispatch, user) => {
   dispatch({
-    type: AUTH_CREATE_USER_SUCCESS,
+    type: USER_CREATE_SUCCESS,
     payload: user
   });
 
@@ -54,16 +54,18 @@ export const loginUser = (email, password) => {
     email: email,
     password: password
   };
+  console.log("login", USER_LOGIN);
   return dispatch => {
-    dispatch({ type: AUTH_LOGIN_USER });
     console.log(email, password);
+    dispatch({ type: USER_LOGIN });
     axios
       .post("http://10.0.2.2:2017/public/login", user)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.status);
-          loginUserSuccess(dispatch, res.data);
-          console.log(res.data);
+          console.log(res.data.user);
+          console.log(res.data.user.email);
+          console.log(res.data.user.fullname);
+          loginUserSuccess(dispatch, res.data.user);
         }
       })
       .catch(err => {
@@ -75,15 +77,15 @@ export const loginUser = (email, password) => {
 
 // dispatch user login fail
 const loginUserFail = dispatch => {
-  dispatch({ type: AUTH_LOGIN_USER_FAIL });
+  console.log("fail", USER_LOGIN_FAIL);
+  dispatch({ type: USER_LOGIN_FAIL });
 };
 
-// dispatch user login success
 const loginUserSuccess = (dispatch, user) => {
+  console.log(user.email, "wtfisgoingon");
   dispatch({
-    type: AUTH_LOGIN_USER_SUCCESS,
+    type: USER_LOGIN_SUCCESS,
     payload: user
   });
-
   Actions.app();
 };
