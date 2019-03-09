@@ -27,6 +27,7 @@ const User = sequelize.define(
     password: Sequelize.STRING,
     fullname: Sequelize.STRING,
     menopausal_stage: Sequelize.STRING,
+    image: Sequelize.STRING,
     intensity: Sequelize.STRING,
     venue: Sequelize.STRING,
     location: Sequelize.STRING

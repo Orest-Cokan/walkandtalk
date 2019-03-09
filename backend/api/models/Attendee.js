@@ -6,11 +6,6 @@ const tableName = "attendees";
 
 // attendee model
 const Attendee = sequelize.define(tableName, {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
   name: Sequelize.STRING
 });
 

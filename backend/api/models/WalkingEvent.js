@@ -24,5 +24,5 @@ const WalkingEvent = sequelize.define(tableName, {
 });
 
 WalkingEvent.hasMany(Attendee);
-
+Attendee.belongsTo(WalkingEvent);
 module.exports = WalkingEvent;

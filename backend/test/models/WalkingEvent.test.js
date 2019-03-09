@@ -11,6 +11,7 @@ afterAll(() => {
   afterAction();
 });
 
+// mock
 beforeEach(async () => {
   walkingEvent = await WalkingEvent.build({
     title: "walking with friends",
@@ -21,8 +22,8 @@ beforeEach(async () => {
   }).save();
 });
 
+// test walkingevent creation
 test("Walkingevent is created correctly", async () => {
-  // check if user is created
   expect(walkingEvent.title).toBe("walking with friends");
   expect(walkingEvent.description).toBe("i want to go");
   expect(walkingEvent.intensity).toBe("slow");
@@ -32,6 +33,7 @@ test("Walkingevent is created correctly", async () => {
   await walkingEvent.destroy();
 });
 
+// test walking event is updated
 test("Walking event is updated correctly", async () => {
   await walkingEvent.update({
     title: "new walking event title",

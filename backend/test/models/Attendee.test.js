@@ -11,16 +11,17 @@ afterAll(() => {
   afterAction();
 });
 
+// mock
 beforeEach(async () => {
   attendee = await Attendee.build({
     name: "skryt"
   }).save();
 });
 
+// test attendee
 test("Attendee is created correctly", async () => {
-  // check if user is created
+  // check if attendee is created
   expect(attendee.name).toBe("skryt");
-  // check if password is not send to browser
 
   await attendee.destroy();
 });

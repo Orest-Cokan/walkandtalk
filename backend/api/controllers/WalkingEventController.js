@@ -37,8 +37,6 @@ const WalkingEventController = () => {
 
   // get all walkingevents
   const getAll = async (req, res) => {
-    WalkingEvent.hasMany(Attendee);
-
     try {
       const events = await WalkingEvent.findAll({
         include: [
@@ -101,27 +99,26 @@ const WalkingEventController = () => {
       });
   };
 
-  // update an event
+  // add an attendee to an event!
   const addAttendees = async (req, res) => {
     const { body } = req;
     console.log(body.id, body.name);
     try {
-      const walkingevent = await WalkingEvent.findAll({
-        where: {
-          id: body.id
-        },
+      const walkingevent = await WalkingEvent.findByPk(body.id, {
         include: [
           {
             model: Attendee
           }
         ]
       });
-      console.log(walkingevent);
-      const user = Attendee.create({
+      await Attendee.create({
         name: body.name
+      }).then(resp => {
+        walkingevent.addAttendees(resp);
       });
-      walkingevent.addAttendee(user);
-      return res.status(200).json({ walkingevent });
+      return res
+        .status(200)
+        .json({ msg: "Succesfully added user to the walking event!" });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ msg: "Internal server error" });
