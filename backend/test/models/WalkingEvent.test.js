@@ -1,5 +1,7 @@
 const { beforeAction, afterAction } = require("../setup/_setup");
 const WalkingEvent = require("../../api/models/WalkingEvent");
+const Attendee = require("../../api/models/Attendee");
+const Location = require("../../api/models/Location");
 
 let walkingEvent;
 
@@ -44,4 +46,14 @@ test("Walking event is updated correctly", async () => {
   expect(walkingEvent.description).toBe("id rather noose");
 
   await walkingEvent.destroy();
+});
+
+//test associations
+test("WalkingEvent associations", async () => {
+  before(() => {
+    WalkingEvent.hasMany({ Attendee });
+    WalkingEvent.hasOne({ Location });
+  });
+  expect(WalkingEvent.hasMany).to.have.been.calledWith(Attendee);
+  expect(WalkingEvent.hasOne).to.have.been.calledWith(Location);
 });

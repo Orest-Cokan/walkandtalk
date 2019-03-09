@@ -60,3 +60,33 @@ test("WalkingEvent | destroy", async () => {
     .expect(200);
   expect(response.body.msg).toBe("Deleted!");
 });
+
+// test adding an attendee
+test("WalkingEvent | addAttendee", async () => {
+  //mock user/event
+  const user = {
+    id: 1,
+    name: "national womans day"
+  };
+  const event = {
+    title: "we are walking",
+    description: "more walking"
+  };
+
+  // post an event
+  const res = await request(api)
+    .post("/public/walkingevent", event)
+    .expect(200);
+
+  console.log(res.body);
+
+  // add an attendee to it
+  await request(api)
+    .put("/public/walkingevent/attendee".user)
+    .expect(200);
+
+  // check if getting the event nothing breaks
+  await request(api)
+    .get("/public/walkingevent/" + user.id)
+    .expect(200);
+});

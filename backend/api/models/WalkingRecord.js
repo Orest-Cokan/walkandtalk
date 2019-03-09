@@ -18,4 +18,5 @@ const WalkingRecord = sequelize.define(tableName, {
   locationRating: Sequelize.INTEGER
 });
 
+// export walking record
 module.exports = WalkingRecord;

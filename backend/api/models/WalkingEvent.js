@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../../config/database");
 const Attendee = require("./Attendee");
+const Location = require("./Location");
 
 // table name
 const tableName = "WalkingEvent";
@@ -23,6 +24,10 @@ const WalkingEvent = sequelize.define(tableName, {
   location: Sequelize.STRING
 });
 
+// set the associations
 WalkingEvent.hasMany(Attendee);
 Attendee.belongsTo(WalkingEvent);
+WalkingEvent.hasOne(Location, { as: "locations" });
+
+// export walkingevent model
 module.exports = WalkingEvent;

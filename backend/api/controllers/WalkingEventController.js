@@ -1,5 +1,6 @@
 const WalkingEvent = require("../models/WalkingEvent");
 const Attendee = require("../models/Attendee");
+const Location = require("../models/Location");
 
 // WalkingEvent controller
 const WalkingEventController = () => {
@@ -18,11 +19,19 @@ const WalkingEventController = () => {
           end_time: body.end_time,
           intensity: body.intensity,
           venue: body.venue,
-          location: body.location,
+          locations: body.location,
           attendees: body.attendees
         },
         {
-          include: [Attendee]
+          include: [
+            {
+              model: Attendee
+            },
+            {
+              model: Location,
+              as: "locations"
+            }
+          ]
         }
       );
 
@@ -42,6 +51,10 @@ const WalkingEventController = () => {
         include: [
           {
             model: Attendee
+          },
+          {
+            model: Location,
+            as: "locations"
           }
         ]
       });
@@ -52,7 +65,7 @@ const WalkingEventController = () => {
     }
   };
 
-  // update an event
+  // update an event THIS SHIT WILL NEED TO BE FIXED LATER CUZ OF LOCATIONS
   const updateEvent = async (req, res) => {
     const { body } = req;
     console.log(body.id, body.title, body.description);
@@ -105,11 +118,7 @@ const WalkingEventController = () => {
     console.log(body.id, body.name);
     try {
       const walkingevent = await WalkingEvent.findByPk(body.id, {
-        include: [
-          {
-            model: Attendee
-          }
-        ]
+        include: [Attendee, Location]
       });
       await Attendee.create({
         name: body.name
