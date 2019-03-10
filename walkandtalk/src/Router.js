@@ -19,7 +19,10 @@ import FormScreen from "./components/form/FormScreen";
 const RouterComponent = () => (
   <Router>
     <Stack key="root">
-    
+    <Stack key="auth" hideNavBar>
+      <Scene key="login" component={AuthScreen} />
+      <Scene key="signup" component={SignupScreen} />
+    </Stack>
       <Stack key="app" hideNavBar panHandlers={null}>
         <Tabs showLabel={false}>
           <Scene
