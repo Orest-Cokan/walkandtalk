@@ -104,6 +104,12 @@ export default StyleSheet.create({
     },
 
    // Forms
+   //
+   formRowContainerEvent: {
+     flexDirection: 'row',
+     justifyContent: 'flex-start',
+     marginLeft:13
+   },
   formInfo: {
     color: "gray",
     fontSize: 15
@@ -128,17 +134,18 @@ export default StyleSheet.create({
     padding: 0,
     fontSize: 15
   },
+  TitleHeader: {
+    color:"black",
+    fontSize: 16,
+    fontWeight:"500",
+    marginTop:15
+  },
 
   //Events
   EventSectionTitle: {
     fontWeight: 'bold',
     color:"#A680B8",
     fontSize: 18
-  },
-  TitleHeader: {
-    color:"black",
-    fontSize: 16,
-    fontWeight:"500"
   },
 
   eventIcons: {
