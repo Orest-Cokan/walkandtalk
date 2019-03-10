@@ -1,5 +1,14 @@
+// Create Event Screen View
 import React, { Component } from "react";
-import { View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Button,
+  Alert
+} from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -8,10 +17,13 @@ import {
   Body,
   Title,
   Right,
-  Content
+  Content,
+  StatusBar
 } from "native-base";
+import { SegmentedControls } from "react-native-radio-buttons";
+import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import BaseCard from "../../cardview/baseCard";
+import { createEvent } from "../../actions/EventActions";
 
 class HomeScreen extends Component {
   render() {
