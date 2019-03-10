@@ -129,6 +129,99 @@ export default StyleSheet.create({
     fontSize: 15
   },
 
+  //Events
+  EventSectionTitle: {
+    fontWeight: 'bold',
+    color:"#A680B8",
+    fontSize: 18
+  },
+  TitleHeader: {
+    color:"black",
+    fontSize: 16,
+    fontWeight:"500"
+  },
 
+  eventIcons: {
+    width: 25,
+    height: 25,
+    marginBottom: 10,
+    marginRight: 7,
+    position:"relative"
+  },
+
+  eventInfoInput: {
+    textAlign: 'left',
+    color: 'black',
+    fontSize: 16,
+    paddingBottom:2
+  },
+  rowContainerEvent: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginLeft:13
+  },
+  rowContainerEvent2: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    marginLeft:2
+  },
+  attending: {
+    textAlign: 'left',
+    color:"#A680B8",
+    fontSize: 16,
+    paddingBottom:2,
+    fontWeight: "bold"
+  },
+  attendingText:{
+    textAlign: 'left',
+    color: 'black',
+    fontSize: 16,
+    marginLeft:4
+  },
+  // Line separator
+  EventLineSeparator: {
+    borderBottomColor: 'grey',
+    borderBottomWidth: 1,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    marginTop: 5
+  },
+
+  aboutInfo: {
+    textAlign: 'left',
+    color: 'grey',
+    fontSize: 16,
+    paddingBottom:2
+  },
+
+  eventDescription: {
+    textAlign: 'left',
+    color: 'black',
+    fontSize: 16,
+    marginLeft:2,
+    marginRight: 2,
+    height: 230
+  },
+  eventDescription1: {
+    textAlign: 'left',
+    color: 'black',
+    fontSize: 16,
+    marginLeft:2,
+    marginRight: 2,
+    height: 165
+  },
+
+  headerWithBack:{
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+
+  backIcon:{
+    width: 20,
+    height: 20,
+    marginRight: 100,
+    position:"relative"
+  }
 
   });
