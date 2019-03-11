@@ -1,3 +1,4 @@
 node_modules
 .vscode
 f
+.DS_store 
