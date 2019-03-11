@@ -13,9 +13,17 @@ export default StyleSheet.create({
     backgroundColor: '#A680B8',
     height: 45,
   },
-  headerBody:{
+  headerBody: {
     flex: 1,
     alignItems: 'center'
+  },
+  headerSides: {
+    flex: 1,
+  },
+
+  // Back icon
+  backIcon:{
+    size: 10
   },
 
   // Content
