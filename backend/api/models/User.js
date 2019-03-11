@@ -3,6 +3,7 @@ const bcryptService = require("../services/bcrypt.service");
 
 const sequelize = require("../../config/database");
 
+// hook for a user to encrypt their password
 const hooks = {
   beforeCreate(user) {
     user.password = bcryptService().password(user); // eslint-disable-line no-param-reassign
