@@ -1,18 +1,6 @@
-// Home Screen View
+// Create Event Screen View
 import React, { Component } from "react";
-<<<<<<< HEAD
 import { fetchEvents } from "../../actions/EventActions";
-=======
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Button,
-  Alert
-} from "react-native";
->>>>>>> master
 import { connect } from "react-redux";
 import {
   Container,
@@ -24,7 +12,10 @@ import {
   Content,
   StatusBar
 } from "native-base";
+import { SegmentedControls } from "react-native-radio-buttons";
+import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import { createEvent } from "../../actions/EventActions";
 import BaseCard from "../../cardview/baseCard";
 
 class HomeScreen extends Component {
@@ -40,18 +31,6 @@ class HomeScreen extends Component {
   getEvents() {
     let events = [];
     this.props.events.forEach(event => {
-      let badge = null;
-      if (this.props.fullname == event.organizer) {
-        badge = "HOSTING";
-        console.log(this.props.fullname, events.organizer);
-      } else {
-        for (let i = 0; i < event.attendees.length; i++) {
-          if (event.attendees[i] == this.props.fullname) {
-            badge = "GOING";
-            break;
-          }
-        }
-      }
       events.push(
         <BaseCard
           time={event.date}
