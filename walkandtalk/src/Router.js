@@ -15,6 +15,10 @@ import HomeScreen from "./components/home/HomeScreen";
 import SearchScreen from "./components/search/SearchScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
 import FormScreen from "./components/form/FormScreen";
+import EditProfileScreen from "./components/profile/EditProfileScreen";
+import PastEventListScreen from "./components/profile/ViewPastEventList";
+
+
 
 const RouterComponent = () => (
   <Router>
@@ -88,7 +92,6 @@ const RouterComponent = () => (
           />
           <Scene
             key="profile"
-            component={ProfileScreen}
             icon={({ focused }) => (
               <Image
                 source={
@@ -100,7 +103,21 @@ const RouterComponent = () => (
               />
             )}
             hideNavBar
-          />
+          >
+            <Scene
+              key="profilePage"
+              component={ProfileScreen}
+            />
+            <Scene
+              key="editProfile"
+              component={EditProfileScreen}
+            />
+            <Scene
+              key="pastEvents"
+              component={PastEventListScreen}
+            />
+
+          </Scene>
         </Tabs>
       </Stack>
     </Stack>

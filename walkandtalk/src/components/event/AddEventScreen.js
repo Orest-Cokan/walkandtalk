@@ -24,6 +24,8 @@ import { SegmentedControls } from "react-native-radio-buttons";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { createEvent } from "../../actions/EventActions";
+import { Actions } from "react-native-router-flux";
+
 
 class AddEventScreen extends Component {
   constructor(props) {
@@ -85,6 +87,11 @@ class AddEventScreen extends Component {
       this.state.venue,
       this.state.location
     );
+   Actions.home();
+  };
+
+  onCancel = () => {
+   Actions.home();
   };
 
   render() {
@@ -282,7 +289,7 @@ class AddEventScreen extends Component {
                 styles.buttonContainer,
                 { borderWidth: 1, borderColor: "black" }
               ]}
-              //onPress={}
+              onPress={this.onCancel}
             >
               <Text>Cancel</Text>
             </TouchableOpacity>
