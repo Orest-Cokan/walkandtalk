@@ -1,4 +1,4 @@
-// Create Event Screen View
+// Home Screen View
 import React, { Component } from "react";
 <<<<<<< HEAD
 import { fetchEvents } from "../../actions/EventActions";
@@ -24,10 +24,7 @@ import {
   Content,
   StatusBar
 } from "native-base";
-import { SegmentedControls } from "react-native-radio-buttons";
-import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { createEvent } from "../../actions/EventActions";
 import BaseCard from "../../cardview/baseCard";
 
 class HomeScreen extends Component {

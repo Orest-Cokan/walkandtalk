@@ -18,6 +18,12 @@ import {
   Right,
   Content
 } from "native-base";
+<<<<<<< HEAD
+=======
+//import { fetchProfile } from "../../actions/ProfileActions";
+//import { fetchPosts } from "../../actions/EventActions";
+import { Actions } from 'react-native-router-flux';
+>>>>>>> master
 
 // Profile tab
 class ProfileScreen extends Component {
@@ -46,6 +52,11 @@ class ProfileScreen extends Component {
     // Navigate to edit profile
     Actions.editProfile(this.props.profile);
   };
+
+  goToPastEvents = () => {
+    // Navigate to Past Events
+    Actions.pastEvents();
+  }
 
   render() {
     return (
@@ -208,7 +219,7 @@ class ProfileScreen extends Component {
               <Text>Help Line Links</Text>
             </TouchableOpacity>
             {/* Button to past events */}
-            <TouchableOpacity style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.buttonContainer} onPress={this.goToPastEvents}>
               <Text>Past Events</Text>
             </TouchableOpacity>
           </View>

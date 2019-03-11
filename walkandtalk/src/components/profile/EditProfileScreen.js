@@ -344,10 +344,15 @@ const mapStateToProps = state => ({
   user: state.user
 });
 
+
 export default connect(
+  mapStateToProps,
+  null
+)(EditProfileScreen);
+{/*export default connect(
   null,
   { onSaveChanges }(EditProfileScreen)
-);
+);*/}
 
 // Styles
 const styles = StyleSheet.create({
