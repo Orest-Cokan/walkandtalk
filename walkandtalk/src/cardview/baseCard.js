@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Text } from "react-native";
+import { Actions } from "react-native-router-flux";
 
 /*
 This is the view for event card.
@@ -8,6 +9,11 @@ Returns: The list view that contains information about the event.
 */
 
 class BaseCard extends Component {
+
+  viewEvent = () => {
+    // Navigate to edit profile
+    Actions.viewevent(this.props);
+  };
   /*
   This is funtion checks if badge is null.
   Parameters: Time, title, locaiton and badge of the event.
@@ -37,7 +43,7 @@ class BaseCard extends Component {
   changeBadgeColour=()=>{
     if (this.props.badge.toUpperCase()=="GOING"){
       return (
-        <View style={styles.card}>
+        <View style={styles.card} onPress={this.viewEvent}>
             <View style={styles.withBadge}>
               <Text style={styles.eventTime}>{this.props.time}</Text>
               <Text style={[styles.going, styles.Badge]}>{this.props.badge}</Text>
