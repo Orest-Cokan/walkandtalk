@@ -36,7 +36,7 @@ class HomeScreen extends Component {
           time={event.date}
           title={event.title}
           location={event.location}
-          badge={badge}
+          badge={"GOING"}
         />
       );
     });

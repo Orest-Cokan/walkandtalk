@@ -26,7 +26,6 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { createEvent } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
 
-
 class AddEventScreen extends Component {
   constructor(props) {
     super(props);
@@ -76,6 +75,7 @@ class AddEventScreen extends Component {
   };
 
   onFinish = () => {
+    console.log("we are here!");
     this.props.createEvent(
       this.state.organizer,
       this.state.title,
@@ -87,11 +87,10 @@ class AddEventScreen extends Component {
       this.state.venue,
       this.state.location
     );
-   Actions.home();
   };
 
   onCancel = () => {
-   Actions.home();
+    Actions.home();
   };
 
   render() {

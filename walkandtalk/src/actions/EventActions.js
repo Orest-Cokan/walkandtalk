@@ -44,6 +44,7 @@ export const createEvent = (
       .post("http://10.0.2.2:2017/public/walkingevent", walking_event)
       .then(res => {
         if (res.status === 200) {
+          console.log(res.status, "is this even logged???");
           dispatch({ type: EVENT_CREATE });
           Actions.reset("app");
         }
