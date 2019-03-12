@@ -14,7 +14,7 @@ export default StyleSheet.create({
     height: 45,
   },
   headerBody: {
-    flex: 1,
+    flex: 2,
     alignItems: 'center'
   },
   headerSides: {
