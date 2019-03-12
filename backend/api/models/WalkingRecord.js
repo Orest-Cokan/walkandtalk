@@ -11,6 +11,7 @@ const WalkingRecord = sequelize.define(tableName, {
     autoIncrement: true,
     primaryKey: true
   },
+  email: Sequelize.STRING,
   fullname: Sequelize.STRING,
   commentsLocation: Sequelize.STRING,
   commentsWalk: Sequelize.STRING,

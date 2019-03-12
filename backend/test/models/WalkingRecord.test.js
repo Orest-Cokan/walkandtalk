@@ -15,6 +15,7 @@ afterAll(() => {
 beforeEach(async () => {
   walkingRecord = await WalkingRecord.build({
     fullname: "skryt",
+    email: "skryt@gmail.com",
     commentsLocation: "i hate the rivervalley too many hobos",
     commentsWalk: "walking is not fun, 0/10 would not recommend",
     walkRating: 1,
@@ -34,6 +35,7 @@ test("WalkingRecord is created correctly", async () => {
   );
   expect(walkingRecord.walkRating).toBe(1);
   expect(walkingRecord.locationRating).toBe(2);
+  expect(walkingRecord.email).toBe("skryt@gmail.com");
 
   // nuke the model
   await walkingRecord.destroy();

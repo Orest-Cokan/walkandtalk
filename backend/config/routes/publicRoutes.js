@@ -13,7 +13,12 @@ const publicRoutes = {
   "POST /walkingevent": "WalkingEventController.create",
   "PUT /walkingevent": "WalkingEventController.updateEvent",
   "DELETE /walkingevent/:id": "WalkingEventController.destroy",
-  "PUT /walkingevent/attendee": "WalkingEventController.addAttendees"
+  "PUT /walkingevent/attendee": "WalkingEventController.addAttendees",
+
+  // Walkingrecord routes
+  "GET /walkingrecords": "WalkingRecordController.getAll",
+  "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
+  "POST /walkingrecord": "WalkingRecordController.create"
 };
 
 module.exports = publicRoutes;
