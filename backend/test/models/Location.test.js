@@ -13,7 +13,7 @@ afterAll(() => {
 
 //mock
 beforeEach(async () => {
-  user = await Location.build({
+  location = await Location.build({
     streetName: "Citarum River",
     lat: 0.123,
     long: 0.123

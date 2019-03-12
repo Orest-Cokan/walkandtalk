@@ -19,7 +19,6 @@ beforeEach(async () => {
     title: "walking with friends",
     description: "i want to go",
     intensity: "slow",
-    location: "millwoods",
     venue: "indoor"
   }).save();
 });
@@ -30,7 +29,6 @@ test("Walkingevent is created correctly", async () => {
   expect(walkingEvent.description).toBe("i want to go");
   expect(walkingEvent.intensity).toBe("slow");
   expect(walkingEvent.venue).toBe("indoor");
-  expect(walkingEvent.location).toBe("millwoods");
 
   await walkingEvent.destroy();
 });
@@ -46,14 +44,4 @@ test("Walking event is updated correctly", async () => {
   expect(walkingEvent.description).toBe("id rather noose");
 
   await walkingEvent.destroy();
-});
-
-//test associations
-test("WalkingEvent associations", async () => {
-  before(() => {
-    WalkingEvent.hasMany({ Attendee });
-    WalkingEvent.hasOne({ Location });
-  });
-  expect(WalkingEvent.hasMany).to.have.been.calledWith(Attendee);
-  expect(WalkingEvent.hasOne).to.have.been.calledWith(Location);
 });

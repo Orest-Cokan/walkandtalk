@@ -20,7 +20,6 @@ test("WalkingEvent | create", async () => {
     .send({
       title: "Walking Event!",
       description: "going to go walking at the U of A",
-      location: "millwoods",
       venue: "outdoor",
       intensity: "fast"
     })
@@ -31,7 +30,6 @@ test("WalkingEvent | create", async () => {
   expect(walkingevent.id).toBe(1);
   expect(walkingevent.title).toBe("Walking Event!");
   expect(walkingevent.description).toBe("going to go walking at the U of A");
-  expect(walkingevent.location).toBe("millwoods");
   expect(walkingevent.venue).toBe("outdoor");
   expect(walkingevent.intensity).toBe("fast");
 
@@ -65,7 +63,7 @@ test("WalkingEvent | destroy", async () => {
 test("WalkingEvent | addAttendee", async () => {
   //mock user/event
   const user = {
-    id: 1,
+    id: 2,
     name: "national womans day"
   };
   const event = {
@@ -82,11 +80,11 @@ test("WalkingEvent | addAttendee", async () => {
 
   // add an attendee to it
   await request(api)
-    .put("/public/walkingevent/attendee".user)
-    .expect(200);
-
-  // check if getting the event nothing breaks
-  await request(api)
-    .get("/public/walkingevent/" + user.id)
+    .put("/public/walkingevent/attendee")
+    .set("Accept", /json/)
+    .send({
+      id: 1,
+      name: "national womans day"
+    })
     .expect(200);
 });

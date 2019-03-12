@@ -118,7 +118,7 @@ const WalkingEventController = () => {
     console.log(body.id, body.name);
     try {
       const walkingevent = await WalkingEvent.findByPk(body.id, {
-        include: [Attendee, Location]
+        include: [Attendee]
       });
       await Attendee.create({
         name: body.name
