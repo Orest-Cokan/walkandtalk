@@ -62,9 +62,7 @@ export const loginUser = (email, password) => {
       .post("http://10.0.2.2:2017/public/login", user)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data.user);
-          console.log(res.data.user.email);
-          console.log(res.data.user.fullname);
+          console.log(res.data.user, "meh memes!");
           loginUserSuccess(dispatch, res.data.user);
         }
       })
@@ -81,8 +79,9 @@ const loginUserFail = dispatch => {
   dispatch({ type: USER_LOGIN_FAIL });
 };
 
+// dispatch user login success
 const loginUserSuccess = (dispatch, user) => {
-  console.log(user.email, "wtfisgoingon");
+  console.log(user, "wtfisgoingon");
   dispatch({
     type: USER_LOGIN_SUCCESS,
     payload: user

@@ -1,6 +1,8 @@
 // Create Event Screen View
 import React, { Component } from "react";
 import { fetchEvents } from "../../actions/EventActions";
+import { loginUser, createUser } from "../../actions/UserActions";
+
 import { connect } from "react-redux";
 import {
   Container,
@@ -22,17 +24,32 @@ class HomeScreen extends Component {
     this.props.fetchEvents();
   }
 
+  componentDidMount() {
+    this.props.fetchEvents;
+  }
+
   getEvents() {
     let events = [];
-    console.log(this.props.events, "inside get events");
+    const fullname = this.props.user.user.fullname;
     this.props.events.map(event => {
+      let badge = null;
+      if (fullname == event.organizer) {
+        badge = "HOSTING";
+      } else {
+        for (let i = 0; i < event.attendees.length; i++) {
+          if (event.attendees[i].name == fullname) {
+            badge = "GOING";
+            break;
+          }
+        }
+      }
       events.unshift(
         <BaseCard
           key={event.id}
           time={event.date}
           title={event.title}
           location={event.location}
-          badge={"GOING"}
+          badge={badge}
         />
       );
     });
@@ -64,8 +81,8 @@ class HomeScreen extends Component {
 const mapStateToProps = state => {
   console.log("homescreen");
   return {
-    events: state.event.events
-    //fullname: state.user.user.fullname
+    events: state.event.events,
+    user: state.user
   };
 };
 

@@ -4,7 +4,8 @@ import {
   USER_CREATE_FAIL,
   USER_CREATE_SUCCESS,
   USER_CREATE,
-  USER_EDIT
+  USER_EDIT,
+  USER_LOGIN_SUCCESS
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -34,6 +35,7 @@ const user = (state = INITIAL_STATE, action) => {
       return { ...state, loading: false, error: "" };
     case USER_LOGIN:
       console.log("reeee", action.payload);
+      console.log("reeee", action);
       return {
         ...state,
         ...INITIAL_STATE,
@@ -48,6 +50,13 @@ const user = (state = INITIAL_STATE, action) => {
       };
     case USER_EDIT:
       return { ...state, user: action.payload };
+    case USER_LOGIN_SUCCESS:
+      return {
+        ...state,
+        ...INITIAL_STATE,
+        loading: true,
+        user: action.payload
+      };
     default:
       return state;
   }
