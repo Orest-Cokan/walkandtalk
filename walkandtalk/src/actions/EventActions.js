@@ -45,12 +45,13 @@ export const createEvent = (
       .then(res => {
         if (res.status === 200) {
           console.log(res.status, "is this even logged???");
+          console.log(walking_event, "is this null?");
           dispatch({ type: EVENT_CREATE });
           Actions.reset("app");
         }
       })
       .catch(err => {
-        console.log(err);
+        console.log(err, "kek");
       });
   };
 };

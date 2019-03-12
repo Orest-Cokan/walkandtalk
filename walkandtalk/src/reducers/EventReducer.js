@@ -10,9 +10,9 @@ const event = (state = INITIAL_STATE, action) => {
     case SET_EVENTS:
       return { ...state, events: action.payload };
     case EVENT_CREATE:
-      return { ...state, events: action.payload };
+      return { ...state, event: action.payload };
     case EVENT_DELETE:
-      return { ...state, events: action.payload };
+      return { ...state, event: action.payload };
     default:
       return state;
   }

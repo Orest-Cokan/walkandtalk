@@ -12,27 +12,23 @@ import {
   Content,
   StatusBar
 } from "native-base";
-import { SegmentedControls } from "react-native-radio-buttons";
-import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { createEvent } from "../../actions/EventActions";
 import BaseCard from "../../cardview/baseCard";
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.props.fetchEvents();
-  }
-
-  componentDidMount() {
+    console.log("inside constructor");
     this.props.fetchEvents();
   }
 
   getEvents() {
     let events = [];
-    this.props.events.forEach(event => {
-      events.push(
+    console.log(this.props.events, "inside get events");
+    this.props.events.map(event => {
+      events.unshift(
         <BaseCard
+          key={event.id}
           time={event.date}
           title={event.title}
           location={event.location}
