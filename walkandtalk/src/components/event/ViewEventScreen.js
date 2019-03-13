@@ -99,8 +99,8 @@ class ViewEventScreen extends Component {
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor="#A680B8"
-          androidStatusBarStyle="light-content"
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
         >
           <Body style={ScreenStyleSheet.headerWithBack}>
           <Image

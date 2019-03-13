@@ -25,7 +25,8 @@ class PastEventListScreen extends Component {
 
   onBack = () => {
     // Navigate back to profile page
-    Actions.pop();
+    //Actions.pop();
+    Actions.pastEventRecord();
   }
 
   render() {
@@ -34,8 +35,8 @@ class PastEventListScreen extends Component {
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor="#A680B8"
-          androidStatusBarStyle="light-content"
+          androidStatusBarColor="white"
+          androidStatusBarStyle="dark-content"
         >
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>
@@ -46,7 +47,7 @@ class PastEventListScreen extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title>Past Events</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Past Events</Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides}>
           </Right>

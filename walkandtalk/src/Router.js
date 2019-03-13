@@ -1,11 +1,10 @@
 import React from "react";
-import { View, Image } from "react-native";
+import { View, Image, StatusBar } from "react-native";
 import {
   Router,
   Stack,
   Scene,
   Tabs,
-  StatusBar
 } from "react-native-router-flux";
 
 import AuthScreen from "./components/login/AuthScreen";
@@ -29,7 +28,11 @@ const RouterComponent = () => (
       <Scene key="signup" component={SignupScreen} />
     </Stack>
       <Stack key="app" hideNavBar panHandlers={null}>
-        <Tabs showLabel={false}>
+        <Tabs
+          showLabel={false}
+          activeBackgroundColor="#A680B8"
+          inactiveBackgroundColor="#A680B8"
+        >
           <Scene
             key="home"
             component={HomeScreen}

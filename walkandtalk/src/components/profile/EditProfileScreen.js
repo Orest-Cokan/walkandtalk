@@ -130,11 +130,11 @@ class EditProfileScreen extends Component {
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor="#A680B8"
-          androidStatusBarStyle="light-content"
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
         >
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title>Edit Profile</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Edit Profile</Title>
           </Body>
         </Header>
 
@@ -143,7 +143,7 @@ class EditProfileScreen extends Component {
             {/* Profile picture */}
             <Image
               style={ScreenStyleSheet.avatar}
-              source={require("../../assets/icons/profile.png")}
+              source={require("../../assets/icons/default-profile.png")}
             />
             {/* Add + for changing profile picture */}
           </View>

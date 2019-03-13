@@ -122,11 +122,11 @@ class SignupScreen extends Component {
       <Container>
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor="#A680B8"
-          androidStatusBarStyle="light-content"
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
         >
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title>Sign Up</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Sign Up</Title>
           </Body>
         </Header>
         <Content contentContainerStyle={ScreenStyleSheet.content}>
