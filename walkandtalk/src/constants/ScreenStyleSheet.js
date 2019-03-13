@@ -10,12 +10,15 @@ export default StyleSheet.create({
 
   // Header
   header: {
-    backgroundColor: '#A680B8',
+    backgroundColor: 'white',
     height: 45,
   },
   headerBody: {
     flex: 2,
     alignItems: 'center'
+  },
+  headerTitle: {
+    color: 'grey',
   },
   headerSides: {
     flex: 1,

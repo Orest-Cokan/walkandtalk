@@ -18,10 +18,12 @@ import {
   Right,
   Content
 } from "native-base";
+//import { fetchProfile } from "../../actions/ProfileActions";
+//import { fetchPosts } from "../../actions/EventActions";
 import { Actions } from 'react-native-router-flux';
 
 // Profile tab
-class ProfileScreen extends Component {
+class PastEventRecordScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -42,20 +44,10 @@ class ProfileScreen extends Component {
     this.props.fetchProfile;
   }
 
-  // When edit profile icon is clicked
-  editProfile = () => {
-    // Navigate to edit profile
-    Actions.editProfile(this.props.profile);
-  };
 
-  goToPastEvents = () => {
+  onBack = () => {
     // Navigate to Past Events
-    Actions.pastEvents();
-  };
-
-  goToHelpLineLinks = () => {
-    // Navigate to Past Events
-    Actions.helplines();
+    Actions.pop();
   }
 
   render() {
@@ -64,37 +56,25 @@ class ProfileScreen extends Component {
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor={"white"}
-          iosBarStyle={"dark-content"}
+          androidStatusBarColor="#A680B8"
+          androidStatusBarStyle="light-content"
         >
+          <Left style={ScreenStyleSheet.headerSides}>
+            <Button transparent onPress={this.onBack}>
+              <Image
+                style={ScreenStyleSheet.backIcon}
+                source={require("../../assets/icons/back-button.png")}
+              />
+            </Button>
+          </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Profile</Title>
+            <Title style={ScreenStyleSheet.headerTitle>Past Event Record *</Title>
           </Body>
+          <Right style={ScreenStyleSheet.headerSides}>
+          </Right>
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {/* Profile header container */}
-          <View style={ScreenStyleSheet.profileHeader}>
-            {/* Edit profile icon  */}
-            <View style={ScreenStyleSheet.editProfile}>
-              <TouchableHighlight onPress={this.editProfile} activeOpacity={0}>
-                <Image
-                  style={ScreenStyleSheet.editIcon}
-                  source={require("../../assets/icons/edit.png")}
-                />
-              </TouchableHighlight>
-            </View>
-            {/* Profile picture */}
-            <Image
-              style={ScreenStyleSheet.avatar}
-              source={require("../../assets/icons/default-profile.png")}
-            />
-            <Text style={ScreenStyleSheet.profileName}>{this.state.name}</Text>
-          </View>
-
-          {/* On screen separator */}
-          <View style={ScreenStyleSheet.lineSeparator} />
-
           {/* Info Header */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.profileRowInfo}>
@@ -211,39 +191,10 @@ class ProfileScreen extends Component {
               </Text>
             </View>
           </View>
-
-          {/* Options */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            {/* Button to help links */}
-            <TouchableOpacity style={styles.buttonContainer} onPress={this.goToHelpLineLinks}>
-              <Text>Help Line Links</Text>
-            </TouchableOpacity>
-            {/* Button to past events */}
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.goToPastEvents}
-            >
-              <Text>Past Events</Text>
-            </TouchableOpacity>
-          </View>
         </Content>
       </Container>
     );
   }
 }
 
-// Styles
-const styles = StyleSheet.create({
-  buttonContainer: {
-    marginVertical: 10,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "48%",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "black"
-  }
-});
-
-export default ProfileScreen;
+export default PastEventRecordScreen;

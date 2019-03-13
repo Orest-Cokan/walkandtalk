@@ -35,8 +35,8 @@ class HelplineScreen extends Component {
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor="#A680B8"
-          androidStatusBarStyle="light-content"
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
         >
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>
@@ -47,7 +47,7 @@ class HelplineScreen extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title>Help Line Links</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Help Line Links</Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides}>
           </Right>

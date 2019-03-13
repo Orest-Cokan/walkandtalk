@@ -23,11 +23,11 @@ class FormScreen extends Component {
       <Container>
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor="#A680B8"
-          androidStatusBarStyle="light-content"
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
         >
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title>Forms</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Forms</Title>
           </Body>
         </Header>
 
