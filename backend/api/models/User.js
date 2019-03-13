@@ -32,7 +32,10 @@ const User = sequelize.define(
     image: Sequelize.STRING,
     intensity: Sequelize.STRING,
     venue: Sequelize.STRING,
-    location: Sequelize.STRING
+    location: Sequelize.STRING,
+    dob: Sequelize.STRING,
+    distance: Sequelize.INTEGER,
+    duration: Sequelize.INTEGER
   },
 
   { hooks, tableName }

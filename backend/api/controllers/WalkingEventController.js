@@ -8,6 +8,8 @@ const WalkingEventController = () => {
   const create = async (req, res) => {
     const { body } = req;
     console.log(body.attendees);
+    console.log(body.location);
+    console.log(body.location.streetName);
     try {
       WalkingEvent.create(
         {
@@ -79,7 +81,7 @@ const WalkingEventController = () => {
         end_time: body.end_time,
         intensity: body.intensity,
         venue: body.venue,
-        location: body.location,
+        locations: body.location,
         attendees: body.attendees
       },
       { returning: true, where: { id: body.id } }
