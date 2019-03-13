@@ -32,6 +32,7 @@ class AddEventScreen extends Component {
 
     // State
     this.state = {
+      organizer: this.props.user.user.fullname,
       title: null,
       description: null,
       date: null,
@@ -40,7 +41,9 @@ class AddEventScreen extends Component {
       //default values for intensity and venue
       intensity: "Slow",
       venue: "Indoor",
-      location: null
+      location: null,
+      lat: null,
+      long: null
     };
   }
 
@@ -85,7 +88,9 @@ class AddEventScreen extends Component {
       this.state.description,
       this.state.intensity,
       this.state.venue,
-      this.state.location
+      this.state.location,
+      this.state.lat,
+      this.state.long
     );
   };
 
@@ -306,7 +311,11 @@ class AddEventScreen extends Component {
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
 
 export default connect(
   mapStateToProps,

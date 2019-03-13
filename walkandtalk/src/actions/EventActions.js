@@ -26,7 +26,9 @@ export const createEvent = (
   end_time,
   intensity,
   venue,
-  location
+  location,
+  lat,
+  long
 ) => {
   return dispatch => {
     const walking_event = {
@@ -38,7 +40,11 @@ export const createEvent = (
       end_time: end_time,
       intensity: intensity,
       venue: venue,
-      location: location
+      location: {
+        streetName: location,
+        lat: lat,
+        long: long
+      }
     };
     axios
       .post("http://10.0.2.2:2017/public/walkingevent", walking_event)
