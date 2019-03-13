@@ -18,7 +18,8 @@ import {
   Right,
   Content
 } from "native-base";
-import { Actions } from 'react-native-router-flux';
+import { Actions } from "react-native-router-flux";
+import { connect } from "react-redux";
 
 // Profile tab
 class ProfileScreen extends Component {
@@ -38,10 +39,6 @@ class ProfileScreen extends Component {
     };
   }
 
-  componentWillMount() {
-    this.props.fetchProfile;
-  }
-
   // When edit profile icon is clicked
   editProfile = () => {
     // Navigate to edit profile
@@ -56,9 +53,10 @@ class ProfileScreen extends Component {
   goToHelpLineLinks = () => {
     // Navigate to Past Events
     Actions.helplines();
-  }
+  };
 
   render() {
+    const user = this.props.user.user;
     return (
       <Container>
         {/* Header */}
@@ -89,7 +87,7 @@ class ProfileScreen extends Component {
               style={ScreenStyleSheet.avatar}
               source={require("../../assets/icons/default-profile.png")}
             />
-            <Text style={ScreenStyleSheet.profileName}>{this.state.name}</Text>
+            <Text style={ScreenStyleSheet.profileName}>{user.fullname}</Text>
           </View>
 
           {/* On screen separator */}
@@ -215,7 +213,10 @@ class ProfileScreen extends Component {
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Button to help links */}
-            <TouchableOpacity style={styles.buttonContainer} onPress={this.goToHelpLineLinks}>
+            <TouchableOpacity
+              style={styles.buttonContainer}
+              onPress={this.goToHelpLineLinks}
+            >
               <Text>Help Line Links</Text>
             </TouchableOpacity>
             {/* Button to past events */}
@@ -232,6 +233,18 @@ class ProfileScreen extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  console.log("profilescreen");
+  return {
+    user: state.user
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(ProfileScreen);
+
 // Styles
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -245,5 +258,3 @@ const styles = StyleSheet.create({
     borderColor: "black"
   }
 });
-
-export default ProfileScreen;

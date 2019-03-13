@@ -1,11 +1,6 @@
 import React from "react";
 import { View, Image, StatusBar } from "react-native";
-import {
-  Router,
-  Stack,
-  Scene,
-  Tabs,
-} from "react-native-router-flux";
+import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
 
 import AuthScreen from "./components/login/AuthScreen";
 import SignupScreen from "./components/login/SignupScreen";
@@ -18,15 +13,13 @@ import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
 
-
-
 const RouterComponent = () => (
   <Router>
     <Stack key="root">
-    <Stack key="auth" hideNavBar>
-      <Scene key="login" component={AuthScreen} />
-      <Scene key="signup" component={SignupScreen} />
-    </Stack>
+      <Stack key="auth" hideNavBar>
+        <Scene key="login" component={AuthScreen} />
+        <Scene key="signup" component={SignupScreen} />
+      </Stack>
       <Stack key="app" hideNavBar panHandlers={null}>
         <Tabs
           showLabel={false}
@@ -96,6 +89,7 @@ const RouterComponent = () => (
           />
           <Scene
             key="profile"
+            component={ProfileScreen}
             icon={({ focused }) => (
               <Image
                 source={
@@ -108,23 +102,9 @@ const RouterComponent = () => (
             )}
             hideNavBar
           >
-            <Scene
-              key="profilePage"
-              component={ProfileScreen}
-            />
-            <Scene
-              key="editProfile"
-              component={EditProfileScreen}
-            />
-            <Scene
-              key="pastEvents"
-              component={PastEventListScreen}
-            />
-            <Scene
-              key="helplines"
-              component={HelplineScreen}
-            />
-
+            <Scene key="editProfile" component={EditProfileScreen} />
+            <Scene key="pastEvents" component={PastEventListScreen} />
+            <Scene key="helplines" component={HelplineScreen} />
           </Scene>
         </Tabs>
       </Stack>
