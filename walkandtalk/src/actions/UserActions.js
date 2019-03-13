@@ -10,20 +10,35 @@ import { Actions } from "react-native-router-flux";
 import axios from "axios";
 
 // action to create a user
-export const createUser = (email, password, password2) => {
+export const createUser = (
+  email,
+  password,
+  password2,
+  fullname,
+  intensity,
+  location,
+  venue,
+  dob
+) => {
   const user = {
     email: email,
     password: password,
-    password2: password2
+    password2: password2,
+    fullname: fullname,
+    dob: dob,
+    intensity: intensity,
+    location: location,
+    venue: venue
   };
   return dispatch => {
+    console.log(user);
     dispatch({ type: USER_CREATE });
     axios
       .post("http://10.0.2.2:2017/public/user", user)
       .then(res => {
         if (res.status === 200) {
-          createUserSuccess(dispatch, res.data);
-          console.log(res.data);
+          console.log(res.data.user);
+          createUserSuccess(dispatch, res.data.user);
         }
       })
       .catch(err => {

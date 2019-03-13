@@ -27,7 +27,7 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 
 class SignupScreen extends Component {
   state = {
-    user: null,
+    fullname: null,
     password: null,
     confirmPassword: null,
     email: null,
@@ -42,7 +42,7 @@ class SignupScreen extends Component {
 
   onChangeUser = text => {
     this.setState({
-      user: text
+      fullname: text
     });
   };
 
@@ -70,6 +70,12 @@ class SignupScreen extends Component {
     });
   };
 
+  onChangeFullname = text => {
+    this.setState({
+      fullname: text
+    });
+  };
+
   checkPassword = () => {
     if (this.state.password != this.state.confirmPassword) {
       Alert.alert("Passwords don't match, please check again.");
@@ -87,11 +93,17 @@ class SignupScreen extends Component {
     }
   };
   onPressSignUp = () => {
+    console.log("we are here!!!!");
     if (this.state.emailCheck && this.state.passwordCheck) {
       this.props.createUser(
         this.state.email,
         this.state.password,
-        this.state.confirmPassword
+        this.state.confirmPassword,
+        this.state.fullname,
+        this.state.menopausal_stage,
+        this.state.venue,
+        this.state.location,
+        this.state.intensity
       );
       Alert.alert("sent to server");
     } else {
@@ -143,7 +155,10 @@ class SignupScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <TextInput style={ScreenStyleSheet.formInput} />
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeFullname}
+              />
             </View>
           </View>
 
