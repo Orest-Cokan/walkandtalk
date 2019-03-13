@@ -25,7 +25,7 @@ import {
   Content
 } from "native-base";
 
-const searchIcon = require("../../assets/icons/search.png");
+const searchIcon = require("../../assets/icons/search-bar.png");
 const icon2 = require("../../assets/icons/form.png");
 
 
@@ -160,11 +160,11 @@ class SearchScreen extends Component {
       <Container>
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor="#A680B8"
-          androidStatusBarStyle="light-content"
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
         >
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title>Search</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Search</Title>
           </Body>
         </Header>
 

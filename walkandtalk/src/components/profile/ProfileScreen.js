@@ -18,6 +18,7 @@ import {
   Right,
   Content
 } from "native-base";
+import { Actions } from 'react-native-router-flux';
 
 // Profile tab
 class ProfileScreen extends Component {
@@ -63,11 +64,11 @@ class ProfileScreen extends Component {
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor="#A680B8"
-          androidStatusBarStyle="light-content"
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
         >
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title>Profile</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Profile</Title>
           </Body>
         </Header>
 
@@ -86,7 +87,7 @@ class ProfileScreen extends Component {
             {/* Profile picture */}
             <Image
               style={ScreenStyleSheet.avatar}
-              source={require("../../assets/icons/edit.png")}
+              source={require("../../assets/icons/default-profile.png")}
             />
             <Text style={ScreenStyleSheet.profileName}>{this.state.name}</Text>
           </View>
