@@ -47,7 +47,7 @@ class HomeScreen extends Component {
           key={event.id}
           time={event.date}
           title={event.title}
-          location={event.locations.streetName}
+          location={event.location.streetName}
           badge={badge}
         />
       );

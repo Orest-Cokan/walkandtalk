@@ -1,6 +1,8 @@
 const request = require("supertest");
 const { beforeAction, afterAction } = require("../setup/_setup");
 const WalkingEvent = require("../../api/models/WalkingEvent");
+const Location = require("../../api/models/Location");
+const Attendee = require("../../api/models/Attendee");
 
 let api;
 
@@ -21,19 +23,37 @@ test("WalkingEvent | create", async () => {
       title: "Walking Event!",
       description: "going to go walking at the U of A",
       venue: "outdoor",
-      intensity: "fast"
+      intensity: "fast",
+      location: {
+        streetName: "cmput 300 kek",
+        long: 123,
+        lat: 124
+      }
     })
     .expect(200);
 
   expect(res.body.msg).toBe("Successfully added a walking event!");
-  const walkingevent = await WalkingEvent.findById(1);
+  const walkingevent = await WalkingEvent.findById(1, {
+    include: [
+      {
+        model: Attendee
+      },
+      {
+        model: Location
+      }
+    ]
+  });
+  console.log(walkingevent.dataValues, "REEEEEEEEEEEEEEE");
   expect(walkingevent.id).toBe(1);
   expect(walkingevent.title).toBe("Walking Event!");
   expect(walkingevent.description).toBe("going to go walking at the U of A");
   expect(walkingevent.venue).toBe("outdoor");
   expect(walkingevent.intensity).toBe("fast");
+  expect(walkingevent.location.streetName).toBe("cmput 300 kek");
+  expect(walkingevent.location.long).toBe(123);
+  expect(walkingevent.location.lat).toBe(124);
 
-  await walkingevent.destroy();
+  //await walkingevent.destroy();
 });
 
 // test destroying a walking event

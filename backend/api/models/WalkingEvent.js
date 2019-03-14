@@ -20,14 +20,13 @@ const WalkingEvent = sequelize.define(tableName, {
   start_time: Sequelize.STRING,
   end_time: Sequelize.STRING,
   intensity: Sequelize.STRING,
-  venue: Sequelize.STRING,
-  location: Sequelize.STRING
+  venue: Sequelize.STRING
 });
 
 // set the associations
 WalkingEvent.hasMany(Attendee);
 Attendee.belongsTo(WalkingEvent);
-WalkingEvent.hasOne(Location, { as: "locations" });
+WalkingEvent.hasOne(Location);
 
 // export walkingevent model
 module.exports = WalkingEvent;

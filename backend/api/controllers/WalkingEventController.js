@@ -9,7 +9,7 @@ const WalkingEventController = () => {
     const { body } = req;
     console.log(body.attendees);
     console.log(body.location);
-    console.log(body.location.streetName);
+
     try {
       WalkingEvent.create(
         {
@@ -21,17 +21,12 @@ const WalkingEventController = () => {
           end_time: body.end_time,
           intensity: body.intensity,
           venue: body.venue,
-          locations: body.location,
-          attendees: body.attendees
+          location: body.location
         },
         {
           include: [
             {
-              model: Attendee
-            },
-            {
-              model: Location,
-              as: "locations"
+              model: Location
             }
           ]
         }
@@ -55,8 +50,7 @@ const WalkingEventController = () => {
             model: Attendee
           },
           {
-            model: Location,
-            as: "locations"
+            model: Location
           }
         ]
       });
@@ -81,7 +75,7 @@ const WalkingEventController = () => {
         end_time: body.end_time,
         intensity: body.intensity,
         venue: body.venue,
-        locations: body.location,
+        location: body.location,
         attendees: body.attendees
       },
       { returning: true, where: { id: body.id } }
@@ -136,12 +130,27 @@ const WalkingEventController = () => {
     }
   };
 
+  // add an attendee to an event!
+  const getEvent = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const walkingevent = await WalkingEvent.findByPk(id, {
+        include: [Attendee, Location]
+      });
+      return res.status(200).json({ walkingevent });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
   return {
     create,
     getAll,
     updateEvent,
     destroy,
-    addAttendees
+    addAttendees,
+    getEvent
   };
 };
 
