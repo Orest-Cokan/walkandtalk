@@ -1,6 +1,6 @@
 # Walk and Talk
 
-Walk and Talk is a mobile application that brings together women in menopause transition or postmenopausal who are interested to try walking as a means to socialize and to alleviate their symptoms.
+Walk and Talk is a mobile application that brings together women in menopause transition or postmenopause who are interested to try walking as a means to socialize and to alleviate their symptoms.
 
 ## Folder Structure
 The following is the overall structure of Walk and Talk.
