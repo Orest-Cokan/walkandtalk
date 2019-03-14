@@ -1,12 +1,15 @@
 import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
+import {Platform} from 'react-native';
 
 // action to fetch all events
 export const fetchEvents = () => {
   return dispatch => {
+    var ip = getIP();
+    var url = ip +"public/walkingevents";
     axios
-      .get("http://10.0.2.2:2017/public/walkingevents")
+      .get(url)
       .then(res => {
         dispatch({ type: SET_EVENTS, payload: res.data.events });
       })
@@ -31,6 +34,8 @@ export const createEvent = (
   long
 ) => {
   return dispatch => {
+    var ip = getIP();
+    var url = ip +"public/walkingevent";
     const walking_event = {
       organizer: organizer,
       title: title,
@@ -47,7 +52,7 @@ export const createEvent = (
       }
     };
     axios
-      .post("http://10.0.2.2:2017/public/walkingevent", walking_event)
+      .post(url, walking_event)
       .then(res => {
         if (res.status === 200) {
           console.log(res.status, "is this even logged???");
@@ -65,8 +70,10 @@ export const createEvent = (
 // action to delete an event
 export const deleteEvent = id => {
   return dispatch => {
+    var ip = getIP();
+    var url = ip +"public/walkingevent/";
     axios
-      .delete("http://10.0.2.2:2017/public/walkingevent/" + id)
+      .delete(url + id)
       .then(res => {
         console.log(res.data);
         dispatch({ type: EVENT_DELETE, payload: res.data });
@@ -76,3 +83,14 @@ export const deleteEvent = id => {
       });
   };
 };
+
+
+var getIP = ()=>{
+  if (Platform.OS === 'android') {
+    return "http://10.0.2.2:2017/";
+  }
+  else if(Platform.OS === 'ios'){
+    return "http://127.0.0.1:2017/";
+  }
+}
+

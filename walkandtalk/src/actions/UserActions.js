@@ -8,6 +8,7 @@ import {
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
+import {Platform} from 'react-native';
 
 // action to create a user
 export const createUser = (
@@ -37,10 +38,12 @@ export const createUser = (
     distance: distance
   };
   return dispatch => {
+    var ip = getIP();
+    var url = ip +"public/user";
     console.log(user);
     dispatch({ type: USER_CREATE });
     axios
-      .post("http://10.0.2.2:2017/public/user", user)
+      .post(url, user)
       .then(res => {
         if (res.status === 200) {
           console.log(res.data.user);
@@ -77,10 +80,12 @@ export const loginUser = (email, password) => {
   };
   console.log("login", USER_LOGIN);
   return dispatch => {
+    var ip = getIP();
+    var url = ip +"public/login";
     console.log(email, password);
     dispatch({ type: USER_LOGIN });
     axios
-      .post("http://10.0.2.2:2017/public/login", user)
+      .post(url, user)
       .then(res => {
         if (res.status === 200) {
           console.log(res.data.user, "meh memes!");
@@ -109,3 +114,14 @@ const loginUserSuccess = (dispatch, user) => {
   });
   Actions.app();
 };
+
+
+
+var getIP = ()=>{
+  if (Platform.OS === 'android') {
+    return "http://10.0.2.2:2017/";
+  }
+  else if(Platform.OS === 'ios'){
+    return "http://127.0.0.1:2017/";
+  }
+}
