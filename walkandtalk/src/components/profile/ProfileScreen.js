@@ -25,24 +25,12 @@ import { connect } from "react-redux";
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
-
-    // Set state on inital profile signup
-    this.state = {
-      name: "Brittany Taylor",
-      dob: "January 1, 1955",
-      menopausalStage: "Peri",
-      distance: 10,
-      duration: 60,
-      intensity: "Intermediate",
-      venue: "Indoor",
-      location: "Riverbend Area"
-    };
   }
 
   // When edit profile icon is clicked
-  editProfile = () => {
+  goToEditProfile = () => {
     // Navigate to edit profile
-    Actions.editProfile(this.props.profile);
+    Actions.editProfile();
   };
 
   goToPastEvents = () => {
@@ -52,11 +40,10 @@ class ProfileScreen extends Component {
 
   goToHelpLineLinks = () => {
     // Navigate to Past Events
-    Actions.helplines();
+    Actions.helpLines();
   };
 
   render() {
-    const user = this.props.user.user;
     return (
       <Container>
         {/* Header */}
@@ -75,7 +62,10 @@ class ProfileScreen extends Component {
           <View style={ScreenStyleSheet.profileHeader}>
             {/* Edit profile icon  */}
             <View style={ScreenStyleSheet.editProfile}>
-              <TouchableHighlight onPress={this.editProfile} activeOpacity={0}>
+              <TouchableHighlight
+                onPress={this.GoToEditProfile}
+                activeOpacity={0}
+              >
                 <Image
                   style={ScreenStyleSheet.editIcon}
                   source={require("../../assets/icons/edit.png")}
@@ -87,7 +77,9 @@ class ProfileScreen extends Component {
               style={ScreenStyleSheet.avatar}
               source={require("../../assets/icons/default-profile.png")}
             />
-            <Text style={ScreenStyleSheet.profileName}>{user.fullname}</Text>
+            <Text style={ScreenStyleSheet.profileName}>
+              {this.props.user.user.fullname}
+            </Text>
           </View>
 
           {/* On screen separator */}
@@ -108,7 +100,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInput}>
-                {this.state.dob}
+                {this.props.user.user.dob}
               </Text>
             </View>
           </View>
@@ -121,7 +113,8 @@ class ProfileScreen extends Component {
               <Text style={ScreenStyleSheet.profileInput}>
                 {/* Automatically calculates the age when given date of birth */}
                 {Math.floor(
-                  (new Date().getTime() - Date.parse(this.state["dob"])) /
+                  (new Date().getTime() -
+                    Date.parse(this.props.user.user.dob)) /
                     31557600000
                 )}
               </Text>
@@ -134,7 +127,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInput}>
-                {this.state.menopausalStage}
+                {this.props.user.user.menopausal_stage}
               </Text>
             </View>
           </View>
@@ -159,7 +152,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInput}>
-                {this.state.distance} km
+                {this.props.user.user.distance} km
               </Text>
             </View>
           </View>
@@ -172,7 +165,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInput}>
-                {this.state.duration} min
+                {this.props.user.user.duration} min
               </Text>
             </View>
           </View>
@@ -183,7 +176,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInput}>
-                {this.state.intensity}
+                {this.props.user.user.intensity}
               </Text>
             </View>
           </View>
@@ -194,7 +187,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInput}>
-                {this.state.venue}
+                {this.props.user.user.venue}
               </Text>
             </View>
           </View>
@@ -205,7 +198,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInput}>
-                {this.state.location}
+                {this.props.user.user.location}
               </Text>
             </View>
           </View>

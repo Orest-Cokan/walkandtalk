@@ -35,9 +35,12 @@ class SignupScreen extends Component {
     dob: null,
     emailCheck: false,
     passwordCheck: false,
+    menopausal_stage: null,
     intensity: null,
     venue: null,
-    location: null
+    location: null,
+    duration: null,
+    distance: null
   };
 
   onChangeUser = text => {
@@ -76,6 +79,18 @@ class SignupScreen extends Component {
     });
   };
 
+  onChangeDuration = text => {
+    this.setState({
+      duration: text
+    });
+  };
+
+  onChangeDistance = text => {
+    this.setState({
+      distance: text
+    });
+  };
+
   checkPassword = () => {
     if (this.state.password != this.state.confirmPassword) {
       Alert.alert("Passwords don't match, please check again.");
@@ -92,6 +107,7 @@ class SignupScreen extends Component {
       this.setState({ emailCheck: true });
     }
   };
+
   onPressSignUp = () => {
     console.log("we are here!!!!");
     if (this.state.emailCheck && this.state.passwordCheck) {
@@ -101,9 +117,12 @@ class SignupScreen extends Component {
         this.state.confirmPassword,
         this.state.fullname,
         this.state.menopausal_stage,
+        this.state.dob,
         this.state.venue,
         this.state.location,
-        this.state.intensity
+        this.state.intensity,
+        this.state.duration,
+        this.state.distance
       );
       Alert.alert("sent to server");
     } else {
@@ -121,7 +140,7 @@ class SignupScreen extends Component {
   };
 
   updateStage = stage => {
-    this.setState({ stage: stage });
+    this.setState({ menopausal_stage: stage });
   };
 
   render() {
@@ -286,7 +305,10 @@ class SignupScreen extends Component {
               </Text>
             </View>
             <View>
-              <TextInput style={ScreenStyleSheet.formInput} />
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeDistance}
+              />
             </View>
           </View>
 
@@ -297,7 +319,10 @@ class SignupScreen extends Component {
               </Text>
             </View>
             <View>
-              <TextInput style={ScreenStyleSheet.formInput} />
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeDuration}
+              />
             </View>
           </View>
 

@@ -1,12 +1,6 @@
 // Helpline links Screen View
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Image,
-  Text,
-  Linking,
-} from "react-native";
+import { StyleSheet, View, Image, Text, Linking } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -20,14 +14,13 @@ import {
   StatusBar
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { Actions } from 'react-native-router-flux';
+import { Actions } from "react-native-router-flux";
 
-class HelplineScreen extends Component {
-
+class HelpLineScreen extends Component {
   onBack = () => {
     // Navigate back to profile page
     Actions.pop();
-  }
+  };
 
   render() {
     return (
@@ -49,27 +42,33 @@ class HelplineScreen extends Component {
           <Body style={ScreenStyleSheet.headerBody}>
             <Title style={ScreenStyleSheet.headerTitle}>Help Line Links</Title>
           </Body>
-          <Right style={ScreenStyleSheet.headerSides}>
-          </Right>
+          <Right style={ScreenStyleSheet.headerSides} />
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          
-                <Text style={styles.HelplineTitle}>Northern America Menopause Society (NAMS)</Text>
-                <Text style={styles.HelplineLink}
-                    onPress={() => Linking.openURL('https://www.menopause.org/for-women')}>
-                    www.menopause.org
-                </Text>
-                
-                <View style={ScreenStyleSheet.lineSeparator} />
-                <Text style={styles.HelplineTitle}>Society of Obstetricians and Gynaecologists of Canada (SOGC)</Text>
-                <Text style={styles.HelplineLink}
-                    onPress={() => Linking.openURL('https://www.menopauseandu.ca/')}>
-                    www.menopauseandu.ca
-                </Text>
-                <View style={ScreenStyleSheet.lineSeparator} />
-                
-          
+          <Text style={styles.HelplineTitle}>
+            Northern America Menopause Society (NAMS)
+          </Text>
+          <Text
+            style={styles.HelplineLink}
+            onPress={() =>
+              Linking.openURL("https://www.menopause.org/for-women")
+            }
+          >
+            www.menopause.org
+          </Text>
+
+          <View style={ScreenStyleSheet.lineSeparator} />
+          <Text style={styles.HelplineTitle}>
+            Society of Obstetricians and Gynaecologists of Canada (SOGC)
+          </Text>
+          <Text
+            style={styles.HelplineLink}
+            onPress={() => Linking.openURL("https://www.menopauseandu.ca/")}
+          >
+            www.menopauseandu.ca
+          </Text>
+          <View style={ScreenStyleSheet.lineSeparator} />
         </Content>
       </Container>
     );
@@ -81,19 +80,17 @@ const mapStateToProps = state => state;
 export default connect(
   mapStateToProps,
   null
-)(HelplineScreen);
+)(HelpLineScreen);
 
 // Styles
 const styles = StyleSheet.create({
-   HelplineTitle: {
+  HelplineTitle: {
     marginHorizontal: 10,
-    paddingTop:10,
-
+    paddingTop: 10
   },
-  HelplineLink:{
-    color: '#A680B8',
+  HelplineLink: {
+    color: "#A680B8",
     marginHorizontal: 10,
-    paddingBottom:10,
-  },
-
+    paddingBottom: 10
+  }
 });

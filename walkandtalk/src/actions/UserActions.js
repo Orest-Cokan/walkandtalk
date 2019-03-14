@@ -15,20 +15,26 @@ export const createUser = (
   password,
   password2,
   fullname,
-  intensity,
-  location,
+  menopausal_stage,
+  dob,
   venue,
-  dob
+  location,
+  intensity,
+  duration,
+  distance
 ) => {
   const user = {
     email: email,
     password: password,
     password2: password2,
     fullname: fullname,
+    menopausal_stage: menopausal_stage,
     dob: dob,
-    intensity: intensity,
+    venue: venue,
     location: location,
-    venue: venue
+    intensity: intensity,
+    duration: duration,
+    distance: distance
   };
   return dispatch => {
     console.log(user);

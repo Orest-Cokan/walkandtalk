@@ -11,7 +11,7 @@ import ProfileScreen from "./components/profile/ProfileScreen";
 import FormScreen from "./components/form/FormScreen";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
-import HelplineScreen from "./components/profile/HelplineScreen";
+import HelpLineScreen from "./components/profile/HelpLineScreen";
 
 const RouterComponent = () => (
   <Router>
@@ -101,12 +101,11 @@ const RouterComponent = () => (
               />
             )}
             hideNavBar
-          >
-            <Scene key="editProfile" component={EditProfileScreen} />
-            <Scene key="pastEvents" component={PastEventListScreen} />
-            <Scene key="helplines" component={HelplineScreen} />
-          </Scene>
+          />
         </Tabs>
+        <Scene key="editProfile" component={EditProfileScreen} />
+        <Scene key="pastEvents" component={PastEventListScreen} />
+        <Scene key="helpLines" component={HelpLineScreen} />
       </Stack>
     </Stack>
   </Router>
