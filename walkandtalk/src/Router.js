@@ -89,7 +89,6 @@ const RouterComponent = () => (
           />
           <Scene
             key="profile"
-            component={ProfileScreen}
             icon={({ focused }) => (
               <Image
                 source={
@@ -101,11 +100,13 @@ const RouterComponent = () => (
               />
             )}
             hideNavBar
-          />
+          >
+            <Scene key="mainProfile" component={ProfileScreen} />
+            <Scene key="editProfile" component={EditProfileScreen} />
+            <Scene key="pastEvents" component={PastEventListScreen} />
+            <Scene key="helpLines" component={HelpLineScreen} />
+          </Scene>
         </Tabs>
-        <Scene key="editProfile" component={EditProfileScreen} />
-        <Scene key="pastEvents" component={PastEventListScreen} />
-        <Scene key="helpLines" component={HelpLineScreen} />
       </Stack>
     </Stack>
   </Router>
