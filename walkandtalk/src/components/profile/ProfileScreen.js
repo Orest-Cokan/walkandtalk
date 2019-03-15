@@ -99,7 +99,7 @@ class ProfileScreen extends Component {
               <Text style={ScreenStyleSheet.profileInfo}>Date of Birth</Text>
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInput}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
                 {this.props.user.user.dob}
               </Text>
             </View>
@@ -110,7 +110,7 @@ class ProfileScreen extends Component {
               <Text style={ScreenStyleSheet.profileInfo}>Age</Text>
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInput}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
                 {/* Automatically calculates the age when given date of birth */}
                 {Math.floor(
                   (new Date().getTime() -
@@ -126,7 +126,7 @@ class ProfileScreen extends Component {
               <Text style={ScreenStyleSheet.profileInfo}>Menopausal Stage</Text>
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInput}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
                 {this.props.user.user.menopausal_stage}
               </Text>
             </View>
@@ -151,7 +151,7 @@ class ProfileScreen extends Component {
               </Text>
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInput}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
                 {this.props.user.user.distance} km
               </Text>
             </View>
@@ -164,7 +164,7 @@ class ProfileScreen extends Component {
               </Text>
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInput}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
                 {this.props.user.user.duration} min
               </Text>
             </View>
@@ -175,7 +175,7 @@ class ProfileScreen extends Component {
               <Text style={ScreenStyleSheet.profileInfo}>Intensity</Text>
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInput}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
                 {this.props.user.user.intensity}
               </Text>
             </View>
@@ -186,7 +186,7 @@ class ProfileScreen extends Component {
               <Text style={ScreenStyleSheet.profileInfo}>Type of Venue</Text>
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInput}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
                 {this.props.user.user.venue}
               </Text>
             </View>
@@ -197,7 +197,7 @@ class ProfileScreen extends Component {
               <Text style={ScreenStyleSheet.profileInfo}>Location</Text>
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInput}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
                 {this.props.user.user.location}
               </Text>
             </View>

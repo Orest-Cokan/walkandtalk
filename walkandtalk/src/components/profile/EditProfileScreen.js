@@ -175,6 +175,7 @@ class EditProfileScreen extends Component {
 
           {/* On screen separator */}
           <View style={ScreenStyleSheet.lineSeparator} />
+
           {/* Info Header */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.profileRowInfo}>

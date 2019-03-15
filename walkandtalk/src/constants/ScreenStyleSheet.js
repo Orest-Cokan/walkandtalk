@@ -63,6 +63,14 @@ export default StyleSheet.create({
     marginTop: 5
   },
 
+
+  // Search tab
+
+  searchIcon : {
+    height: 20,
+    width: 20,
+  },
+
     // Profile tab
     profileHeader: {
       alignItems: 'center',
@@ -99,6 +107,10 @@ export default StyleSheet.create({
     profileInfo:{
       color: "gray"
     },
+    profileInfoInput: {
+      color: "black",
+      textAlign: 'right'
+    },
     profileInput: {
       textAlign: 'right',
       borderBottomWidth: 1,
@@ -115,7 +127,6 @@ export default StyleSheet.create({
     },
 
    // Forms
-   //
    formRowContainerEvent: {
      flexDirection: 'row',
      justifyContent: 'flex-start',
