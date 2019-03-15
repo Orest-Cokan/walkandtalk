@@ -109,7 +109,15 @@ const UserController = () => {
     const { body } = req;
     console.log(body.id, body.fullname);
     await User.update(
-      { fullname: body.fullname },
+      {
+        fullname: body.fullname,
+        menopausal_stage: body.menopausal_stage,
+        location: body.location,
+        dob: body.dob,
+        distance: body.distance,
+        duration: body.duration,
+        venue: body.venue
+      },
       { returning: true, where: { email: body.email } }
     )
       .then(self => {
