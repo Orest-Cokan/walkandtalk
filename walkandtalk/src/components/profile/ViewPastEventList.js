@@ -25,8 +25,8 @@ class PastEventListScreen extends Component {
 
   onBack = () => {
     // Navigate back to profile page
-    //Actions.pop();
-    Actions.pastEventRecord();
+    Actions.pop();
+    //Actions.pastEventRecord();
   }
 
   render() {
