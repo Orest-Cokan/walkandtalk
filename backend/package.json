@@ -1,8 +1,6 @@
 {
   "name": "backend",
   "version": "0.0.0",
-  "author": "Lukas Aichbauer <l.aichbauer@gmail.com>",
-  "license": "MIT",
   "scripts": {
     "prestart": "npm run drop-sqlite-db || true || (exit 0)",
     "start": "npm run nodemon",

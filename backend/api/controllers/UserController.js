@@ -110,7 +110,7 @@ const UserController = () => {
   // update a user
   const updateUser = async (req, res) => {
     const { body } = req;
-    console.log(body.id, body.fullname);
+    console.log(body.fullname);
     await User.update(
       {
         fullname: body.fullname,
@@ -121,7 +121,7 @@ const UserController = () => {
         duration: body.duration,
         venue: body.venue
       },
-      { returning: true, where: { id: body.id } }
+      { returning: true, where: { email: body.email } }
     )
       .then(self => {
         return res.status(200).json({ self });
