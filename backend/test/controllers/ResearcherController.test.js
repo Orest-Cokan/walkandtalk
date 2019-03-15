@@ -31,9 +31,7 @@ test("Accepting a user | acceptUser", async () => {
           registered: 1
         })
     )
-    .then(res => {
-      console.log(res);
-    });
+    .then(res => {});
 });
 
 // test the denying of a user controller
@@ -54,8 +52,5 @@ test("Denying a user | denyUser", async () => {
         .send({
           email: "martin@mail.com"
         })
-    )
-    .then(res => {
-      console.log(res);
-    });
+    );
 });
