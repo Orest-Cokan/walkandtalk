@@ -16,8 +16,11 @@ const UserController = () => {
           password: body.password,
           menopausal_stage: body.menopausal_stage,
           intensity: body.intensity,
+          dob: body.dob,
           venue: body.venue,
-          location: body.location
+          location: body.location,
+          distance: body.distance,
+          duration: body.duration
         });
         const token = authService().issue({ id: user.id });
 
