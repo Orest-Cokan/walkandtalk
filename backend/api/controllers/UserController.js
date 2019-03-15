@@ -17,10 +17,7 @@ const UserController = () => {
           menopausal_stage: body.menopausal_stage,
           intensity: body.intensity,
           venue: body.venue,
-          location: body.location,
-          dob: body.dob,
-          distance: body.distance,
-          duration: body.duration
+          location: body.location
         });
         const token = authService().issue({ id: user.id });
 
@@ -110,21 +107,13 @@ const UserController = () => {
   // update a user
   const updateUser = async (req, res) => {
     const { body } = req;
-    console.log(body.fullname);
+    console.log(body.id, body.fullname);
     await User.update(
-      {
-        fullname: body.fullname,
-        menopausal_stage: body.menopausal_stage,
-        location: body.location,
-        dob: body.dob,
-        distance: body.distance,
-        duration: body.duration,
-        venue: body.venue
-      },
+      { fullname: body.fullname },
       { returning: true, where: { email: body.email } }
     )
       .then(self => {
-        return res.status(200).json({ self });
+        return res.status(200).json(self[1]);
       })
       .catch(function(err) {
         return res.status(500).json({ msg: "Internal server error" });
