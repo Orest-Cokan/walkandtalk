@@ -114,6 +114,7 @@ const UserController = () => {
         menopausal_stage: body.menopausal_stage,
         location: body.location,
         dob: body.dob,
+        intensity: body.intensity,
         distance: body.distance,
         duration: body.duration,
         venue: body.venue
