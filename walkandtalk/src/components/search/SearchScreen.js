@@ -4,8 +4,9 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  TouchableHighlight,
+  TouchableOpacity,
   Alert,
+  Image,
   Dimensions,
 } from "react-native";
 import Ionicon from "react-native-vector-icons/Ionicons";
@@ -81,6 +82,9 @@ class SearchScreen extends Component {
 
   onConfirm = () => {
     this.setState({ currentFilters: this.state.selectedItems })
+  }
+
+  search = () => {
   }
 
 
@@ -173,7 +177,15 @@ class SearchScreen extends Component {
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           {/* Search bar */}
           <View style={styles.box}>
-            <Ionicon name="ios-search" style={styles.searchIcon} />
+            <TouchableOpacity
+              onPress={this.search}
+              activeOpacity={0}
+            >
+              <Image
+                style={ScreenStyleSheet.searchIcon}
+                source={require("../../assets/icons/search-bar.png")}
+              />
+            </TouchableOpacity>
             <TextInput
               value={this.state.text}
               placeholder="Search"
@@ -207,9 +219,8 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 3,
     borderColor: "grey",
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    alignItems: "center",
     paddingHorizontal: 15,
-    flexDirection: "row",
     marginBottom: 10,
     marginTop:10,
     alignSelf:"flex-start",
@@ -223,15 +234,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 15,
-    flexDirection: "row",
     marginBottom: 10
   },
-  searchIcon: {
-    marginTop:3,
-    marginRight:3,
-    fontSize: 25
-  },
   placeHolder: {
+    marginLeft: 3,
     height: 40,
     fontSize: 15,
     color: "grey"
