@@ -56,22 +56,16 @@ class PastEventListScreen extends Component {
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           {/* Card List View */}
           <BaseCard
-            time="WED, MAR 3 AT 10:00PM"
             title="Walk in the park"
+            date="WED, MAR 3"
+            start_time="10:00 PM"
             location="Hawrelak Park"
-            //badge="GOING"
           />
           <BaseCard
-            time="SAT, MAR 17 AT 9:00AM"
             title="Morning Stroll"
+            date="SAT, MAR 17"
+            start_time="9:00 AM"
             location="River Valley"
-            //badge="HOSTING"
-          />
-          <BaseCard
-            time="MON, MAR 19 AT 11:00AM"
-            title="Betty's Evening Stroll"
-            location="Van Vliet Centre"
-            //badge="GOING"
           />
         </Content>
       </Container>
