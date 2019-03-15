@@ -19,7 +19,11 @@ const publicRoutes = {
   // Walkingrecord routes
   "GET /walkingrecords": "WalkingRecordController.getAll",
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
-  "POST /walkingrecord": "WalkingRecordController.create"
+  "POST /walkingrecord": "WalkingRecordController.create",
+
+  // Researcher routes
+  "PUT /researcher/accept": "ResearcherController.acceptUser",
+  "POST /researcher/deny": "ResearcherController.denyUser"
 };
 
 module.exports = publicRoutes;

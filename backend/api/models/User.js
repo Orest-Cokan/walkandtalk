@@ -30,6 +30,7 @@ const User = sequelize.define(
     fullname: Sequelize.STRING,
     menopausal_stage: Sequelize.STRING,
     image: Sequelize.STRING,
+    registered: Sequelize.INTEGER,
     intensity: Sequelize.STRING,
     venue: Sequelize.STRING,
     location: Sequelize.STRING,

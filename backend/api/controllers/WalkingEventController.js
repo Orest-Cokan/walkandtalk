@@ -92,19 +92,22 @@ const WalkingEventController = () => {
   const destroy = async (req, res) => {
     const { id } = req.params;
     console.log(id);
-    await WalkingEvent.destroy({
+    WalkingEvent.destroy({
       where: {
         id: id
-      }
+      },
+      truncate: true
     })
       .then(rowDeleted => {
         if (rowDeleted == 1) {
           return res.status(200).json({ msg: "Deleted!" });
+        } else {
+          return res.status(404).json({ msg: "Unable to delete!" });
         }
       })
       .catch(err => {
         console.log(err);
-        return res.status(500).json({ msg: "Unable to delete!" });
+        return res.status(500).json({ msg: "Internal Server Error" });
       });
   };
 

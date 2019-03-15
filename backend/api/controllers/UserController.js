@@ -18,6 +18,7 @@ const UserController = () => {
           intensity: body.intensity,
           dob: body.dob,
           venue: body.venue,
+          registered: body.registered,
           location: body.location,
           distance: body.distance,
           duration: body.duration
@@ -110,7 +111,7 @@ const UserController = () => {
   // update a user
   const updateUser = async (req, res) => {
     const { body } = req;
-    console.log(body.id, body.fullname);
+    console.log(body.id, body.fullname), "we are here!";
     await User.update(
       {
         fullname: body.fullname,
@@ -125,6 +126,7 @@ const UserController = () => {
       { returning: true, where: { email: body.email } }
     )
       .then(self => {
+        console.log("we get here???");
         return res.status(200).json(self[1]);
       })
       .catch(function(err) {
