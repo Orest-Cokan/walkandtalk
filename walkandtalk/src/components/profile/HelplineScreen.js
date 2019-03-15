@@ -16,7 +16,7 @@ import {
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
 
-class HelpLineScreen extends Component {
+class HelplineScreen extends Component {
   onBack = () => {
     // Navigate back to profile page
     Actions.pop();
@@ -40,7 +40,7 @@ class HelpLineScreen extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Help Line Links</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Helpline Links</Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
@@ -80,7 +80,7 @@ const mapStateToProps = state => state;
 export default connect(
   mapStateToProps,
   null
-)(HelpLineScreen);
+)(HelplineScreen);
 
 // Styles
 const styles = StyleSheet.create({

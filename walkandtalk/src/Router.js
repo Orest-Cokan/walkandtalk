@@ -11,7 +11,7 @@ import ProfileScreen from "./components/profile/ProfileScreen";
 import FormScreen from "./components/form/FormScreen";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
-import HelpLineScreen from "./components/profile/HelplineScreen";
+import HelplineScreen from "./components/profile/HelplineScreen";
 
 const RouterComponent = () => (
   <Router>
@@ -104,7 +104,7 @@ const RouterComponent = () => (
             <Scene key="mainProfile" component={ProfileScreen} />
             <Scene key="editProfile" component={EditProfileScreen} />
             <Scene key="pastEvents" component={PastEventListScreen} />
-            <Scene key="helpLines" component={HelpLineScreen} />
+            <Scene key="helplines" component={HelplineScreen} />
           </Scene>
         </Tabs>
       </Stack>
