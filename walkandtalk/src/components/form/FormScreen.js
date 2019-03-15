@@ -37,8 +37,9 @@ class FormScreen extends Component {
           <View style={ScreenStyleSheet.lineSeparator} />
           <Text style={ScreenStyleSheet.sectionTitle}>Records</Text>
           <BaseCard
-            time="THU, FEB 28 AT 10:00PM"
             title="Monthly Walk"
+            date="THU, FEB 28"
+            start_time="10:00 PM"
             location="Terwillegar Centre"
           />
         </Content>

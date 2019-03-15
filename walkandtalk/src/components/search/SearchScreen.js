@@ -187,9 +187,10 @@ class SearchScreen extends Component {
           <View style={ScreenStyleSheet.lineSeparator} />
           <Text style={ScreenStyleSheet.sectionTitle}>Events near you</Text>
           <BaseCard
-            time="WED, MAR 3 AT 10:00PM"
-            title="Weekly Walk"
-            location="Van Vliet Centre"
+            title="Monthly Walk"
+            date="THU, FEB 28"
+            start_time="10:00 PM"
+            location="Terwillegar Centre"
           />
         </Content>
       </Container>
