@@ -38,9 +38,9 @@ class ProfileScreen extends Component {
     Actions.pastEvents();
   };
 
-  goToHelpLineLinks = () => {
+  goToHelplineLinks = () => {
     // Navigate to Past Events
-    Actions.helpLines();
+    Actions.helplines();
   };
 
   render() {
@@ -208,9 +208,9 @@ class ProfileScreen extends Component {
             {/* Button to help links */}
             <TouchableOpacity
               style={styles.buttonContainer}
-              onPress={this.goToHelpLineLinks}
+              onPress={this.goToHelplineLinks}
             >
-              <Text>Help Line Links</Text>
+              <Text>Helpline Links</Text>
             </TouchableOpacity>
             {/* Button to past events */}
             <TouchableOpacity
