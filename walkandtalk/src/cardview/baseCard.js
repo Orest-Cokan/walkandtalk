@@ -24,7 +24,7 @@ class BaseCard extends Component {
     if (!this.props.badge){
       return (
         <View style={styles.card}>
-            <Text style={styles.eventTime}>{this.props.time}</Text>
+            <Text style={styles.eventTime}>{this.props.date.toUpperCase()} AT {this.props.start_time.toUpperCase()}</Text>
             <Text style={styles.eventTitle}>{this.props.title}</Text>
             <Text>{this.props.location}</Text>
         </View>
@@ -45,7 +45,7 @@ class BaseCard extends Component {
       return (
         <View style={styles.card} onPress={this.viewEvent}>
             <View style={styles.withBadge}>
-              <Text style={styles.eventTime}>{this.props.time}</Text>
+              <Text style={styles.eventTime}>{this.props.date.toUpperCase()} AT {this.props.start_time.toUpperCase()}</Text>
               <Text style={[styles.going, styles.Badge]}>{this.props.badge}</Text>
             </View>
             <Text style={styles.eventTitle}>{this.props.title}</Text>
@@ -59,7 +59,7 @@ class BaseCard extends Component {
       return (
         <View style={styles.card}>
             <View style={styles.withBadge}>
-              <Text style={styles.eventTime}>{this.props.time}</Text>
+              <Text style={styles.eventTime}>{this.props.date.toUpperCase()} AT {this.props.start_time.toUpperCase()}</Text>
               <Text style={[styles.hosting, styles.Badge]}>{this.props.badge}</Text>
             </View>
             <Text style={styles.eventTitle}>{this.props.title}</Text>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     },
 
     eventTime: {
-      color: '#A680B8'
+      color: '#A680B8',
     },
     eventTitle: {
       fontWeight: 'bold'

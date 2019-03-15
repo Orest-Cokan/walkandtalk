@@ -45,7 +45,8 @@ class HomeScreen extends Component {
       events.unshift(
         <BaseCard
           key={event.id}
-          time={event.date}
+          date={event.date}
+          start_time={event.start_time}
           title={event.title}
           location={event.location.streetName}
           badge={badge}

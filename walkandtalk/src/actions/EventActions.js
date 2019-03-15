@@ -23,10 +23,10 @@ export const fetchEvents = () => {
 export const createEvent = (
   organizer,
   title,
-  description,
   date,
   start_time,
   end_time,
+  description,
   intensity,
   venue,
   location,
@@ -39,10 +39,10 @@ export const createEvent = (
     const walking_event = {
       organizer: organizer,
       title: title,
-      description: description,
       date: date,
       start_time: start_time,
       end_time: end_time,
+      description: description,
       intensity: intensity,
       venue: venue,
       location: {

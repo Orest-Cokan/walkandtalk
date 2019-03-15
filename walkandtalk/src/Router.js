@@ -11,7 +11,7 @@ import ProfileScreen from "./components/profile/ProfileScreen";
 import FormScreen from "./components/form/FormScreen";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
-import HelpLineScreen from "./components/profile/HelpLineScreen";
+import HelpLineScreen from "./components/profile/HelplineScreen";
 
 const RouterComponent = () => (
   <Router>
