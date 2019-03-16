@@ -2,6 +2,7 @@ const nodemailer = require("nodemailer");
 const fs = require("fs");
 const config = JSON.parse(fs.readFileSync("config.json"));
 
+//email api
 let transporter = nodemailer.createTransport({
   service: "gmail",
   secure: false,
