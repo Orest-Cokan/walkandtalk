@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableHighlight } from "react-native";
 
 import MapView, { PROVIDER_GOOGLE, Marker} from "react-native-maps";
 
@@ -27,7 +27,8 @@ class ViewMapScreen extends Component {
       markers: [
         {
           key: 1,
-          title: 'hello',
+          title: 'University of Alberta Walk',
+          description: 'Walking around university',
           coordinates: {
             latitude: 37.784724,
             longitude: -122.404327,
@@ -37,7 +38,8 @@ class ViewMapScreen extends Component {
         },
         {
           key: 2,
-          title: 'there',
+          title: 'Hawrelak Park Walk',
+          description: 'Walking around the park',
           coordinates: {
             latitude: 37.786944,
             longitude: -122.406307,
@@ -52,7 +54,7 @@ class ViewMapScreen extends Component {
   componentDidMount() {
     this.mapRef.fitToSuppliedMarkers(
       this.state.markers,
-      true, // not animated
+      false,
     );
   }
 
@@ -68,8 +70,16 @@ class ViewMapScreen extends Component {
     }
   }
 
+
+  onEventClick = () => {
+    // Navigate to edit profile
+    Actions.signup();
+  };
+
+
+
   fitToMarkersToMap() {
-    const {markers} = this.state.markers;
+    const markers = this.state.markers;
     this.mapRef.fitToSuppliedMarkers(markers.map(marker => marker.key), true);
   } 
 
@@ -88,20 +98,23 @@ class ViewMapScreen extends Component {
                   latitudeDelta: this.state.latitudeDelta,
                   longitudeDelta: this.state.longitudeDelta
               }}>
-              {/* {this.state.markers} */}
             {this.state.markers.map((marker) => (
-              <MapView.Marker 
-                key={marker.key}
-                coordinate={{
-                  latitude: marker.coordinates.latitude,
-                  longitude: marker.coordinates.longitude,
-                  latitudeDelta: marker.coordinates.latitudeDelta,
-                  longitudeDelta: marker.coordinates.longitudeDelta,
-                }}
-                title={marker.title}
-                onPress={() => {console.log("Marker/onPress");}}
-                onCalloutPress={() => {console.log("Marker/onCalloutPress");}}
-                />
+              <MapView.Marker
+              key={marker.key}
+              coordinate={marker.coordinates}
+              ref={marker => {
+                this.marker = marker;
+              }}
+              // onPress={() => {console.log("Marker/onPress");}}
+              >
+              <MapView.Callout onPress={() => this.onEventClick()}>
+                <TouchableHighlight
+                  underlayColor="transparent"
+                >
+                  <Text>{marker.title}{"\n"}{marker.description}</Text>
+                </TouchableHighlight>
+              </MapView.Callout>
+            </MapView.Marker>
             ))}
           </MapView>
       </View>
