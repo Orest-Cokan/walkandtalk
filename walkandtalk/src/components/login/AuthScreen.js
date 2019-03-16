@@ -4,7 +4,6 @@ import { loginUser } from "../../actions/UserActions";
 import { Actions } from "react-native-router-flux";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 class AuthScreen extends Component {
   state = {
@@ -154,15 +153,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "center"
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject
-  },
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: 400,
-    width: 400,
-    justifyContent: "flex-end",
-    alignItems: "center"
   }
 });
