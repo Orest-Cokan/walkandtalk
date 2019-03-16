@@ -14,7 +14,6 @@ const publicRoutes = {
   "GET /walkingevent/:id": "WalkingEventController.getEvent",
   "PUT /walkingevent": "WalkingEventController.updateEvent",
   "DELETE /walkingevent/:id": "WalkingEventController.destroy",
-  "PUT /walkingevent/attendee": "WalkingEventController.addAttendees",
 
   // Walkingrecord routes
   "GET /walkingrecords": "WalkingRecordController.getAll",
@@ -23,7 +22,11 @@ const publicRoutes = {
 
   // Researcher routes
   "PUT /researcher/accept": "ResearcherController.acceptUser",
-  "POST /researcher/deny": "ResearcherController.denyUser"
+  "POST /researcher/deny": "ResearcherController.denyUser",
+
+  // Attendee routes
+  "PUT /attendee/add": "AttendeeController.addAttendees",
+  "GET /attendee/remove": "AttendeeController.removeAttendees"
 };
 
 module.exports = publicRoutes;

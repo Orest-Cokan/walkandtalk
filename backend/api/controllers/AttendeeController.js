@@ -1,23 +1,68 @@
 const Attendee = require("../models/Attendee");
-const authService = require("../services/auth.service");
-const bcryptService = require("../services/bcrypt.service");
-
+const WalkingEvent = require("../models/WalkingEvent");
 // User controller
 const AttendeeController = () => {
-  // update a walking event
-  const add = async (req, res) => {
-    const { id } = req.params;
-    await Attendee.update({ returning: true, where: { id: body.id } })
-      .then(self => {
-        return res.status(200).json({ self });
-      })
-      .catch(function(err) {
-        return res.status(500).json({ msg: "Internal server error" });
+  // add an attendee to a walking event
+  const addAttendees = async (req, res) => {
+    const { body } = req;
+    console.log(body.id, body.name);
+    try {
+      const walkingevent = await WalkingEvent.findByPk(body.id, {
+        include: [Attendee]
       });
+      await Attendee.create({
+        name: body.name
+      }).then(resp => {
+        walkingevent.addAttendees(resp);
+      });
+      return res
+        .status(200)
+        .json({ msg: "Succesfully added user to the walking event!" });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
+  // remove an attendee from a walking event
+  const removeAttendees = async (req, res) => {
+    const { body } = req;
+    console.log(body.id, body.name);
+    try {
+      const walkingevent = await WalkingEvent.findByPk(body.id, {
+        include: [Attendee]
+      });
+
+      await walkingevent
+        .getAttendees({
+          where: { name: body.name }
+        })
+        .then(resp => {
+          if (resp.length > 0) {
+            walkingevent.removeAttendees(resp);
+            Attendee.destroy({
+              where: { WalkingEventId: body.id, name: body.name }
+            }).then(con => console.log(con));
+          } else {
+            return res
+              .status(404)
+              .json({ msg: "Unable to find user to remove!" });
+          }
+        })
+        .then(() => {
+          return res
+            .status(200)
+            .json({ msg: "Succesfully removed user to the walking event!" });
+        });
+    } catch (err) {
+      console.log(err);
+      return res.status(404).json({ msg: "Unable to find user to remove!" });
+    }
   };
 
   return {
-    add
+    addAttendees,
+    removeAttendees
   };
 };
 

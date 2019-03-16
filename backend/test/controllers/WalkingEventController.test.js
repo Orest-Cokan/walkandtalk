@@ -64,27 +64,3 @@ test("WalkingEvent | destroy", async () => {
 
   await walkingEvent.destroy();
 });
-
-// test adding an attendee
-test("WalkingEvent | addAttendee", async () => {
-  // make a walking event
-  walkingEvent = await WalkingEvent.build({
-    id: 5,
-    title: "walking with friends",
-    description: "i want to go",
-    intensity: "slow",
-    venue: "indoor"
-  }).save();
-
-  // add an attendee to it
-  await request(api)
-    .put("/public/walkingevent/attendee")
-    .set("Accept", /json/)
-    .send({
-      id: 5,
-      name: "national womans day"
-    })
-    .expect(200);
-
-  walkingEvent.destroy();
-});

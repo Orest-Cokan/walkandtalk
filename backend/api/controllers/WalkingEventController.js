@@ -96,6 +96,7 @@ const WalkingEventController = () => {
       where: {
         id: id
       },
+      include: [Attendee, Location],
       truncate: true
     })
       .then(rowDeleted => {
@@ -109,28 +110,6 @@ const WalkingEventController = () => {
         console.log(err);
         return res.status(500).json({ msg: "Internal Server Error" });
       });
-  };
-
-  // add an attendee to an event!
-  const addAttendees = async (req, res) => {
-    const { body } = req;
-    console.log(body.id, body.name);
-    try {
-      const walkingevent = await WalkingEvent.findByPk(body.id, {
-        include: [Attendee]
-      });
-      await Attendee.create({
-        name: body.name
-      }).then(resp => {
-        walkingevent.addAttendees(resp);
-      });
-      return res
-        .status(200)
-        .json({ msg: "Succesfully added user to the walking event!" });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: "Internal server error" });
-    }
   };
 
   // add an attendee to an event!
@@ -152,7 +131,6 @@ const WalkingEventController = () => {
     getAll,
     updateEvent,
     destroy,
-    addAttendees,
     getEvent
   };
 };

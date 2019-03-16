@@ -24,9 +24,15 @@ const WalkingEvent = sequelize.define(tableName, {
 });
 
 // set the associations
-WalkingEvent.hasMany(Attendee);
+WalkingEvent.hasMany(Attendee, {
+  onDelete: "CASCADE",
+  hooks: true
+});
 Attendee.belongsTo(WalkingEvent);
-WalkingEvent.hasOne(Location);
+WalkingEvent.hasOne(Location, {
+  onDelete: "CASCADE",
+  hooks: true
+});
 
 // export walkingevent model
 module.exports = WalkingEvent;
