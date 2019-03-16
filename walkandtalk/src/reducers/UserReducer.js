@@ -5,6 +5,8 @@ import {
   USER_CREATE_SUCCESS,
   USER_CREATE,
   USER_EDIT,
+  USER_EDIT_SUCCESS,
+  USER_EDIT_FAIL,
   USER_LOGIN_SUCCESS
 } from "../actions/types";
 
@@ -49,7 +51,27 @@ const user = (state = INITIAL_STATE, action) => {
         loading: false
       };
     case USER_EDIT:
-      return { ...state, user: action.payload };
+      return {
+         ...state, 
+         ...INITIAL_STATE,
+        loading: true,
+        user: action.payload 
+      
+      };
+    case USER_EDIT_SUCCESS:
+    return {
+      ...state, 
+      ...INITIAL_STATE,
+     loading: true,
+     user: action.payload 
+   
+   };
+    case USER_EDIT_FAIL:
+      return {
+        ...state, 
+       errorLoging: "Edit user failed!",
+       loading: false,
+     };
     case USER_LOGIN_SUCCESS:
       return {
         ...state,
@@ -63,3 +85,4 @@ const user = (state = INITIAL_STATE, action) => {
 };
 
 export default user;
+

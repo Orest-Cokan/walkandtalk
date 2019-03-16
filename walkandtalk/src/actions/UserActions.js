@@ -4,7 +4,10 @@ import {
   USER_CREATE_SUCCESS,
   USER_LOGIN,
   USER_LOGIN_FAIL,
-  USER_LOGIN_SUCCESS
+  USER_LOGIN_SUCCESS,
+  USER_EDIT,
+  USER_EDIT_SUCCESS,
+  USER_EDIT_FAIL,
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -115,7 +118,65 @@ const loginUserSuccess = (dispatch, user) => {
   Actions.app();
 };
 
+ // action to edit a user
+ export const editUser = (
+  fullname,
+  email,
+  dob,
+  menopausal_stage,
+  intensity,
+  distance,
+  duration,
+  venue,
+  location,
+) => {
+  const user = {
+  fullname: fullname,
+  email: email,
+  dob: dob,
+  menopausal_stage: menopausal_stage,
+  intensity: intensity,
+  distance: distance,
+  duration: duration,
+  venue: venue,
+  location: location,
+  };
+  return dispatch => {
+    var ip = getIP();
+    var url = ip +"public/user";
+    console.log(user);
+    dispatch({ type: USER_EDIT });
+    axios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+      .put(url, user)
+      .then(res => {
+        if (res.status === 200) {
+          if(res.data === 1) {
+            console.log('Succcesss');
+            editUserSuccess(dispatch);
+          }
+        }
+      })
+      .catch(err => {
+        editUserFail(dispatch);
+        console.log('axios failure', err);
+      });
+  };
+};
 
+// dispatch user edit success
+const editUserSuccess = (dispatch) => {
+  dispatch({
+    type: USER_EDIT_SUCCESS,
+  });
+  
+  Actions.mainProfile();
+};
+
+// dispatch user edit fail
+const editUserFail = dispatch => {
+  console.log("fail", USER_EDIT_FAIL);
+  dispatch({ type: USER_EDIT_FAIL });
+};
 
 var getIP = ()=>{
   if (Platform.OS === 'android') {
@@ -125,3 +186,4 @@ var getIP = ()=>{
     return "http://127.0.0.1:2017/";
   }
 }
+
