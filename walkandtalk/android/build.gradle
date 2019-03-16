@@ -7,6 +7,8 @@ buildscript {
         compileSdkVersion = 26
         targetSdkVersion = 26
         supportLibVersion = "26.1.0"
+        googlePlayServicesVersion = "15.0.1"
+        androidMapsUtilsVersion = "0.5+"
     }
     repositories {
         google()
@@ -15,7 +17,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.google.gms:google-services:4.0.1'
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -39,6 +41,6 @@ allprojects {
 
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.7'
+    gradleVersion = '4.6'
     distributionUrl = distributionUrl.replace("bin", "all")
 }
