@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import BaseCard from "../../cardview/baseCard";
 import QuestionnaireCard from "../../cardview/questionnaireCard";
 import { connect } from "react-redux";
@@ -11,13 +11,20 @@ import {
   Body,
   Title,
   Right,
-  Content
+  Content,
 } from "native-base";
+import { Actions } from "react-native-router-flux";
 
 /*
 This is the forms screen. Users will see the two static questionnaires and event records to be completed.
 */
 class FormScreen extends Component {
+
+
+  submitEventRecord = () => {
+    Actions.submitEventRecord();
+  }
+
   render() {
     return (
       <Container>
@@ -36,12 +43,16 @@ class FormScreen extends Component {
           <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
           <View style={ScreenStyleSheet.lineSeparator} />
           <Text style={ScreenStyleSheet.sectionTitle}>Records</Text>
-          <BaseCard
-            title="Monthly Walk"
-            date="THU, FEB 28"
-            start_time="10:00 PM"
-            location="Terwillegar Centre"
-          />
+          <TouchableOpacity
+            onPress={this.submitEventRecord}
+          >
+            <BaseCard
+              title="Monthly Walk"
+              date="THU, FEB 28"
+              start_time="10:00 PM"
+              location="Terwillegar Centre"
+            />
+          </TouchableOpacity>
         </Content>
       </Container>
     );

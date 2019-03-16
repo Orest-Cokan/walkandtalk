@@ -113,8 +113,8 @@ export default StyleSheet.create({
     },
     profileInput: {
       textAlign: 'right',
-      borderBottomWidth: 1,
-      borderBottomColor: 'gray',
+      //borderBottomWidth: 1,
+      //borderBottomColor: 'gray',
       color: 'black'
     },
     profileInputUneditable: {
@@ -149,12 +149,25 @@ export default StyleSheet.create({
     fontSize: 15
   },
   formInput: {
-    textAlign: 'left',
+    textAlign: 'right',
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
     color: 'black',
     padding: 0,
     fontSize: 15
+  },
+
+  formInputUneditable: {
+    textAlign: 'right',
+    borderBottomWidth: 1,
+    borderBottomColor: 'gray',
+    color: 'gray',
+    padding: 0,
+    fontSize: 15
+  },
+  ratingIcon: {
+    width: 50,
+    height: 50,
   },
   TitleHeader: {
     color:"black",

@@ -9,6 +9,7 @@ import HomeScreen from "./components/home/HomeScreen";
 import SearchScreen from "./components/search/SearchScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
 import FormScreen from "./components/form/FormScreen";
+import SubmitEventRecordScreen from "./components/form/SubmitEventRecord";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
@@ -74,7 +75,6 @@ const RouterComponent = () => (
           />
           <Scene
             key="form"
-            component={FormScreen}
             icon={({ focused }) => (
               <Image
                 source={
@@ -86,7 +86,10 @@ const RouterComponent = () => (
               />
             )}
             hideNavBar
-          />
+          >
+            <Scene key="mainFormPage" component={FormScreen} />
+            <Scene key="submitEventRecord" component={SubmitEventRecordScreen} />
+          </Scene>
           <Scene
             key="profile"
             icon={({ focused }) => (

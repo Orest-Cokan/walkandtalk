@@ -43,12 +43,6 @@ class SignupScreen extends Component {
     distance: null
   };
 
-  onChangeUser = text => {
-    this.setState({
-      fullname: text
-    });
-  };
-
   onChangeEmail = text => {
     this.setState({
       email: text
@@ -73,7 +67,7 @@ class SignupScreen extends Component {
     });
   };
 
-  onChangeFullname = text => {
+  onChangeFullName = text => {
     this.setState({
       fullname: text
     });
@@ -169,14 +163,14 @@ class SignupScreen extends Component {
 
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>First Name *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>Full Name *</Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeFullname}
+                onChangeText={this.onChangeFullName}
               />
             </View>
           </View>
