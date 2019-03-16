@@ -4,7 +4,6 @@ import { loginUser } from "../../actions/UserActions";
 import { Actions } from "react-native-router-flux";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 class AuthScreen extends Component {
   state = {
@@ -41,17 +40,31 @@ class AuthScreen extends Component {
   //render the screen
   render() {
     return (
-      <View style={styles.container}>
-        <MapView
-          provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-          style={styles.map}
-          region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121
-          }}
-        />
+      <View>
+        {/*Header Text*/}
+        <Text style={styles.logo}>WALK AND TALK</Text>
+        <View>
+          <GenerateForm ref="formGenerator" fields={fields} />
+        </View>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={this.onPressLogin}
+        >
+          {/*Login Button - redirect user to home screen if successfull*/}
+          <Text style={styles.buttonText}> LOGIN </Text>
+        </TouchableOpacity>
+        <Text style={styles.signUp}>New to Walk and Talk?</Text>
+        <View style={styles.nestedButtonView}>
+          {/*Signup Button - redirect user to signup screen if successfull*/}
+          <Text style={styles.signUp}>Sign up </Text>
+          <TouchableOpacity
+            style={styles.signupButton}
+            onPress={this.onPressSignUp}
+          >
+            <Text style={styles.here}>here</Text>
+          </TouchableOpacity>
+          <Text style={styles.signUp}>.</Text>
+        </View>
       </View>
     );
   }
@@ -140,15 +153,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "center"
-  },
-  map: {
-    ...StyleSheet.absoluteFillObject
-  },
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    height: 400,
-    width: 400,
-    justifyContent: "flex-end",
-    alignItems: "center"
   }
 });
