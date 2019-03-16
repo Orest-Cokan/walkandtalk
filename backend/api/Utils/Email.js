@@ -1,12 +1,33 @@
-// using SendGrid's v3 Node.js Library
-// https://github.com/sendgrid/sendgrid-nodejs
-const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const msg = {
-  to: "test@example.com",
-  from: "test@example.com",
-  subject: "Sending with SendGrid is Fun",
-  text: "and easy to do anywhere, even with Node.js",
-  html: "<strong>and easy to do anywhere, even with Node.js</strong>"
+const nodemailer = require("nodemailer");
+const fs = require("fs");
+const config = JSON.parse(fs.readFileSync("config.json"));
+
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  secure: false,
+  port: 25,
+  auth: {
+    user: config.username,
+    pass: config.password
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
+});
+
+let HelperOptions = {
+  from: '"orest" <cokan@ualberta.ca',
+  to: "cokan@ualberta.ca",
+  subject: "dd",
+  text: "dd"
 };
-sgMail.send(msg);
+
+transporter.sendMail(HelperOptions, (error, info) => {
+  if (error) {
+    return console.log(error);
+  }
+  console.log("The message was sent!");
+  console.log(info);
+});
+
+module.exports = transporter;
