@@ -1,5 +1,6 @@
 const dateFormat = require("dateformat");
 const axios = require("axios");
+const cron = require("node-cron");
 
 // loop logic works for checking if date == now for cron job
 /*
@@ -25,5 +26,41 @@ events.forEach(event => {
 });
 */
 
-const now = dateFormat(new Date(), "ddd, mmm d");
-console.log(now);
+// make a custom AM/PM checker because i'm lazy as fuck and would rather go down this route
+// input current time and event time
+/*
+time = (now, event_time) => {
+  if (
+    now.slice(-2).toLowerCase() == "am" &&
+    event_time.slice(-2).toLowerCase() == "am"
+  ) {
+    if (now.slice(-7) >= event_time.slice(-7)) {
+      return true;
+    } else {
+      return false;
+    }
+  } else if (
+    now.slice(-2).toLowerCase() == "am" &&
+    event_time.slice(-2).toLowerCase() == "pm"
+  ) {
+    return false;
+  } else if (
+    now.slice(-2).toLowerCase() == "pm" &&
+    event_time.slice(-2).toLowerCase() == "am"
+  ) {
+    return true;
+  } else if (
+    now.slice(-2).toLowerCase() == "pm" &&
+    event_time.slice(-2).toLowerCase() == "pm"
+  ) {
+    if (now.slice(-7) >= event_time.slice(-7)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+};
+*/
+
+var valid = cron.validate("0 * * * *");
+console.log(valid);

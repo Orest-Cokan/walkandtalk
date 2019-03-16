@@ -1,8 +1,8 @@
 const User = require("../models/User");
 const authService = require("../services/auth.service");
 const bcryptService = require("../services/bcrypt.service");
-const Transporter = require("../utils/Email");
-const newUserEmail = require("../utils/msgs/newUser");
+const Transporter = require("../utils/email/email");
+const newUserEmail = require("../utils/email/msgs/newUser");
 
 // User controller
 const UserController = () => {
