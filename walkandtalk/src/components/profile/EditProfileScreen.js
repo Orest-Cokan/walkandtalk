@@ -21,102 +21,86 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
+import { editUser } from "../../actions/UserActions"
 
 class EditProfileScreen extends Component {
   // Constructor
   constructor(props) {
     super(props);
 
-    // State
     this.state = {
-      fullname: "Brittany Taylor",
-      dob: "January 1, 1955",
-      menopausal_stage: "Peri",
-      distance: 10,
-      duration: 60,
-      intensity: "Intermediate",
-      venue: "Indoor",
-      location: "Riverbend Area"
+      fullname: this.props.user.user.fullname,
+      email: this.props.user.user.email,
+      dob: this.props.user.user.dob,
+      menopausal_stage: this.props.user.user.menopausal_stage,
+      intensity: this.props.user.user.intensity,
+      distance: this.props.user.user.distance,
+      duration: this.props.user.user.duration,
+      venue: this.props.user.user.venue,
+      location: this.props.user.user.location,
     };
+  
+  }
+
+  onChangeFullName = text => {
+    this.setState({
+      fullname: text
+    });
+  };
+
+  onChangeDuration = text => {
+    this.setState({
+      duration: text
+    });
+  };
+
+  onChangeDistance = text => {
+    this.setState({
+      distance: text
+    });
+  };
+
+  onChangeLocation = text => {
+    this.setState({
+      location: text
+    });
+  };
+
+  setMenopausalStage(selectedOption) {
+    this.setState({
+      menopausal_stage: selectedOption
+    });
+  }
+
+  setIntensity(selectedOption) {
+    this.setState({
+      intensity: selectedOption
+    });
+  }
+
+  setVenue(selectedOption) {
+    this.setState({
+      venue: selectedOption
+    });
   }
 
   cancelEdit() {
     Actions.pop();
   }
 
-  onChangeName(text) {
-    this.setState({
-      fullname: text
-    });
-  }
-
-  onChangeDob(text) {
-    this.setState({
-      dob: text
-    });
-  }
-
-  onChangeStage(text) {
-    this.setState({
-      menopausal_stage: text
-    });
-  }
-
-  onChangeDistance(text) {
-    this.setState({
-      distance: text
-    });
-  }
-
-  onChangeDuration(text) {
-    this.setState({
-      duration: text
-    });
-  }
-
-  onChangeIntensity(text) {
-    this.setState({
-      intensity: text
-    });
-  }
-
-  onChangeVenue(text) {
-    this.setState({
-      venue: text
-    });
-  }
-
-  onChangeLocation(text) {
-    this.setState({
-      location: text
-    });
-  }
-
-  componentWillMount() {
-    console.log(this.props);
-    this.setState({
-      fullname: this.props.fullname,
-      dob: this.props.dob,
-      menopausal_stage: this.props.menopausal_stage,
-      distance: this.props.distance,
-      duration: this.props.duration,
-      intensity: this.props.intensity,
-      venue: this.props.venue,
-      location: this.props.location
-    });
-  }
-
-  onSaveChanges() {
-    this.props.onSaveChanges(
+  saveProfile = () => {
+    console.log('state on save', this.state)
+    this.props.editUser(
       this.state.fullname,
+      this.state.email,
       this.state.dob,
       this.state.menopausal_stage,
+      this.state.intensity,
       this.state.distance,
       this.state.duration,
-      this.state.intensity,
       this.state.venue,
-      this.state.location
-    );
+      this.state.location,
+    )
   }
 
   render() {
@@ -124,6 +108,8 @@ class EditProfileScreen extends Component {
     const intensities = ["Slow", "Intermediate", "Brisk"];
     const venues = ["Indoor", "Outdoor"];
     const menoStages = ["Pre", "Peri", "Post"];
+    const user = this.props.user.user
+
     // Screen
     return (
       <Container>
@@ -153,8 +139,8 @@ class EditProfileScreen extends Component {
               <Text style={ScreenStyleSheet.profileInfo}>Full Name *</Text>
             </View>
             <View style={ScreenStyleSheet.profileInputContainer}>
-              <TextInput style={ScreenStyleSheet.profileInputStyle}>
-                Brittany Taylor
+              <TextInput style={ScreenStyleSheet.profileInput} onChangeText={this.onChangeFullname}>
+                {user.fullname}
               </TextInput>
             </View>
           </View>
@@ -165,17 +151,16 @@ class EditProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileInputContainer}>
               <TextInput
-                style={ScreenStyleSheet.profileInputStyle}
+                style={ScreenStyleSheet.profileInputUneditable}
                 editable={false}
               >
-                btaylor@example.com
+                {user.email}
               </TextInput>
             </View>
           </View>
 
           {/* On screen separator */}
           <View style={ScreenStyleSheet.lineSeparator} />
-
           {/* Info Header */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.profileRowInfo}>
@@ -189,12 +174,12 @@ class EditProfileScreen extends Component {
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfo}>Date of Birth</Text>
             </View>
-            <View style={ScreenStyleSheet.profileRowInfo}>
+            <View style={ScreenStyleSheet.profileInputContainer}>
               <TextInput
-                style={ScreenStyleSheet.profileInputStyle}
+                style={ScreenStyleSheet.profileInputUneditable}
                 editable={false}
               >
-                January 1, 1955
+                {user.dob}
               </TextInput>
             </View>
           </View>
@@ -212,7 +197,8 @@ class EditProfileScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={this.state.menopausal_stage}
+              selectedOption={user.menopausal_stage}
+              onSelection={this.setMenopausalStage.bind(this)}
               optionContainerStyle={{
                 flex: 1,
                 height: 40,
@@ -239,11 +225,13 @@ class EditProfileScreen extends Component {
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfo}>
-                Length of Walk (by distance)*
+                Length of Walk (by distance) *
               </Text>
             </View>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInputNumber}>10</Text>
+            <View style={ScreenStyleSheet.profileInputContainer}>
+              <TextInput style={ScreenStyleSheet.profileInput} onChangeText={this.onChangeDistance}>
+                {user.distance}
+              </TextInput>
               <Text style={ScreenStyleSheet.profileInput}>km</Text>
             </View>
           </View>
@@ -251,11 +239,13 @@ class EditProfileScreen extends Component {
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfo}>
-                Length of Walk (by duration)*
+                Length of Walk (by duration) *
               </Text>
             </View>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInputNumber}>60</Text>
+            <View style={ScreenStyleSheet.profileInputContainer}>
+              <TextInput style={ScreenStyleSheet.profileInput} onChangeText={this.onChangeDuration}>
+                {user.duration}
+              </TextInput>
               <Text style={ScreenStyleSheet.profileInput}>min</Text>
             </View>
           </View>
@@ -271,7 +261,8 @@ class EditProfileScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={this.state.intensity}
+              selectedOption={user.intensity}
+              onSelection={this.setIntensity.bind(this)}
               optionContainerStyle={{
                 flex: 1,
                 height: 40,
@@ -294,7 +285,8 @@ class EditProfileScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={this.state.venue}
+              selectedOption={user.venue}
+              onSelection={this.setVenue.bind(this)}
               optionContainerStyle={{
                 flex: 1,
                 height: 40,
@@ -312,9 +304,9 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.profileRowInfo}>
-            <Text style={ScreenStyleSheet.profileInputStyle}>
-              Riverbend Area
-            </Text>
+            <TextInput style={ScreenStyleSheet.textInputStyle} onChangeText={this.onChangeFullname}>
+              {user.location}
+            </TextInput>
           </View>
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
@@ -341,19 +333,18 @@ class EditProfileScreen extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.user
-});
+const mapStateToProps = state => {
+  console.log("EditProfilescreen");
 
+  return {
+    user: state.user
+  };
+};
 
 export default connect(
   mapStateToProps,
-  null
+  { editUser }
 )(EditProfileScreen);
-{/*export default connect(
-  null,
-  { onSaveChanges }(EditProfileScreen)
-);*/}
 
 // Styles
 const styles = StyleSheet.create({
@@ -388,3 +379,4 @@ const styles = StyleSheet.create({
     borderRadius: 10
   }
 });
+
