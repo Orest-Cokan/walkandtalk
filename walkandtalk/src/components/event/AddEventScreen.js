@@ -206,6 +206,7 @@ class AddEventScreen extends Component {
               />
             </View>
           </View>
+
           {/* Description */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -223,6 +224,7 @@ class AddEventScreen extends Component {
               />
             </View>
           </View>
+
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -247,10 +249,11 @@ class AddEventScreen extends Component {
               options={intensities}
             />
           </View>
+
           {/* Venue */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Type of Venue</Text>
+              <Text style={ScreenStyleSheet.formInfo}>Type of venue</Text>
             </View>
           </View>
           {/* React-Native radio button as multi option button */}
@@ -271,6 +274,7 @@ class AddEventScreen extends Component {
               options={venues}
             />
           </View>
+
           {/* Location */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -285,6 +289,7 @@ class AddEventScreen extends Component {
               />
             </View>
           </View>
+
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}

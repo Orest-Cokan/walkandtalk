@@ -201,6 +201,7 @@ class SubmitEventRecordScreen extends Component {
               leftButtonBackgroundColor="white"
             />
           </View>
+
           {/* Duration */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -257,7 +258,7 @@ class SubmitEventRecordScreen extends Component {
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>
-                Type of Venue
+                Type of venue
                 <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
             </View>
@@ -276,6 +277,7 @@ class SubmitEventRecordScreen extends Component {
              hasPadding
            />
           </View>
+
           {/* Rate the walk */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -315,6 +317,7 @@ class SubmitEventRecordScreen extends Component {
               />
             </View>
           </View>
+
           {/* Rate the location */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -354,6 +357,7 @@ class SubmitEventRecordScreen extends Component {
               />
             </View>
           </View>
+
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}

@@ -128,12 +128,12 @@ export default StyleSheet.create({
     fontSize: 15
   },
   formRowInfo: {
-    flexDirection: "row",
+    flex: 1,
     marginBottom: 10,
   },
   formDescriptionInput: {
     textAlignVertical: 'top',
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: 'gray',
     color: 'black',
     padding: 5,
