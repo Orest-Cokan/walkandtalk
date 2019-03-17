@@ -111,20 +111,6 @@ export default StyleSheet.create({
       color: "black",
       textAlign: 'right'
     },
-    profileInput: {
-      textAlign: 'right',
-      //borderBottomWidth: 1,
-      //borderBottomColor: 'gray',
-      color: 'black'
-    },
-    profileInputUneditable: {
-      textAlign: 'right',
-      borderBottomWidth: 1,
-      borderBottomColor: 'gray',
-      color: 'gray'
-
-
-    },
 
    // Forms
    formRowContainerEvent: {
@@ -168,6 +154,11 @@ export default StyleSheet.create({
   ratingIcon: {
     width: 50,
     height: 50,
+  },
+  ratingEmojiContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 50
   },
   TitleHeader: {
     color:"black",
