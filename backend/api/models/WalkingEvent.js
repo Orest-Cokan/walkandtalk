@@ -15,6 +15,7 @@ const WalkingEvent = sequelize.define(tableName, {
   },
   organizer: Sequelize.STRING,
   title: Sequelize.STRING,
+  email: Sequelize.STRING,
   description: Sequelize.STRING,
   date: Sequelize.STRING,
   start_time: Sequelize.STRING,

@@ -19,6 +19,7 @@ const publicRoutes = {
   "GET /walkingrecords": "WalkingRecordController.getAll",
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
   "POST /walkingrecord": "WalkingRecordController.create",
+  "PUT /walkingrecord": "WalkingRecordController.update",
 
   // Researcher routes
   "PUT /researcher/accept": "ResearcherController.acceptUser",

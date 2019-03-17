@@ -1,6 +1,6 @@
 const WalkingRecord = require("../models/WalkingRecord");
 
-// overarching walking record controller
+// walking record controller
 const WalkingRecordController = () => {
   // create a new walkingrecord
   const create = async (req, res) => {
@@ -8,12 +8,19 @@ const WalkingRecordController = () => {
     console.log(body.email);
     try {
       WalkingRecord.create({
-        fullanem: body.fullname,
+        organizer: body.organizer,
+        fullname: body.organizer,
+        title: body.title,
         email: body.email,
-        commentsLocation: body.commentsLocation,
-        commentsWalk: body.commentsWalk,
-        walkRating: body.walkRating,
-        locationRating: body.locationRating
+        venue: body.venue,
+        distance: body.distance,
+        duration: body.duration,
+        intensity: body.intesity,
+        walk_rating: body.walk_rating,
+        walk_rating_comment: body.walk_rating_comment,
+        location_rating: body.location_rating,
+        location_rating_comment: body.location_rating_comment,
+        completed: body.completed
       });
 
       return res
@@ -48,10 +55,36 @@ const WalkingRecordController = () => {
     }
   };
 
+  // update record
+  const update = async (req, res) => {
+    const { body } = req;
+    WalkingRecord.update(
+      {
+        duration: body.duration,
+        distance: body.distance,
+        intensity: body.intensity,
+        venue: body.venue,
+        walk_rating: body.walk_rating,
+        walk_rating_comment: body.walk_rating_comment,
+        location_rating: body.location_rating,
+        location_rating_comment: body.location_rating_comment,
+        completed: body.completed
+      },
+      { returning: true, where: { email: body.email } }
+    )
+      .then(self => {
+        return res.status(200).json({ self });
+      })
+      .catch(function(err) {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
+  };
+
   return {
     create,
     getAll,
-    getRecords
+    getRecords,
+    update
   };
 };
 
