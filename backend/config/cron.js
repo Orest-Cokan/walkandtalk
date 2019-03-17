@@ -44,7 +44,7 @@ var task = cron.schedule("* * * * *", () => {
         });
         WalkingRecord.create({
           organizer: event.organizer,
-          fullname: event.fullname,
+          fullname: event.organizer,
           title: event.title,
           email: event.email,
           venue: event.venue,
