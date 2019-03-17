@@ -2,10 +2,10 @@ const Sequelize = require("sequelize");
 const sequelize = require("../../config/database");
 
 // table name
-const tableName = "EventRecord";
+const tableName = "WalkingRecord";
 
 // walking record model
-const EventRecord = sequelize.define(tableName, {
+const WalkingRecord = sequelize.define(tableName, {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -13,17 +13,11 @@ const EventRecord = sequelize.define(tableName, {
   },
   email: Sequelize.STRING,
   fullname: Sequelize.STRING,
-  duration: Sequelize.INTEGER,
-  distance: Sequelize.INTEGER,
-  intensity: Sequelize.STRING,
-  venue: Sequelize.STRING,
-  walk_rating: Sequelize.STRING,
-  walk_rating_comment: Sequelize.STRING,
-  location_rating: Sequelize.STRING,
-  location_rating_comment: Sequelize.STRING,
+  commentsLocation: Sequelize.STRING,
+  commentsWalk: Sequelize.STRING,
+  walkRating: Sequelize.INTEGER,
+  locationRating: Sequelize.INTEGER
 });
 
-
-
-// export event record
-module.exports = EventRecord;
+// export walking record
+module.exports = WalkingRecord;

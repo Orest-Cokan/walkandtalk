@@ -6,8 +6,7 @@ const tableName = "attendees";
 
 // Attendee model
 const Attendee = sequelize.define(tableName, {
-  email: Sequelize.STRING,
-  submittedRecord: Sequelize.BOOLEAN
+  name: Sequelize.STRING
 });
 
 module.exports = Attendee;
