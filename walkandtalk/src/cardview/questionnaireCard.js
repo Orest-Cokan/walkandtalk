@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text , TouchableOpacity} from "react-native";
+import { Actions } from "react-native-router-flux";
 
 /*
 This is the view for the two questionnaires.
@@ -8,15 +9,19 @@ Returns: The list view that contains the questionnaires.
 */
 
 class QuestionnaireCard extends Component {
+
+    goToMenqol =() => {
+        Actions.menqol();
+    }
     render() {
         return (
             <View>
-                <View style={styles.questionnaires}>
+                <TouchableOpacity style={styles.questionnaires} onPress={this.goToMenqol}>
                     <Text style={styles.quesText}>{this.props.quesOne}</Text>
-                </View>
-                <View style={styles.questionnaires}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.questionnaires}>
                     <Text style={styles.quesText}>{this.props.quesTwo}</Text>
-                </View>
+                </TouchableOpacity>
             </View>
 
         );
