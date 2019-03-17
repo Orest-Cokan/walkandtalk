@@ -11,7 +11,8 @@ const AttendeeController = () => {
         include: [Attendee]
       });
       await Attendee.create({
-        name: body.name
+        name: body.name,
+        email: body.email
       }).then(resp => {
         walkingevent.addAttendees(resp);
       });
@@ -35,7 +36,7 @@ const AttendeeController = () => {
 
       await walkingevent
         .getAttendees({
-          where: { name: body.name }
+          where: { email: body.email }
         })
         .then(resp => {
           if (resp.length > 0) {
@@ -56,7 +57,7 @@ const AttendeeController = () => {
         });
     } catch (err) {
       console.log(err);
-      return res.status(404).json({ msg: "Unable to find user to remove!" });
+      return res.status(500).json({ msg: "Unable to find user to remove!" });
     }
   };
 

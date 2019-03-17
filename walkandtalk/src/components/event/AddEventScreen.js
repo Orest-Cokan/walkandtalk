@@ -33,6 +33,7 @@ class AddEventScreen extends Component {
     // State
     this.state = {
       organizer: this.props.user.user.fullname,
+      email: this.props.user.user.email,
       title: null,
       description: null,
       date: null,
@@ -81,6 +82,7 @@ class AddEventScreen extends Component {
     console.log("we are here!");
     this.props.createEvent(
       this.state.organizer,
+      this.state.email,
       this.state.title,
       this.state.date,
       this.state.startTime,
