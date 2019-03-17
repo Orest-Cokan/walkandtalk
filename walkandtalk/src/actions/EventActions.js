@@ -67,7 +67,7 @@ export const createEvent = (
   };
 };
 
-// action to delete an event
+// action to delete an event from current events
 export const deleteEvent = id => {
   return dispatch => {
     var ip = getIP();
@@ -80,6 +80,60 @@ export const deleteEvent = id => {
       })
       .catch(err => {
         console.log(err);
+      });
+  };
+};
+
+
+
+// action to create a past event
+export const createPastEvent = (
+  organizer,
+  title,
+  date,
+  start_time,
+  end_time,
+  description,
+  intensity,
+  venue,
+  location,
+  lat,
+  long
+) => {
+  return dispatch => {
+    var ip = getIP();
+    var url = ip +"public/pastevent";
+    const past_event = {
+     id: id;
+     organizer: organizer,
+     title: title,
+     description: description,
+     date: date,
+     start_time: start_time,
+     end_time: end_time,
+     location: location,
+     attendees: attendees,
+     duration: duration,
+     distance: distance,
+     intensity: intensity,
+     venue: venue,
+     walk_rating: walk_rating,
+     walk_rating_comment: walk_rating_comment,
+     location_rating: location_rating,
+     location_rating_comment: location_rating_comment,
+    };
+    axios
+      .post(url, past_event)
+      .then(res => {
+        if (res.status === 200) {
+          console.log(res.status, "is this even logged???");
+          console.log(walking_event, "is this null?");
+          dispatch({ type: PAST_EVENT_CREATE });
+          Actions.reset("app");
+        }
+      })
+      .catch(err => {
+        console.log(err, "kek");
       });
   };
 };

@@ -15,6 +15,14 @@ const publicRoutes = {
   "PUT /walkingevent": "WalkingEventController.updateEvent",
   "DELETE /walkingevent/:id": "WalkingEventController.destroy",
 
+  // Pastevent routes
+  "GET /pastevents": "PastEventController.getAllPastEvents",
+  "GET /pastevent": "PastEventController.getPastEvent",
+  "POST /pastevent": "PastEventController.create",
+  "GET /pastevent/:id": "PastEventController.getUserPastEvents",
+  "PUT /pastevent": "PastEventController.updatePastEvent",
+
+
   // Walkingrecord routes
   "GET /walkingrecords": "WalkingRecordController.getAll",
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
