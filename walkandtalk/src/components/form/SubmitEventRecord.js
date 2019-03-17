@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  Text,
-  TextInput,
   TouchableOpacity,
   Button,
   Alert,
@@ -30,6 +28,7 @@ import { createEvent } from "../../actions/EventActions";
 import NumericInput from 'react-native-numeric-input';
 import { Actions } from "react-native-router-flux";
 import { width, height, totalSize } from 'react-native-dimension';
+import { StyledText as Text, StyledTextInput as TextInput } from "../../constants/StyledText";
 
 
 class SubmitEventRecordScreen extends Component {
@@ -38,15 +37,16 @@ class SubmitEventRecordScreen extends Component {
 
     // State
     this.state = {
-      organizer: this.props.user.user.fullname,
-      title: null,
-      description: null,
-      date: null,
-      startTime: null,
-      endTime: null,
-      location: null,
-      numAttendees: null,
-      //user input needed
+      // Event default details
+      organizer: "Linda Martinez",
+      title: "New Year Walk",
+      date: "FRI, JAN 4",
+      startTime: "7:00 PM",
+      endTime: "8:00PM",
+      location: "Van Vliet Complex",
+      numAttendees: 3,
+
+      // User input needed
       duration: 0,
       distance: 0,
       intensity: "Slow",
@@ -57,28 +57,15 @@ class SubmitEventRecordScreen extends Component {
       locationRatingComment: null,
     };
   }
-
-  onChangeDuration(value) {
-    this.setState({
-      duration: value
-    });
-  };
-
   onChangeDistance(value) {
     this.setState({
       distance: value
     });
   };
 
-  onChangeWalkRatingComment = text => {
+  onChangeDuration(value) {
     this.setState({
-      walkRatingComment: text
-    });
-  };
-
-  onChangeLocationRatingComment = text => {
-    this.setState({
-      locationRatingComment: text
+      duration: value
     });
   };
 
@@ -107,7 +94,20 @@ class SubmitEventRecordScreen extends Component {
     });
   }
 
+  onChangeWalkRatingComment = text => {
+    this.setState({
+      walkRatingComment: text
+    });
+  };
+
+  onChangeLocationRatingComment = text => {
+    this.setState({
+      locationRatingComment: text
+    });
+  };
+
   onSubmit = () => {
+    console.log(this.state.distance);
     console.log(this.state.duration);
     console.log(this.state.intensity);
     console.log(this.state.venue);
@@ -117,7 +117,7 @@ class SubmitEventRecordScreen extends Component {
 
   onFinish = () => {
     console.log("we are here!");
-    this.props.createEvent(
+    this.props.submitEventRecord(
       this.state.organizer,
       this.state.title,
       this.state.date,
@@ -152,7 +152,6 @@ class SubmitEventRecordScreen extends Component {
       { label: "", value: "2", imageIcon: require("../../assets/icons/indifferent.png")  },
       { label: "", value: "3", imageIcon: require("../../assets/icons/like.png")  },
     ];
-
     const locationRatings = [
       { value: "1", imageIcon: require("../../assets/icons/dislike.png")  },
       { value: "2", imageIcon: require("../../assets/icons/indifferent.png")  },
@@ -169,11 +168,21 @@ class SubmitEventRecordScreen extends Component {
           iosBarStyle={"dark-content"}
         >
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Event Name</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>{this.state.title}</Title>
           </Body>
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
+          {/* Event info */}
+          <Text>{this.state.date.toUpperCase()} AT {this.state.startTime.toUpperCase()}</Text>
+          <Text>{this.state.title}</Text>
+          <Text>{this.state.location}</Text>
+          <Text>{this.state.organizer}</Text>
+          <Text>{this.state.numAttendees} people attended this event.</Text>
+
+          {/* On screen separator */}
+          <View style={ScreenStyleSheet.lineSeparator} />
+
           {/* Distance */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>

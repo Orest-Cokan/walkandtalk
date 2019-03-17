@@ -1,8 +1,35 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, TextInput } from 'react-native';
 
-export class MonoText extends React.Component {
+class StyledText extends React.Component {
   render() {
-    return <Text {...this.props} style={[this.props.style, { fontFamily: 'space-mono' }]} />;
+    return (
+      <Text {...this.props}
+        style={[{
+          fontFamily: 'proxima_nova_reg',
+          fontSize: 15,
+          color: 'grey'
+        },
+        this.props.style
+        ]}
+      />
+    );
   }
 }
+
+class StyledTextInput extends React.Component {
+  render() {
+    return (
+      <TextInput {...this.props}
+        style={[{
+          fontFamily: 'proxima_nova_reg',
+          fontSize: 15
+        },
+        this.props.style
+        ]}
+      />
+    );
+  }
+}
+
+export { StyledText, StyledTextInput };

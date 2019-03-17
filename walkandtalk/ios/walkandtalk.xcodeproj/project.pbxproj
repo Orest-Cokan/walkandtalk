@@ -60,6 +60,8 @@
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		FACD73DB53B2418FAE756E9B /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6C338EFE24F6AA600D3B8 /* Roboto_medium.ttf */; };
+		75856318D0C94169BBB5F5F5 /* proxima_nova_reg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9AA5CDB24FD64B4A8FE3BDAD /* proxima_nova_reg.ttf */; };
+		9AAB676075B54CD396E03D72 /* SpaceMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3ACA42C153444C1DA9686BE6 /* SpaceMono-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -404,6 +406,8 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		FFB5B8ED7102440E9660B351 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		9AA5CDB24FD64B4A8FE3BDAD /* proxima_nova_reg.ttf */ = {isa = PBXFileReference; name = "proxima_nova_reg.ttf"; path = "../src/assets/fonts/proxima_nova_reg.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		3ACA42C153444C1DA9686BE6 /* SpaceMono-Regular.ttf */ = {isa = PBXFileReference; name = "SpaceMono-Regular.ttf"; path = "../src/assets/fonts/SpaceMono-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -612,6 +616,8 @@
 				4D80B29EB6DC4623B2C5F19D /* rubicon-icon-font.ttf */,
 				C1D52ADD809742C8A0697C69 /* SimpleLineIcons.ttf */,
 				390C8790935A4E0EAC4FD677 /* Zocial.ttf */,
+				9AA5CDB24FD64B4A8FE3BDAD /* proxima_nova_reg.ttf */,
+				3ACA42C153444C1DA9686BE6 /* SpaceMono-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1222,6 +1228,8 @@
 				920643DBBC004823A38660BE /* rubicon-icon-font.ttf in Resources */,
 				99916582EF7F4503A1E21AD8 /* SimpleLineIcons.ttf in Resources */,
 				4C675262C0E144B2A9F553EB /* Zocial.ttf in Resources */,
+				75856318D0C94169BBB5F5F5 /* proxima_nova_reg.ttf in Resources */,
+				9AAB676075B54CD396E03D72 /* SpaceMono-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

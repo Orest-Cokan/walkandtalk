@@ -45,5 +45,11 @@
     "transformIgnorePatterns": [
       "/node_modules/(?!native-base)/"
     ]
+  },
+
+  "rnpm": {
+      "assets": [
+        "./assets/fonts/"
+      ]
   }
 }

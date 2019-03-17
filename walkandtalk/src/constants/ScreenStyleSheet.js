@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Colors } from "../constants/Colors"
 
 export default StyleSheet.create({
   // Screen
@@ -125,7 +126,7 @@ export default StyleSheet.create({
    },
   formInfo: {
     color: "gray",
-    fontSize: 15
+    fontSize: 15,
   },
   formRowInfo: {
     flex: 1,
