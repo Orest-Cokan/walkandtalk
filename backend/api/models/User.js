@@ -36,7 +36,8 @@ const User = sequelize.define(
     location: Sequelize.STRING,
     dob: Sequelize.STRING,
     distance: Sequelize.INTEGER,
-    duration: Sequelize.INTEGER
+    duration: Sequelize.INTEGER,
+    redcapID: Sequelize.INTEGER
   },
 
   { hooks, tableName }

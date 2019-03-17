@@ -38,7 +38,7 @@ export default StyleSheet.create({
   // Side-by-side buttons
   rowContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
     leftRightButton: {
     width: "45%",
@@ -63,6 +63,11 @@ export default StyleSheet.create({
     marginTop: 5
   },
 
+  // Asterisk
+
+ asterisk: {
+   color: "#DD5581"
+ },
 
   // Search tab
 
@@ -123,7 +128,7 @@ export default StyleSheet.create({
     fontSize: 15
   },
   formRowInfo: {
-    flex: 1,
+    flexDirection: "row",
     marginBottom: 10,
   },
   formDescriptionInput: {
@@ -136,11 +141,13 @@ export default StyleSheet.create({
   },
   formInput: {
     textAlign: 'right',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.5,
     borderBottomColor: 'gray',
+    borderTopWidth: 0.5,
+    borderTopColor: 'transparent',
     color: 'black',
     padding: 0,
-    fontSize: 15
+    fontSize: 15,
   },
 
   formInputUneditable: {
@@ -150,15 +157,6 @@ export default StyleSheet.create({
     color: 'gray',
     padding: 0,
     fontSize: 15
-  },
-  ratingIcon: {
-    width: 50,
-    height: 50,
-  },
-  ratingEmojiContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 50
   },
   TitleHeader: {
     color:"black",

@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   Button,
   Alert,
-  Image
+  Image,
+  Dimensions
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -26,7 +27,10 @@ import SwitchSelector from "react-native-switch-selector";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { createEvent } from "../../actions/EventActions";
+import NumericInput from 'react-native-numeric-input';
 import { Actions } from "react-native-router-flux";
+import { width, height, totalSize } from 'react-native-dimension';
+
 
 class SubmitEventRecordScreen extends Component {
   constructor(props) {
@@ -43,6 +47,8 @@ class SubmitEventRecordScreen extends Component {
       location: null,
       numAttendees: null,
       //user input needed
+      duration: 0,
+      distance: 0,
       intensity: "Slow",
       venue: "Indoor",
       walkRating: "1",
@@ -51,6 +57,18 @@ class SubmitEventRecordScreen extends Component {
       locationRatingComment: null,
     };
   }
+
+  onChangeDuration(value) {
+    this.setState({
+      duration: value
+    });
+  };
+
+  onChangeDistance(value) {
+    this.setState({
+      distance: value
+    });
+  };
 
   onChangeWalkRatingComment = text => {
     this.setState({
@@ -90,6 +108,7 @@ class SubmitEventRecordScreen extends Component {
   }
 
   onSubmit = () => {
+    console.log(this.state.duration);
     console.log(this.state.intensity);
     console.log(this.state.venue);
     console.log(this.state.walkRating);
@@ -155,15 +174,72 @@ class SubmitEventRecordScreen extends Component {
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
+          {/* Distance */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Length of walk (in kilometres)
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
+            </View>
+          </View>
+          <View style={styles.controls}>
+            <NumericInput
+              initValue={this.state.distance}
+              value={this.state.distance}
+              minValue={0}
+              onChange={(value) => this.onChangeDistance(value)}
+              totalWidth={width(94)}
+              totalHeight={40}
+              valueType='real'
+              rounded
+              borderColor="#A680B8"
+              textColor="#A680B8"
+              inputStyle={{borderRadius: 3, borderColor: "transparent"}}
+              iconStyle={{ color: "#A680B8" }}
+              rightButtonBackgroundColor="white"
+              leftButtonBackgroundColor="white"
+            />
+          </View>
+          {/* Duration */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Length of walk (in minutes)
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
+            </View>
+          </View>
+          <View style={styles.controls}>
+            <NumericInput
+              initValue={this.state.duration}
+              value={this.state.duration}
+              minValue={0}
+              onChange={(value) => this.onChangeDuration(value)}
+              totalWidth={width(94)}
+              totalHeight={40}
+              valueType='real'
+              rounded
+              borderColor="#A680B8"
+              textColor="#A680B8"
+              inputStyle={{borderRadius: 3, borderColor: "transparent"}}
+              iconStyle={{ color: "#A680B8" }}
+              rightButtonBackgroundColor="white"
+              leftButtonBackgroundColor="white"
+            />
+          </View>
+
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Intensity</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Intensity
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
           {/* React-Native radio button as multi option button */}
-
-          <View style={styles.segmentedControls}>
+          <View style={styles.controls}>
            <SwitchSelector
              options={intensities}
              initial={0}
@@ -172,17 +248,22 @@ class SubmitEventRecordScreen extends Component {
              selectedColor={"#ffffff"}
              buttonColor={"#A680B8"}
              borderColor={"#A680B8"}
+             borderRadius={8}
              hasPadding
            />
           </View>
+
           {/* Venue */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Type of Venue</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Type of Venue
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
           {/* React-Native radio button as multi option button */}
-          <View style={styles.segmentedControls}>
+          <View style={styles.controls}>
            <SwitchSelector
              options={venues}
              initial={0}
@@ -191,22 +272,27 @@ class SubmitEventRecordScreen extends Component {
              selectedColor={"#ffffff"}
              buttonColor={"#A680B8"}
              borderColor={"#A680B8"}
+             borderRadius={8}
              hasPadding
            />
           </View>
           {/* Rate the walk */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>How did you like the walk?</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                How did you like the walk?
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
-          <View style={styles.segmentedControls}>
+          <View style={styles.controls}>
            <SwitchSelector
              options={walkRatings}
              initial={0}
              onPress={value => this.setWalkRating(value)}
              buttonColor={"#A680B8"}
              borderColor={"#A680B8"}
+             borderRadius={8}
              height={70}
              imageStyle={{tintColor:null, height: 40, width: 40}}
              hasPadding
@@ -232,21 +318,26 @@ class SubmitEventRecordScreen extends Component {
           {/* Rate the location */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>How did you like the location?</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                How did you like the location?
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
-          <View style={styles.segmentedControls}>
+          <View style={styles.controls}>
            <SwitchSelector
              options={locationRatings}
              initial={0}
              onPress={value => this.setLocationRating(value)}
              buttonColor={"#A680B8"}
              borderColor={"#A680B8"}
+             borderRadius={8}
              height={70}
              imageStyle={{tintColor:null, height: 40, width: 40}}
              hasPadding
            />
           </View>
+          {/* Comments about the location */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>Comments about the location:</Text>
@@ -302,10 +393,11 @@ export default connect(
 
 // Styles
 const styles = StyleSheet.create({
-  segmentedControls: {
-    marginLeft: 15,
-    marginRight: 15,
-    marginBottom: 15
+  controls: {
+    marginBottom: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
   },
   buttonContainer: {
     marginVertical: 10,
@@ -315,5 +407,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "48%",
     borderRadius: 10
+  },
+
+  nestedButtonView: {
+    flexDirection: "row",
+    alignItems: "stretch",
+    marginBottom: 5
   },
 });

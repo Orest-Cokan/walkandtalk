@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const authService = require("../services/auth.service");
 const bcryptService = require("../services/bcrypt.service");
+const Transporter = require("../utils/email/email");
+const newUserEmail = require("../utils/email/msgs/newUser");
 
 // User controller
 const UserController = () => {
@@ -21,10 +23,11 @@ const UserController = () => {
           registered: body.registered,
           location: body.location,
           distance: body.distance,
-          duration: body.duration
+          duration: body.duration,
+          redcapID: null
         });
         const token = authService().issue({ id: user.id });
-
+        Transporter.sendMail(newUserEmail);
         return res.status(200).json({ token, user });
       } catch (err) {
         console.log(err);
