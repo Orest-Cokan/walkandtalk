@@ -1,66 +1,15 @@
 import {
-  EVENT_RECORD_CREATE,
   EVENT_RECORD_UPDATE,
   EVENT_RECORD_UPDATE_SUCCESS,
   EVENT_RECORD_UPDATE_FAIL,
   GET_ALL_EVENT_RECORDS,
   GET_EVENT_RECORDS_BY_USER,
   GET_COMPLETED_EVENT_RECORDS_BY_USER,
-  GET_UNCOMPLETED_EVENT_RECORDS_BY_USER } from "./types";
+  GET_UNCOMPLETED_EVENT_RECORDS_BY_USER
+} from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 import { Platform } from "react-native";
-
-
-// action to create an event record
-export const createEventRecord = (
-  organizer,
-  fullname,
-  title,
-  email,
-  venue,
-  distance,
-  duration,
-  intensity,
-  walk_rating,
-  walk_rating_comment,
-  location_rating,
-  location_rating_comment,
-  completed
-) => {
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/walkingrecord";
-    const walking_record = {
-      organizer: organizer,
-      fullname: fullname,
-      title: title,
-      email: email,
-      venue: venue,
-      distance: distance,
-      duration: duration,
-      intensity: intensity,
-      walk_rating: walk_rating,
-      walk_rating_comment: walk_rating_comment,
-      location_rating: location_rating,
-      location_rating_comment: location_rating_comment,
-      completed: completed
-    };
-    axios
-      .post(url, walking_record)
-      .then(res => {
-        if (res.status === 200) {
-          console.log(res.status, "is this even logged???");
-          console.log(walking_record, "is this null?");
-          dispatch({ type: EVENT_RECORD_CREATE });
-          Actions.reset("app");
-        }
-      })
-      .catch(err => {
-        console.log(err, "kek");
-      });
-  };
-};
 
 // action to update event record
 export const updateEventRecord = (
@@ -101,15 +50,17 @@ export const updateEventRecord = (
   };
 };
 
+// use this function to do error checking ty
 // dispatch event record update success
-const updateEventRecordSuccess = (dispatch) => {
+const updateEventRecordSuccess = dispatch => {
   dispatch({
-    type: EVENT_RECORD_UPDATE_SUCCESS,
+    type: EVENT_RECORD_UPDATE_SUCCESS
   });
 
   Actions.mainFormsPage();
 };
 
+// use this function to do error checking ty
 // dispatch event record update fail
 const updateEventRecordFail = dispatch => {
   console.log("fail", EVENT_RECORD_UPDATE_FAIL);
@@ -140,7 +91,10 @@ export const getRecordsByUser = email => {
     axios
       .get(url + email)
       .then(res => {
-        dispatch({ type: GET_EVENT_RECORDS_BY_USER, payload: res.data.records });
+        dispatch({
+          type: GET_EVENT_RECORDS_BY_USER,
+          payload: res.data.records
+        });
       })
       .catch(err => {
         console.log(err);
@@ -156,7 +110,10 @@ export const getCompletedRecordsByUser = email => {
     axios
       .get(url + email)
       .then(res => {
-        dispatch({ type: GET_COMPLETED_EVENT_RECORDS_BY_USER, payload: res.data.records });
+        dispatch({
+          type: GET_COMPLETED_EVENT_RECORDS_BY_USER,
+          payload: res.data.records
+        });
       })
       .catch(err => {
         console.log(err);
@@ -172,7 +129,10 @@ export const getUncompletedRecordsByUser = email => {
     axios
       .get(url + email)
       .then(res => {
-        dispatch({ type: GET_UNCOMPLETED_EVENT_RECORDS_BY_USER, payload: res.data.records });
+        dispatch({
+          type: GET_UNCOMPLETED_EVENT_RECORDS_BY_USER,
+          payload: res.data.records
+        });
       })
       .catch(err => {
         console.log(err);
