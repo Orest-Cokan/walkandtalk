@@ -13,9 +13,16 @@ const WalkingRecordController = () => {
         title: body.title,
         email: body.email,
         venue: body.venue,
+<<<<<<< HEAD
         location: body.location,
         date: body.date,
         start_time: body.start_time,
+=======
+        date: body.date,
+        location: body.location.streetName,
+        start_time: body.start_time,
+        end_time: body.end_time,
+>>>>>>> 5cd899262b1636db64d0e2f5ac7c3f2b7a836c46
         distance: body.distance,
         duration: body.duration,
         intensity: body.intesity,
@@ -46,7 +53,7 @@ const WalkingRecordController = () => {
     }
   };
 
-  // get completed records for a single user
+  // get records for a single user
   const getRecords = async (req, res) => {
     const { email } = req.params;
     try {
@@ -103,7 +110,7 @@ const WalkingRecordController = () => {
         location_rating_comment: body.location_rating_comment,
         completed: body.completed
       },
-      { returning: true, where: { email: body.email } }
+      { returning: true, where: { email: body.email, id: body.id } }
     )
       .then(self => {
         return res.status(200).json({ self });

@@ -63,7 +63,7 @@ class ProfileScreen extends Component {
             {/* Edit profile icon  */}
             <View style={ScreenStyleSheet.editProfile}>
               <TouchableHighlight
-                onPress={this.GoToEditProfile}
+                onPress={this.goToEditProfile}
                 activeOpacity={0}
               >
                 <Image

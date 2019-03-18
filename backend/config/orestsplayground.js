@@ -29,9 +29,12 @@ events.forEach(event => {
 // make a custom AM/PM checker because i'm lazy as fuck and would rather go down this route
 // input current time and event time
 
+<<<<<<< HEAD
 const check1 = "Sun, Mar 20 12:00am";
 const check2 = "Sun, Mar 20 1:00am";
 
+=======
+>>>>>>> 5cd899262b1636db64d0e2f5ac7c3f2b7a836c46
 time = (now, event_time) => {
   if (
     now.slice(-2).toLowerCase() == "am" &&
@@ -64,5 +67,12 @@ time = (now, event_time) => {
   }
 };
 
+<<<<<<< HEAD
 console.log(time(check1, check2));
 //console.log(check1.slice(-8, -6));
+=======
+const check1 = "Mon, Mar 18 12:00pm";
+const check2 = "Mon, Mar 18 12:00pm";
+
+console.log(time(check1, check2));
+>>>>>>> 5cd899262b1636db64d0e2f5ac7c3f2b7a836c46

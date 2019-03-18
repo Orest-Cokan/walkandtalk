@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Colors } from "../constants/Colors"
 
 export default StyleSheet.create({
   // Screen
@@ -31,6 +32,7 @@ export default StyleSheet.create({
 
   // Content
   content: {
+    flex: 1,
     marginHorizontal: "3%",
     marginVertical: "3%",
   },
@@ -38,7 +40,7 @@ export default StyleSheet.create({
   // Side-by-side buttons
   rowContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
     leftRightButton: {
     width: "45%",
@@ -63,6 +65,11 @@ export default StyleSheet.create({
     marginTop: 5
   },
 
+  // Asterisk
+
+ asterisk: {
+   color: "#DD5581"
+ },
 
   // Search tab
 
@@ -111,20 +118,6 @@ export default StyleSheet.create({
       color: "black",
       textAlign: 'right'
     },
-    profileInput: {
-      textAlign: 'right',
-      borderBottomWidth: 1,
-      borderBottomColor: 'gray',
-      color: 'black'
-    },
-    profileInputUneditable: {
-      textAlign: 'right',
-      borderBottomWidth: 1,
-      borderBottomColor: 'gray',
-      color: 'gray'
-
-
-    },
 
    // Forms
    formRowContainerEvent: {
@@ -134,7 +127,7 @@ export default StyleSheet.create({
    },
   formInfo: {
     color: "gray",
-    fontSize: 15
+    fontSize: 15,
   },
   formRowInfo: {
     flex: 1,
@@ -142,17 +135,28 @@ export default StyleSheet.create({
   },
   formDescriptionInput: {
     textAlignVertical: 'top',
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: 'gray',
     color: 'black',
     padding: 5,
     fontSize: 15
   },
   formInput: {
-    textAlign: 'left',
+    textAlign: 'right',
+    borderBottomWidth: 0.5,
+    borderBottomColor: 'gray',
+    borderTopWidth: 0.5,
+    borderTopColor: 'transparent',
+    color: 'black',
+    padding: 0,
+    fontSize: 15,
+  },
+
+  formInputUneditable: {
+    textAlign: 'right',
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
-    color: 'black',
+    color: 'gray',
     padding: 0,
     fontSize: 15
   },
