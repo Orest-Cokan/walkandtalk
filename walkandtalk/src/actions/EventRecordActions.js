@@ -91,7 +91,7 @@ export const updateEventRecord = (
       completed: completed
     };
     axios
-      .put(url, walkingrecord)
+      .put(url, walking_record)
       .then(res => {
         dispatch({ type: EVENT_RECORD_UPDATE });
       })

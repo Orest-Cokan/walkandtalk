@@ -33,7 +33,8 @@ import { StyledText as Text, StyledTextInput as TextInput } from "../../constant
 class SubmitEventRecordScreen extends Component {
   constructor(props) {
     super(props);
-
+    console.log(this.props);
+    console.log(this.props.record);
     // State
     this.state = {
       // Event default details
@@ -44,11 +45,13 @@ class SubmitEventRecordScreen extends Component {
       numAttendees: 3,
 
       // Event record uneditable details
-      id: this.props.record.records.id,
-      organizer: this.props.record.records.organizer,
-      fullname: this.props.record.records.fullname,
-      title: this.props.record.records.title,
-      email: this.props.record.records.fullname,
+      id: this.props.record.id,
+      organizer: this.props.record.organizer,
+      fullname: this.props.record.fullname,
+      title: this.props.record.title,
+      email: this.props.record.email,
+      completed: 0,
+
 
       // User input needed
       duration: 0,
@@ -59,7 +62,6 @@ class SubmitEventRecordScreen extends Component {
       locationRating: "1",
       walkRatingComment: null,
       locationRatingComment: null,
-      completed: 0,
     };
   }
   onChangeDistance(value) {
@@ -111,8 +113,15 @@ class SubmitEventRecordScreen extends Component {
     });
   };
 
+  hasCompleted() {
+    this.setState({
+      completed: 1
+    });
+  }
+
+
   onSubmit = () => {
-    this.setState({ completed: 1 });
+    this.state.completed = 1;
     this.props.updateEventRecord(
       this.state.email,
       this.state.venue,
@@ -125,6 +134,7 @@ class SubmitEventRecordScreen extends Component {
       this.state.locationRatingComment,
       this.state.completed
     );
+    Actions.mainFormPage();
   };
 
   onCancel = () => {

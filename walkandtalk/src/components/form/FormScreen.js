@@ -22,11 +22,6 @@ This is the forms screen. Users will see the two static questionnaires and event
 */
 class FormScreen extends Component {
 
-
-  submitEventRecord = () => {
-    Actions.submitEventRecord();
-  }
-
   constructor(props) {
     super(props);
     console.log("inside constructor");
@@ -37,18 +32,22 @@ class FormScreen extends Component {
     this.props.getUncompletedRecordsByUser;
   }
 
+  submitEventRecord (index) {
+    Actions.submitEventRecord( {record : this.props.uncompleted_records[index]} );
+  }
 
   getRecords() {
     let records = [];
     console.log(this.props)
-    this.props.uncompleted_records.map(record => {
+    this.props.uncompleted_records.map((rec, index) => {
+
       records.unshift(
-        <TouchableOpacity onPress={this.submitEventRecord}>
+        <TouchableOpacity key={index} onPress={this.submitEventRecord.bind(this, index)}>
             <BaseCard
-              key={record.id}
+              key={rec.id}
               date="FRI, MAR 2"
               start_time="3:00PM"
-              title={record.title}
+              title={rec.title}
               location="Summerside"
               //badge={badge}
             />
