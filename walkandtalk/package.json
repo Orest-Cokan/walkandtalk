@@ -46,10 +46,9 @@
       "/node_modules/(?!native-base)/"
     ]
   },
-
   "rnpm": {
-      "assets": [
-        "./assets/fonts/"
-      ]
+    "assets": [
+      "./assets/fonts/"
+    ]
   }
 }

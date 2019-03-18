@@ -55,6 +55,7 @@ const WalkingEventController = () => {
           }
         ]
       });
+      console.log(events)
       return res.status(200).json({ events });
     } catch (err) {
       console.log(err);

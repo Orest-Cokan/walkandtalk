@@ -1,7 +1,6 @@
 // Create Event Screen View
 import React, { Component } from "react";
 import { fetchEvents } from "../../actions/EventActions";
-
 import { connect } from "react-redux";
 import {
   Container,

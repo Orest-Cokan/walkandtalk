@@ -23,7 +23,7 @@ var task = cron.schedule("* * * * *", () => {
   }).then(events => {
     let compareDateTime = null;
     events.map(event => {
-      compareDateTime = event.date + " " + event.start_time;
+      compareDateTime = event.date + " " + event.end_time;
       if (time(now, compareDateTime)) {
         event.attendees.map(person => {
           WalkingRecord.create({

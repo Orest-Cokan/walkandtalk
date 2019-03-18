@@ -146,7 +146,7 @@ class AddEventScreen extends Component {
                 showIcon={false}
                 placeholder="Select date"
                 format="ddd, MMM D"
-                minDate={new Date()}
+                //minDate={new Date()}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{}}

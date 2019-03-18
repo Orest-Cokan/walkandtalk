@@ -1,9 +1,8 @@
 // Past Event List Screen View
 import React, { Component } from "react";
 import {
-  StyleSheet,
-  View,
-  Image
+  Image,
+  TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -20,15 +19,42 @@ import {
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from 'react-native-router-flux';
 import BaseCard from "../../cardview/baseCard";
+import { getRecordsByUser } from "../../actions/EventRecordActions";
 
 class PastEventListScreen extends Component {
-
-  onBack = () => {
-    // Navigate back to profile page
-    Actions.pop();
-    //Actions.pastEventRecord();
+  constructor(props) {
+    super(props);
+    console.log("inside constructor");
+    console.log("before", this.props);
+    this.props.getRecordsByUser = this.props.getRecordsByUser(this.props.user.user.email);
+    console.log("after",this.props);
   }
 
+  componentDidMount() {
+    this.props.getRecordsByUser;
+    console.log("componentmount",this.props);
+  }
+
+  getEvents() {
+    let records = [];
+    this.props.records.map(record => {
+      records.unshift(
+        <BaseCard
+          key={record.id}
+          date={""}
+          start_time={""}
+          title={record.title}
+          location={""}
+        />
+      );
+    });
+    console.log("end",this.props)
+    return records;
+  }
+
+  onBack = () => {
+    Actions.pop();
+  }
   render() {
     return (
       <Container>
@@ -54,29 +80,22 @@ class PastEventListScreen extends Component {
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {/* Card List View */}
-          <BaseCard
-            title="Walk in the park"
-            date="WED, MAR 3"
-            start_time="10:00 PM"
-            location="Hawrelak Park"
-          />
-          <BaseCard
-            title="Morning Stroll"
-            date="SAT, MAR 17"
-            start_time="9:00 AM"
-            location="River Valley"
-          />
+          {this.getEvents()}
         </Content>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  console.log("pastrecordlistscreen");
+  return {
+    records : state.record.records,
+    user: state.user
+  };
+};
 
 export default connect(
   mapStateToProps,
-  null
+  { getRecordsByUser }
 )(PastEventListScreen);
-

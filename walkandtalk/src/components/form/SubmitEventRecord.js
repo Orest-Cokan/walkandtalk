@@ -20,11 +20,10 @@ import {
   Content,
   StatusBar
 } from "native-base";
-import { SegmentedControls } from "react-native-radio-buttons";
 import SwitchSelector from "react-native-switch-selector";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { createEvent } from "../../actions/EventActions";
+import { updateEventRecord } from "../../actions/EventRecordActions";
 import NumericInput from 'react-native-numeric-input';
 import { Actions } from "react-native-router-flux";
 import { width, height, totalSize } from 'react-native-dimension';
@@ -38,13 +37,18 @@ class SubmitEventRecordScreen extends Component {
     // State
     this.state = {
       // Event default details
-      organizer: "Linda Martinez",
-      title: "New Year Walk",
       date: "FRI, JAN 4",
       startTime: "7:00 PM",
       endTime: "8:00PM",
       location: "Van Vliet Complex",
       numAttendees: 3,
+
+      // Event record uneditable details
+      id: this.props.record.records.id,
+      organizer: this.props.record.records.organizer,
+      fullname: this.props.record.records.fullname,
+      title: this.props.record.records.title,
+      email: this.props.record.records.fullname,
 
       // User input needed
       duration: 0,
@@ -55,6 +59,7 @@ class SubmitEventRecordScreen extends Component {
       locationRating: "1",
       walkRatingComment: null,
       locationRatingComment: null,
+      completed: 0,
     };
   }
   onChangeDistance(value) {
@@ -107,28 +112,18 @@ class SubmitEventRecordScreen extends Component {
   };
 
   onSubmit = () => {
-    console.log(this.state.distance);
-    console.log(this.state.duration);
-    console.log(this.state.intensity);
-    console.log(this.state.venue);
-    console.log(this.state.walkRating);
-    console.log(this.state.locationRating);
-  }
-
-  onFinish = () => {
-    console.log("we are here!");
-    this.props.submitEventRecord(
-      this.state.organizer,
-      this.state.title,
-      this.state.date,
-      this.state.startTime,
-      this.state.endTime,
-      this.state.description,
-      this.state.intensity,
+    this.setState({ completed: 1 });
+    this.props.updateEventRecord(
+      this.state.email,
       this.state.venue,
-      this.state.location,
-      this.state.lat,
-      this.state.long
+      this.state.distance,
+      this.state.duration,
+      this.state.intensity,
+      this.state.walkRating,
+      this.state.walkRatingComment,
+      this.state.locationRating,
+      this.state.locationRatingComment,
+      this.state.completed
     );
   };
 
@@ -401,7 +396,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  //{ createEvent }
+  { updateEventRecord }
 )(SubmitEventRecordScreen);
 
 // Styles

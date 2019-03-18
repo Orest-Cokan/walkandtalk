@@ -36,6 +36,7 @@ const WalkingRecordController = () => {
   const getAll = async (req, res) => {
     try {
       const records = await WalkingRecord.findAll();
+      console.log(records);
       return res.status(200).json({ records });
     } catch (err) {
       console.log(err);
