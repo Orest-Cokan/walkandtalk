@@ -141,7 +141,7 @@ class SearchScreen extends Component {
         {
           key: 3,
           title: 'Monday Walk',
-          description: 'Walking on dat Monday',
+          description: 'Walking on dat Mondayz',
           intensity: 'Brisk',
           latitude: 37.784944,
           longitude: -122.405307,
