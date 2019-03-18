@@ -20,7 +20,7 @@ import {
 } from "native-base";
 //import { fetchProfile } from "../../actions/ProfileActions";
 //import { fetchPosts } from "../../actions/EventActions";
-import { Actions } from 'react-native-router-flux';
+import { Actions } from "react-native-router-flux";
 
 // Profile tab
 class PastEventRecordScreen extends Component {
@@ -44,11 +44,10 @@ class PastEventRecordScreen extends Component {
     this.props.fetchProfile;
   }
 
-
   onBack = () => {
     // Navigate to Past Events
     Actions.pop();
-  }
+  };
 
   render() {
     return (
@@ -68,10 +67,9 @@ class PastEventRecordScreen extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle>Past Event Record *</Title>
+            <Title style={ScreenStyleSheet.headerTitle} Past Event Record />
           </Body>
-          <Right style={ScreenStyleSheet.headerSides}>
-          </Right>
+          <Right style={ScreenStyleSheet.headerSides} />
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
