@@ -1,48 +1,47 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "../constants/Colors"
+import { Colors } from "../constants/Colors";
 
 export default StyleSheet.create({
   // Screen
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    alignItems: "center",
+    backgroundColor: "#FFFFFF"
   },
 
   // Header
   header: {
-    backgroundColor: 'white',
-    height: 45,
+    backgroundColor: "white",
+    height: 45
   },
   headerBody: {
     flex: 2,
-    alignItems: 'center'
+    alignItems: "center"
   },
   headerTitle: {
-    color: 'grey',
+    color: "grey"
   },
   headerSides: {
-    flex: 1,
+    flex: 1
   },
 
   // Back icon
-  backIcon:{
+  backIcon: {
     size: 10
   },
 
   // Content
   content: {
-    flex: 1,
     marginHorizontal: "3%",
-    marginVertical: "3%",
+    marginVertical: "3%"
   },
 
   // Side-by-side buttons
   rowContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
-    leftRightButton: {
+  leftRightButton: {
     width: "45%",
     height: 30,
     marginVertical: 30,
@@ -52,12 +51,12 @@ export default StyleSheet.create({
   // Section title
   sectionTitle: {
     marginBottom: 10,
-    fontSize: 18,
+    fontSize: 18
   },
 
   // Line separator
   lineSeparator: {
-    borderBottomColor: 'gray',
+    borderBottomColor: "gray",
     borderBottomWidth: 0.5,
     marginLeft: 10,
     marginRight: 10,
@@ -67,110 +66,110 @@ export default StyleSheet.create({
 
   // Asterisk
 
- asterisk: {
-   color: "#DD5581"
- },
+  asterisk: {
+    color: "#DD5581"
+  },
 
   // Search tab
 
-  searchIcon : {
+  searchIcon: {
     height: 20,
-    width: 20,
+    width: 20
   },
 
-    // Profile tab
-    profileHeader: {
-      alignItems: 'center',
-    },
-    avatar: {
-      width: 75,
-      height: 75,
-      borderRadius: 60,
-      borderWidth: 3,
-      borderColor: 'black',
-      marginBottom: 10,
-    },
-    editProfile: {
-      alignSelf: 'flex-end',
-      position: 'absolute',
-    },
-    editIcon:{
-      height: 30,
-      width: 30,
-    },
-    profileName: {
-      fontSize: 18,
-      color: 'black',
-      fontWeight:'500',
-    },
-    profileSectionTitle: {
-      fontWeight: 'bold',
-      color: 'gray',
-    },
-    profileRowInfo: {
-      flex: 1,
-      marginBottom: 8,
-    },
-    profileInfo:{
-      color: "gray"
-    },
-    profileInfoInput: {
-      color: "black",
-      textAlign: 'right'
-    },
+  // Profile tab
+  profileHeader: {
+    alignItems: "center"
+  },
+  avatar: {
+    width: 75,
+    height: 75,
+    borderRadius: 60,
+    borderWidth: 3,
+    borderColor: "black",
+    marginBottom: 10
+  },
+  editProfile: {
+    alignSelf: "flex-end",
+    position: "absolute"
+  },
+  editIcon: {
+    height: 30,
+    width: 30
+  },
+  profileName: {
+    fontSize: 18,
+    color: "black",
+    fontWeight: "500"
+  },
+  profileSectionTitle: {
+    fontWeight: "bold",
+    color: "gray"
+  },
+  profileRowInfo: {
+    flex: 1,
+    marginBottom: 8
+  },
+  profileInfo: {
+    color: "gray"
+  },
+  profileInfoInput: {
+    color: "black",
+    textAlign: "right"
+  },
 
-   // Forms
-   formRowContainerEvent: {
-     flexDirection: 'row',
-     justifyContent: 'flex-start',
-     marginLeft:13
-   },
+  // Forms
+  formRowContainerEvent: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginLeft: 13
+  },
   formInfo: {
     color: "gray",
-    fontSize: 15,
+    fontSize: 15
   },
   formRowInfo: {
     flex: 1,
-    marginBottom: 10,
+    marginBottom: 10
   },
   formDescriptionInput: {
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
     borderWidth: 0.5,
-    borderColor: 'gray',
-    color: 'black',
+    borderColor: "gray",
+    color: "black",
     padding: 5,
     fontSize: 15
   },
   formInput: {
-    textAlign: 'right',
+    textAlign: "right",
     borderBottomWidth: 0.5,
-    borderBottomColor: 'gray',
+    borderBottomColor: "gray",
     borderTopWidth: 0.5,
-    borderTopColor: 'transparent',
-    color: 'black',
+    borderTopColor: "transparent",
+    color: "black",
     padding: 0,
-    fontSize: 15,
+    fontSize: 15
   },
 
   formInputUneditable: {
-    textAlign: 'right',
+    textAlign: "right",
     borderBottomWidth: 1,
-    borderBottomColor: 'gray',
-    color: 'gray',
+    borderBottomColor: "gray",
+    color: "gray",
     padding: 0,
     fontSize: 15
   },
   TitleHeader: {
-    color:"black",
+    color: "black",
     fontSize: 16,
-    fontWeight:"500",
-    marginTop:15
+    fontWeight: "500",
+    marginTop: 15
   },
 
   //Events
   EventSectionTitle: {
-    fontWeight: 'bold',
-    color:"#A680B8",
+    fontWeight: "bold",
+    color: "#A680B8",
     fontSize: 18
   },
 
@@ -179,41 +178,41 @@ export default StyleSheet.create({
     height: 25,
     marginBottom: 10,
     marginRight: 7,
-    position:"relative"
+    position: "relative"
   },
 
   eventInfoInput: {
-    textAlign: 'left',
-    color: 'black',
+    textAlign: "left",
+    color: "black",
     fontSize: 16,
-    paddingBottom:2
+    paddingBottom: 2
   },
   rowContainerEvent: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginLeft:13
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginLeft: 13
   },
   rowContainerEvent2: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginLeft:2
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginLeft: 2
   },
   attending: {
-    textAlign: 'left',
-    color:"#A680B8",
+    textAlign: "left",
+    color: "#A680B8",
     fontSize: 16,
-    paddingBottom:2,
+    paddingBottom: 2,
     fontWeight: "bold"
   },
-  attendingText:{
-    textAlign: 'left',
-    color: 'black',
+  attendingText: {
+    textAlign: "left",
+    color: "black",
     fontSize: 16,
-    marginLeft:4
+    marginLeft: 4
   },
   // Line separator
   EventLineSeparator: {
-    borderBottomColor: 'grey',
+    borderBottomColor: "grey",
     borderBottomWidth: 1,
     marginLeft: 10,
     marginRight: 10,
@@ -222,39 +221,38 @@ export default StyleSheet.create({
   },
 
   aboutInfo: {
-    textAlign: 'left',
-    color: 'grey',
+    textAlign: "left",
+    color: "grey",
     fontSize: 16,
-    paddingBottom:2
+    paddingBottom: 2
   },
 
   eventDescription: {
-    textAlign: 'left',
-    color: 'black',
+    textAlign: "left",
+    color: "black",
     fontSize: 16,
-    marginLeft:2,
+    marginLeft: 2,
     marginRight: 2,
     height: 230
   },
   eventDescription1: {
-    textAlign: 'left',
-    color: 'black',
+    textAlign: "left",
+    color: "black",
     fontSize: 16,
-    marginLeft:2,
+    marginLeft: 2,
     marginRight: 2,
     height: 165
   },
 
-  headerWithBack:{
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+  headerWithBack: {
+    flexDirection: "row",
+    justifyContent: "flex-start"
   },
 
-  backIcon:{
+  backIcon: {
     width: 20,
     height: 20,
     marginRight: 100,
-    position:"relative"
+    position: "relative"
   }
-
-  });
+});
