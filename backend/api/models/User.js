@@ -24,20 +24,51 @@ const User = sequelize.define(
     },
     email: {
       type: Sequelize.STRING,
-      unique: true
+      unique: true,
+      allowNull: false
     },
-    password: Sequelize.STRING,
-    fullname: Sequelize.STRING,
-    menopausal_stage: Sequelize.STRING,
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    fullname: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    menopausal_stage: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     image: Sequelize.STRING,
     registered: Sequelize.INTEGER,
-    intensity: Sequelize.STRING,
-    venue: Sequelize.STRING,
-    location: Sequelize.STRING,
-    dob: Sequelize.STRING,
-    distance: Sequelize.INTEGER,
-    duration: Sequelize.INTEGER,
-    redcapID: Sequelize.INTEGER
+    intensity: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    venue: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    location: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    dob: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    distance: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    duration: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    redcapID: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    }
   },
 
   { hooks, tableName }
