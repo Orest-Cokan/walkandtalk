@@ -53,7 +53,7 @@ export const getRecords = email => {
     var ip = getIP();
     var url = ip + "public/walkingrecord/" + email;
     axios
-      .get(url + email)
+      .get(url)
       .then(res => {
         dispatch({
           type: SET_RECORDS,
@@ -72,9 +72,9 @@ export const getCompletedRecords = email => {
     var ip = getIP();
     var url = ip + "public/walkingrecord/completed/" + email;
     axios
-      .get(url + email)
+      .get(url)
       .then(res => {
-        console.log(res.data.records);
+        console.log(res.data.records, "We are in completed records");
         dispatch({
           type: SET_COMPLETED_RECORDS,
           payload: res.data.records
@@ -90,11 +90,12 @@ export const getCompletedRecords = email => {
 export const getUncompletedRecords = email => {
   return dispatch => {
     var ip = getIP();
+    console.log(email);
     var url = ip + "public/walkingrecord/uncompleted/" + email;
     axios
-      .get(url + email)
+      .get(url)
       .then(res => {
-        console.log(res.data.records);
+        console.log(res.data.records, "we are in uncompleted records");
         dispatch({
           type: SET_UNCOMPLETED_RECORDS,
           payload: res.data.records
