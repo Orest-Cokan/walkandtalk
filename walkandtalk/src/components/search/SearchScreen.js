@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { fetchEvents } from "../../actions/EventActions";
-
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  TouchableHighlight,
   Alert,
   Image,
   Dimensions,
@@ -17,6 +17,7 @@ import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Entypo from "react-native-vector-icons/Entypo";
 import BaseCard from "../../cardview/baseCard";
 import { connect } from "react-redux";
+import { Actions } from "react-native-router-flux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
   Container,
@@ -27,6 +28,7 @@ import {
   Right,
   Content
 } from "native-base";
+import MapView, { PROVIDER_GOOGLE, Marker, Callout} from "react-native-maps";
 
 const searchIcon = require("../../assets/icons/search-bar.png");
 const icon2 = require("../../assets/icons/form.png");
@@ -83,6 +85,15 @@ const items = [
 
 ]
 
+// Returns user's current location
+// Defaults to San Francisco on simulators
+// export const getCurrentLocation = () => {
+//   return new Promise((resolve, reject) => {
+//     navigator.geolocation.getCurrentPosition(position =>
+//       resolve(position),
+//       e => reject(e));
+//   });
+// };
 
 /*
 This is the search screen. Users can search for events in this screen.
@@ -97,14 +108,73 @@ class SearchScreen extends Component {
     this.state = {
       selectedItems: [],
       text:"",
-      searchResults:[]
+      searchResults:[],
+            // currentLocation: {
+      // currentLatitude: 0,
+      // currentLongitude: 0,
+      // latitudeDelta: 0,
+      // longitudeDelta: 0
+      // },
+      markers: [
+        {
+          key: 1,
+          title: 'University of Alberta Walk',
+          description: 'Walking around university',
+          intensity: 'Slow',
+          latitude: 37.784724,
+          longitude: -122.404327,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
+
+        },
+        {
+          key: 2,
+          title: 'Hawrelak Park Walk',
+          description: 'Walking around the park',
+          intensity: 'Intermediate',
+          latitude: 37.786944,
+          longitude: -122.406307,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
+
+        },
+        {
+          key: 3,
+          title: 'Monday Walk',
+          description: 'Walking on dat Monday',
+          intensity: 'Brisk',
+          latitude: 37.784944,
+          longitude: -122.405307,
+          latitudeDelta: 0.003,
+          longitudeDelta: 0.003,
+
+        },
+      ]
     }
   }
+
+  // async componentWillMount() {
+  //   const position = await getCurrentLocation();
+  //   if (position) {
+  //     this.setState({
+  //       currentLocation: {
+  //       currentLatitude: position.coords.latitude,
+  //       currentLongitude: position.coords.longitude,
+  //       latitudeDelta: 0.003,
+  //       longitudeDelta: 0.003,
+  //       }
+  //     });
+  //   }
+  // }
 
   componentDidMount() {
     this.props.fetchEvents;
       console.log("all events",this.props.events)
-  }
+  }  
+  onEventClick = () => {
+    // Navigate to event
+    Actions.signup();
+  };
 
   onSelectedItemsChange = (selectedItems) => {
     this.setState({ selectedItems });
@@ -328,13 +398,34 @@ class SearchScreen extends Component {
 
 
           <View style={ScreenStyleSheet.lineSeparator} />
-          <Text style={ScreenStyleSheet.sectionTitle}>Events near you</Text>
-          <BaseCard
-            title="Monthly Walk"
-            date="THU, FEB 28"
-            start_time="10:00 PM"
-            location="Terwillegar Centre"
-          />
+          <MapView
+            ref={(ref) => { this.mapRef = ref; }}
+            onLayout={() => this.mapRef.fitToCoordinates(this.state.markers, { edgePadding: { top: 50, right: 10, bottom: 10, left: 10 }, animated: false })}                 
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            showsUserLocation={true}>
+            {this.state.markers.map((marker) => (
+              <Marker
+              key={marker.key}
+              coordinate={{
+                latitude: marker.latitude,
+                longitude: marker.longitude
+              }}
+              pinColor={marker.intensity == 'Slow' ?
+              'blue' : marker.intensity == 'Intermediate' ?
+              'turquoise' : marker.intensity == 'Brisk' ?
+              'lime' : 'purple'}
+              >
+              <Callout onPress={() => this.onEventClick()}>
+                <TouchableHighlight
+                  underlayColor="transparent"
+                >
+                  <Text>{marker.title}{"\n"}{marker.description}</Text>
+                </TouchableHighlight>
+              </Callout>
+            </Marker>
+            ))}
+          </MapView>
         </Content>
       </Container>
     );
@@ -377,6 +468,12 @@ const styles = StyleSheet.create({
     fontSize: 25,
     marginLeft: "auto",
     transform: [{ rotate: "90deg" }]
+  },
+  map: {
+    height: '92%'
+  },
+  container: {
+    flex: 1,
   }
 });
 
