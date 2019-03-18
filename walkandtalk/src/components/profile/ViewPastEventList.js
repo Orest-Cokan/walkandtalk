@@ -1,9 +1,6 @@
 // Past Event List Screen View
 import React, { Component } from "react";
-import {
-  Image,
-  TouchableOpacity
-} from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -17,22 +14,24 @@ import {
   StatusBar
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { Actions } from 'react-native-router-flux';
+import { Actions } from "react-native-router-flux";
 import BaseCard from "../../cardview/baseCard";
-import { getRecordsByUser } from "../../actions/EventRecordActions";
+import { getCompletedRecordsByUser } from "../../actions/EventRecordActions";
 
 class PastEventListScreen extends Component {
   constructor(props) {
     super(props);
     console.log("inside constructor");
     console.log("before", this.props);
-    this.props.getRecordsByUser = this.props.getRecordsByUser(this.props.user.user.email);
-    console.log("after",this.props);
+    this.props.getCompletedRecordsByUser = this.props.getCompletedRecordsByUser(
+      this.props.user.user.email
+    );
+    console.log("after", this.props);
   }
 
   componentDidMount() {
-    this.props.getRecordsByUser;
-    console.log("componentmount",this.props);
+    this.props.getCompletedRecordsByUser;
+    console.log("componentmount", this.props);
   }
 
   getEvents() {
@@ -41,20 +40,20 @@ class PastEventListScreen extends Component {
       records.unshift(
         <BaseCard
           key={record.id}
-          date={""}
-          start_time={""}
+          date={record.date}
+          start_time={record.start_time}
           title={record.title}
-          location={""}
+          location={record.location}
         />
       );
     });
-    console.log("end",this.props)
+    console.log("end", this.props);
     return records;
   }
 
   onBack = () => {
     Actions.pop();
-  }
+  };
   render() {
     return (
       <Container>
@@ -75,8 +74,7 @@ class PastEventListScreen extends Component {
           <Body style={ScreenStyleSheet.headerBody}>
             <Title style={ScreenStyleSheet.headerTitle}>Past Events</Title>
           </Body>
-          <Right style={ScreenStyleSheet.headerSides}>
-          </Right>
+          <Right style={ScreenStyleSheet.headerSides} />
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
@@ -90,12 +88,12 @@ class PastEventListScreen extends Component {
 const mapStateToProps = state => {
   console.log("pastrecordlistscreen");
   return {
-    records : state.record.records,
+    records: state.record.records,
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getRecordsByUser }
+  { getCompletedRecordsByUser }
 )(PastEventListScreen);

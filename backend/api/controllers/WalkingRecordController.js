@@ -16,6 +16,7 @@ const WalkingRecordController = () => {
         date: body.date,
         location: body.location.streetName,
         start_time: body.start_time,
+        end_time: body.end_time,
         distance: body.distance,
         duration: body.duration,
         intensity: body.intesity,
@@ -39,7 +40,6 @@ const WalkingRecordController = () => {
   const getAll = async (req, res) => {
     try {
       const records = await WalkingRecord.findAll();
-      console.log(records);
       return res.status(200).json({ records });
     } catch (err) {
       console.log(err);
@@ -47,7 +47,7 @@ const WalkingRecordController = () => {
     }
   };
 
-  // get completed records for a single user
+  // get records for a single user
   const getRecords = async (req, res) => {
     const { email } = req.params;
     try {

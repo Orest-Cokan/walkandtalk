@@ -11,50 +11,54 @@ import {
   Body,
   Title,
   Right,
-  Content,
+  Content
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { getUncompletedRecordsByUser } from "../../actions/EventRecordActions";
-
 
 /*
 This is the forms screen. Users will see the two static questionnaires and event records to be completed.
 */
 class FormScreen extends Component {
-
   constructor(props) {
     super(props);
     console.log("inside constructor");
-    this.props.getUncompletedRecordsByUser = this.props.getUncompletedRecordsByUser(this.props.user.user.email);
+    this.props.getUncompletedRecordsByUser = this.props.getUncompletedRecordsByUser(
+      this.props.user.user.email
+    );
   }
 
   componentDidMount() {
     this.props.getUncompletedRecordsByUser;
   }
 
-  submitEventRecord (index) {
-    Actions.submitEventRecord( {record : this.props.uncompleted_records[index]} );
+  submitEventRecord(index) {
+    Actions.submitEventRecord({
+      record: this.props.uncompleted_records[index]
+    });
   }
 
   getRecords() {
     let records = [];
-    console.log(this.props)
-    this.props.uncompleted_records.map((rec, index) => {
-
+    console.log(this.props);
+    this.props.uncompleted_records.map((record, index) => {
       records.unshift(
-        <TouchableOpacity key={index} onPress={this.submitEventRecord.bind(this, index)}>
-            <BaseCard
-              key={rec.id}
-              date="FRI, MAR 2"
-              start_time="3:00PM"
-              title={rec.title}
-              location="Summerside"
-              //badge={badge}
-            />
-         </TouchableOpacity>
+        <TouchableOpacity
+          key={index}
+          onPress={this.submitEventRecord.bind(this, index)}
+        >
+          <BaseCard
+            key={record.id}
+            date={record.date}
+            start_time={record.start_time}
+            title={record.title}
+            location={record.location}
+            //badge={badge}
+          />
+        </TouchableOpacity>
       );
     });
-    console.log(this.props)
+    console.log(this.props);
     return records;
   }
 
