@@ -31,13 +31,18 @@ class MenqolScreen extends Component {
         // Navigate back to form page
         Actions.pop();
     };
+    
 
-    getInstance = () =>{
+    /*
+    this funtion gets instance number from redcap, then update the survey link by calling getSurveyLink
+    */
+    setSurveyLink = () =>{
+        //get instance number 
         const instanceData = "token=8038CE0F65642ECC477913BE85991380"
             + "&content=record"
             + "&format=json"
             + "&type=flat"
-            + "&records[0]=9" //to be changed to user redcap id
+            + "&records[0]=13" //to be changed to user redcap id
             + "&forms[0]=menqol"
             + "&returnFormat=json";
 
@@ -55,33 +60,35 @@ class MenqolScreen extends Component {
         })
         .then((body)=> {
             var lastInstanceStatus ;
-            //0: imcomplete, 1: unverified, 2: complete
+            //status code, 0: imcomplete, 1: unverified, 2: complete
             lastInstanceStatus = body[body.length-1].menqol_complete;
             if (lastInstanceStatus == "2"){
-                this.setState({instance: parseInt(body.length,10 ) + 1});
+                //callback gets survey link after this.state.instance is updated 
+                this.setState({instance: parseInt(body.length,10 ) + 1}, () =>{
+                    this.getSurveyLink()
+                });
             } 
             else{
-                this.setState({instance: parseInt(body.length,10 ) });
-                
+                //callback gets survey link after this.state.instance is updated 
+                this.setState({instance: parseInt(body.length,10 ) }, () =>{
+                    this.getSurveyLink()
+                });
             }
+            
         })
         .catch((error) => {
           console.log(error);
         });
     }
 
-
-    componentWillMount() {
-
-        this.getInstance();
-
+    getSurveyLink = () => {
         const linkData =
             "token=8038CE0F65642ECC477913BE85991380"
             + "&content=surveyLink"
             + "&format=json"
             + "&instrument=menqol"
             + "&event="
-            + "&record=9" //to be changed to user record id 
+            + "&record=13" //to be changed to user record id 
             + "&repeat_instance=" + this.state.instance.toString() //to be changed to user menqol instance num 
             + "&returnFormat=json";
         
@@ -97,13 +104,19 @@ class MenqolScreen extends Component {
             return response.text()
         })
         .then((responseText) => {
-            Alert.alert(this.state.instance.toString());
+            Alert.alert(linkData);
+            
             this.setState({url: responseText});
             Alert.alert(this.state.url)
         })
         .catch((error) => {
           console.log(error);
         });
+    }
+
+
+    async componentWillMount() {
+        await this.setSurveyLink();
     };
 
     render(){
