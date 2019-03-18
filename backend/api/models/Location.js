@@ -8,15 +8,15 @@ const tableName = "location";
 const Location = sequelize.define(tableName, {
   streetName: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowedNull: false
   },
   lat: {
     type: Sequelize.FLOAT,
-    allowNull: false
+    allowedNull: false
   },
   long: {
     type: Sequelize.FLOAT,
-    allowNull: false
+    allowedNull: false
   }
 });
 
