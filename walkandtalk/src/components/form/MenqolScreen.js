@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, Alert,TouchableOpacity, Image, Linking, WebView} from "react-native";
+import { Image, WebView} from "react-native";
 //import { WebView } from "react-native-webview";
-
 import {
     Container,
     Header,
@@ -9,9 +8,7 @@ import {
     Body,
     Title,
     Right,
-    Content,
     Button,
-    StatusBar
   } from "native-base";
   import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
@@ -23,6 +20,7 @@ class MenqolScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            //gives warning when initial url is null
             url: "https://www.google.ca/",
             instance: 1,
         }
@@ -42,7 +40,7 @@ class MenqolScreen extends Component {
             + "&content=record"
             + "&format=json"
             + "&type=flat"
-            + "&records[0]=13" //to be changed to user redcap id
+            + "&records[0]=" + this.props.user.user.id.toString() //to be changed to user redcap id
             + "&forms[0]=menqol"
             + "&returnFormat=json";
 
@@ -88,7 +86,7 @@ class MenqolScreen extends Component {
             + "&format=json"
             + "&instrument=menqol"
             + "&event="
-            + "&record=13" //to be changed to user record id 
+            + "&record=" + this.props.user.user.id.toString()  //to be changed to user record id 
             + "&repeat_instance=" + this.state.instance.toString() //to be changed to user menqol instance num 
             + "&returnFormat=json";
         
@@ -104,10 +102,7 @@ class MenqolScreen extends Component {
             return response.text()
         })
         .then((responseText) => {
-            Alert.alert(linkData);
-            
             this.setState({url: responseText});
-            Alert.alert(this.state.url)
         })
         .catch((error) => {
           console.log(error);
