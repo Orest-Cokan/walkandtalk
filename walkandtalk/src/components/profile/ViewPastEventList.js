@@ -16,21 +16,21 @@ import {
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
 import BaseCard from "../../cardview/baseCard";
-import { getCompletedRecordsByUser } from "../../actions/EventRecordActions";
+import { getCompletedRecords } from "../../actions/RecordActions";
 
 class PastEventListScreen extends Component {
   constructor(props) {
     super(props);
     console.log("inside constructor");
     console.log("before", this.props);
-    this.props.getCompletedRecordsByUser = this.props.getCompletedRecordsByUser(
+    this.props.getCompletedRecords = this.props.getCompletedRecords(
       this.props.user.user.email
     );
     console.log("after", this.props);
   }
 
   componentDidMount() {
-    this.props.getCompletedRecordsByUser;
+    this.props.getCompletedRecords;
     console.log("componentmount", this.props);
   }
 
@@ -88,12 +88,12 @@ class PastEventListScreen extends Component {
 const mapStateToProps = state => {
   console.log("pastrecordlistscreen");
   return {
-    records: state.record.records,
+    records: state.record.completed_records,
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getCompletedRecordsByUser }
+  { getCompletedRecords }
 )(PastEventListScreen);

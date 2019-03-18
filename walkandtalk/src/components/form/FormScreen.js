@@ -14,7 +14,7 @@ import {
   Content
 } from "native-base";
 import { Actions } from "react-native-router-flux";
-import { getUncompletedRecordsByUser } from "../../actions/EventRecordActions";
+import { getUncompletedRecords } from "../../actions/RecordActions";
 
 /*
 This is the forms screen. Users will see the two static questionnaires and event records to be completed.
@@ -23,17 +23,17 @@ class FormScreen extends Component {
   constructor(props) {
     super(props);
     console.log("inside constructor");
-    this.props.getUncompletedRecordsByUser = this.props.getUncompletedRecordsByUser(
+    this.props.getUncompletedRecords = this.props.getUncompletedRecords(
       this.props.user.user.email
     );
   }
 
   componentDidMount() {
-    this.props.getUncompletedRecordsByUser;
+    this.props.getUncompletedRecords;
   }
 
-  submitEventRecord(index) {
-    Actions.submitEventRecord({
+  submitRecord(index) {
+    Actions.submitRecord({
       record: this.props.uncompleted_records[index]
     });
   }
@@ -45,7 +45,7 @@ class FormScreen extends Component {
       records.unshift(
         <TouchableOpacity
           key={index}
-          onPress={this.submitEventRecord.bind(this, index)}
+          onPress={this.submitRecord.bind(this, index)}
         >
           <BaseCard
             key={record.id}
@@ -97,5 +97,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { getUncompletedRecordsByUser }
+  { getUncompletedRecords }
 )(FormScreen);

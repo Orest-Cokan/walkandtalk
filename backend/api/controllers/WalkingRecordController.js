@@ -104,7 +104,7 @@ const WalkingRecordController = () => {
         location_rating_comment: body.location_rating_comment,
         completed: body.completed
       },
-      { returning: true, where: { email: body.email } }
+      { returning: true, where: { email: body.email, id: body.id } }
     )
       .then(self => {
         return res.status(200).json({ self });
