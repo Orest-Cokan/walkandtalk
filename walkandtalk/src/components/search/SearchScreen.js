@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { fetchEvents } from "../../actions/EventActions";
+
 import {
   View,
   Text,
@@ -29,6 +31,13 @@ import {
 const searchIcon = require("../../assets/icons/search-bar.png");
 const icon2 = require("../../assets/icons/form.png");
 
+//TO DO:
+//Verfify that distance works --> will be done when lat/lon are given to events
+// Search by key word --> in name and description, whole object really
+// search returns an array of events fitting the search results
+// map these events to the map --> using different markers for diff levels etc
+// when clicking on a marker, must be able to view event
+
 
 const items = [
   {
@@ -47,19 +56,32 @@ const items = [
       ]
   },
   {
+    name: "Venue",
+    id: 2,
+    children: [{
+        name: "Indoor",
+        id: 44,
+      },{
+        name: "Outdoor",
+        id: 55,
+      }]
+  },
+  {
     name: "Within",
     id: 1,
     children: [{
         name: "5 km",
-        id: 44,
+        id: 66,
       },{
         name: "10 km",
-        id: 55,
+        id: 77,
       },{
         name: "15 km",
-        id: 66,
+        id: 88,
       }]
-  }]
+  }
+
+]
 
 
 /*
@@ -68,24 +90,131 @@ This is the search screen. Users can search for events in this screen.
 class SearchScreen extends Component {
   //text stores the input from user which is initalized to an empty string.
   //
-  constructor(){
-    super()
+  constructor(props){
+    super(props);
+    console.log("inside constructor");
+    this.props.fetchEvents();
     this.state = {
       selectedItems: [],
       text:"",
-      currentFilters:null
+      searchResults:[]
     }
   }
+
+  componentDidMount() {
+    this.props.fetchEvents;
+      console.log("all events",this.props.events)
+  }
+
   onSelectedItemsChange = (selectedItems) => {
     this.setState({ selectedItems });
+    console.log("selected items changed - searching....", this.state.selectedItems)
+    this.search()
   }
 
   onConfirm = () => {
-    this.setState({ currentFilters: this.state.selectedItems })
+    console.log("multi-select closed")
+    this.search()
   }
 
-  search = () => {
+  search(){
+      filters = this.state.selectedItems
+      events = this.props.events
+      var results = []
+
+      filters.forEach(function(f) {
+        if (f == 11){
+          var i1 = events.filter(event =>{
+            return event.intensity === "Slow"
+          })
+          results = results.concat(i1)
+        }
+        if (f == 22){
+          var i2 = events.filter(event =>{
+            return event.intensity === "Intermediate"
+          })
+          results = results.concat(i2)
+        }
+        if (f == 33){
+          var i3 = events.filter(event =>{
+            return event.intensity === "Brisk"
+          })
+          results = results.concat(i3)
+        }
+        if (f == 44){
+          var v1 = events.filter(event =>{
+            return event.venue === "Indoor"
+          })
+          results = results.concat(v1)
+        }
+        if (f == 55){
+          var v2 = events.filter(event =>{
+            return event.venue === "Outdoor"
+          })
+          results = results.concat(v2)
+        }
+
+      })
+
+        this.submitSearch(results)
+
   }
+
+
+  getDistance = results => {
+    events= this.props.events
+    //For 5 km
+    if(filters.indexOf(66) != -1){
+      events.forEach(function(e) {
+        distance = 3959 * acos (cos ( radians(12.966958) )
+          * cos( radians( lat ) )
+          * cos( radians( lon ) - radians(80.1525835) )
+          + sin ( radians(12.966958) )
+          * sin( radians( lat ) ))
+        if(distance<5){
+          results.append(e)
+        }
+      })
+    }
+    //For 10 km
+    if(filters.indexOf(77) != -1){
+      events.forEach(function(e) {
+        distance = 3959 * acos (
+          cos ( radians(12.966958) )
+          * cos( radians( lat ) )
+          * cos( radians( lon ) - radians(80.1525835) )
+          + sin ( radians(12.966958) )
+          * sin( radians( lat ) ))
+        if(distance<10){
+          results.append(e)
+        }
+      })
+    }
+    //For 15 km
+    if(filters.indexOf(77) != -1){
+      events.forEach(function(e) {
+        distance = 3959 * acos (
+          cos ( radians(12.966958) )
+          * cos( radians( lat ) )
+          * cos( radians( lon ) - radians(80.1525835) )
+          + sin ( radians(12.966958) )
+          * sin( radians( lat ) ))
+        if(distance<15){
+          results.append(e)
+        }
+      })
+    }
+
+    return results
+  }
+
+  submitSearch = results => {
+    this.setState({ searchResults: results }, () => {
+        console.log(this.state.searchResults, 'make sure state updated');
+      });
+
+  }
+
 
 
   render() {
@@ -111,11 +240,13 @@ class SearchScreen extends Component {
        confirmText = "Select"
        onConfirm={this.onConfirm}
        showChips={true}
+       showRemoveAll={true}
        hideSearch={true}
        showDropDowns={false}
        readOnlyHeadings={true}
        onSelectedItemsChange={this.onSelectedItemsChange}
        selectedItems={this.state.selectedItems}
+       onPress={() => this.SectionedMultiSelect._removeAllItems()}
        colors={{ primary: this.state.selectedItems.length ? "#A680B8" : 'crimson',}}
        styles={{
           selectedItemText: {
@@ -132,7 +263,7 @@ class SearchScreen extends Component {
             backgroundColor:"red"
           },
           container:{
-            marginBottom: 250
+            marginBottom: 200
           },
           selectToggle:{
             width:40,
@@ -249,9 +380,15 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  console.log("searchscreen");
+  return {
+    events: state.event.events,
+    user: state.user
+  };
+};
 
 export default connect(
   mapStateToProps,
-  null
+  {fetchEvents}
 )(SearchScreen);
