@@ -43,11 +43,41 @@ const WalkingRecordController = () => {
     }
   };
 
-  // get records for a single user
+  // get completed records for a single user
   const getRecords = async (req, res) => {
     const { email } = req.params;
     try {
-      const records = await WalkingRecord.findAll({ where: { email: email } });
+      const records = await WalkingRecord.findAll({
+        where: { email: email }
+      });
+      return res.status(200).json({ records });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
+  // get completed records for a single user
+  const completedRecords = async (req, res) => {
+    const { email } = req.params;
+    try {
+      const records = await WalkingRecord.findAll({
+        where: { email: email, completed: 1 }
+      });
+      return res.status(200).json({ records });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
+  // get uncompleted records for a single user
+  const uncompletedRecords = async (req, res) => {
+    const { email } = req.params;
+    try {
+      const records = await WalkingRecord.findAll({
+        where: { email: email, completed: 0 }
+      });
       return res.status(200).json({ records });
     } catch (err) {
       console.log(err);
@@ -84,6 +114,8 @@ const WalkingRecordController = () => {
     create,
     getAll,
     getRecords,
+    completedRecords,
+    uncompletedRecords,
     update
   };
 };

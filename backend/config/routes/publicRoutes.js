@@ -18,6 +18,10 @@ const publicRoutes = {
   // Walkingrecord routes
   "GET /walkingrecords": "WalkingRecordController.getAll",
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
+  "GET /walkingrecord/completed/:email":
+    "WalkingRecordController.completedRecords",
+  "GET /walkingrecord/uncompleted/:email":
+    "WalkingRecordController.uncompletedRecords",
   "POST /walkingrecord": "WalkingRecordController.create",
   "PUT /walkingrecord": "WalkingRecordController.update",
 
