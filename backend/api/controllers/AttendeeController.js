@@ -7,6 +7,9 @@ const AttendeeController = () => {
     const { body } = req;
     console.log(body.id, body.name);
     try {
+      await WalkingEvent.increment("total_attendees", {
+        where: { id: body.id }
+      });
       const walkingevent = await WalkingEvent.findByPk(body.id, {
         include: [Attendee]
       });
@@ -30,6 +33,12 @@ const AttendeeController = () => {
     const { body } = req;
     console.log(body.id, body.name);
     try {
+      await WalkingEvent.decrement(
+        {
+          total_attendees: 1
+        },
+        { where: { id: body.id } }
+      );
       const walkingevent = await WalkingEvent.findByPk(body.id, {
         include: [Attendee]
       });

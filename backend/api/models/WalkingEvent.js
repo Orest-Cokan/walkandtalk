@@ -21,7 +21,8 @@ const WalkingEvent = sequelize.define(tableName, {
   start_time: Sequelize.STRING,
   end_time: Sequelize.STRING,
   intensity: Sequelize.STRING,
-  venue: Sequelize.STRING
+  venue: Sequelize.STRING,
+  total_attendees: Sequelize.INTEGER
 });
 
 // set the associations

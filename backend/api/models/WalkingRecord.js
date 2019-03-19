@@ -30,7 +30,8 @@ const WalkingRecord = sequelize.define(tableName, {
   walk_rating_comment: Sequelize.STRING,
   location_rating: Sequelize.STRING,
   location_rating_comment: Sequelize.STRING,
-  completed: Sequelize.INTEGER
+  completed: Sequelize.INTEGER,
+  total_attendees: Sequelize.INTEGER
 });
 
 // export walking record

@@ -168,7 +168,7 @@ class AddEventScreen extends Component {
                 mode="time"
                 showIcon={false}
                 placeholder="Select start time"
-                format="h:mma"
+                format="hh:mma"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{
@@ -194,7 +194,7 @@ class AddEventScreen extends Component {
                 mode="time"
                 showIcon={false}
                 placeholder="Select end time"
-                format="h:mma"
+                format="hh:mma"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{

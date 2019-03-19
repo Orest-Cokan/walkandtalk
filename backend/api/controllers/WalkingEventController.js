@@ -22,7 +22,8 @@ const WalkingEventController = () => {
           end_time: body.end_time,
           intensity: body.intensity,
           venue: body.venue,
-          location: body.location
+          location: body.location,
+          total_attendees: 1
         },
         {
           include: [

@@ -37,7 +37,7 @@ class SubmitRecordScreen extends Component {
     super(props);
     console.log(this.props);
     console.log(this.props.record);
-    // State
+    // State ---- unnecessary code because you the global state within the app.....
     this.state = {
       // Event default details
       date: "FRI, JAN 4",
@@ -113,6 +113,7 @@ class SubmitRecordScreen extends Component {
     });
   };
 
+  /// broken doesn't set the state of a record to completed
   hasCompleted() {
     this.setState({
       completed: 1
@@ -120,8 +121,10 @@ class SubmitRecordScreen extends Component {
   }
 
   onSubmit = () => {
-    this.state.completed = 1;
+    this.hasCompleted();
+    console.log(this.state.completed);
     this.props.updateRecord(
+      this.state.id,
       this.state.email,
       this.state.venue,
       this.state.distance,
@@ -131,7 +134,7 @@ class SubmitRecordScreen extends Component {
       this.state.walkRatingComment,
       this.state.locationRating,
       this.state.locationRatingComment,
-      this.state.completed
+      1
     );
     Actions.mainFormPage();
   };
@@ -406,7 +409,7 @@ class SubmitRecordScreen extends Component {
             {/* Finish button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
-              onPress={this.onSubmit}
+              onPress={(this.hasCompleted, this.onSubmit)}
             >
               <Text style={{ color: "white" }}>Submit</Text>
             </TouchableOpacity>
@@ -416,18 +419,6 @@ class SubmitRecordScreen extends Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    user: state.user
-  };
-};
-
-export default connect(
-  mapStateToProps,
-  { updateRecord }
-)(SubmitRecordScreen);
-
 // Styles
 const styles = StyleSheet.create({
   controls: {
@@ -452,3 +443,14 @@ const styles = StyleSheet.create({
     marginBottom: 5
   }
 });
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { updateRecord }
+)(SubmitRecordScreen);
