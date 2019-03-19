@@ -53,7 +53,6 @@ class FormScreen extends Component {
             start_time={record.start_time}
             title={record.title}
             location={record.location}
-            //badge={badge}
           />
         </TouchableOpacity>
       );

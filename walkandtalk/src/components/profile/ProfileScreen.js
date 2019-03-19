@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
+    console.log("Props on profile", this.props);
   }
 
   // When edit profile icon is clicked
