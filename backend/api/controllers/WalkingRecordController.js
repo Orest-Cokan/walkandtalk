@@ -108,7 +108,7 @@ const WalkingRecordController = () => {
       { returning: true, where: { email: body.email, id: body.id } }
     )
       .then(self => {
-        return res.status(200).json({ self });
+        return res.status(200).json(self[1]);
       })
       .catch(function(err) {
         return res.status(500).json({ msg: "Internal server error" });

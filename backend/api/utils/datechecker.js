@@ -25,10 +25,20 @@ const time = (now, event_time) => {
     now.slice(-2).toLowerCase() == "pm" &&
     event_time.slice(-2).toLowerCase() == "pm"
   ) {
+    if (
+      now.slice(-2).toLowerCase() == "pm" &&
+      event_time.slice(-7, -5) == "12" &&
+      event_time.slice(-2).toLowerCase() == "pm"
+    ) {
+      return true;
+    }
     if (now.slice(-7) >= event_time.slice(-7)) {
       console.log(now.slice(-7), event_time.slice(-7));
       return true;
     } else {
+      console.log(now.slice(-7), event_time.slice(-7));
+      console.log(now.slice(-7, -5));
+
       return false;
     }
   }
