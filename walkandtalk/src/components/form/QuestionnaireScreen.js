@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, WebView, Alert} from "react-native";
+import { Image, WebView} from "react-native";
 //import { WebView } from "react-native-webview";
 import {
     Container,
@@ -14,10 +14,12 @@ import {
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 
-
+/* This is the questionnaire screen, user will be taken to corresponding questionnaire link here. 
+*/
 class QuestionnaireScreen extends Component {
 
     constructor(props) {
+        //questionnaire cardview passes in the questionnaire card id on redcap as props 
         super(props);
         this.state = {
             //gives warning when initial url is null
@@ -25,6 +27,7 @@ class QuestionnaireScreen extends Component {
             instance: 1,
         }
     }
+
     onBack = () => {
         // Navigate back to form page
         Actions.pop();
@@ -32,7 +35,9 @@ class QuestionnaireScreen extends Component {
     
 
     /*
-    this funtion gets instance number from redcap, then update the survey link by calling getSurveyLink
+    This fucntion gets the record from redcap first, check if the last instance if completed or not, 
+    if not, set instance number to last instance number, else, increment the instance number.
+    Then get the survey link by calling getSurveyLink
     */
     setSurveyLink = () =>{
         //get instance number 
@@ -57,21 +62,37 @@ class QuestionnaireScreen extends Component {
             return response.json()
         })
         .then((body)=> {
-    
             var lastInstanceStatus ;
-            if (this.props.questionnaire === "menqol") {
-                lastInstanceStatus = body[body.length-1].menqol_complete;
+            //checks if body is empty, empty body meaning questionnaire has not been created on redcap
+            // if body is not empty, get the staus of the last instance 
+            if (body.length != 0 ){
+                if (this.props.questionnaire === "menqol") {
+                    lastInstanceStatus = body[body.length-1].menqol_complete;
+                }
+                else{  
+                    lastInstanceStatus = body[body.length-1].menopause_symptom_severity_questionnaire_complete;
+                }
             }
-            else{  
-                lastInstanceStatus = body[body.length-1].menopause_symptom_severity_questionnaire_complete;
+            else{
+                //if body is empty, assign with "3" which is not a status code on redcap 
+                lastInstanceStatus = "3";
             }
-            //status code, 0: imcomplete, 1: unverified, 2: complete
-            if (lastInstanceStatus == "2"){
+           
+            
+            //status code from redcap, 0: imcomplete, 1: unverified, 2: complete
+            //status code defined here, 3: survey not created
+            //if survey not created, get the first survey link 
+            if (lastInstanceStatus == "3"){
+                this.getSurveyLink();     
+            } 
+            // if last survey is completed, get next survey link 
+            else if(lastInstanceStatus == "2"){
                 //callback gets survey link after this.state.instance is updated 
                 this.setState({instance: parseInt(body.length,10 ) + 1}, () =>{
                     this.getSurveyLink()
                 });
-            } 
+            }
+            // last survey is created but not completed, get the last survey link 
             else{
                 //callback gets survey link after this.state.instance is updated 
                 this.setState({instance: parseInt(body.length,10 ) }, () =>{
@@ -93,9 +114,9 @@ class QuestionnaireScreen extends Component {
             + "&instrument=" + this.props.questionnaire
             + "&event="
             + "&record=" + this.props.user.user.id.toString()  //to be changed to user record id 
-            + "&repeat_instance=" + this.state.instance.toString() //to be changed to user menqol instance num 
+            + "&repeat_instance=" + this.state.instance.toString() 
             + "&returnFormat=json";
-        
+
         fetch('https://med-rcdev.med.ualberta.ca/api/',{
             method: 'POST',
             headers: {
@@ -108,6 +129,7 @@ class QuestionnaireScreen extends Component {
             return response.text()
         })
         .then((responseText) => {
+            //responseText is survey link 
             this.setState({url: responseText});
         })
         .catch((error) => {
