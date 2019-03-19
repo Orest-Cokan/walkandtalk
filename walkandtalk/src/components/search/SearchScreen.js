@@ -118,6 +118,7 @@ class SearchScreen extends Component {
       // },
       markers: [
         {
+          id:1,
           organizer:"poooonam",
           title: 'University of Alberta Walk',
           email: "123@gmail.com",
@@ -132,6 +133,7 @@ class SearchScreen extends Component {
           createdAt: '2019-03-19T01:20:54.920Z',
           updatedAt: '2019-03-19T01:20:54.920Z',
           attendees: [],
+          total_attendees: 1,
           location:
           { id: 1,
           streetName: 'no where',
@@ -142,6 +144,7 @@ class SearchScreen extends Component {
                   WalkingEventId: 1 }
                 },
         {
+          id:2,
           organizer:"becky",
           title: 'walk it like i talk it',
           email: "123@gmail.com",
@@ -156,6 +159,7 @@ class SearchScreen extends Component {
           createdAt: '2019-03-19T01:20:54.920Z',
           updatedAt: '2019-03-19T01:20:54.920Z',
           attendees: [],
+          total_attendees:1,
           location:
           { id: 1,
           streetName: 'no where',
@@ -167,6 +171,7 @@ class SearchScreen extends Component {
 
         },
         {
+          id:3,
           organizer:"poooonam",
           title: 'do the stanky leg',
           email: "123@gmail.com",
@@ -181,6 +186,7 @@ class SearchScreen extends Component {
           createdAt: '2019-03-19T01:20:54.920Z',
           updatedAt: '2019-03-19T01:20:54.920Z',
           attendees: [],
+          total_attendees:1,
           location:
           { id: 1,
           streetName: 'no where',
@@ -209,19 +215,24 @@ class SearchScreen extends Component {
   //   }
   // }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchEvents;
       console.log("all events",this.props.events)
       console.log("marker state", this.state.markers)
   }
 
-  goToEvent = index => {
+  goToEvent = (index) => {
     // Navigate to view this event
-    console.log("current markers", this.state.markers);
-    console.log(index, "event");
-    marker = this.state.markers[index]
+    markers = JSON.stringify(this.state.markers);
+    markers = JSON.parse(markers)
+    console.log("current markers", markers);
+
+    marker = markers[index]
     console.log(marker, "marker after index");
-    Actions.viewEvent({searchScreen:true,markerSent:marker});
+
+    Actions.viewEvent({
+      searchScreen:true, markerSent:marker
+    });
   };
 
   onSelectedItemsChange = (selectedItems) => {
@@ -287,7 +298,7 @@ class SearchScreen extends Component {
 
   }
 
-
+//TBD if this works, waiting on lat and lon coordinates to be added to create events
   getDistance = results => {
     events= this.props.events
     //For 5 km

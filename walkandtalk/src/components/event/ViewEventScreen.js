@@ -24,11 +24,13 @@ class ViewEventScreen extends Component {
 
     // Set state on inital profile signup
     this.state = {
-      time: "WED, MAR 3 AT 10:00PM",
+      date: "WED, MAR 3 AT",
+      startTime: "10:00PM",
+      endTime:  "2:00AM",
       title: "Walk in the park",
       location:"Hawrelak Park",
       badge:"GOING",
-      host: "Beatrice",
+      organizer: "Beatrice",
       intensity:"Brisk",
       attending: 6,
       description: "Hello All. Im writing this description to see how it looks on the screen if you think it looks good gimme a thumbs up"
@@ -47,7 +49,39 @@ class ViewEventScreen extends Component {
   componentWillMount(){
     if(this.props.searchScreen == true){
       searchEvent = this.props.markerSent
-      console.log(searchEvent, "searchEvent")
+      console.log(searchEvent, "markerSent")
+
+      //check if hosting, going or not going
+      const badge = ""
+      const fullname = this.props.user.user.fullname;
+      console.log("current user", fullname)
+      console.log("Event organizer", searchEvent.organizer)
+      if(fullname === searchEvent.organizer){
+        badge = "HOSTING"
+      }else{
+        //get event and see if user is attending
+        attendees = searchEvent.attendees
+        attendees.forEach(function(a) {
+          if(a == fullname){
+            badge = "GOING"
+          }
+        })
+      }
+
+
+
+      this.setState({
+        date: searchEvent.date,
+        startTime: searchEvent.start_time,
+        endTime: searchEvent.end_time,
+        title: searchEvent.title,
+        location: searchEvent.location.streetName,
+        badge: badge,
+        organizer: searchEvent.organizer,
+        intensity: searchEvent.intensity,
+        attending: searchEvent.total_attendees,
+        description: searchEvent.description
+      });
     }
   }
 
@@ -55,7 +89,7 @@ class ViewEventScreen extends Component {
     const attendingOptions = ["Not Going", "Going"];
 
 //Should be checking if neither going nor hosting
-    if (this.state.badge=="GOING") {
+    if (this.state.badge=="GOING" || this.state.badge=="") {
         buttons =
       <View style={styles.segmentedControls}>
         <SegmentedControls
@@ -74,7 +108,7 @@ class ViewEventScreen extends Component {
         />
       </View>;
     }
-    else {
+    if(this.state.badge=="HOSTING"){
       buttons =
       <View>
       <TouchableOpacity
@@ -138,7 +172,7 @@ class ViewEventScreen extends Component {
           <View style={ScreenStyleSheet.rowContainerEvent}>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.EventSectionTitle}>
-                {this.state.time}
+                {this.state.date} {this.state.startTime}-{this.state.endTime}
               </Text>
             </View>
           </View>
@@ -188,7 +222,7 @@ class ViewEventScreen extends Component {
             </View>
             <View s>
               <Text style={ScreenStyleSheet.eventInfoInput}>
-                {this.state.host}
+                {this.state.organizer}
               </Text>
             </View>
           </View>
@@ -215,7 +249,7 @@ class ViewEventScreen extends Component {
             <View >
             <Image
               style={ScreenStyleSheet.eventIcons}
-              source={require("../../assets/icons/form.png")}
+              source={require("../../assets/icons/aboutEvent.png")}
             />
             </View>
             <View>
@@ -226,9 +260,6 @@ class ViewEventScreen extends Component {
           </View>
           {description}
           {buttons}
-
-
-
 
         </Content>
       </Container>
