@@ -1,6 +1,6 @@
 
 import React, { Component } from "react";
-import { View, ScrollView, Text, Image, TouchableOpacity } from "react-native";
+import { View, ScrollView, Text, Image, TouchableOpacity} from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -9,7 +9,8 @@ import {
   Body,
   Title,
   Right,
-  Content
+  Content,
+  Button
 } from "native-base";
 import { SegmentedControls } from "react-native-radio-buttons";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
@@ -34,10 +35,24 @@ class ViewEventScreen extends Component {
     };
   }
 
+  onBack = () => {
+    // Navigate back to profile page
+    Actions.pop();
+  };
+
+  //Depending on whether we are viewing an event in home or in search different props will be passing
+  // First we want to determine props available and set state with the necessary values
+  //
+  // First will do for search events
+  componentWillMount(){
+    searchEvent = this.props.event
+    console.log(searchEvent, "searchEvent")
+  }
 
   render() {
     const attendingOptions = ["Not Going", "Going"];
 
+//Should be checking if neither going nor hosting
     if (this.state.badge=="GOING") {
         buttons =
       <View style={styles.segmentedControls}>
@@ -45,7 +60,7 @@ class ViewEventScreen extends Component {
           tint={"#A680B8"}
           backTint={"#ffffff"}
           optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-          selectedOption={attendingOptions[0]}
+          selectedOption={attendingOptions[1]}
           optionContainerStyle={{
             flex: 1,
             height: 40,
@@ -64,7 +79,7 @@ class ViewEventScreen extends Component {
         style={styles.editButton}
         onPress={this.onPressLogin}
       >
-        {/*Login Button - redirect user to home screen if successfull*/}
+        {/*Edit Event*/}
         <Text style={styles.buttonText}> EDIT </Text>
       </TouchableOpacity>
 
@@ -72,7 +87,7 @@ class ViewEventScreen extends Component {
         style={styles.deleteButton}
         onPress={this.onPressLogin}
       >
-        {/*Login Button - redirect user to home screen if successfull*/}
+        {/*Delete Event*/}
         <Text style={styles.buttonText}> DELETE </Text>
       </TouchableOpacity>
       </View>
@@ -102,13 +117,18 @@ class ViewEventScreen extends Component {
           androidStatusBarColor={"white"}
           iosBarStyle={"dark-content"}
         >
-          <Body style={ScreenStyleSheet.headerWithBack}>
-          <Image
-            style={ScreenStyleSheet.backIcon}
-            source={require("../../assets/icons/back-button.png")}
-          />
-            <Title style={{alignSelf:"center"}}>{this.state.title}</Title>
+          <Left style={ScreenStyleSheet.headerSides}>
+            <Button transparent onPress={this.onBack}>
+              <Image
+                style={ScreenStyleSheet.backIcon}
+                source={require("../../assets/icons/back-button.png")}
+              />
+            </Button>
+          </Left>
+          <Body style={ScreenStyleSheet.headerBody}>
+            <Title style={ScreenStyleSheet.headerTitle}>{this.state.title}</Title>
           </Body>
+          <Right style={ScreenStyleSheet.headerSides} />
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>

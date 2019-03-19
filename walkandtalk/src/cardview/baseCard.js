@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity} from "react-native";
 import { Actions } from "react-native-router-flux";
 
 /*
@@ -10,9 +10,9 @@ Returns: The list view that contains information about the event.
 
 class BaseCard extends Component {
 
-  viewEvent = () => {
-    // Navigate to edit profile
-    Actions.viewevent(this.props);
+  goToEvent = () => {
+    // Navigate to view this event
+    Actions.viewEvent({eventId:this.props});
   };
   /*
   This is funtion checks if badge is null.
@@ -41,9 +41,12 @@ class BaseCard extends Component {
   if the badge is 'hosting', returns the card view with a blue badge.
   */
   changeBadgeColour=()=>{
+
     if (this.props.badge.toUpperCase()=="GOING"){
       return (
-        <View style={styles.card} onPress={this.viewEvent}>
+        <TouchableOpacity
+        onPress={this.goToEvent}>
+        <View style={styles.card}>
             <View style={styles.withBadge}>
               <Text style={styles.eventTime}>{this.props.date.toUpperCase()} AT {this.props.start_time.toUpperCase()}</Text>
               <Text style={[styles.going, styles.Badge]}>{this.props.badge}</Text>
@@ -52,11 +55,14 @@ class BaseCard extends Component {
             <Text>{this.props.location}</Text>
 
         </View>
+        </TouchableOpacity>
       );
 
     }
     else if (this.props.badge.toUpperCase()=="HOSTING"){
       return (
+        <TouchableOpacity
+        onPress={this.goToEvent}>
         <View style={styles.card}>
             <View style={styles.withBadge}>
               <Text style={styles.eventTime}>{this.props.date.toUpperCase()} AT {this.props.start_time.toUpperCase()}</Text>
@@ -66,6 +72,7 @@ class BaseCard extends Component {
             <Text>{this.props.location}</Text>
 
         </View>
+        </TouchableOpacity>
       );
     }
   }

@@ -1,4 +1,5 @@
 // Submit Event Record Screen View
+
 import React, { Component } from "react";
 import {
   StyleSheet,
@@ -37,13 +38,9 @@ class SubmitRecordScreen extends Component {
     super(props);
     console.log(this.props);
     console.log(this.props.record);
-    // State ---- unnecessary code because you the global state within the app.....
+    // State ---- unnecessary code because you the global state within the app..... ->> necessary because form needs default values.
     this.state = {
       // Event default details
-      date: "FRI, JAN 4",
-      startTime: "7:00 PM",
-      endTime: "8:00PM",
-      location: "Van Vliet Complex",
       numAttendees: 3,
 
       // Event record uneditable details
@@ -52,7 +49,12 @@ class SubmitRecordScreen extends Component {
       fullname: this.props.record.fullname,
       title: this.props.record.title,
       email: this.props.record.email,
-      completed: 0,
+      date: this.props.record.date,
+      startTime: this.props.record.start_time,
+      endTime: this.props.record.end_time,
+      location: this.props.record.location,
+      numAttendees: this.props.record.total_attendees,
+      completed: this.props.record.completed,
 
       // User input needed
       duration: 0,
@@ -113,16 +115,11 @@ class SubmitRecordScreen extends Component {
     });
   };
 
-  /// broken doesn't set the state of a record to completed
   hasCompleted() {
-    this.setState({
-      completed: 1
-    });
+    this.state.completed = 1;
   }
 
   onSubmit = () => {
-    this.hasCompleted();
-    console.log(this.state.completed);
     this.props.updateRecord(
       this.state.id,
       this.state.email,
@@ -134,9 +131,9 @@ class SubmitRecordScreen extends Component {
       this.state.walkRatingComment,
       this.state.locationRating,
       this.state.locationRatingComment,
-      1
+      this.state.completed,
     );
-    Actions.mainFormPage();
+    console.log(this.props);
   };
 
   onCancel = () => {
@@ -155,21 +152,9 @@ class SubmitRecordScreen extends Component {
       { label: "Outdoor", value: "Outdoor" }
     ];
     const walkRatings = [
-      {
-        label: "",
-        value: "1",
-        imageIcon: require("../../assets/icons/dislike.png")
-      },
-      {
-        label: "",
-        value: "2",
-        imageIcon: require("../../assets/icons/indifferent.png")
-      },
-      {
-        label: "",
-        value: "3",
-        imageIcon: require("../../assets/icons/like.png")
-      }
+      { value: "1", imageIcon: require("../../assets/icons/dislike.png") },
+      { value: "2", imageIcon: require("../../assets/icons/indifferent.png") },
+      { value: "3", imageIcon: require("../../assets/icons/like.png") }
     ];
     const locationRatings = [
       { value: "1", imageIcon: require("../../assets/icons/dislike.png") },

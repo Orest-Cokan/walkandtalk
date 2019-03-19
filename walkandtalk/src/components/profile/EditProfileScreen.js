@@ -28,6 +28,7 @@ class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
 
+    console.log(this.props);
     this.state = {
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
@@ -101,6 +102,8 @@ class EditProfileScreen extends Component {
       this.state.venue,
       this.state.location,
     )
+    console.log("props on save", this.props)
+    Actions.mainProfile();
   }
 
   render() {
@@ -108,7 +111,6 @@ class EditProfileScreen extends Component {
     const intensities = ["Slow", "Intermediate", "Brisk"];
     const venues = ["Indoor", "Outdoor"];
     const menoStages = ["Pre", "Peri", "Post"];
-    const user = this.props.user.user
 
     // Screen
     return (
@@ -134,8 +136,6 @@ class EditProfileScreen extends Component {
             {/* Add + for changing profile picture */}
           </View>
           {/* Name */}
-
-          {/* Distance */}
           <View style={styles.nestedButtonView}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>
@@ -145,12 +145,13 @@ class EditProfileScreen extends Component {
             <View>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeDistance}
+                onChangeText={this.onChangeFullName}
               >
                 {this.state.fullname}
               </TextInput>
             </View>
           </View>
+
           {/* Email */}
           <View style={styles.nestedButtonView}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -317,7 +318,7 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.profileRowInfo}>
-            <TextInput style={ScreenStyleSheet.textInputStyle} onChangeText={this.onChangeFullname}>
+            <TextInput style={ScreenStyleSheet.textInputStyle} onChangeText={this.onChangLocation}>
               {this.state.location}
             </TextInput>
           </View>
@@ -348,7 +349,6 @@ class EditProfileScreen extends Component {
 
 const mapStateToProps = state => {
   console.log("EditProfilescreen");
-
   return {
     user: state.user
   };

@@ -8,11 +8,14 @@ import AddEventScreen from "./components/event/AddEventScreen";
 import HomeScreen from "./components/home/HomeScreen";
 import SearchScreen from "./components/search/SearchScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
+import RequestsScreen from "./components/form/RequestsScreen";
+import ViewRequestScreen from "./components/form/ViewRequestScreen";
 import FormScreen from "./components/form/FormScreen";
 import SubmitRecordScreen from "./components/form/SubmitRecord";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
+import ViewEventScreen from "./components/event/ViewEventScreen";
 
 const RouterComponent = () => (
   <Router>
@@ -90,6 +93,24 @@ const RouterComponent = () => (
             <Scene key="mainFormPage" component={FormScreen} />
             <Scene key="submitRecord" component={SubmitRecordScreen} />
           </Scene>
+          {/*If the user if a researcher, this tab will show instead of forms tab*/}
+          {/*<Scene
+            key="request"
+            icon={({ focused }) => (
+              <Image
+                source={
+                  focused
+                    ? require("./assets/icons/request-full.png")
+                    : require("./assets/icons/request.png")
+                }
+                style={{ width: 28, height: 28 }}
+              />
+            )}
+            hideNavBar
+          >
+            <Scene key="mainRequestPage" component={RequestsScreen} />
+            <Scene key="viewRequest" component={ViewRequestScreen} />
+          </Scene>*/}
           <Scene
             key="profile"
             icon={({ focused }) => (
@@ -110,6 +131,7 @@ const RouterComponent = () => (
             <Scene key="helplines" component={HelplineScreen} />
           </Scene>
         </Tabs>
+        <Scene key="viewEvent" component={ViewEventScreen}/>
       </Stack>
     </Stack>
   </Router>

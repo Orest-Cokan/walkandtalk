@@ -55,23 +55,8 @@ const user = (state = INITIAL_STATE, action) => {
          ...state, 
          ...INITIAL_STATE,
         loading: true,
-        user: action.payload 
-      
+        user: action.payload
       };
-    case USER_EDIT_SUCCESS:
-    return {
-      ...state, 
-      ...INITIAL_STATE,
-     loading: true,
-     user: action.payload 
-   
-   };
-    case USER_EDIT_FAIL:
-      return {
-        ...state, 
-       errorLoging: "Edit user failed!",
-       loading: false,
-     };
     case USER_LOGIN_SUCCESS:
       return {
         ...state,

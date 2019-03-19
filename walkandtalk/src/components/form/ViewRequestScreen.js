@@ -16,32 +16,45 @@ import {
   Body,
   Title,
   Right,
-  Content
+  Content,
+  Button
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 
-// Profile tab
-class ProfileScreen extends Component {
+// View Request screen
+class ViewRequestScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("Props on profile", this.props);
+    console.log("Props on view request", this.props);
+
+    // Sample data
+    this.state = {
+      fullname: this.props.request.fullname,
+      email: this.props.request.email,
+      dob: this.props.request.dob,
+      menopausal_stage: this.props.request.menopausal_stage,
+      intensity: this.props.request.intensity,
+      distance: this.props.request.distance,
+      duration: this.props.request.duration,
+      venue: this.props.request.venue,
+      location: this.props.request.location,
+    }
   }
 
-  // When edit profile icon is clicked
-  goToEditProfile = () => {
-    // Navigate to edit profile
-    Actions.editProfile();
+  // Approves request to be a user
+  approveRequest = () => {
+
   };
 
-  goToPastEvents = () => {
-    // Navigate to Past Events
-    Actions.pastEvents();
+  // Declines request to be a user
+  declineRequest = () => {
   };
 
-  goToHelplineLinks = () => {
-    // Navigate to Past Events
-    Actions.helplines();
+
+  // Navigate back to Requests page
+  onBack = () => {
+    Actions.pop();
   };
 
   render() {
@@ -50,47 +63,51 @@ class ProfileScreen extends Component {
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor={"white"}
-          iosBarStyle={"dark-content"}
+          androidStatusBarColor="white"
+          androidStatusBarStyle="dark-content"
         >
+          <Left style={ScreenStyleSheet.headerSides}>
+            <Button transparent onPress={this.onBack}>
+              <Image
+                style={ScreenStyleSheet.backIcon}
+                source={require("../../assets/icons/back-button.png")}
+              />
+            </Button>
+          </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Profile</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>View Request</Title>
           </Body>
+          <Right style={ScreenStyleSheet.headerSides} />
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {/* Profile header container */}
-          <View style={ScreenStyleSheet.profileHeader}>
-            {/* Edit profile icon  */}
-            <View style={ScreenStyleSheet.editProfile}>
-              <TouchableHighlight
-                onPress={this.goToEditProfile}
-                activeOpacity={0}
-              >
-                <Image
-                  style={ScreenStyleSheet.editIcon}
-                  source={require("../../assets/icons/edit.png")}
-                />
-              </TouchableHighlight>
-            </View>
-            {/* Profile picture */}
-            <Image
-              style={ScreenStyleSheet.avatar}
-              source={require("../../assets/icons/default-profile.png")}
-            />
-            <Text style={ScreenStyleSheet.profileName}>
-              {this.props.user.user.fullname}
-            </Text>
-          </View>
-
-          {/* On screen separator */}
-          <View style={ScreenStyleSheet.lineSeparator} />
-
           {/* Info Header */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileSectionTitle}>
                 Basic Info
+              </Text>
+            </View>
+          </View>
+          {/* Full name */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Full name</Text>
+            </View>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
+                {this.state.fullname}
+              </Text>
+            </View>
+          </View>
+          {/* Email address */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfo}>Email address</Text>
+            </View>
+            <View style={ScreenStyleSheet.profileRowInfo}>
+              <Text style={ScreenStyleSheet.profileInfoInput}>
+                {this.state.email}
               </Text>
             </View>
           </View>
@@ -101,7 +118,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.dob}
+                {this.state.dob}
               </Text>
             </View>
           </View>
@@ -115,7 +132,7 @@ class ProfileScreen extends Component {
                 {/* Automatically calculates the age when given date of birth */}
                 {Math.floor(
                   (new Date().getTime() -
-                    Date.parse(this.props.user.user.dob)) /
+                    Date.parse(this.state.dob)) /
                     31557600000
                 )}
               </Text>
@@ -128,7 +145,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.menopausal_stage}
+                {this.state.menopausal_stage}
               </Text>
             </View>
           </View>
@@ -153,7 +170,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.distance} km
+                {this.state.distance} km
               </Text>
             </View>
           </View>
@@ -166,7 +183,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.duration} min
+                {this.state.duration} min
               </Text>
             </View>
           </View>
@@ -177,7 +194,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.intensity}
+                {this.state.intensity}
               </Text>
             </View>
           </View>
@@ -188,7 +205,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.venue}
+                {this.state.venue}
               </Text>
             </View>
           </View>
@@ -199,26 +216,29 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.location}
+                {this.state.location}
               </Text>
             </View>
           </View>
 
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
-            {/* Button to help links */}
+            {/* Decline button */}
             <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.goToHelplineLinks}
+              style={[
+                styles.buttonContainer,
+                { borderWidth: 1 }
+              ]}
+              onPress={this.declineRequest}
             >
-              <Text>Helpline Links</Text>
+              <Text>Decline</Text>
             </TouchableOpacity>
-            {/* Button to past events */}
+            {/* Approve button */}
             <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.goToPastEvents}
+              style={[styles.buttonContainer, { backgroundColor: "#A680B8", borderColor: "#A680B8" }]}
+              onPress={this.approveRequest}
             >
-              <Text>Past Events</Text>
+              <Text style={{ color: "white" }}>Approve</Text>
             </TouchableOpacity>
           </View>
         </Content>
@@ -228,16 +248,15 @@ class ProfileScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("profilescreen");
+  console.log("viewrequestscreen");
   return {
-    user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
   null
-)(ProfileScreen);
+)(ViewRequestScreen);
 
 // Styles
 const styles = StyleSheet.create({
@@ -249,6 +268,6 @@ const styles = StyleSheet.create({
     width: "48%",
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "black"
+    borderColor: "grey"
   }
 });

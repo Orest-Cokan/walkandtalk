@@ -6,8 +6,6 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
   USER_EDIT,
-  USER_EDIT_SUCCESS,
-  USER_EDIT_FAIL,
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -151,32 +149,16 @@ const loginUserSuccess = (dispatch, user) => {
       .then(res => {
         if (res.status === 200) {
           if(res.data === 1) {
-            console.log('Succcesss');
-            editUserSuccess(dispatch);
+            dispatch({ type: USER_EDIT });
           }
         }
       })
       .catch(err => {
-        editUserFail(dispatch);
         console.log('axios failure', err);
       });
   };
 };
 
-// dispatch user edit success
-const editUserSuccess = (dispatch) => {
-  dispatch({
-    type: USER_EDIT_SUCCESS,
-  });
-  
-  Actions.mainProfile();
-};
-
-// dispatch user edit fail
-const editUserFail = dispatch => {
-  console.log("fail", USER_EDIT_FAIL);
-  dispatch({ type: USER_EDIT_FAIL });
-};
 
 var getIP = ()=>{
   if (Platform.OS === 'android') {

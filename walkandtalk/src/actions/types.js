@@ -9,6 +9,7 @@ export const USER_CREATE_FAIL = "USER_CREATE_FAIL";
 export const USER_CREATE_SUCCESS = "USER_CREATE_SUCCESS";
 export const USER_EDIT = "USER_EDIT";
 
+
 // EVENT TYPES
 export const SET_EVENTS = "SET_EVENTS";
 export const EVENT_CREATE = "EVENT_CREATE";
