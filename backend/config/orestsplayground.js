@@ -28,8 +28,9 @@ events.forEach(event => {
 
 // make a custom AM/PM checker because i'm lazy as fuck and would rather go down this route
 // input current time and event time
-/*
+
 time = (now, event_time) => {
+  console.log(now, event_time, "THESE ARE THE TIMES GIVEN");
   if (
     now.slice(-2).toLowerCase() == "am" &&
     event_time.slice(-2).toLowerCase() == "am"
@@ -54,13 +55,16 @@ time = (now, event_time) => {
     event_time.slice(-2).toLowerCase() == "pm"
   ) {
     if (now.slice(-7) >= event_time.slice(-7)) {
+      console.log("WHY IS THIS TRUE", now.slice(-7), event_time.slice(-7));
       return true;
     } else {
+      console.log("FALSE", now.slice(-7), event_time.slice(-7));
       return false;
     }
   }
 };
-*/
 
-var valid = cron.validate("0 * * * *");
-console.log(valid);
+const check1 = "5:25pm";
+const check2 = "8:00pm";
+
+console.log(time(check1, check2));

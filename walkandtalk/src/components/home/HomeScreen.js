@@ -1,7 +1,6 @@
 // Create Event Screen View
 import React, { Component } from "react";
 import { fetchEvents } from "../../actions/EventActions";
-
 import { connect } from "react-redux";
 import {
   Container,
@@ -21,6 +20,12 @@ class HomeScreen extends Component {
     super(props);
     console.log("inside constructor");
     this.props.fetchEvents();
+    console.log("constructor", this.props);
+
+    // testing something, will delete
+    this.state = {
+       fullname: this.props.user.user.fullname,
+    }
   }
 
   componentDidMount() {
@@ -28,8 +33,11 @@ class HomeScreen extends Component {
   }
 
   getEvents() {
+    console.log("get event", this.props);
+    console.log("get event", this.state);
+
     let events = [];
-    const fullname = this.props.user.user.fullname;
+    const fullname = this.state.fullname;
     this.props.events.map(event => {
       let badge = null;
       if (fullname == event.organizer) {

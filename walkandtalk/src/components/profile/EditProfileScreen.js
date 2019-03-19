@@ -28,6 +28,7 @@ class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
 
+    console.log(this.props);
     this.state = {
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
@@ -101,6 +102,8 @@ class EditProfileScreen extends Component {
       this.state.venue,
       this.state.location,
     )
+    console.log("props on save", this.props)
+    Actions.mainProfile();
   }
 
   render() {
@@ -108,7 +111,6 @@ class EditProfileScreen extends Component {
     const intensities = ["Slow", "Intermediate", "Brisk"];
     const venues = ["Indoor", "Outdoor"];
     const menoStages = ["Pre", "Peri", "Post"];
-    const user = this.props.user.user
 
     // Screen
     return (
@@ -134,27 +136,33 @@ class EditProfileScreen extends Component {
             {/* Add + for changing profile picture */}
           </View>
           {/* Name */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInfo}>Full Name *</Text>
+          <View style={styles.nestedButtonView}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Fullname *
+              </Text>
             </View>
-            <View style={ScreenStyleSheet.profileInputContainer}>
-              <TextInput style={ScreenStyleSheet.profileInput} onChangeText={this.onChangeFullname}>
-                {user.fullname}
+            <View>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeFullName}
+              >
+                {this.state.fullname}
               </TextInput>
             </View>
           </View>
+
           {/* Email */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInfo}>Email Address</Text>
+          <View style={styles.nestedButtonView}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Email address</Text>
             </View>
-            <View style={ScreenStyleSheet.profileInputContainer}>
+            <View>
               <TextInput
-                style={ScreenStyleSheet.profileInputUneditable}
+                style={ScreenStyleSheet.formInputUneditable}
                 editable={false}
               >
-                {user.email}
+                {this.state.email}
               </TextInput>
             </View>
           </View>
@@ -174,12 +182,12 @@ class EditProfileScreen extends Component {
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfo}>Date of Birth</Text>
             </View>
-            <View style={ScreenStyleSheet.profileInputContainer}>
+            <View style={ScreenStyleSheet.profileRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.profileInputUneditable}
                 editable={false}
               >
-                {user.dob}
+                {this.state.dob}
               </TextInput>
             </View>
           </View>
@@ -197,7 +205,7 @@ class EditProfileScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={user.menopausal_stage}
+              selectedOption={this.state.menopausal_stage}
               onSelection={this.setMenopausalStage.bind(this)}
               optionContainerStyle={{
                 flex: 1,
@@ -221,34 +229,40 @@ class EditProfileScreen extends Component {
               </Text>
             </View>
           </View>
+
           {/* Distance */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInfo}>
-                Length of Walk (by distance) *
+          <View style={styles.nestedButtonView}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Length of distance (in km) *
               </Text>
             </View>
-            <View style={ScreenStyleSheet.profileInputContainer}>
-              <TextInput style={ScreenStyleSheet.profileInput} onChangeText={this.onChangeDistance}>
-                {user.distance}
+            <View>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeDistance}
+              >
+                {this.state.distance}
               </TextInput>
-              <Text style={ScreenStyleSheet.profileInput}>km</Text>
             </View>
           </View>
-          {/* Duration */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInfo}>
-                Length of Walk (by duration) *
+         {/* Duration */}
+          <View style={styles.nestedButtonView}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Length of distance (in min) *
               </Text>
             </View>
-            <View style={ScreenStyleSheet.profileInputContainer}>
-              <TextInput style={ScreenStyleSheet.profileInput} onChangeText={this.onChangeDuration}>
-                {user.duration}
+            <View>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeDuration}
+              >
+                {this.state.duration}
               </TextInput>
-              <Text style={ScreenStyleSheet.profileInput}>min</Text>
             </View>
           </View>
+
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.profileRowInfo}>
@@ -261,7 +275,7 @@ class EditProfileScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={user.intensity}
+              selectedOption={this.state.intensity}
               onSelection={this.setIntensity.bind(this)}
               optionContainerStyle={{
                 flex: 1,
@@ -285,7 +299,7 @@ class EditProfileScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={user.venue}
+              selectedOption={this.state.venue}
               onSelection={this.setVenue.bind(this)}
               optionContainerStyle={{
                 flex: 1,
@@ -304,8 +318,8 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.profileRowInfo}>
-            <TextInput style={ScreenStyleSheet.textInputStyle} onChangeText={this.onChangeFullname}>
-              {user.location}
+            <TextInput style={ScreenStyleSheet.textInputStyle} onChangeText={this.onChangLocation}>
+              {this.state.location}
             </TextInput>
           </View>
           {/* Options */}
@@ -335,7 +349,6 @@ class EditProfileScreen extends Component {
 
 const mapStateToProps = state => {
   console.log("EditProfilescreen");
-
   return {
     user: state.user
   };
@@ -377,6 +390,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "48%",
     borderRadius: 10
-  }
+  },
+  nestedButtonView: {
+      flexDirection: "row",
+      alignItems: "stretch",
+      marginBottom: 5
+  },
 });
 

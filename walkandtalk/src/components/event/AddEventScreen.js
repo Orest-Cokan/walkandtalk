@@ -33,6 +33,7 @@ class AddEventScreen extends Component {
     // State
     this.state = {
       organizer: this.props.user.user.fullname,
+      email: this.props.user.user.email,
       title: null,
       description: null,
       date: null,
@@ -81,6 +82,7 @@ class AddEventScreen extends Component {
     console.log("we are here!");
     this.props.createEvent(
       this.state.organizer,
+      this.state.email,
       this.state.title,
       this.state.date,
       this.state.startTime,
@@ -144,7 +146,7 @@ class AddEventScreen extends Component {
                 showIcon={false}
                 placeholder="Select date"
                 format="ddd, MMM D"
-                minDate={new Date()}
+                minDate={new Date()} // why was this commented out????? @eivenlour
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{}}
@@ -166,7 +168,7 @@ class AddEventScreen extends Component {
                 mode="time"
                 showIcon={false}
                 placeholder="Select start time"
-                format="h:mm a"
+                format="hh:mma"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{
@@ -192,7 +194,7 @@ class AddEventScreen extends Component {
                 mode="time"
                 showIcon={false}
                 placeholder="Select end time"
-                format="h:mm a"
+                format="hh:mma"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{
@@ -206,6 +208,7 @@ class AddEventScreen extends Component {
               />
             </View>
           </View>
+
           {/* Description */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -223,6 +226,7 @@ class AddEventScreen extends Component {
               />
             </View>
           </View>
+
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -247,10 +251,11 @@ class AddEventScreen extends Component {
               options={intensities}
             />
           </View>
+
           {/* Venue */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Type of Venue</Text>
+              <Text style={ScreenStyleSheet.formInfo}>Type of venue</Text>
             </View>
           </View>
           {/* React-Native radio button as multi option button */}
@@ -271,6 +276,7 @@ class AddEventScreen extends Component {
               options={venues}
             />
           </View>
+
           {/* Location */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -285,6 +291,7 @@ class AddEventScreen extends Component {
               />
             </View>
           </View>
+
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}

@@ -4,9 +4,10 @@ const WalkingEvent = require("../api/models/WalkingEvent");
 const Location = require("../api/models/Location");
 const Attendee = require("../api/models/Attendee");
 const time = require("../api/utils/datechecker");
+const WalkingRecord = require("../api/models/WalkingRecord");
 
 // cron job check for events to delete every hour
-var task = cron.schedule("0 * * * *", () => {
+var task = cron.schedule("* * * * *", () => {
   const today = dateFormat(new Date(), "ddd, mmm d");
   const now = dateFormat(new Date(), "ddd, mmm d hh:MMtt");
   WalkingEvent.findAll({
@@ -20,27 +21,63 @@ var task = cron.schedule("0 * * * *", () => {
       }
     ]
   }).then(events => {
-    let i = 0;
     let compareDateTime = null;
     events.map(event => {
       compareDateTime = event.date + " " + event.start_time;
+      console.log(now, "this is now");
+      console.log(compareDateTime, "comparing to this");
+      console.log(time(now.toString(), compareDateTime));
       if (time(now, compareDateTime)) {
-        console.log(compareDateTime, "NUKED WALKING EVENTS");
+        event.attendees.map(person => {
+          WalkingRecord.create({
+            organizer: event.organizer,
+            fullname: person.name,
+            title: event.title,
+            email: person.email,
+            venue: event.venue,
+            start_time: event.start_time,
+            end_time: event.end_time,
+            date: event.date,
+            location: event.location.streetName,
+            total_attendees: event.total_attendees,
+            distance: null,
+            duration: null,
+            intensity: null,
+            walk_rating: null,
+            walk_rating_comment: null,
+            location_rating: null,
+            location_rating_comment: null,
+            completed: 0
+          });
+        });
+        WalkingRecord.create({
+          organizer: event.organizer,
+          fullname: event.organizer,
+          title: event.title,
+          email: event.email,
+          venue: event.venue,
+          start_time: event.start_time,
+          end_time: event.end_time,
+          date: event.date,
+          location: event.location.streetName,
+          total_attendees: event.total_attendees,
+          distance: null,
+          duration: null,
+          intensity: null,
+          walk_rating: null,
+          walk_rating_comment: null,
+          location_rating: null,
+          location_rating_comment: null,
+          completed: 0
+        });
         WalkingEvent.destroy({
           where: {
             id: event.id
           },
           include: [Attendee, Location]
         });
+        console.log(compareDateTime, "NUKED WALKING EVENTS");
       }
-      console.log(event.id, "this is a single event", i);
-      console.log(
-        event.title,
-        event.date,
-        event.start_time,
-        "title and date start time"
-      );
-      i++;
     });
   });
 

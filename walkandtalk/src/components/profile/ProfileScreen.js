@@ -25,6 +25,7 @@ import { connect } from "react-redux";
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
+    console.log("Props on profile", this.props);
   }
 
   // When edit profile icon is clicked
@@ -63,7 +64,7 @@ class ProfileScreen extends Component {
             {/* Edit profile icon  */}
             <View style={ScreenStyleSheet.editProfile}>
               <TouchableHighlight
-                onPress={this.GoToEditProfile}
+                onPress={this.goToEditProfile}
                 activeOpacity={0}
               >
                 <Image
