@@ -95,7 +95,7 @@ const RouterComponent = () => (
             <Scene key="mainFormPage" component={FormScreen} />
             <Scene key="submitRecord" component={SubmitRecordScreen} />
           </Scene>
-          {/*If the user if a researcher, this tab will show instead of forms tab*/}
+          {/*If the user is a researcher, this tab will show instead of forms tab*/}
           {/*<Scene
             key="request"
             icon={({ focused }) => (
