@@ -13,6 +13,7 @@ import SubmitRecordScreen from "./components/form/SubmitRecord";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
+import ViewEventScreen from "./components/event/ViewEventScreen";
 
 const RouterComponent = () => (
   <Router>
@@ -110,6 +111,7 @@ const RouterComponent = () => (
             <Scene key="helplines" component={HelplineScreen} />
           </Scene>
         </Tabs>
+        <Scene key="viewEvent" component={ViewEventScreen}/>
       </Stack>
     </Stack>
   </Router>
