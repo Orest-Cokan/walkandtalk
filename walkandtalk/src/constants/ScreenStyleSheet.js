@@ -32,7 +32,6 @@ export default StyleSheet.create({
 
   // Content
   content: {
-    flex: 1,
     marginHorizontal: "3%",
     marginVertical: "3%",
   },

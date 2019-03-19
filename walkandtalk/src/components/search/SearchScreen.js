@@ -375,7 +375,7 @@ class SearchScreen extends Component {
 
 
 
-        <Content contentContainerStyle={ScreenStyleSheet.content}>
+        <Content contentContainerStyle={[ScreenStyleSheet.content,{flex:1}]}>
           {/* Search bar */}
           <View style={styles.box}>
             <TouchableOpacity
