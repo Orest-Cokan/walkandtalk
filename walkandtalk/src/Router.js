@@ -9,6 +9,7 @@ import HomeScreen from "./components/home/HomeScreen";
 import SearchScreen from "./components/search/SearchScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
 import RequestsScreen from "./components/form/RequestsScreen";
+import ViewRequestScreen from "./components/form/ViewRequestScreen";
 import FormScreen from "./components/form/FormScreen";
 import SubmitRecordScreen from "./components/form/SubmitRecord";
 import EditProfileScreen from "./components/profile/EditProfileScreen";

@@ -27,10 +27,26 @@ class RequestsScreen extends Component {
     this.state =  {
       requests: [
         {
-          name: "Anne Taylor"
+          fullname: "Anne Taylor",
+          email: "anntaylor@gmail.com",
+          dob: "1965-03-20",
+          menopausal_stage: "Peri",
+          intensity: "Slow",
+          distance: 10,
+          duration: 60,
+          venue: "Indoor",
+          location: "Summerside",
         },
         {
-          name: "Rose Zapata"
+          fullname: "Rose Zapata",
+          email: "rosezapata@gmail.com",
+          dob: "1975-05-04",
+          menopausal_stage: "Pre",
+          intensity: "Brisk",
+          distance: 10,
+          duration: 60,
+          venue: "Outdoor",
+          location: "Riverbend area",
         }
       ]
     }
@@ -45,7 +61,7 @@ class RequestsScreen extends Component {
 
   // Switch request view
   viewRequest(index) {
-    //Actions.viewRequest({ request: this.state.requests[index]} );
+    Actions.viewRequest({ request: this.state.requests[index]} );
   }
 
  //
@@ -58,7 +74,7 @@ class RequestsScreen extends Component {
           key={index}
           onPress={this.viewRequest.bind(this, index)}
         >
-          <RequestCard requester={request.name} />
+          <RequestCard requester={request.fullname} />
         </TouchableOpacity>
       );
     });
