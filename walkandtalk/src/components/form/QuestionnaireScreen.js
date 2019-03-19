@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, WebView} from "react-native";
+import { Image, WebView, Alert} from "react-native";
 //import { WebView } from "react-native-webview";
 import {
     Container,
@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 
 
-class MenqolScreen extends Component {
+class QuestionnaireScreen extends Component {
 
     constructor(props) {
         super(props);
@@ -41,7 +41,7 @@ class MenqolScreen extends Component {
             + "&format=json"
             + "&type=flat"
             + "&records[0]=" + this.props.user.user.id.toString() //to be changed to user redcap id
-            + "&forms[0]=menqol"
+            + "&forms[0]=" + this.props.questionnaire
             + "&returnFormat=json";
 
         fetch('https://med-rcdev.med.ualberta.ca/api/',{
@@ -57,9 +57,15 @@ class MenqolScreen extends Component {
             return response.json()
         })
         .then((body)=> {
+    
             var lastInstanceStatus ;
+            if (this.props.questionnaire === "menqol") {
+                lastInstanceStatus = body[body.length-1].menqol_complete;
+            }
+            else{  
+                lastInstanceStatus = body[body.length-1].menopause_symptom_severity_questionnaire_complete;
+            }
             //status code, 0: imcomplete, 1: unverified, 2: complete
-            lastInstanceStatus = body[body.length-1].menqol_complete;
             if (lastInstanceStatus == "2"){
                 //callback gets survey link after this.state.instance is updated 
                 this.setState({instance: parseInt(body.length,10 ) + 1}, () =>{
@@ -84,7 +90,7 @@ class MenqolScreen extends Component {
             "token=8038CE0F65642ECC477913BE85991380"
             + "&content=surveyLink"
             + "&format=json"
-            + "&instrument=menqol"
+            + "&instrument=" + this.props.questionnaire
             + "&event="
             + "&record=" + this.props.user.user.id.toString()  //to be changed to user record id 
             + "&repeat_instance=" + this.state.instance.toString() //to be changed to user menqol instance num 
@@ -150,4 +156,4 @@ const mapStateToProps = state => state;
 export default connect(
   mapStateToProps,
   null
-)(MenqolScreen);
+)(QuestionnaireScreen);

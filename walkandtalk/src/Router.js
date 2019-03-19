@@ -13,7 +13,8 @@ import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
 import ViewMapScreen from "./components/event/ViewMapScreen";
-import MenqolScreen from "./components/form/MenqolScreen";
+import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
+
 const RouterComponent = () => (
   <Router>
     <Stack key="root">
@@ -108,7 +109,7 @@ const RouterComponent = () => (
             <Scene key="helplines" component={HelplineScreen} />
           </Scene>
         </Tabs>
-        <Scene key="menqol" component={MenqolScreen} />
+        <Scene key="questionnaire" component={QuestionnaireScreen} />
       </Stack>
     </Stack>
   </Router>
