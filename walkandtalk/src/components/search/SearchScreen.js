@@ -213,9 +213,11 @@ class SearchScreen extends Component {
     this.props.fetchEvents;
       console.log("all events",this.props.events)
   }
-  onEventClick = () => {
-    // Navigate to event
-    Actions.signup();
+
+  goToEvent = event => {
+    // Navigate to view this event
+    console.log(event, "event")
+    Actions.viewEvent({event:event});
   };
 
   onSelectedItemsChange = (selectedItems) => {
@@ -353,6 +355,7 @@ class SearchScreen extends Component {
 
 
 
+
   render() {
     filterHeader = <Header
       style={ScreenStyleSheet.header}
@@ -482,7 +485,7 @@ class SearchScreen extends Component {
               'turquoise' : marker.intensity == 'Brisk' ?
               'lime' : 'purple'}
               >
-              <Callout onPress={() => this.onEventClick()}>
+              <Callout onPress={() => this.goToEvent(this.state.markers.id)}>
                 <TouchableHighlight
                   underlayColor="transparent"
                 >
