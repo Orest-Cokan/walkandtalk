@@ -10,6 +10,7 @@ import { Platform } from "react-native";
 
 // action to update event record
 export const updateRecord = (
+  id,
   email,
   venue,
   distance,
@@ -21,10 +22,12 @@ export const updateRecord = (
   location_rating_comment,
   completed
 ) => {
+  console.log(completed, "this should be 1");
   return dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingrecord";
     const walking_record = {
+      id: id,
       email: email,
       venue: venue,
       distance: distance,
@@ -36,6 +39,8 @@ export const updateRecord = (
       location_rating_comment: location_rating_comment,
       completed: completed
     };
+    console.log(walking_record, "this is our updated record");
+
     axios
       .put(url, walking_record)
       .then(res => {

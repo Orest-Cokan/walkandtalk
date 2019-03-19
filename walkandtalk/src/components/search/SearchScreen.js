@@ -106,6 +106,7 @@ class SearchScreen extends Component {
     console.log("inside constructor");
     this.props.fetchEvents();
     this.state = {
+      confirmed: false,
       selectedItems: [],
       text:"",
       searchResults:[],
@@ -117,36 +118,77 @@ class SearchScreen extends Component {
       // },
       markers: [
         {
-          key: 1,
+          organizer:"poooonam",
           title: 'University of Alberta Walk',
+          email: "123@gmail.com",
           description: 'Walking around university',
           intensity: 'Slow',
-          latitude: 37.784724,
-          longitude: -122.404327,
-          latitudeDelta: 0.003,
-          longitudeDelta: 0.003,
-
-        },
+          latitude: 56.02345,
+          longitude: -130.404327,
+          date: 'Wed, Mar 20',
+          start_time: '5:20pm',
+          end_time: '5:20pm',
+          venue: 'Outdoor',
+          createdAt: '2019-03-19T01:20:54.920Z',
+          updatedAt: '2019-03-19T01:20:54.920Z',
+          attendees: [],
+          location:
+          { id: 1,
+          streetName: 'no where',
+          lat: 56.02345,
+          long: -130.404327,
+          createdAt: '2019-03-19T01:20:55.068Z',
+          updatedAt: '2019-03-19T01:20:55.068Z',
+                  WalkingEventId: 1 }
+                },
         {
-          key: 2,
-          title: 'Hawrelak Park Walk',
-          description: 'Walking around the park',
-          intensity: 'Intermediate',
+          organizer:"becky",
+          title: 'walk it like i talk it',
+          email: "123@gmail.com",
+          description: 'Walking ',
+          intensity: 'Brisk',
           latitude: 37.786944,
           longitude: -122.406307,
-          latitudeDelta: 0.003,
-          longitudeDelta: 0.003,
+          date: 'Wed, Mar 20',
+          start_time: '5:20pm',
+          end_time: '5:20pm',
+          venue: 'Outdoor',
+          createdAt: '2019-03-19T01:20:54.920Z',
+          updatedAt: '2019-03-19T01:20:54.920Z',
+          attendees: [],
+          location:
+          { id: 1,
+          streetName: 'no where',
+          lat: 37.786944,
+          long: -122.406307,
+          createdAt: '2019-03-19T01:20:55.068Z',
+          updatedAt: '2019-03-19T01:20:55.068Z',
+                  WalkingEventId: 1 }
 
         },
         {
-          key: 3,
-          title: 'Monday Walk',
-          description: 'Walking on dat Mondayz',
-          intensity: 'Brisk',
-          latitude: 37.784944,
-          longitude: -122.405307,
-          latitudeDelta: 0.003,
-          longitudeDelta: 0.003,
+          organizer:"poooonam",
+          title: 'do the stanky leg',
+          email: "123@gmail.com",
+          description: 'all over campus',
+          intensity: 'Intermediate',
+          latitude: 37.784724,
+          longitude: -122.404327,
+          date: 'Wed, Mar 20',
+          start_time: '5:20pm',
+          end_time: '5:20pm',
+          venue: 'Outdoor',
+          createdAt: '2019-03-19T01:20:54.920Z',
+          updatedAt: '2019-03-19T01:20:54.920Z',
+          attendees: [],
+          location:
+          { id: 1,
+          streetName: 'no where',
+          lat: 37.784724,
+          long: -122.404327,
+          createdAt: '2019-03-19T01:20:55.068Z',
+          updatedAt: '2019-03-19T01:20:55.068Z',
+                  WalkingEventId: 1 }
 
         },
       ]
@@ -170,16 +212,26 @@ class SearchScreen extends Component {
   componentDidMount() {
     this.props.fetchEvents;
       console.log("all events",this.props.events)
-  }  
-  onEventClick = () => {
-    // Navigate to event
-    Actions.signup();
+  }
+
+  goToEvent = event => {
+    // Navigate to view this event
+    console.log(event, "event")
+    Actions.viewEvent({event:event});
   };
 
   onSelectedItemsChange = (selectedItems) => {
-    this.setState({ selectedItems });
-    console.log("selected items changed - searching....", this.state.selectedItems)
-    this.search()
+    currentItems = this.state.searchResults
+    if(currentItems.length > selectedItems.length){
+      this.setState({ selectedItems: selectedItems }, () => {
+          console.log(this.state.selectedItems, 'selected items changed...searching');
+        });
+      this.search()
+    }else{
+      this.setState({ selectedItems: selectedItems }, () => {
+          console.log(this.state.selectedItems, 'selected items changed... no search yet');
+        });
+    }
   }
 
   onConfirm = () => {
@@ -226,6 +278,7 @@ class SearchScreen extends Component {
 
       })
 
+        console.log(results, "results")
         this.submitSearch(results)
 
   }
@@ -281,9 +334,25 @@ class SearchScreen extends Component {
   submitSearch = results => {
     this.setState({ searchResults: results }, () => {
         console.log(this.state.searchResults, 'make sure state updated');
+        this.makeMarkers(results)
       });
 
+
   }
+
+  makeMarkers = results => {
+    console.log(results, "make marker events")
+    markers=[]
+    results.forEach(function(e){
+      e.latitude = e.location.lat
+      e.longitude = e.location.long
+      markers.push(e)
+    })
+    this.setState({markers: markers}, () => {
+      console.log(markers, "markers")
+    });
+  }
+
 
 
 
@@ -375,7 +444,7 @@ class SearchScreen extends Component {
 
 
 
-        <Content contentContainerStyle={ScreenStyleSheet.content}>
+        <Content contentContainerStyle={[ScreenStyleSheet.content,{flex:1}]}>
           {/* Search bar */}
           <View style={styles.box}>
             <TouchableOpacity
@@ -400,27 +469,27 @@ class SearchScreen extends Component {
           <View style={ScreenStyleSheet.lineSeparator} />
           <MapView
             ref={(ref) => { this.mapRef = ref; }}
-            onLayout={() => this.mapRef.fitToCoordinates(this.state.markers, { edgePadding: { top: 50, right: 10, bottom: 10, left: 10 }, animated: false })}                 
+            onLayout={() => this.mapRef.fitToCoordinates(this.state.markers, { edgePadding: { top: 50, right: 10, bottom: 10, left: 10 }, animated: false })}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             showsUserLocation={true}>
-            {this.state.markers.map((marker) => (
+            {this.state.markers.map((marker,idx) => (
               <Marker
-              key={marker.key}
+              key={idx}
               coordinate={{
-                latitude: marker.latitude,
-                longitude: marker.longitude
+                latitude: marker.location.lat,
+                longitude: marker.location.long
               }}
               pinColor={marker.intensity == 'Slow' ?
               'blue' : marker.intensity == 'Intermediate' ?
               'turquoise' : marker.intensity == 'Brisk' ?
               'lime' : 'purple'}
               >
-              <Callout onPress={() => this.onEventClick()}>
+              <Callout onPress={() => this.goToEvent(this.state.markers.id)}>
                 <TouchableHighlight
                   underlayColor="transparent"
                 >
-                  <Text>{marker.title}{"\n"}{marker.description}</Text>
+                  <Text>{marker.title}{"\n"}{marker.title}</Text>
                 </TouchableHighlight>
               </Callout>
             </Marker>

@@ -24,7 +24,8 @@ const WalkingRecordController = () => {
         walk_rating_comment: body.walk_rating_comment,
         location_rating: body.location_rating,
         location_rating_comment: body.location_rating_comment,
-        completed: body.completed
+        completed: body.completed,
+        total_attendees: body.total_attendees
       });
 
       return res
