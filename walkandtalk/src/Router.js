@@ -93,6 +93,24 @@ const RouterComponent = () => (
             <Scene key="mainFormPage" component={FormScreen} />
             <Scene key="submitRecord" component={SubmitRecordScreen} />
           </Scene>
+          {/*If the user if a researcher, this tab will show instead of forms tab*/}
+          {/*<Scene
+            key="request"
+            icon={({ focused }) => (
+              <Image
+                source={
+                  focused
+                    ? require("./assets/icons/request-full.png")
+                    : require("./assets/icons/request.png")
+                }
+                style={{ width: 28, height: 28 }}
+              />
+            )}
+            hideNavBar
+          >
+            <Scene key="mainRequestPage" component={RequestsScreen} />
+            <Scene key="viewRequest" component={ViewRequestScreen} />
+          </Scene>*/}
           <Scene
             key="profile"
             icon={({ focused }) => (
