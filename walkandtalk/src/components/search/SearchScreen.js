@@ -212,12 +212,16 @@ class SearchScreen extends Component {
   componentDidMount() {
     this.props.fetchEvents;
       console.log("all events",this.props.events)
+      console.log("marker state", this.state.markers)
   }
 
-  goToEvent = event => {
+  goToEvent = index => {
     // Navigate to view this event
-    console.log(event, "event")
-    Actions.viewEvent({event:event});
+    console.log("current markers", this.state.markers);
+    console.log(index, "event");
+    marker = this.state.markers[index]
+    console.log(marker, "marker after index");
+    Actions.viewEvent({searchScreen:true,markerSent:marker});
   };
 
   onSelectedItemsChange = (selectedItems) => {
@@ -485,11 +489,11 @@ class SearchScreen extends Component {
               'turquoise' : marker.intensity == 'Brisk' ?
               'lime' : 'purple'}
               >
-              <Callout onPress={() => this.goToEvent(this.state.markers.id)}>
+              <Callout onPress={() => this.goToEvent(idx)}>
                 <TouchableHighlight
                   underlayColor="transparent"
                 >
-                  <Text>{marker.title}{"\n"}{marker.title}</Text>
+                  <Text>{marker.title}</Text>
                 </TouchableHighlight>
               </Callout>
             </Marker>

@@ -45,8 +45,10 @@ class ViewEventScreen extends Component {
   //
   // First will do for search events
   componentWillMount(){
-    searchEvent = this.props.event
-    console.log(searchEvent, "searchEvent")
+    if(this.props.searchScreen == true){
+      searchEvent = this.props.markerSent
+      console.log(searchEvent, "searchEvent")
+    }
   }
 
   render() {
