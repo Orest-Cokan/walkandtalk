@@ -16,11 +16,13 @@ import { SegmentedControls } from "react-native-radio-buttons";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import BaseCard from "../../cardview/baseCard";
 import { Actions } from "react-native-router-flux";
+import { fetchEvents } from "../../actions/EventActions";
 
 class ViewEventScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.props.fetchEvents();
 
     // Set state on inital profile signup
     this.state = {
@@ -46,7 +48,10 @@ class ViewEventScreen extends Component {
   // First we want to determine props available and set state with the necessary values
   //
   // First will do for search events
-  componentWillMount(){
+  componentDidMount(){
+    this.props.fetchEvents;
+    
+
     if(this.props.searchScreen == true){
       searchEvent = this.props.markerSent
       console.log(searchEvent, "markerSent")
@@ -54,8 +59,6 @@ class ViewEventScreen extends Component {
       //check if hosting, going or not going
       const badge = ""
       const fullname = this.props.user.user.fullname;
-      console.log("current user", fullname)
-      console.log("Event organizer", searchEvent.organizer)
       if(fullname === searchEvent.organizer){
         badge = "HOSTING"
       }else{
@@ -83,20 +86,54 @@ class ViewEventScreen extends Component {
         description: searchEvent.description
       });
     }
+    if(this.props.searchScreen == false){
+      console.log("eventID", this.props.eventId)
+      id = this.props.eventId
+      events = this.props.events
+      console.log("events", events)
+      //retrieve the current event
+      events.forEach(function(e) {
+        if(e.id == id){
+          var currEvent = e
+        }
+      })
+
+      consle.log("currEvent", currEvent)
+      this.setState({
+        date: currEvent.date,
+        startTime: currEvent.start_time,
+        endTime: currEvent.end_time,
+        title: currEvent.title,
+        location: currEvent.location.streetName,
+        badge: "HOSTING",
+        organizer: currEvent.organizer,
+        intensity: currEvent.intensity,
+        attending: currEvent.total_attendees,
+        description: currEvent.description
+      });
+
+
+    }
   }
 
   render() {
     const attendingOptions = ["Not Going", "Going"];
 
 //Should be checking if neither going nor hosting
-    if (this.state.badge=="GOING" || this.state.badge=="") {
+    if (this.state.badge=="GOING" ||this.state.badge=="") {
+      //check if user going or not
+      if(this.state.badge=="GOING"){
+        var going = attendingOptions[1]
+      }else{
+        var going = attendingOptions[0]
+      }
         buttons =
       <View style={styles.segmentedControls}>
         <SegmentedControls
           tint={"#A680B8"}
           backTint={"#ffffff"}
           optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-          selectedOption={attendingOptions[1]}
+          selectedOption={going}
           optionContainerStyle={{
             flex: 1,
             height: 40,
@@ -271,7 +308,7 @@ const mapStateToProps = state => state;
 
 export default connect(
   mapStateToProps,
-  null
+{fetchEvents}
 )(ViewEventScreen);
 
 const styles= {
