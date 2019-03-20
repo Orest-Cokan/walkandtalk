@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Image, WebView} from "react-native";
-//import { WebView } from "react-native-webview";
+import { Image} from "react-native";
+import { WebView } from "react-native-webview";
 import {
     Container,
     Header,
