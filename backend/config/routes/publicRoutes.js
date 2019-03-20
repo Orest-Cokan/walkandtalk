@@ -31,7 +31,10 @@ const publicRoutes = {
 
   // Attendee routes
   "PUT /attendee/add": "AttendeeController.addAttendees",
-  "GET /attendee/remove": "AttendeeController.removeAttendees"
+  "GET /attendee/remove": "AttendeeController.removeAttendees",
+
+  // Picture routes
+  "PUT /user/picture": "PictureController.updateImage"
 };
 
 module.exports = publicRoutes;

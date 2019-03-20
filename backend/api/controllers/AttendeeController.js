@@ -1,6 +1,6 @@
 const Attendee = require("../models/Attendee");
 const WalkingEvent = require("../models/WalkingEvent");
-// User controller
+// Attendee controller
 const AttendeeController = () => {
   // add an attendee to a walking event
   const addAttendees = async (req, res) => {

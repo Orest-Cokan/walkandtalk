@@ -93,9 +93,7 @@ const UserController = () => {
   const getAll = async (req, res) => {
     try {
       const users = await User.findAll({
-        include: {
-          model: Preference
-        }
+        include: [Preference, Picture]
       });
 
       return res.status(200).json({ users });
@@ -113,7 +111,7 @@ const UserController = () => {
     try {
       const user = await User.findAll({
         where: { email: email },
-        include: { mode: Preference }
+        include: [Preference, Picture]
       });
       return res.status(200).json({ user });
     } catch (err) {
@@ -136,7 +134,7 @@ const UserController = () => {
       },
       {
         returning: true,
-        include: { model: Preference },
+        include: Preference,
         where: { email: body.email }
       }
     )
