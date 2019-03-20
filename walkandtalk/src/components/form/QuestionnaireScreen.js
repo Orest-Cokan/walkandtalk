@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image } from "react-native";
+import { Image} from "react-native";
 import { WebView } from "react-native-webview";
 import {
     Container,
@@ -13,6 +13,7 @@ import {
   import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
+import axios from 'axios';
 
 /* This is the questionnaire screen, user will be taken to corresponding questionnaire link here. 
 */
@@ -23,9 +24,16 @@ class QuestionnaireScreen extends Component {
         super(props);
         this.state = {
             //gives warning when initial url is null
-            url: "https://www.google.ca/",
+            source : {html: '<h1 style=text-align:center;font-size:50px>Loading...</h1>'},
             instance: 1,
+            header : {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            },
         }
+         
     }
 
     onBack = () => {
@@ -42,100 +50,83 @@ class QuestionnaireScreen extends Component {
     setSurveyLink = () =>{
         //get instance number 
         const instanceData = "token=8038CE0F65642ECC477913BE85991380"
-            + "&content=record"
-            + "&format=json"
-            + "&type=flat"
-            + "&records[0]=" + this.props.user.user.id.toString() //to be changed to user redcap id
-            + "&forms[0]=" + this.props.questionnaire
-            + "&returnFormat=json";
+        + "&content=record"
+        + "&format=json"
+        + "&type=flat"
+        + "&records[0]=" + this.props.user.user.id.toString() //to be changed to user redcap id
+        + "&forms[0]=" + this.props.questionnaire
+        + "&returnFormat=json";
 
-        fetch('https://med-rcdev.med.ualberta.ca/api/',{
-            mode: "cors",
-            method: 'POST',
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-                body:instanceData,
-        })
-        .then((response) => {
-            return response.json()
-        })
-        .then((body)=> {
-            var lastInstanceStatus ;
-            //checks if body is empty, empty body meaning questionnaire has not been created on redcap
-            // if body is not empty, get the staus of the last instance 
-            if (body.length != 0 ){
-                if (this.props.questionnaire === "menqol") {
-                    lastInstanceStatus = body[body.length-1].menqol_complete;
+        axios
+            .post('https://med-rcdev.med.ualberta.ca/api/',instanceData, this.state.header)
+            .then(res => {
+                return (res.data);
+            })
+            .then((body)=> {
+                var lastInstanceStatus ;
+                //checks if body is empty, empty body meaning questionnaire has not been created on redcap
+                // if body is not empty, get the staus of the last instance 
+                if (body.length != 0 ){
+                    if (this.props.questionnaire === "menqol") {
+                        lastInstanceStatus = body[body.length-1].menqol_complete;
+                    }
+                    else{  
+                        lastInstanceStatus = body[body.length-1].menopause_symptom_severity_questionnaire_complete;
+                    }
                 }
-                else{  
-                    lastInstanceStatus = body[body.length-1].menopause_symptom_severity_questionnaire_complete;
+                else{
+                    //if body is empty, assign with "3" which is not a status code on redcap 
+                    lastInstanceStatus = "3";
                 }
-            }
-            else{
-                //if body is empty, assign with "3" which is not a status code on redcap 
-                lastInstanceStatus = "3";
-            }
-           
             
-            //status code from redcap, 0: imcomplete, 1: unverified, 2: complete
-            //status code defined here, 3: survey not created
-            //if survey not created, get the first survey link 
-            if (lastInstanceStatus == "3"){
-                this.getSurveyLink();     
-            } 
-            // if last survey is completed, get next survey link 
-            else if(lastInstanceStatus == "2"){
-                //callback gets survey link after this.state.instance is updated 
-                this.setState({instance: parseInt(body.length,10 ) + 1}, () =>{
-                    this.getSurveyLink()
-                });
-            }
-            // last survey is created but not completed, get the last survey link 
-            else{
-                //callback gets survey link after this.state.instance is updated 
-                this.setState({instance: parseInt(body.length,10 ) }, () =>{
-                    this.getSurveyLink()
-                });
-            }
-            
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+                //status code from redcap, 0: imcomplete, 1: unverified, 2: complete
+                //status code defined here, 3: survey not created
+                //if survey not created, get the first survey link 
+                if (lastInstanceStatus == "3"){
+                    this.getSurveyLink();     
+                } 
+                // if last survey is completed, get next survey link 
+                else if(lastInstanceStatus == "2"){
+                    //callback gets survey link after this.state.instance is updated 
+                    this.setState({instance: parseInt(body.length,10 ) + 1}, () =>{
+                        this.getSurveyLink()
+                    });
+                }
+                // last survey is created but not completed, get the last survey link 
+                else{
+                    //callback gets survey link after this.state.instance is updated 
+                    this.setState({instance: parseInt(body.length,10 ) }, () =>{
+                        this.getSurveyLink()
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+       
     }
 
     getSurveyLink = () => {
-        const linkData =
-            "token=8038CE0F65642ECC477913BE85991380"
-            + "&content=surveyLink"
-            + "&format=json"
-            + "&instrument=" + this.props.questionnaire
-            + "&event="
-            + "&record=" + this.props.user.user.id.toString()  //to be changed to user record id 
-            + "&repeat_instance=" + this.state.instance.toString() 
-            + "&returnFormat=json";
+        const linkData = 
+        "token=8038CE0F65642ECC477913BE85991380"
+        + "&content=surveyLink"
+        + "&format=json"
+        + "&instrument=" + this.props.questionnaire
+        + "&event="
+        + "&record=" + this.props.user.user.id.toString()  //to be changed to user redcap id 
+        + "&repeat_instance=" + this.state.instance.toString() 
+        + "&returnFormat=json";
 
-        fetch('https://med-rcdev.med.ualberta.ca/api/',{
-            method: 'POST',
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body:linkData,
-        })
-        .then((response) => {
-            return response.text()
-        })
-        .then((responseText) => {
-            //responseText is survey link 
-            this.setState({url: responseText});
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+        axios
+            .post('https://med-rcdev.med.ualberta.ca/api/',linkData, this.state.header)
+            .then(res => {
+                this.setState({source: {url: res.data}}); 
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
 
 
     async componentWillMount() {
@@ -160,11 +151,11 @@ class QuestionnaireScreen extends Component {
                     </Button>
                 </Left>
                 <Body style={ScreenStyleSheet.headerBody}>
-                    <Title style={ScreenStyleSheet.headerTitle}>MENQOL</Title>
+                    <Title style={ScreenStyleSheet.headerTitle}>Questionnaire</Title>
                 </Body>
                 <Right style={ScreenStyleSheet.headerSides} />
                 </Header>
-                <WebView source={{uri: this.state.url}} />
+                <WebView source={ this.state.source} />
                
             </Container>
 
