@@ -10,10 +10,12 @@ const PictureController = () => {
         include: [Picture]
       });
       console.log(user, "this is our user!");
+      console.log(body.image, "do we even get an image?");
       await Picture.create({
         image: body.image
       }).then(resp => {
-        console.log(resp), user.setPicture(resp);
+        console.log(resp);
+        user.setPicture(resp);
       });
       return res
         .status(200)
