@@ -12,7 +12,7 @@ class BaseCard extends Component {
 
   goToEvent = () => {
     // Navigate to view this event
-    Actions.viewEvent({eventId:this.props});
+    Actions.viewEvent({eventId:this.props.id, searchScreen:false});
   };
   /*
   This is funtion checks if badge is null.

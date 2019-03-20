@@ -16,19 +16,25 @@ import { SegmentedControls } from "react-native-radio-buttons";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import BaseCard from "../../cardview/baseCard";
 import { Actions } from "react-native-router-flux";
+import { fetchEvents } from "../../actions/EventActions";
+import { deleteEvent } from "../../actions/EventActions";
 
 class ViewEventScreen extends Component {
 
   constructor(props) {
     super(props);
+    console.log(this.props.fetchEvents());
 
     // Set state on inital profile signup
     this.state = {
-      time: "WED, MAR 3 AT 10:00PM",
+      eventId: 0,
+      date: "WED, MAR 3 AT",
+      startTime: "10:00PM",
+      endTime:  "2:00AM",
       title: "Walk in the park",
       location:"Hawrelak Park",
       badge:"GOING",
-      host: "Beatrice",
+      organizer: "Beatrice",
       intensity:"Brisk",
       attending: 6,
       description: "Hello All. Im writing this description to see how it looks on the screen if you think it looks good gimme a thumbs up"
@@ -44,23 +50,114 @@ class ViewEventScreen extends Component {
   // First we want to determine props available and set state with the necessary values
   //
   // First will do for search events
-  componentWillMount(){
-    searchEvent = this.props.event
-    console.log(searchEvent, "searchEvent")
+  componentDidMount(){
+    this.props.fetchEvents;
+
+
+    if(this.props.searchScreen == true){
+      searchEvent = this.props.markerSent
+      console.log(searchEvent, "markerSent")
+
+      //check if hosting, going or not going
+      const badge = ""
+      const fullname = this.props.user.user.fullname;
+      if(fullname === searchEvent.organizer){
+        badge = "HOSTING"
+      }else{
+        //get event and see if user is attending
+        attendees = searchEvent.attendees
+        attendees.forEach(function(a) {
+          if(a == fullname){
+            badge = "GOING"
+          }
+        })
+      }
+
+
+
+      this.setState({
+        eventId: searchEvent.id,
+        date: searchEvent.date,
+        startTime: searchEvent.start_time,
+        endTime: searchEvent.end_time,
+        title: searchEvent.title,
+        location: searchEvent.location.streetName,
+        badge: badge,
+        organizer: searchEvent.organizer,
+        intensity: searchEvent.intensity,
+        attending: searchEvent.total_attendees,
+        description: searchEvent.description
+      });
+    }
+
+
+    //The following is for viewing an event from the homescreen
+    // The user might be attending the event (GOING) or HOSTING the event
+    if(this.props.searchScreen == false){
+      console.log("eventID", this.props.eventId)
+      id = this.props.eventId
+      events = this.props.events
+      console.log("events", events)
+      //retrieve the current event
+      let currEvent = events.find(e => e.id === id);
+
+      //check if hosting, going or not going
+      var badge = ""
+      const fullname = this.props.user.user.fullname;
+      if(fullname === currEvent.organizer){
+        badge = "HOSTING"
+      }else{
+        //get event and see if user is attending
+        attendees = currEvent.attendees
+        attendees.forEach(function(a) {
+          if(a == fullname){
+            badge = "GOING"
+          }
+        })
+      }
+
+      console.log("currEvent", currEvent)
+      this.setState({
+        eventId: currEvent.id,
+        date: currEvent.date,
+        startTime: currEvent.start_time,
+        endTime: currEvent.end_time,
+        title: currEvent.title,
+        location: currEvent.location.streetName,
+        badge: badge,
+        organizer: currEvent.organizer,
+        intensity: currEvent.intensity,
+        attending: currEvent.total_attendees,
+        description: currEvent.description
+      }, () => {
+          console.log(this.state, 'state updated');
+        });
+    }
+  }
+
+  deleteEvent = () =>{
+    console.log("we are deleting event with id", this.state.eventId)
+    this.props.deleteEvent(this.state.eventId);
   }
 
   render() {
     const attendingOptions = ["Not Going", "Going"];
 
 //Should be checking if neither going nor hosting
-    if (this.state.badge=="GOING") {
+    if (this.state.badge=="GOING" ||this.state.badge=="") {
+      //check if user going or not
+      if(this.state.badge=="GOING"){
+        var going = attendingOptions[1]
+      }else{
+        var going = attendingOptions[0]
+      }
         buttons =
       <View style={styles.segmentedControls}>
         <SegmentedControls
           tint={"#A680B8"}
           backTint={"#ffffff"}
           optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-          selectedOption={attendingOptions[1]}
+          selectedOption={going}
           optionContainerStyle={{
             flex: 1,
             height: 40,
@@ -72,12 +169,12 @@ class ViewEventScreen extends Component {
         />
       </View>;
     }
-    else {
+    if(this.state.badge=="HOSTING"){
       buttons =
       <View>
       <TouchableOpacity
         style={styles.editButton}
-        onPress={this.onPressLogin}
+        onPress={this.editEvent}
       >
         {/*Edit Event*/}
         <Text style={styles.buttonText}> EDIT </Text>
@@ -85,7 +182,7 @@ class ViewEventScreen extends Component {
 
       <TouchableOpacity
         style={styles.deleteButton}
-        onPress={this.onPressLogin}
+        onPress={this.deleteEvent}
       >
         {/*Delete Event*/}
         <Text style={styles.buttonText}> DELETE </Text>
@@ -136,7 +233,7 @@ class ViewEventScreen extends Component {
           <View style={ScreenStyleSheet.rowContainerEvent}>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.EventSectionTitle}>
-                {this.state.time}
+                {this.state.date} {this.state.startTime}-{this.state.endTime}
               </Text>
             </View>
           </View>
@@ -186,7 +283,7 @@ class ViewEventScreen extends Component {
             </View>
             <View s>
               <Text style={ScreenStyleSheet.eventInfoInput}>
-                {this.state.host}
+                {this.state.organizer}
               </Text>
             </View>
           </View>
@@ -213,7 +310,7 @@ class ViewEventScreen extends Component {
             <View >
             <Image
               style={ScreenStyleSheet.eventIcons}
-              source={require("../../assets/icons/form.png")}
+              source={require("../../assets/icons/aboutEvent.png")}
             />
             </View>
             <View>
@@ -225,20 +322,24 @@ class ViewEventScreen extends Component {
           {description}
           {buttons}
 
-
-
-
         </Content>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  console.log("homescreen");
+  return {
+    events: state.event.events,
+    user: state.user
+  };
+};
+
 
 export default connect(
   mapStateToProps,
-  null
+{fetchEvents, deleteEvent }
 )(ViewEventScreen);
 
 const styles= {

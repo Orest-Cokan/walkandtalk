@@ -79,6 +79,7 @@ export const deleteEvent = id => {
       .then(res => {
         console.log(res.data);
         dispatch({ type: EVENT_DELETE, payload: res.data });
+        Actions.reset("app");
       })
       .catch(err => {
         console.log(err);
