@@ -17,15 +17,17 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import BaseCard from "../../cardview/baseCard";
 import { Actions } from "react-native-router-flux";
 import { fetchEvents } from "../../actions/EventActions";
+import { deleteEvent } from "../../actions/EventActions";
 
 class ViewEventScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.props.fetchEvents();
+    console.log(this.props.fetchEvents());
 
     // Set state on inital profile signup
     this.state = {
+      eventId: 0,
       date: "WED, MAR 3 AT",
       startTime: "10:00PM",
       endTime:  "2:00AM",
@@ -50,7 +52,7 @@ class ViewEventScreen extends Component {
   // First will do for search events
   componentDidMount(){
     this.props.fetchEvents;
-    
+
 
     if(this.props.searchScreen == true){
       searchEvent = this.props.markerSent
@@ -74,6 +76,7 @@ class ViewEventScreen extends Component {
 
 
       this.setState({
+        eventId: searchEvent.id,
         date: searchEvent.date,
         startTime: searchEvent.start_time,
         endTime: searchEvent.end_time,
@@ -86,34 +89,55 @@ class ViewEventScreen extends Component {
         description: searchEvent.description
       });
     }
+
+
+    //The following is for viewing an event from the homescreen
+    // The user might be attending the event (GOING) or HOSTING the event
     if(this.props.searchScreen == false){
       console.log("eventID", this.props.eventId)
       id = this.props.eventId
       events = this.props.events
       console.log("events", events)
       //retrieve the current event
-      events.forEach(function(e) {
-        if(e.id == id){
-          var currEvent = e
-        }
-      })
+      let currEvent = events.find(e => e.id === id);
 
-      consle.log("currEvent", currEvent)
+      //check if hosting, going or not going
+      var badge = ""
+      const fullname = this.props.user.user.fullname;
+      if(fullname === currEvent.organizer){
+        badge = "HOSTING"
+      }else{
+        //get event and see if user is attending
+        attendees = currEvent.attendees
+        attendees.forEach(function(a) {
+          if(a == fullname){
+            badge = "GOING"
+          }
+        })
+      }
+
+      console.log("currEvent", currEvent)
       this.setState({
+        eventId: currEvent.id,
         date: currEvent.date,
         startTime: currEvent.start_time,
         endTime: currEvent.end_time,
         title: currEvent.title,
         location: currEvent.location.streetName,
-        badge: "HOSTING",
+        badge: badge,
         organizer: currEvent.organizer,
         intensity: currEvent.intensity,
         attending: currEvent.total_attendees,
         description: currEvent.description
-      });
-
-
+      }, () => {
+          console.log(this.state, 'state updated');
+        });
     }
+  }
+
+  deleteEvent = () =>{
+    console.log("we are deleting event with id", this.state.eventId)
+    this.props.deleteEvent(this.state.eventId);
   }
 
   render() {
@@ -150,7 +174,7 @@ class ViewEventScreen extends Component {
       <View>
       <TouchableOpacity
         style={styles.editButton}
-        onPress={this.onPressLogin}
+        onPress={this.editEvent}
       >
         {/*Edit Event*/}
         <Text style={styles.buttonText}> EDIT </Text>
@@ -158,7 +182,7 @@ class ViewEventScreen extends Component {
 
       <TouchableOpacity
         style={styles.deleteButton}
-        onPress={this.onPressLogin}
+        onPress={this.deleteEvent}
       >
         {/*Delete Event*/}
         <Text style={styles.buttonText}> DELETE </Text>
@@ -304,11 +328,18 @@ class ViewEventScreen extends Component {
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  console.log("homescreen");
+  return {
+    events: state.event.events,
+    user: state.user
+  };
+};
+
 
 export default connect(
   mapStateToProps,
-{fetchEvents}
+{fetchEvents, deleteEvent }
 )(ViewEventScreen);
 
 const styles= {

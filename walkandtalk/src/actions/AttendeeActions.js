@@ -34,6 +34,27 @@ export const addAttendees = (
   };
 };
 
+// action to remove an attendee
+export const removeAttendees = (
+  id,
+  email
+) => {
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/walkingevent/";
+    axios
+      .delete(url + id)
+      .then(res => {
+        console.log(res.data);
+        dispatch({ type: ATTENDEE_DELETE, payload: res.data });
+        Actions.reset("app");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
 
 var getIP = () => {
   if (Platform.OS === "android") {
