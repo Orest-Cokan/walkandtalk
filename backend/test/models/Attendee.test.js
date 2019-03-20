@@ -23,7 +23,6 @@ beforeEach(async () => {
 test("Attendee is created correctly", async () => {
   // check if attendee is created
   expect(attendee.name).toBe("skryt");
-  expect(attendee.email).toBe("skryt@gmail.com");
   await attendee.destroy();
 });
 
@@ -34,7 +33,7 @@ test("Attendee is updated correctly", async () => {
     email: "orest@gmail.com"
   });
   expect(attendee.name).toBe("orest cokan");
-  expect(attendee.email).toBe("orest@gmail.com");
+  await attendee.destroy();
 });
 
 // test deleting an attendee
