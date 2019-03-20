@@ -125,22 +125,37 @@ const UserController = () => {
     const { body } = req;
     console.log(body.id, body.fullname), "we are here!";
     console.log(body.preference, "IS THIS TRIGGERED!!!!!!");
+
     await User.update(
       {
         fullname: body.fullname,
         menopausal_stage: body.menopausal_stage,
         dob: body.dob,
-        preference: body.preference
+        distance: body.preference
       },
       {
         returning: true,
-        include: Preference,
         where: { email: body.email }
       }
     )
-      .then(self => {
-        console.log("we get here???");
-        return res.status(200).json(self[1]);
+      .then(() => {
+        Preference.update(
+          {
+            distance: body.preference.distance,
+            duration: body.preference.duration,
+            intensity: body.preference.intensity,
+            venue: body.preference.venue,
+            location: body.preference.location
+          },
+          {
+            plain: true,
+            returning: true,
+            where: { userEmail: body.email }
+          }
+        ).then(self => {
+          console.log("we get here???");
+          return res.status(200).json(self[1]);
+        });
       })
       .catch(function(err) {
         return res.status(500).json({ msg: "Internal server error" });
