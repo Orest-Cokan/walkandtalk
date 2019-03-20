@@ -21,7 +21,7 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
-import { editUser } from "../../actions/UserActions"
+import { editUser } from "../../actions/UserActions";
 
 class EditProfileScreen extends Component {
   // Constructor
@@ -38,9 +38,8 @@ class EditProfileScreen extends Component {
       distance: this.props.user.user.distance,
       duration: this.props.user.user.duration,
       venue: this.props.user.user.venue,
-      location: this.props.user.user.location,
+      location: this.props.user.user.location
     };
-  
   }
 
   onChangeFullName = text => {
@@ -90,7 +89,7 @@ class EditProfileScreen extends Component {
   }
 
   saveProfile = () => {
-    console.log('state on save', this.state)
+    console.log("state on save", this.state);
     this.props.editUser(
       this.state.fullname,
       this.state.email,
@@ -100,11 +99,11 @@ class EditProfileScreen extends Component {
       this.state.distance,
       this.state.duration,
       this.state.venue,
-      this.state.location,
-    )
-    console.log("props on save", this.props)
-    Actions.mainProfile();
-  }
+      this.state.location
+    );
+    console.log("props on save", this.props);
+    Actions.Profile();
+  };
 
   render() {
     // All the options displayed in radio buttons
@@ -138,9 +137,7 @@ class EditProfileScreen extends Component {
           {/* Name */}
           <View style={styles.nestedButtonView}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Fullname *
-              </Text>
+              <Text style={ScreenStyleSheet.formInfo}>Fullname *</Text>
             </View>
             <View>
               <TextInput
@@ -246,7 +243,7 @@ class EditProfileScreen extends Component {
               </TextInput>
             </View>
           </View>
-         {/* Duration */}
+          {/* Duration */}
           <View style={styles.nestedButtonView}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>
@@ -318,7 +315,10 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.profileRowInfo}>
-            <TextInput style={ScreenStyleSheet.textInputStyle} onChangeText={this.onChangLocation}>
+            <TextInput
+              style={ScreenStyleSheet.textInputStyle}
+              onChangeText={this.onChangLocation}
+            >
               {this.state.location}
             </TextInput>
           </View>
@@ -392,9 +392,8 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   nestedButtonView: {
-      flexDirection: "row",
-      alignItems: "stretch",
-      marginBottom: 5
-  },
+    flexDirection: "row",
+    alignItems: "stretch",
+    marginBottom: 5
+  }
 });
-
