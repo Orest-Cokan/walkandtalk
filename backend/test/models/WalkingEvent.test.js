@@ -45,3 +45,8 @@ test("Walking event is updated correctly", async () => {
 
   await walkingEvent.destroy();
 });
+
+// test destroying a walking event
+test("Walking event is destroyed correctly", async () => {
+  walkingEvent.destroy();
+});

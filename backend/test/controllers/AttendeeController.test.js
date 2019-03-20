@@ -15,7 +15,7 @@ afterAll(() => {
 });
 
 // test adding an attendee
-test("Attendee | addAttendee", async () => {
+test("Attendee | addAttendees", async () => {
   // make a walking event
   walkingEvent = await WalkingEvent.build({
     id: 5,
@@ -27,13 +27,39 @@ test("Attendee | addAttendee", async () => {
 
   // add an attendee to it
   await request(api)
-    .put("/public/walkingevent/attendee")
+    .put("/public/attendee/add")
     .set("Accept", /json/)
     .send({
       id: 5,
-      name: "national womans day"
+      name: "national womans day",
+      email: "skryt@gmail.com"
     })
     .expect(200);
 
   walkingEvent.destroy();
+});
+
+// test removeing an attendee
+test("Attendee | removeAttendees", async () => {
+  // make a walking event
+  walkingEvent = await WalkingEvent.build({
+    id: 5,
+    title: "walking with friends",
+    description: "i want to go",
+    intensity: "slow",
+    venue: "indoor"
+  }).save();
+
+  // add an attendee to it
+  await request(api)
+    .put("/public/attendee/add")
+    .set("Accept", /json/)
+    .send({
+      id: 5,
+      name: "national womans day",
+      email: "skryt@gmail.com"
+    })
+    .expect(200);
+
+  await request(api).walkingEvent.destroy();
 });

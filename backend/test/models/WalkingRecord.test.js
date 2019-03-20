@@ -23,9 +23,9 @@ beforeEach(async () => {
   }).save();
 });
 
-// test attendee
+// test walking record
 test("WalkingRecord is created correctly", async () => {
-  // check if attendee is created
+  // check if walking record is created
   expect(walkingRecord.fullname).toBe("skryt");
   expect(walkingRecord.commentsLocation).toBe(
     "i hate the rivervalley too many hobos"
@@ -39,4 +39,9 @@ test("WalkingRecord is created correctly", async () => {
 
   // nuke the model
   await walkingRecord.destroy();
+});
+
+// test destroying a walkingrecord
+test("Test destroying a walking record", async () => {
+  walkingRecord.destroy();
 });
