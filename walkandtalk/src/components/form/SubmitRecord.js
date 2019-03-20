@@ -131,7 +131,7 @@ class SubmitRecordScreen extends Component {
       this.state.walkRatingComment,
       this.state.locationRating,
       this.state.locationRatingComment,
-      this.state.completed,
+      this.state.completed
     );
     console.log(this.props);
   };

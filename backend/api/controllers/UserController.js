@@ -72,7 +72,7 @@ const UserController = () => {
       .json({ msg: "Bad Request: Email or password is wrong" });
   };
 
-  // validate  auser
+  // validate a user
   const validate = (req, res) => {
     const { token } = req.body;
 

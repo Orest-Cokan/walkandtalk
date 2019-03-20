@@ -134,7 +134,7 @@ const RouterComponent = () => (
           </Scene>
         </Tabs>
         <Scene key="questionnaire" component={QuestionnaireScreen} />
-        <Scene key="viewEvent" component={ViewEventScreen}/>
+        <Scene key="viewEvent" component={ViewEventScreen} />
       </Stack>
     </Stack>
   </Router>
