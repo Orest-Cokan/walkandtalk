@@ -10,4 +10,5 @@ const Attendee = sequelize.define(tableName, {
   email: Sequelize.STRING
 });
 
+// export attendee model
 module.exports = Attendee;

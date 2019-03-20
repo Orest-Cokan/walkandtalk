@@ -28,7 +28,7 @@ class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
 
-    console.log(this.props);
+    console.log(this.props.user.user);
     this.state = {
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,

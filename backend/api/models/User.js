@@ -38,12 +38,15 @@ const User = sequelize.define(
   { hooks, tableName }
 );
 
-// set the associations
+// set hasOne association
 User.hasOne(Preference, {
   onDelete: "CASCADE",
   hooks: true
 });
+// set hasOne association
 User.hasOne(Picture);
+
+// set belongsTo association
 Preference.belongsTo(User);
 Picture.belongsTo(User);
 
@@ -56,4 +59,5 @@ User.prototype.toJSON = function() {
   return values;
 };
 
+// export user model
 module.exports = User;

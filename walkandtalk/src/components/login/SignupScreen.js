@@ -35,9 +35,9 @@ class SignupScreen extends Component {
     dob: null,
     emailCheck: false,
     passwordCheck: false,
-    menopausal_stage: null,
-    intensity: null,
-    venue: null,
+    menopausal_stage: "Pre",
+    intensity: "Slow",
+    venue: "Indoor",
     location: null,
     duration: null,
     distance: null
@@ -82,6 +82,23 @@ class SignupScreen extends Component {
   onChangeDistance = text => {
     this.setState({
       distance: text
+    });
+  };
+
+  onChangeIntensity = text => {
+    this.setState({
+      intensity: text
+    });
+  };
+  onChangeMenopause = text => {
+    this.setState({
+      menopausal_stage: text
+    });
+  };
+
+  onChangeVenue = text => {
+    this.setState({
+      venue: text
     });
   };
 
@@ -272,7 +289,7 @@ class SignupScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={menopausal_stage[0]}
+              selectedOption={this.state.menopausal_stage}
               optionContainerStyle={{
                 flex: 1,
                 height: 40,
@@ -281,6 +298,7 @@ class SignupScreen extends Component {
                 borderRadius: 2
               }}
               options={menopausal_stage}
+              onSelection={this.onChangeMenopause.bind(this)}
             />
           </View>
 
@@ -331,7 +349,7 @@ class SignupScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={intensities[0]}
+              selectedOption={this.state.intensity}
               optionContainerStyle={{
                 flex: 1,
                 height: 40,
@@ -340,6 +358,7 @@ class SignupScreen extends Component {
                 borderRadius: 2
               }}
               options={intensities}
+              onSelection={this.onChangeIntensity.bind(this)}
             />
           </View>
           {/* Venue */}
@@ -354,7 +373,7 @@ class SignupScreen extends Component {
               tint={"#A680B8"}
               backTint={"#ffffff"}
               optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={venues[0]}
+              selectedOption={this.state.venue}
               optionContainerStyle={{
                 flex: 1,
                 height: 40,
@@ -363,6 +382,7 @@ class SignupScreen extends Component {
                 borderRadius: 2
               }}
               options={venues}
+              onSelection={this.onChangeVenue.bind(this)}
             />
           </View>
 

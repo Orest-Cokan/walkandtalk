@@ -4,7 +4,7 @@ const sequelize = require("../../config/database");
 // table name
 const tableName = "pictures";
 
-// walkingevent model
+// picture model
 const Picture = sequelize.define(tableName, {
   id: {
     type: Sequelize.INTEGER,
@@ -14,5 +14,5 @@ const Picture = sequelize.define(tableName, {
   image: Sequelize.STRING
 });
 
-// export walkingevent model
+// export picture model
 module.exports = Picture;

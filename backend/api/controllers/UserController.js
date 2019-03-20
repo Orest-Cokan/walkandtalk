@@ -51,7 +51,8 @@ const UserController = () => {
         const user = await User.findOne({
           where: {
             email
-          }
+          },
+          include: [Preference, Picture]
         });
 
         if (!user) {

@@ -45,6 +45,8 @@ class ProfileScreen extends Component {
   };
 
   render() {
+    console.log(this.props.user.user);
+    const vars = this.props.user.user;
     return (
       <Container>
         {/* Header */}
@@ -153,7 +155,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.distance} km
+                {vars.preference.distance} km
               </Text>
             </View>
           </View>
@@ -166,7 +168,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.duration} min
+                {vars.preference.duration} min
               </Text>
             </View>
           </View>
@@ -177,7 +179,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.intensity}
+                {vars.preference.intensity}
               </Text>
             </View>
           </View>
@@ -188,7 +190,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.venue}
+                {vars.preference.venue}
               </Text>
             </View>
           </View>
@@ -199,7 +201,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.location}
+                {vars.preference.location}
               </Text>
             </View>
           </View>
