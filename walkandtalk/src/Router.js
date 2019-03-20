@@ -19,6 +19,7 @@ import ViewMapScreen from "./components/event/ViewMapScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
 
+
 const RouterComponent = () => (
   <Router>
     <Stack key="root">

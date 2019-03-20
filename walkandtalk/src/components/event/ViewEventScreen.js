@@ -321,7 +321,6 @@ class ViewEventScreen extends Component {
           </View>
           {description}
           {buttons}
-
         </Content>
       </Container>
     );
