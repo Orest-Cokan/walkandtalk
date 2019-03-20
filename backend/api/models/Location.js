@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../../config/database");
 
 // table name
-const tableName = "location";
+const tableName = "locations";
 
 // Location model
 const Location = sequelize.define(tableName, {

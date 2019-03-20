@@ -1,7 +1,8 @@
 const Sequelize = require("sequelize");
 const bcryptService = require("../services/bcrypt.service");
-
 const sequelize = require("../../config/database");
+const Preference = require("./Preference");
+const Picture = require("./Picture");
 
 // hook for a user to encrypt their password
 const hooks = {
@@ -15,7 +16,7 @@ const tableName = "users";
 
 // user model
 const User = sequelize.define(
-  "User",
+  tableName,
   {
     id: {
       type: Sequelize.INTEGER,
@@ -28,20 +29,23 @@ const User = sequelize.define(
     },
     password: Sequelize.STRING,
     fullname: Sequelize.STRING,
-    menopausal_stage: Sequelize.STRING,
-    image: Sequelize.STRING,
-    registered: Sequelize.INTEGER,
-    intensity: Sequelize.STRING,
-    venue: Sequelize.STRING,
-    location: Sequelize.STRING,
     dob: Sequelize.STRING,
-    distance: Sequelize.INTEGER,
-    duration: Sequelize.INTEGER,
+    menopausal_stage: Sequelize.STRING,
+    registered: Sequelize.INTEGER,
     redcapID: Sequelize.INTEGER
   },
 
   { hooks, tableName }
 );
+
+// set the associations
+User.hasOne(Preference, {
+  onDelete: "CASCADE",
+  hooks: true
+});
+User.hasOne(Picture);
+Preference.belongsTo(User);
+Picture.belongsTo(User);
 
 // eslint-disable-next-line
 User.prototype.toJSON = function() {

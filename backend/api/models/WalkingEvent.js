@@ -4,7 +4,7 @@ const Attendee = require("./Attendee");
 const Location = require("./Location");
 
 // table name
-const tableName = "WalkingEvent";
+const tableName = "walkingevents";
 
 // walkingevent model
 const WalkingEvent = sequelize.define(tableName, {
