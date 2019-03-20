@@ -13,13 +13,13 @@ import SubmitEventRecordScreen from "./components/form/SubmitEventRecord";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
-import ViewPlaceScreen from "./components/event/ViewPlaceScreen";
+
 
 const RouterComponent = () => (
   <Router>
     <Stack key="root">
       <Stack key="auth" hideNavBar>
-        <Scene key="login" component={ViewPlaceScreen} />
+        <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
       </Stack>
       <Stack key="app" hideNavBar panHandlers={null}>
