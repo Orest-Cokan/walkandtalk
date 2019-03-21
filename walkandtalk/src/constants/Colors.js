@@ -4,6 +4,5 @@ export default {
   backgroundColor: "#FFFFFF",
   appGreen: "",
   appBlue: "",
-  appRed: "",
-
+  appRed: ""
 };

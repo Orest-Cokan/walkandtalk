@@ -30,27 +30,25 @@ import {
 } from "../../constants/StyledText";
 
 class SignupScreen extends Component {
-
   constructor(props) {
     super(props);
-      this.state = {
-        fullname: null,
-        password: null,
-        confirmPassword: null,
-        email: null,
-        confirmEmail: null,
-        dob: null,
-        emailCheck: false,
-        passwordCheck: false,
-        menopausal_stage: "Pre",
-        intensity: "Slow",
-        venue: "Indoor",
-        location: null,
-        duration: 0,
-        distance: 0
-      }
-  };
-
+    this.state = {
+      fullname: null,
+      password: null,
+      confirmPassword: null,
+      email: null,
+      confirmEmail: null,
+      dob: null,
+      emailCheck: false,
+      passwordCheck: false,
+      menopausal_stage: "Pre",
+      intensity: "Slow",
+      venue: "Indoor",
+      location: null,
+      duration: 0,
+      distance: 0
+    };
+  }
 
   onChangeEmail = text => {
     this.setState({
@@ -86,30 +84,30 @@ class SignupScreen extends Component {
     this.setState({
       duration: value
     });
-  };
+  }
 
   onChangeDistance(value) {
     this.setState({
       distance: value
     });
-  };
+  }
 
   setIntensity(value) {
     this.setState({
       intensity: value
     });
-  };
+  }
   setMenopauseStage(value) {
     this.setState({
       menopausal_stage: value
     });
-  };
+  }
 
   setVenue(value) {
     this.setState({
       venue: value
     });
-  };
+  }
 
   checkPassword = () => {
     if (this.state.password != this.state.confirmPassword) {
@@ -201,7 +199,7 @@ class SignupScreen extends Component {
               <Text style={ScreenStyleSheet.formInfo}>
                 Full Name
                 <Text style={ScreenStyleSheet.asterisk}> *</Text>
-               </Text>
+              </Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
@@ -290,7 +288,8 @@ class SignupScreen extends Component {
           {/* Date of Birth */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Date of Birth
+              <Text style={ScreenStyleSheet.formInfo}>
+                Date of Birth
                 <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
             </View>
@@ -431,9 +430,7 @@ class SignupScreen extends Component {
           {/* Venue */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Type of Venue
-              </Text>
+              <Text style={ScreenStyleSheet.formInfo}>Type of Venue</Text>
             </View>
           </View>
           <View style={styles.controls}>
@@ -466,7 +463,7 @@ class SignupScreen extends Component {
             {/* Finish button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
-              onPress={(this.onPressSignUp)}
+              onPress={this.onPressSignUp}
             >
               <Text style={{ color: "white" }}>Sign Up</Text>
             </TouchableOpacity>

@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import reducer from "./reducers";
 
+// Initializes app and redux
 export default class Main extends Component {
   render() {
     return (

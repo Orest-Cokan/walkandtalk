@@ -38,19 +38,15 @@ class ViewRequestScreen extends Component {
       distance: this.props.request.distance,
       duration: this.props.request.duration,
       venue: this.props.request.venue,
-      location: this.props.request.location,
-    }
+      location: this.props.request.location
+    };
   }
 
   // Approves request to be a user
-  approveRequest = () => {
-
-  };
+  approveRequest = () => {};
 
   // Declines request to be a user
-  declineRequest = () => {
-  };
-
+  declineRequest = () => {};
 
   // Navigate back to Requests page
   onBack = () => {
@@ -131,8 +127,7 @@ class ViewRequestScreen extends Component {
               <Text style={ScreenStyleSheet.profileInfoInput}>
                 {/* Automatically calculates the age when given date of birth */}
                 {Math.floor(
-                  (new Date().getTime() -
-                    Date.parse(this.state.dob)) /
+                  (new Date().getTime() - Date.parse(this.state.dob)) /
                     31557600000
                 )}
               </Text>
@@ -225,17 +220,17 @@ class ViewRequestScreen extends Component {
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Decline button */}
             <TouchableOpacity
-              style={[
-                styles.buttonContainer,
-                { borderWidth: 1 }
-              ]}
+              style={[styles.buttonContainer, { borderWidth: 1 }]}
               onPress={this.declineRequest}
             >
               <Text>Decline</Text>
             </TouchableOpacity>
             {/* Approve button */}
             <TouchableOpacity
-              style={[styles.buttonContainer, { backgroundColor: "#A680B8", borderColor: "#A680B8" }]}
+              style={[
+                styles.buttonContainer,
+                { backgroundColor: "#A680B8", borderColor: "#A680B8" }
+              ]}
               onPress={this.approveRequest}
             >
               <Text style={{ color: "white" }}>Approve</Text>
@@ -249,8 +244,7 @@ class ViewRequestScreen extends Component {
 
 const mapStateToProps = state => {
   console.log("viewrequestscreen");
-  return {
-  };
+  return {};
 };
 
 export default connect(

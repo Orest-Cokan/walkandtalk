@@ -24,7 +24,7 @@ class RequestsScreen extends Component {
     console.log("inside constructor");
 
     // Sample data
-    this.state =  {
+    this.state = {
       requests: [
         {
           fullname: "Anne Taylor",
@@ -35,7 +35,7 @@ class RequestsScreen extends Component {
           distance: 10,
           duration: 60,
           venue: "Indoor",
-          location: "Summerside",
+          location: "Summerside"
         },
         {
           fullname: "Rose Zapata",
@@ -46,13 +46,11 @@ class RequestsScreen extends Component {
           distance: 10,
           duration: 60,
           venue: "Outdoor",
-          location: "Riverbend area",
+          location: "Riverbend area"
         }
       ]
-    }
-
+    };
   }
-
 
   // The following code is to be used when real data is to be integrated
   /* componentDidMount() {
@@ -61,10 +59,10 @@ class RequestsScreen extends Component {
 
   // Switch request view
   viewRequest(index) {
-    Actions.viewRequest({ request: this.state.requests[index]} );
+    Actions.viewRequest({ request: this.state.requests[index] });
   }
 
- //
+  //
   getRequests() {
     let requests = [];
     console.log(this.props);
@@ -78,11 +76,9 @@ class RequestsScreen extends Component {
         </TouchableOpacity>
       );
     });
-  console.log(this.props);
-  return requests;
+    console.log(this.props);
+    return requests;
   }
-
-
 
   render() {
     return (
@@ -105,13 +101,10 @@ class RequestsScreen extends Component {
   }
 }
 
-
 const mapStateToProps = state => {
   console.log("requestscreen");
-  return {
-  };
+  return {};
 };
-
 
 export default connect(
   mapStateToProps,

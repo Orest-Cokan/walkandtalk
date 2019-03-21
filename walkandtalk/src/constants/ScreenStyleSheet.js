@@ -13,7 +13,7 @@ export default StyleSheet.create({
   header: {
     backgroundColor: "white",
     height: 45,
-    fontFamily: 'proxima_nova_reg'
+    fontFamily: "proxima_nova_reg"
   },
   headerBody: {
     flex: 2,
