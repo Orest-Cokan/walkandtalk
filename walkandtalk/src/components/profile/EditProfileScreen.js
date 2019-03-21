@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   Image,
   TouchableOpacity,
   ScrollView,
-  TextInput
 } from "react-native";
 import { SegmentedControls } from "react-native-radio-buttons";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
@@ -22,6 +20,15 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { editUser } from "../../actions/UserActions";
+import DatePicker from "react-native-datepicker";
+import SwitchSelector from "react-native-switch-selector";
+import NumericInput from "react-native-numeric-input";
+import { width, height, totalSize } from "react-native-dimension";
+import {
+  StyledText as Text,
+  StyledTextInput as TextInput
+} from "../../constants/StyledText";
+
 
 class EditProfileScreen extends Component {
   // Constructor
@@ -34,29 +41,45 @@ class EditProfileScreen extends Component {
       email: this.props.user.user.email,
       dob: this.props.user.user.dob,
       menopausal_stage: this.props.user.user.menopausal_stage,
-      intensity: this.props.user.user.intensity,
-      distance: this.props.user.user.distance,
-      duration: this.props.user.user.duration,
-      venue: this.props.user.user.venue,
-      location: this.props.user.user.location
-    };
+      intensity: this.props.user.user.preference.intensity,
+      distance: this.props.user.user.preference.distance,
+      duration: this.props.user.user.preference.duration,
+      venue: this.props.user.user.preference.venue,
+      location: this.props.user.user.preference.location
+    }
   }
-
   onChangeFullName = text => {
     this.setState({
       fullname: text
     });
   };
 
-  onChangeDuration = text => {
+  onChangeDuration(value) {
     this.setState({
-      duration: text
+      duration: value
     });
   };
 
-  onChangeDistance = text => {
+  onChangeDistance(value) {
     this.setState({
-      distance: text
+      distance: value
+    });
+  };
+
+  setIntensity(value) {
+    this.setState({
+      intensity: value
+    });
+  };
+  setMenopauseStage(value) {
+    this.setState({
+      menopausal_stage: value
+    });
+  };
+
+  setVenue(value) {
+    this.setState({
+      venue: value
     });
   };
 
@@ -66,25 +89,7 @@ class EditProfileScreen extends Component {
     });
   };
 
-  setMenopausalStage(selectedOption) {
-    this.setState({
-      menopausal_stage: selectedOption
-    });
-  }
-
-  setIntensity(selectedOption) {
-    this.setState({
-      intensity: selectedOption
-    });
-  }
-
-  setVenue(selectedOption) {
-    this.setState({
-      venue: selectedOption
-    });
-  }
-
-  cancelEdit() {
+  onCancel() {
     Actions.pop();
   }
 
@@ -102,14 +107,48 @@ class EditProfileScreen extends Component {
       this.state.location
     );
     console.log("props on save", this.props);
-    Actions.Profile();
+    Actions.mainProfile();
   };
 
   render() {
     // All the options displayed in radio buttons
-    const intensities = ["Slow", "Intermediate", "Brisk"];
-    const venues = ["Indoor", "Outdoor"];
-    const menoStages = ["Pre", "Peri", "Post"];
+    const intensities = [
+      { label: "Slow", value: "Slow" },
+      { label: "Intermediate", value: "Intermediate" },
+      { label: "Brisk", value: "Brisk" }
+    ];
+    const venues = [
+      { label: "Indoor", value: "Indoor" },
+      { label: "Outdoor", value: "Outdoor" }
+    ];
+    const menopausal_stage = [
+      { label: "Pre", value: "Pre" },
+      { label: "Peri", value: "Peri" },
+      { label: "Post", value: "Post" }
+    ];
+
+    // Setting default values for slide bars
+    let default_intensity = null;
+    intensities.map((intensity, index) => {
+      if (this.state.intensity == intensity.value) {
+        default_intensity = index
+        return default_intensity;
+      }
+    });
+    let default_venue = null;
+    venues.map((venue, index) => {
+      if (this.state.venue == venue.value) {
+        default_venue = index
+        return default_venue;
+      }
+    });
+    let default_menopausal_stage = null;
+    menopausal_stage.map((stage, index) => {
+      if (this.state.menopausal_stage == stage.value) {
+        default_menopausal_stage = index
+        return default_menopausal_stage;
+      }
+    });
 
     // Screen
     return (
@@ -134,12 +173,18 @@ class EditProfileScreen extends Component {
             />
             {/* Add + for changing profile picture */}
           </View>
-          {/* Name */}
-          <View style={styles.nestedButtonView}>
+
+          {/* Full Name */}
+          <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Fullname *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Full Name
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+               </Text>
             </View>
-            <View>
+          </View>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
                 onChangeText={this.onChangeFullName}
@@ -149,12 +194,16 @@ class EditProfileScreen extends Component {
             </View>
           </View>
 
-          {/* Email */}
-          <View style={styles.nestedButtonView}>
+          {/* Email Address */}
+          <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Email address</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Email Address
+              </Text>
             </View>
-            <View>
+          </View>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInputUneditable}
                 editable={false}
@@ -166,52 +215,63 @@ class EditProfileScreen extends Component {
 
           {/* On screen separator */}
           <View style={ScreenStyleSheet.lineSeparator} />
+
           {/* Info Header */}
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileSectionTitle}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={styles.subHeader}>
                 Basic Info
               </Text>
             </View>
           </View>
-          {/* Date of birth */}
+
+          {/* Date of Birth */}
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInfo}>Date of Birth</Text>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Date of Birth
+              </Text>
             </View>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <TextInput
-                style={ScreenStyleSheet.profileInputUneditable}
-                editable={false}
-              >
-                {this.state.dob}
-              </TextInput>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <DatePicker
+                disabled={true}
+                style={{ width: "100%" }}
+                date={this.state.dob}
+                mode="date"
+                showIcon={false}
+                placeholder={this.state.dob}
+                format="MMM DD, YYYY"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  placeholderText: {
+                    alignItems: "center",
+                    color: "grey"
+                  }
+                }}
+              />
             </View>
           </View>
-          {/* Menopausal Stage */}
+
+          {/* Menopause Stage */}
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInfo}>
-                Menopausal Stage *
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Menopause Stage
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
-          <View style={styles.segmentedControls}>
-            <SegmentedControls
-              tint={"#A680B8"}
-              backTint={"#ffffff"}
-              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={this.state.menopausal_stage}
-              onSelection={this.setMenopausalStage.bind(this)}
-              optionContainerStyle={{
-                flex: 1,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2
-              }}
-              options={menoStages}
+          <View style={styles.controls}>
+            <SwitchSelector
+              options={menopausal_stage}
+              initial={default_menopausal_stage}
+              onPress={value => this.setMenopauseStage(value)}
+              textColor={"#A680B8"} //'#7a44cf'
+              selectedColor={"#ffffff"}
+              buttonColor={"#A680B8"}
+              borderColor={"#A680B8"}
+              borderRadius={8}
+              hasPadding
             />
           </View>
 
@@ -220,127 +280,156 @@ class EditProfileScreen extends Component {
 
           {/* Preferences header */}
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileSectionTitle}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={styles.subHeader}>
                 My Preferences
               </Text>
             </View>
           </View>
 
           {/* Distance */}
-          <View style={styles.nestedButtonView}>
+          <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>
-                Length of distance (in km) *
+                Length of walk (in kilometres)
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
-            </View>
-            <View>
-              <TextInput
-                style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeDistance}
-              >
-                {this.state.distance}
-              </TextInput>
             </View>
           </View>
+          <View style={styles.controls}>
+            <NumericInput
+              initValue={this.state.distance}
+              value={this.state.distance}
+              minValue={0}
+              onChange={value => this.onChangeDistance(value)}
+              totalWidth={width(94)}
+              totalHeight={40}
+              valueType="real"
+              rounded
+              borderColor="#A680B8"
+              textColor="#A680B8"
+              inputStyle={{ borderRadius: 3, borderColor: "transparent" }}
+              iconStyle={{ color: "#A680B8" }}
+              rightButtonBackgroundColor="white"
+              leftButtonBackgroundColor="white"
+            />
+          </View>
+
           {/* Duration */}
-          <View style={styles.nestedButtonView}>
+          <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>
-                Length of distance (in min) *
+                Length of walk (in minutes)
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
             </View>
-            <View>
-              <TextInput
-                style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeDuration}
-              >
-                {this.state.duration}
-              </TextInput>
-            </View>
+          </View>
+          <View style={styles.controls}>
+            <NumericInput
+              initValue={this.state.duration}
+              value={this.state.duration}
+              minValue={0}
+              onChange={value => this.onChangeDuration(value)}
+              totalWidth={width(94)}
+              totalHeight={40}
+              valueType="real"
+              rounded
+              borderColor="#A680B8"
+              textColor="#A680B8"
+              inputStyle={{ borderRadius: 3, borderColor: "transparent" }}
+              iconStyle={{ color: "#A680B8" }}
+              rightButtonBackgroundColor="white"
+              leftButtonBackgroundColor="white"
+            />
           </View>
 
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInfo}>Intensity *</Text>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Intensity
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
-          <View style={styles.segmentedControls}>
-            <SegmentedControls
-              tint={"#A680B8"}
-              backTint={"#ffffff"}
-              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={this.state.intensity}
-              onSelection={this.setIntensity.bind(this)}
-              optionContainerStyle={{
-                flex: 1,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2
-              }}
+          <View style={styles.controls}>
+            <SwitchSelector
               options={intensities}
+              initial={default_intensity}
+              onPress={value => this.setIntensity(value)}
+              textColor={"#A680B8"} //'#7a44cf'
+              selectedColor={"#ffffff"}
+              buttonColor={"#A680B8"}
+              borderColor={"#A680B8"}
+              borderRadius={8}
+              hasPadding
             />
           </View>
+
           {/* Venue */}
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInfo}>Type of Venue *</Text>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Type of Venue
+              </Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
-          <View style={styles.segmentedControls}>
-            <SegmentedControls
-              tint={"#A680B8"}
-              backTint={"#ffffff"}
-              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={this.state.venue}
-              onSelection={this.setVenue.bind(this)}
-              optionContainerStyle={{
-                flex: 1,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2
-              }}
+          <View style={styles.controls}>
+            <SwitchSelector
               options={venues}
+              initial={default_venue}
+              onPress={value => this.setVenue(value)}
+              textColor={"#A680B8"} //'#7a44cf'
+              selectedColor={"#ffffff"}
+              buttonColor={"#A680B8"}
+              borderColor={"#A680B8"}
+              borderRadius={8}
+              hasPadding
             />
           </View>
+
           {/* Location */}
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.profileInfo}>Location *</Text>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Location
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
-          <View style={ScreenStyleSheet.profileRowInfo}>
-            <TextInput
-              style={ScreenStyleSheet.textInputStyle}
-              onChangeText={this.onChangLocation}
-            >
-              {this.state.location}
-            </TextInput>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <TextInput
+                style={ScreenStyleSheet.formInput}
+                onChangeText={this.onChangeLocation}
+              >
+                {this.state.location}
+              </TextInput>
+            </View>
           </View>
+
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}
             <TouchableOpacity
               style={[
                 styles.buttonContainer,
-                { borderWidth: 1, borderColor: "black" }
+                { borderWidth: 1, borderColor: "#A680B8" }
               ]}
+              onPress={this.onCancel}
             >
-              <Text>Cancel</Text>
+              <Text style={{ color: "#A680B8" }}>Cancel</Text>
             </TouchableOpacity>
+
             {/* Save button */}
             <TouchableOpacity
-              style={[styles.buttonContainer, { backgroundColor: "#ab76ba" }]}
-              onPress={this.saveProfile}
+              style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
+              onPress={(this.saveProfile)}
             >
-              <Text style={{ color: "white" }}>Save Changes</Text>
+              <Text style={{ color: "white" }}>Save changes</Text>
             </TouchableOpacity>
           </View>
+
         </Content>
       </Container>
     );
@@ -361,27 +450,18 @@ export default connect(
 
 // Styles
 const styles = StyleSheet.create({
-  textInputContainer: {
-    height: 40,
-    marginTop: -15,
-    marginBottom: 15
+  subHeader: {
+    fontSize: 18,
+    color: "black",
+    marginTop: 5,
+    marginBottom: 10,
+    textAlign: "left"
   },
-  textInputStyle: {
-    marginRight: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "gray"
-  },
-  textInputNumber: {
-    marginRight: 45,
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
-    textAlign: "center",
-    marginLeft: 65
-  },
-  segmentedControls: {
-    marginLeft: 15,
-    marginRight: 15,
-    marginBottom: 15
+  controls: {
+    marginBottom: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
   },
   buttonContainer: {
     marginVertical: 10,
@@ -390,10 +470,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "48%",
     borderRadius: 10
-  },
-  nestedButtonView: {
-    flexDirection: "row",
-    alignItems: "stretch",
-    marginBottom: 5
   }
 });
