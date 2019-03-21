@@ -38,7 +38,7 @@ class SubmitRecordScreen extends Component {
     super(props);
     console.log(this.props);
     console.log(this.props.record);
-    // State ---- unnecessary code because you the global state within the app..... ->> necessary because form needs default values.
+
     this.state = {
       // Event default details
       numAttendees: 3,
@@ -256,7 +256,6 @@ class SubmitRecordScreen extends Component {
               </Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
           <View style={styles.controls}>
             <SwitchSelector
               options={intensities}
@@ -280,7 +279,6 @@ class SubmitRecordScreen extends Component {
               </Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
           <View style={styles.controls}>
             <SwitchSelector
               options={venues}
@@ -317,6 +315,7 @@ class SubmitRecordScreen extends Component {
               hasPadding
             />
           </View>
+
           {/* Comments about the walk */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -359,6 +358,7 @@ class SubmitRecordScreen extends Component {
               hasPadding
             />
           </View>
+
           {/* Comments about the location */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -385,12 +385,13 @@ class SubmitRecordScreen extends Component {
             <TouchableOpacity
               style={[
                 styles.buttonContainer,
-                { borderWidth: 1, borderColor: "black" }
+                { borderWidth: 1, borderColor: "#A680B8" }
               ]}
               onPress={this.onCancel}
             >
-              <Text>Cancel</Text>
+              <Text style={{ color: "#A680B8" }}>Cancel</Text>
             </TouchableOpacity>
+
             {/* Finish button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}

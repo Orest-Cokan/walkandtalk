@@ -84,4 +84,4 @@ var task = cron.schedule("* * * * *", () => {
   console.log("running a task every minute");
 });
 
-module.exports = task;
+//module.exports = task;

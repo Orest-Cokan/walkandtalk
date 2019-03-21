@@ -12,7 +12,8 @@ export default StyleSheet.create({
   // Header
   header: {
     backgroundColor: "white",
-    height: 45
+    height: 45,
+    fontFamily: 'proxima_nova_reg'
   },
   headerBody: {
     flex: 2,
