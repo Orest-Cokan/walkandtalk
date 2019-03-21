@@ -59,7 +59,7 @@ class ViewEventScreen extends Component {
       console.log(searchEvent, "markerSent")
 
       //check if hosting, going or not going
-      const badge = ""
+      var badge = ""
       const fullname = this.props.user.user.fullname;
       if(fullname === searchEvent.organizer){
         badge = "HOSTING"
@@ -321,7 +321,6 @@ class ViewEventScreen extends Component {
           </View>
           {description}
           {buttons}
-
         </Content>
       </Container>
     );

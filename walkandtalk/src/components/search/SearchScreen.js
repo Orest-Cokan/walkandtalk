@@ -87,13 +87,13 @@ const items = [
 
 // Returns user's current location
 // Defaults to San Francisco on simulators
-// export const getCurrentLocation = () => {
-//   return new Promise((resolve, reject) => {
-//     navigator.geolocation.getCurrentPosition(position =>
-//       resolve(position),
-//       e => reject(e));
-//   });
-// };
+ export const getCurrentLocation = () => {
+   return new Promise((resolve, reject) => {
+     navigator.geolocation.getCurrentPosition(position =>
+       resolve(position),
+       e => reject(e));
+   });
+ };
 
 /*
 This is the search screen. Users can search for events in this screen.
@@ -110,110 +110,29 @@ class SearchScreen extends Component {
       selectedItems: [],
       text:"",
       searchResults:[],
-            // currentLocation: {
-      // currentLatitude: 0,
-      // currentLongitude: 0,
-      // latitudeDelta: 0,
-      // longitudeDelta: 0
-      // },
-      markers: [
-        {
-          id:1,
-          organizer:"poooonam",
-          title: 'University of Alberta Walk',
-          email: "123@gmail.com",
-          description: 'Walking around university',
-          intensity: 'Slow',
-          latitude: 56.02345,
-          longitude: -130.404327,
-          date: 'Wed, Mar 20',
-          start_time: '5:20pm',
-          end_time: '5:20pm',
-          venue: 'Outdoor',
-          createdAt: '2019-03-19T01:20:54.920Z',
-          updatedAt: '2019-03-19T01:20:54.920Z',
-          attendees: [],
-          total_attendees: 1,
-          location:
-          { id: 1,
-          streetName: 'no where',
-          lat: 56.02345,
-          long: -130.404327,
-          createdAt: '2019-03-19T01:20:55.068Z',
-          updatedAt: '2019-03-19T01:20:55.068Z',
-                  WalkingEventId: 1 }
-                },
-        {
-          id:2,
-          organizer:"becky",
-          title: 'walk it like i talk it',
-          email: "123@gmail.com",
-          description: 'Walking ',
-          intensity: 'Brisk',
-          latitude: 37.786944,
-          longitude: -122.406307,
-          date: 'Wed, Mar 20',
-          start_time: '5:20pm',
-          end_time: '5:20pm',
-          venue: 'Outdoor',
-          createdAt: '2019-03-19T01:20:54.920Z',
-          updatedAt: '2019-03-19T01:20:54.920Z',
-          attendees: [],
-          total_attendees:1,
-          location:
-          { id: 1,
-          streetName: 'no where',
-          lat: 37.786944,
-          long: -122.406307,
-          createdAt: '2019-03-19T01:20:55.068Z',
-          updatedAt: '2019-03-19T01:20:55.068Z',
-                  WalkingEventId: 1 }
-
-        },
-        {
-          id:3,
-          organizer:"poooonam",
-          title: 'do the stanky leg',
-          email: "123@gmail.com",
-          description: 'all over campus',
-          intensity: 'Intermediate',
-          latitude: 37.784724,
-          longitude: -122.404327,
-          date: 'Wed, Mar 20',
-          start_time: '5:20pm',
-          end_time: '5:20pm',
-          venue: 'Outdoor',
-          createdAt: '2019-03-19T01:20:54.920Z',
-          updatedAt: '2019-03-19T01:20:54.920Z',
-          attendees: [],
-          total_attendees:1,
-          location:
-          { id: 1,
-          streetName: 'no where',
-          lat: 37.784724,
-          long: -122.404327,
-          createdAt: '2019-03-19T01:20:55.068Z',
-          updatedAt: '2019-03-19T01:20:55.068Z',
-                  WalkingEventId: 1 }
-
-        },
-      ]
+       currentLocation: {
+      currentLatitude: 0,
+      currentLongitude: 0,
+      latitudeDelta: 0,
+     longitudeDelta: 0
+       },
+      markers:[]
     }
   }
 
-  // async componentWillMount() {
-  //   const position = await getCurrentLocation();
-  //   if (position) {
-  //     this.setState({
-  //       currentLocation: {
-  //       currentLatitude: position.coords.latitude,
-  //       currentLongitude: position.coords.longitude,
-  //       latitudeDelta: 0.003,
-  //       longitudeDelta: 0.003,
-  //       }
-  //     });
-  //   }
-  // }
+  async componentWillMount() {
+    const position = await getCurrentLocation();
+     if (position) {
+       this.setState({
+         currentLocation: {
+         currentLatitude: position.coords.latitude,
+         currentLongitude: position.coords.longitude,
+         latitudeDelta: 0.003,
+         longitudeDelta: 0.003,
+         }
+       });
+     }
+   }
 
   componentWillMount() {
     this.props.fetchEvents;
@@ -236,64 +155,142 @@ class SearchScreen extends Component {
   };
 
   onSelectedItemsChange = (selectedItems) => {
-    currentItems = this.state.searchResults
-    if(currentItems.length > selectedItems.length){
-      this.setState({ selectedItems: selectedItems }, () => {
-          console.log(this.state.selectedItems, 'selected items changed...searching');
-        });
-      this.search()
-    }else{
-      this.setState({ selectedItems: selectedItems }, () => {
-          console.log(this.state.selectedItems, 'selected items changed... no search yet');
-        });
+    //currentItems = this.state.searchResults
+    //if(currentItems.length > selectedItems.length){
+      //this.setState({ selectedItems: selectedItems }, () => {
+        //  console.log(this.state.selectedItems, 'selected items changed...searching');
+        //});
+      //this.search()
+    //}else{
+      //this.setState({ selectedItems: selectedItems }, () => {
+        //  console.log(this.state.selectedItems, 'selected items changed... no search yet');
+        //});
+        this.setState({ selectedItems: selectedItems });
     }
-  }
 
   onConfirm = () => {
-    console.log("multi-select closed")
-    this.search()
+    console.log(this.state.selectedItems,"multi-select closed")
+    filters = this.state.selectedItems
+
+    this.setState({
+      selectedItems:[],
+      markers:[]
+    }, () => {
+        console.log(this.state.selectedItems, 'confirm SI state updated');
+        console.log(this.state.markers, 'confirm markers state updated');
+      });
+
+    this.search(filters)
   }
 
-  search(){
+  search = filters => {
       filters = this.state.selectedItems
       events = this.props.events
+      console.log(this.props.events, "events in search")
+
       var results = []
+      var v_arr = []
+      var i_arr = []
 
-      filters.forEach(function(f) {
-        if (f == 11){
-          var i1 = events.filter(event =>{
-            return event.intensity === "Slow"
-          })
-          results = results.concat(i1)
+      //sort selected filters into categories
+      filters.forEach(function(f){
+        if(f==11 || f==22 || f==33){
+          i_arr.push(f)
+        }else{
+          v_arr.push(f)
         }
-        if (f == 22){
-          var i2 = events.filter(event =>{
-            return event.intensity === "Intermediate"
-          })
-          results = results.concat(i2)
-        }
-        if (f == 33){
-          var i3 = events.filter(event =>{
-            return event.intensity === "Brisk"
-          })
-          results = results.concat(i3)
-        }
-        if (f == 44){
-          var v1 = events.filter(event =>{
-            return event.venue === "Indoor"
-          })
-          results = results.concat(v1)
-        }
-        if (f == 55){
-          var v2 = events.filter(event =>{
-            return event.venue === "Outdoor"
-          })
-          results = results.concat(v2)
-        }
-
       })
+      console.log(i_arr.length, "int arr")
+      console.log(v_arr.length, "ven arr")
 
+      //only intensity filters selected
+      if(i_arr.length >=1 && v_arr.length == 0){
+        console.log("HERE")
+        i_arr.forEach(function(i) {
+          if (i == 11){
+            var i1 = events.filter(event =>{
+              return event.intensity === "Slow"
+            })
+            results = results.concat(i1)
+          }
+          if (i == 22){
+            var i2 = events.filter(event =>{
+              return event.intensity === "Intermediate"
+            })
+            results = results.concat(i2)
+          }
+          if (i == 33){
+            var i3 = events.filter(event =>{
+              return event.intensity === "Brisk"
+            })
+            results = results.concat(i3)
+          }
+      })
+    }
+
+      //only venue filters selected
+      if(i_arr.length ==0 && v_arr.length >= 1){
+        v_arr.forEach(function(v) {
+          if (v == 44){
+            var v1 = events.filter(event =>{
+              return event.venue === "Indoor"
+            })
+            results = results.concat(v1)
+          }
+          if (v == 44){
+            var v2 = events.filter(event =>{
+              return event.venue === "Outdoor"
+            })
+            results = results.concat(v2)
+          }
+      })
+    }
+
+      //Both intensity and venue filters selected - return objects that match all fields
+      if(i_arr.length >=1 && v_arr.length >=1){
+        console.log("in both arr filters")
+
+        var i;
+        var j;
+        var c;
+
+        for(c = 0; c < events.length; c++){
+        for (i = 0; i < i_arr.length; i++) {
+          for(j = 0; j < v_arr.length; j++){
+            if(i_arr[i] == "11"){
+              intense = "Slow"
+            }
+            if(i_arr[i] == "22"){
+              intense = "Intermediate"
+            }
+            if(i_arr[i] == "33"){
+              intense = "Brisk"
+            }
+            if(v_arr[j] == "44"){
+              ven = "Indoor"
+            }
+            if(v_arr[j] == "55"){
+              ven = "Outdoor"
+            }
+
+            if(events[c].intensity == intense && events[c].venue == ven ){
+              console.log(events[c], "events of i")
+              results.push(events[c])
+              console.log("result event", results)
+            }
+          }
+        }
+      }
+    }
+
+
+
+      //Convert to string then to object
+        results = JSON.stringify(results);
+        results = JSON.parse(results)
         console.log(results, "results")
+
+        //SubmitSearch function to save to state
         this.submitSearch(results)
 
   }
@@ -368,6 +365,62 @@ class SearchScreen extends Component {
     });
   }
 
+  layoutMap = () => {
+    markers = this.state.markers
+    if(markers.length != 0){
+      this.mapRef.fitToCoordinates(this.state.markers, { edgePadding: { top: 50, right: 10, bottom: 10, left: 10 }, animated: false })
+    }
+  }
+
+  setKeyword = text => {
+
+    this.setState({
+      text: text,
+      selectedItems: [],
+      markers:[]
+    }, () => {
+        console.log(this.state.text, 'keyword state updated');
+        console.log(this.state.selectedItems, 'SI state updated');
+        console.log(this.state.markers, 'markers state updated');
+      });
+
+  };
+
+  keywordSearch = () => {
+
+    events = this.props.events;
+    keyword = this.state.text
+
+    this.setState({
+      markers: [],
+      text:""
+    }, () => {
+        console.log(this.state.markers, 'cleared markers for keyword search');
+      });
+
+
+    console.log("events in keyword", events)
+    console.log("keyword", keyword)
+    //convert each item to a string and see if the key word exists as a subset
+    // if so, push that event to the list of results to be displayed
+    var results = []
+    events.forEach(function(e){
+      var stringItem = JSON.stringify(e)
+      if(stringItem.includes(keyword)){
+          if(results.indexOf(e)== -1){
+            results.push(e)
+          }
+        }
+      })
+
+    this.setState({
+      markers: results
+    }, () => {
+        console.log(this.state.markers, 'updated markers for display');
+      });
+
+  }
+
 
 
 
@@ -393,8 +446,8 @@ class SearchScreen extends Component {
        headerComponent = {filterHeader}
        confirmText = "Select"
        onConfirm={this.onConfirm}
-       showChips={true}
-       showRemoveAll={true}
+       showChips={false}
+       showRemoveAll={false}
        hideSearch={true}
        showDropDowns={false}
        readOnlyHeadings={true}
@@ -475,7 +528,8 @@ class SearchScreen extends Component {
               value={this.state.text}
               placeholder="Search"
               style={styles.placeHolder}
-              onChangeText={text => this.setState({ text })}
+              onChangeText={this.setKeyword}
+              onSubmitEditing={this.keywordSearch}
             />
           </View>
           {filterPopup}
@@ -484,10 +538,13 @@ class SearchScreen extends Component {
           <View style={ScreenStyleSheet.lineSeparator} />
           <MapView
             ref={(ref) => { this.mapRef = ref; }}
-            onLayout={() => this.mapRef.fitToCoordinates(this.state.markers, { edgePadding: { top: 50, right: 10, bottom: 10, left: 10 }, animated: false })}
+            onLayout={() => {this.layoutMap}}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
-            showsUserLocation={true}>
+            showsUserLocation={true}
+            }}>
+
+
             {this.state.markers.map((marker,idx) => (
               <Marker
               key={idx}
