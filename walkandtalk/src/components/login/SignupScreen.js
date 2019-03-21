@@ -301,7 +301,8 @@ class SignupScreen extends Component {
                 mode="date"
                 showIcon={false}
                 placeholder="Select date of birth"
-                format="YYYY-MM-DD"
+                maxValue={new Date()}
+                format="MMM DD, YYYY"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   Image,
   TouchableOpacity,
@@ -20,6 +19,10 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
+import {
+  StyledText as Text,
+  StyledTextInput as TextInput
+} from "../../constants/StyledText";
 
 // Profile tab
 class ProfileScreen extends Component {
