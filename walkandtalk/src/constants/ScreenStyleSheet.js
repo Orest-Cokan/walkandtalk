@@ -142,7 +142,7 @@ export default StyleSheet.create({
     fontSize: 15
   },
   formInput: {
-    textAlign: "right",
+    textAlign: "left",
     borderBottomWidth: 0.5,
     borderBottomColor: "gray",
     borderTopWidth: 0.5,
@@ -153,8 +153,8 @@ export default StyleSheet.create({
   },
 
   formInputUneditable: {
-    textAlign: "right",
-    borderBottomWidth: 1,
+    textAlign: "left",
+    borderBottomWidth: 0.5,
     borderBottomColor: "gray",
     color: "gray",
     padding: 0,

@@ -5,8 +5,6 @@ import {
   USER_CREATE_SUCCESS,
   USER_CREATE,
   USER_EDIT,
-  USER_EDIT_SUCCESS,
-  USER_EDIT_FAIL,
   USER_LOGIN_SUCCESS
 } from "../actions/types";
 

@@ -147,13 +147,12 @@ export const editUser = (
     var ip = getIP();
     var url = ip + "public/user";
     console.log(user, "this should be a user kek");
-    dispatch({ type: USER_EDIT });
     axios
       .put(url, user)
       .then(res => {
         if (res.status === 200) {
           if (res.data === 1) {
-            dispatch({ type: USER_EDIT });
+            dispatch({ type: USER_EDIT, payload: user });
           }
         }
       })
