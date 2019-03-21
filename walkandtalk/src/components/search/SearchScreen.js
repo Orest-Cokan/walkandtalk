@@ -541,8 +541,7 @@ class SearchScreen extends Component {
             onLayout={() => {this.layoutMap}}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
-            showsUserLocation={true}
-            }}>
+            showsUserLocation={true}>
 
 
             {this.state.markers.map((marker,idx) => (
