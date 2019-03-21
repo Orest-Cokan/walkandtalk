@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/UserActions";
 import { Actions } from "react-native-router-flux";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
+import {
+  StyledText as Text,
+  StyledTextInput as TextInput
+} from "../../constants/StyledText";
 
 class AuthScreen extends Component {
   state = {
@@ -41,7 +45,7 @@ class AuthScreen extends Component {
   render() {
     return (
       <View>
-        {/*Header Text*/}
+        {/* Header */}
         <Text style={styles.logo}>WALK AND TALK</Text>
         <View>
           <GenerateForm ref="formGenerator" fields={fields} />
@@ -50,12 +54,12 @@ class AuthScreen extends Component {
           style={styles.loginButton}
           onPress={this.onPressLogin}
         >
-          {/*Login Button - redirect user to home screen if successfull*/}
+          {/* Login Button - redirect user to home screen if successfull */}
           <Text style={styles.buttonText}> LOGIN </Text>
         </TouchableOpacity>
         <Text style={styles.signUp}>New to Walk and Talk?</Text>
         <View style={styles.nestedButtonView}>
-          {/*Signup Button - redirect user to signup screen if successfull*/}
+          {/* Signup Button - redirect user to signup screen if successfull */}
           <Text style={styles.signUp}>Sign up </Text>
           <TouchableOpacity
             style={styles.signupButton}
