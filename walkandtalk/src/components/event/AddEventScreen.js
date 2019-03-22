@@ -98,6 +98,7 @@ class AddEventScreen extends Component {
   };
 
   // Google places search with autocomplete
+
   openSearchModal() {
     RNGooglePlaces.openAutocompleteModal({ 
       // Restricting autofill results to alberta to limit requests

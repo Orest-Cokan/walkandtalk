@@ -14,12 +14,12 @@ const WalkingRecordController = () => {
         email: body.email,
         venue: body.venue,
         date: body.date,
-        location: body.location.streetName,
+        location: body.location,      // error: streetname is undefined
         start_time: body.start_time,
         end_time: body.end_time,
         distance: body.distance,
         duration: body.duration,
-        intensity: body.intesity,
+        intensity: body.intensity,  // a typo
         walk_rating: body.walk_rating,
         walk_rating_comment: body.walk_rating_comment,
         location_rating: body.location_rating,

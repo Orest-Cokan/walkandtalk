@@ -44,10 +44,10 @@ class AuthScreen extends Component {
   //render the screen
   render() {
     return (
-      <View>
+      <View accessibilityLabel="login">
         {/* Header */}
         <Text style={styles.logo}>WALK AND TALK</Text>
-        <View>
+        <View accessibilityLabel="form">
           <GenerateForm ref="formGenerator" fields={fields} />
         </View>
         <TouchableOpacity
