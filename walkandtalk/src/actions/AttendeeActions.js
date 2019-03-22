@@ -1,15 +1,10 @@
-import { ATTENDEE_ADD, ATTENDEE_DELETE} from "./types";
+import { ATTENDEE_ADD, ATTENDEE_DELETE } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 import { Platform } from "react-native";
 
-
-// action to create an event
-export const addAttendees = (
-  id,
-  name,
-  email
-) => {
+// action to add an attendee
+export const addAttendees = (id, name, email) => {
   return dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingevent";
@@ -35,10 +30,7 @@ export const addAttendees = (
 };
 
 // action to remove an attendee
-export const removeAttendees = (
-  id,
-  email
-) => {
+export const removeAttendees = (id, email) => {
   return dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingevent/";
@@ -54,7 +46,6 @@ export const removeAttendees = (
       });
   };
 };
-
 
 var getIP = () => {
   if (Platform.OS === "android") {
