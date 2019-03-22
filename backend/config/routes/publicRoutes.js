@@ -22,7 +22,6 @@ const publicRoutes = {
     "WalkingRecordController.completedRecords",
   "GET /walkingrecord/uncompleted/:email":
     "WalkingRecordController.uncompletedRecords",
-  "POST /walkingrecord": "WalkingRecordController.create",
   "PUT /walkingrecord": "WalkingRecordController.update",
 
   // Researcher routes
