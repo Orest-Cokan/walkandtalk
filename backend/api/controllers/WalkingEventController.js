@@ -14,6 +14,7 @@ const WalkingEventController = () => {
       WalkingEvent.create(
         {
           organizer: body.organizer,
+          email: body.email,
           title: body.title,
           description: body.description,
           date: body.date,
@@ -21,7 +22,8 @@ const WalkingEventController = () => {
           end_time: body.end_time,
           intensity: body.intensity,
           venue: body.venue,
-          location: body.location
+          location: body.location,
+          total_attendees: 1
         },
         {
           include: [
@@ -67,7 +69,6 @@ const WalkingEventController = () => {
     console.log(body.id, body.title, body.description);
     await WalkingEvent.update(
       {
-        organizer: body.organizer,
         title: body.title,
         description: body.description,
         date: body.date,

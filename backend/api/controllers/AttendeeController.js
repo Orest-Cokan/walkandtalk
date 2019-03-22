@@ -1,17 +1,21 @@
 const Attendee = require("../models/Attendee");
 const WalkingEvent = require("../models/WalkingEvent");
-// User controller
+// Attendee controller
 const AttendeeController = () => {
   // add an attendee to a walking event
   const addAttendees = async (req, res) => {
     const { body } = req;
     console.log(body.id, body.name);
     try {
+      await WalkingEvent.increment("total_attendees", {
+        where: { id: body.id }
+      });
       const walkingevent = await WalkingEvent.findByPk(body.id, {
         include: [Attendee]
       });
       await Attendee.create({
-        name: body.name
+        name: body.name,
+        email: body.email
       }).then(resp => {
         walkingevent.addAttendees(resp);
       });
@@ -29,19 +33,25 @@ const AttendeeController = () => {
     const { body } = req;
     console.log(body.id, body.name);
     try {
+      await WalkingEvent.decrement(
+        {
+          total_attendees: 1
+        },
+        { where: { id: body.id } }
+      );
       const walkingevent = await WalkingEvent.findByPk(body.id, {
         include: [Attendee]
       });
 
       await walkingevent
         .getAttendees({
-          where: { name: body.name }
+          where: { email: body.email }
         })
         .then(resp => {
           if (resp.length > 0) {
             walkingevent.removeAttendees(resp);
             Attendee.destroy({
-              where: { WalkingEventId: body.id, name: body.name }
+              where: { WalkingEventId: body.id, email: body.email }
             }).then(con => console.log(con));
           } else {
             return res
@@ -56,7 +66,7 @@ const AttendeeController = () => {
         });
     } catch (err) {
       console.log(err);
-      return res.status(404).json({ msg: "Unable to find user to remove!" });
+      return res.status(500).json({ msg: "Unable to find user to remove!" });
     }
   };
 

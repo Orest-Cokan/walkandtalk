@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  Text,
-  TextInput,
   TouchableOpacity,
   Button,
   Alert
@@ -21,27 +19,36 @@ import {
   Content,
   StatusBar
 } from "native-base";
-import { SegmentedControls } from "react-native-radio-buttons";
+import SwitchSelector from "react-native-switch-selector";
+import NumericInput from "react-native-numeric-input";
+import { width, height, totalSize } from "react-native-dimension";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import {
+  StyledText as Text,
+  StyledTextInput as TextInput
+} from "../../constants/StyledText";
 
 class SignupScreen extends Component {
-  state = {
-    fullname: null,
-    password: null,
-    confirmPassword: null,
-    email: null,
-    confirmEmail: null,
-    dob: null,
-    emailCheck: false,
-    passwordCheck: false,
-    menopausal_stage: null,
-    intensity: null,
-    venue: null,
-    location: null,
-    duration: null,
-    distance: null
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      fullname: null,
+      password: null,
+      confirmPassword: null,
+      email: null,
+      confirmEmail: null,
+      dob: null,
+      emailCheck: false,
+      passwordCheck: false,
+      menopausal_stage: "Pre",
+      intensity: "Slow",
+      venue: "Indoor",
+      location: null,
+      duration: 0,
+      distance: 0
+    };
+  }
 
   onChangeEmail = text => {
     this.setState({
@@ -73,17 +80,34 @@ class SignupScreen extends Component {
     });
   };
 
-  onChangeDuration = text => {
+  onChangeDuration(value) {
     this.setState({
-      duration: text
+      duration: value
     });
-  };
+  }
 
-  onChangeDistance = text => {
+  onChangeDistance(value) {
     this.setState({
-      distance: text
+      distance: value
     });
-  };
+  }
+
+  setIntensity(value) {
+    this.setState({
+      intensity: value
+    });
+  }
+  setMenopauseStage(value) {
+    this.setState({
+      menopausal_stage: value
+    });
+  }
+
+  setVenue(value) {
+    this.setState({
+      venue: value
+    });
+  }
 
   checkPassword = () => {
     if (this.state.password != this.state.confirmPassword) {
@@ -129,22 +153,30 @@ class SignupScreen extends Component {
     }
   };
 
-  onGoBack = () => {
+  onCancel = () => {
     Actions.pop();
-  };
-
-  updateStage = stage => {
-    this.setState({ menopausal_stage: stage });
   };
 
   render() {
     // All the options displayed in radio buttons
-    const intensities = ["Slow", "Intermediate", "Brisk"];
-    const venues = ["Indoor", "Outdoor"];
-    const menopausal_stage = ["Pre", "Peri", "Post"];
+    const intensities = [
+      { label: "Slow", value: "Slow" },
+      { label: "Intermediate", value: "Intermediate" },
+      { label: "Brisk", value: "Brisk" }
+    ];
+    const venues = [
+      { label: "Indoor", value: "Indoor" },
+      { label: "Outdoor", value: "Outdoor" }
+    ];
+    const menopausal_stage = [
+      { label: "Pre", value: "Pre" },
+      { label: "Peri", value: "Peri" },
+      { label: "Post", value: "Post" }
+    ];
 
     return (
       <Container>
+        {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
@@ -161,9 +193,13 @@ class SignupScreen extends Component {
             </View>
           </View>
 
+          {/* Full Name */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Full Name *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Full Name
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
@@ -175,9 +211,13 @@ class SignupScreen extends Component {
             </View>
           </View>
 
+          {/* Email Address */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Email Address *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Email Address
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
@@ -189,10 +229,12 @@ class SignupScreen extends Component {
             </View>
           </View>
 
+          {/* Confirm Email Address */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>
-                Confirm Email Address *
+                Confirm Email Address
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
             </View>
           </View>
@@ -206,9 +248,13 @@ class SignupScreen extends Component {
             </View>
           </View>
 
+          {/* Password */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Password *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Password
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
@@ -220,9 +266,13 @@ class SignupScreen extends Component {
             </View>
           </View>
 
+          {/* Confirm Password */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Confirm Password *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Confirm Password
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
@@ -235,9 +285,13 @@ class SignupScreen extends Component {
             </View>
           </View>
 
+          {/* Date of Birth */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Date of Birth *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Date of Birth
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
             <View style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
@@ -246,7 +300,8 @@ class SignupScreen extends Component {
                 mode="date"
                 showIcon={false}
                 placeholder="Select date of birth"
-                format="YYYY-MM-DD"
+                maxValue={new Date()}
+                format="MMM DD, YYYY"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{
@@ -261,29 +316,30 @@ class SignupScreen extends Component {
             </View>
           </View>
 
+          {/* Menopause Stage */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Menopause Stage *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Menopause Stage
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
-          <View style={styles.segmentedControls}>
-            <SegmentedControls
-              tint={"#A680B8"}
-              backTint={"#ffffff"}
-              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={menopausal_stage[0]}
-              optionContainerStyle={{
-                flex: 1,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2
-              }}
+          <View style={styles.controls}>
+            <SwitchSelector
               options={menopausal_stage}
+              initial={0}
+              onPress={value => this.setMenopauseStage(value)}
+              textColor={"#A680B8"} //'#7a44cf'
+              selectedColor={"#ffffff"}
+              buttonColor={"#A680B8"}
+              borderColor={"#A680B8"}
+              borderRadius={8}
+              hasPadding
             />
           </View>
 
+          {/* Line separator */}
           <View style={ScreenStyleSheet.lineSeparator} />
 
           <View style={ScreenStyleSheet.rowContainer}>
@@ -292,97 +348,124 @@ class SignupScreen extends Component {
             </View>
           </View>
 
-          <View style={styles.nestedButtonView}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Length of distance(km) *
-              </Text>
-            </View>
-            <View>
-              <TextInput
-                style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeDistance}
-              />
-            </View>
-          </View>
-
-          <View style={styles.nestedButtonView}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Length of distance(min) *
-              </Text>
-            </View>
-            <View>
-              <TextInput
-                style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeDuration}
-              />
-            </View>
-          </View>
-
+          {/* Distance */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Intensity</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Length of walk (in kilometres)
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
-          <View style={styles.segmentedControls}>
-            <SegmentedControls
-              tint={"#A680B8"}
-              backTint={"#ffffff"}
-              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={intensities[0]}
-              optionContainerStyle={{
-                flex: 1,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2
-              }}
-              options={intensities}
+          <View style={styles.controls}>
+            <NumericInput
+              initValue={this.state.distance}
+              value={this.state.distance}
+              minValue={0}
+              onChange={value => this.onChangeDistance(value)}
+              totalWidth={width(94)}
+              totalHeight={40}
+              valueType="real"
+              rounded
+              borderColor="#A680B8"
+              textColor="#A680B8"
+              inputStyle={{ borderRadius: 3, borderColor: "transparent" }}
+              iconStyle={{ color: "#A680B8" }}
+              rightButtonBackgroundColor="white"
+              leftButtonBackgroundColor="white"
             />
           </View>
+
+          {/* Duration */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Length of walk (in minutes)
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
+            </View>
+          </View>
+          <View style={styles.controls}>
+            <NumericInput
+              initValue={this.state.duration}
+              value={this.state.duration}
+              minValue={0}
+              onChange={value => this.onChangeDuration(value)}
+              totalWidth={width(94)}
+              totalHeight={40}
+              valueType="real"
+              rounded
+              borderColor="#A680B8"
+              textColor="#A680B8"
+              inputStyle={{ borderRadius: 3, borderColor: "transparent" }}
+              iconStyle={{ color: "#A680B8" }}
+              rightButtonBackgroundColor="white"
+              leftButtonBackgroundColor="white"
+            />
+          </View>
+
+          {/* Intensity */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Intensity
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
+            </View>
+          </View>
+          <View style={styles.controls}>
+            <SwitchSelector
+              options={intensities}
+              initial={0}
+              onPress={value => this.setIntensity(value)}
+              textColor={"#A680B8"} //'#7a44cf'
+              selectedColor={"#ffffff"}
+              buttonColor={"#A680B8"}
+              borderColor={"#A680B8"}
+              borderRadius={8}
+              hasPadding
+            />
+          </View>
+
           {/* Venue */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>Type of Venue</Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
-          <View style={styles.segmentedControls}>
-            <SegmentedControls
-              tint={"#A680B8"}
-              backTint={"#ffffff"}
-              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={venues[0]}
-              optionContainerStyle={{
-                flex: 1,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2
-              }}
+          <View style={styles.controls}>
+            <SwitchSelector
               options={venues}
+              initial={0}
+              onPress={value => this.setVenue(value)}
+              textColor={"#A680B8"} //'#7a44cf'
+              selectedColor={"#ffffff"}
+              buttonColor={"#A680B8"}
+              borderColor={"#A680B8"}
+              borderRadius={8}
+              hasPadding
             />
           </View>
 
+          {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}
             <TouchableOpacity
               style={[
                 styles.buttonContainer,
-                { borderWidth: 1, borderColor: "black" }
+                { borderWidth: 1, borderColor: "#A680B8" }
               ]}
-              onPress={this.onGoBack}
+              onPress={this.onCancel}
             >
-              <Text>Cancel</Text>
+              <Text style={{ color: "#A680B8" }}>Cancel</Text>
             </TouchableOpacity>
+
             {/* Finish button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
               onPress={this.onPressSignUp}
             >
-              <Text style={{ color: "white" }}>Submit</Text>
+              <Text style={{ color: "white" }}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </Content>
@@ -402,25 +485,6 @@ export default connect(
 
 //Styles
 const styles = {
-  wrapper: {
-    flex: 1,
-    marginTop: 100
-  },
-  header: {
-    backgroundColor: "#c391d0",
-    width: "100%",
-    height: 40
-  },
-  headerText: {
-    textAlign: "center",
-    color: "white",
-    fontSize: 30,
-    fontWeight: "bold"
-  },
-  submitButton: {
-    paddingHorizontal: 10,
-    paddingTop: 20
-  },
   subHeader: {
     fontSize: 18,
     color: "black",
@@ -428,47 +492,11 @@ const styles = {
     marginBottom: 10,
     textAlign: "left"
   },
-  submitButton: {
-    marginTop: 30,
-    marginBottom: 30,
-    marginRight: 10,
-    marginLeft: 10,
-    padding: 10,
-    backgroundColor: "#c391d0",
-    borderRadius: 8
-  },
-  cancelButton: {
-    marginTop: 30,
-    marginBottom: 30,
-    marginRight: 10,
-    marginLeft: 10,
-    padding: 10,
-    backgroundColor: "grey",
-    borderRadius: 8
-  },
-  buttonText: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 20,
-    fontWeight: "bold",
-    paddingLeft: 25,
-    paddingRight: 25
-  },
-  nestedButtonView: {
-    flexDirection: "row",
-    alignItems: "stretch",
-    marginBottom: 5
-  },
-  picker: {
-    marginTop: 15,
-    marginRight: 5,
-    marginLeft: 5
-  },
-
-  segmentedControls: {
-    marginLeft: 15,
-    marginRight: 15,
-    marginBottom: 15
+  controls: {
+    marginBottom: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
   },
   buttonContainer: {
     marginVertical: 10,

@@ -1,7 +1,6 @@
 // Create Event Screen View
 import React, { Component } from "react";
 import { fetchEvents } from "../../actions/EventActions";
-
 import { connect } from "react-redux";
 import {
   Container,
@@ -21,8 +20,8 @@ class HomeScreen extends Component {
     super(props);
     console.log("inside constructor");
     this.props.fetchEvents();
+    console.log("constructor", this.props);
   }
-
   componentDidMount() {
     this.props.fetchEvents;
   }
@@ -34,24 +33,36 @@ class HomeScreen extends Component {
       let badge = null;
       if (fullname == event.organizer) {
         badge = "HOSTING";
+        events.unshift(
+          <BaseCard
+            key={event.id}
+            id={event.id}
+            date={event.date}
+            start_time={event.start_time}
+            title={event.title}
+            location={event.location.streetName}
+            badge={badge}
+          />
+        );
       } else {
         for (let i = 0; i < event.attendees.length; i++) {
           if (event.attendees[i].name == fullname) {
             badge = "GOING";
+            events.unshift(
+              <BaseCard
+                key={event.id}
+                id={event.id}
+                date={event.date}
+                start_time={event.start_time}
+                title={event.title}
+                location={event.location.streetName}
+                badge={badge}
+              />
+            );
             break;
           }
         }
       }
-      events.unshift(
-        <BaseCard
-          key={event.id}
-          date={event.date}
-          start_time={event.start_time}
-          title={event.title}
-          location={event.location.streetName}
-          badge={badge}
-        />
-      );
     });
     return events;
   }

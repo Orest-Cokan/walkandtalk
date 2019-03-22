@@ -4,7 +4,7 @@ const Attendee = require("./Attendee");
 const Location = require("./Location");
 
 // table name
-const tableName = "WalkingEvent";
+const tableName = "walkingevents";
 
 // walkingevent model
 const WalkingEvent = sequelize.define(tableName, {
@@ -15,12 +15,14 @@ const WalkingEvent = sequelize.define(tableName, {
   },
   organizer: Sequelize.STRING,
   title: Sequelize.STRING,
+  email: Sequelize.STRING,
   description: Sequelize.STRING,
   date: Sequelize.STRING,
   start_time: Sequelize.STRING,
   end_time: Sequelize.STRING,
   intensity: Sequelize.STRING,
-  venue: Sequelize.STRING
+  venue: Sequelize.STRING,
+  total_attendees: Sequelize.INTEGER
 });
 
 // set the associations

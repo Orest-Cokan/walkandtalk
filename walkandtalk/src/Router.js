@@ -8,12 +8,17 @@ import AddEventScreen from "./components/event/AddEventScreen";
 import HomeScreen from "./components/home/HomeScreen";
 import SearchScreen from "./components/search/SearchScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
+import RequestsScreen from "./components/form/RequestsScreen";
+import ViewRequestScreen from "./components/form/ViewRequestScreen";
 import FormScreen from "./components/form/FormScreen";
-import SubmitEventRecordScreen from "./components/form/SubmitEventRecord";
+import SubmitRecordScreen from "./components/form/SubmitRecord";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
+import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
+import ViewEventScreen from "./components/event/ViewEventScreen";
 
+// Navigation logic for the entire app
 const RouterComponent = () => (
   <Router>
     <Stack key="root">
@@ -88,11 +93,26 @@ const RouterComponent = () => (
             hideNavBar
           >
             <Scene key="mainFormPage" component={FormScreen} />
-            <Scene
-              key="submitEventRecord"
-              component={SubmitEventRecordScreen}
-            />
+            <Scene key="submitRecord" component={SubmitRecordScreen} />
           </Scene>
+          {/*If the user is a researcher, this tab will show instead of forms tab*/}
+          {/*<Scene
+            key="request"
+            icon={({ focused }) => (
+              <Image
+                source={
+                  focused
+                    ? require("./assets/icons/request-full.png")
+                    : require("./assets/icons/request.png")
+                }
+                style={{ width: 28, height: 28 }}
+              />
+            )}
+            hideNavBar
+          >
+            <Scene key="mainRequestPage" component={RequestsScreen} />
+            <Scene key="viewRequest" component={ViewRequestScreen} />
+          </Scene>*/}
           <Scene
             key="profile"
             icon={({ focused }) => (
@@ -113,6 +133,8 @@ const RouterComponent = () => (
             <Scene key="helplines" component={HelplineScreen} />
           </Scene>
         </Tabs>
+        <Scene key="questionnaire" component={QuestionnaireScreen} />
+        <Scene key="viewEvent" component={ViewEventScreen} />
       </Stack>
     </Stack>
   </Router>

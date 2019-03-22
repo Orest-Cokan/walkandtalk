@@ -1,10 +1,6 @@
 // Past Event List Screen View
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Image
-} from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -18,17 +14,46 @@ import {
   StatusBar
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { Actions } from 'react-native-router-flux';
+import { Actions } from "react-native-router-flux";
 import BaseCard from "../../cardview/baseCard";
+import { getCompletedRecords } from "../../actions/RecordActions";
 
 class PastEventListScreen extends Component {
-
-  onBack = () => {
-    // Navigate back to profile page
-    Actions.pop();
-    //Actions.pastEventRecord();
+  constructor(props) {
+    super(props);
+    console.log("inside constructor");
+    console.log("before", this.props);
+    this.props.getCompletedRecords = this.props.getCompletedRecords(
+      this.props.user.user.email
+    );
+    console.log("after", this.props);
   }
 
+  componentDidMount() {
+    this.props.getCompletedRecords;
+    console.log("componentmount", this.props);
+  }
+
+  getEvents() {
+    let records = [];
+    this.props.records.map(record => {
+      records.unshift(
+        <BaseCard
+          key={record.id}
+          date={record.date}
+          start_time={record.start_time}
+          title={record.title}
+          location={record.location}
+        />
+      );
+    });
+    console.log("end", this.props);
+    return records;
+  }
+
+  onBack = () => {
+    Actions.pop();
+  };
   render() {
     return (
       <Container>
@@ -49,34 +74,26 @@ class PastEventListScreen extends Component {
           <Body style={ScreenStyleSheet.headerBody}>
             <Title style={ScreenStyleSheet.headerTitle}>Past Events</Title>
           </Body>
-          <Right style={ScreenStyleSheet.headerSides}>
-          </Right>
+          <Right style={ScreenStyleSheet.headerSides} />
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {/* Card List View */}
-          <BaseCard
-            title="Walk in the park"
-            date="WED, MAR 3"
-            start_time="10:00 PM"
-            location="Hawrelak Park"
-          />
-          <BaseCard
-            title="Morning Stroll"
-            date="SAT, MAR 17"
-            start_time="9:00 AM"
-            location="River Valley"
-          />
+          {this.getEvents()}
         </Content>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  console.log("pastrecordlistscreen");
+  return {
+    records: state.record.completed_records,
+    user: state.user
+  };
+};
 
 export default connect(
   mapStateToProps,
-  null
+  { getCompletedRecords }
 )(PastEventListScreen);
-

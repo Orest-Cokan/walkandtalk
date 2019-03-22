@@ -1,7 +1,8 @@
 const Sequelize = require("sequelize");
 const bcryptService = require("../services/bcrypt.service");
-
 const sequelize = require("../../config/database");
+const Preference = require("./Preference");
+const Picture = require("./Picture");
 
 // hook for a user to encrypt their password
 const hooks = {
@@ -15,32 +16,39 @@ const tableName = "users";
 
 // user model
 const User = sequelize.define(
-  "User",
+  tableName,
   {
     id: {
       type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
+      autoIncrement: true
     },
     email: {
       type: Sequelize.STRING,
-      unique: true
+      unique: true,
+      primaryKey: true
     },
     password: Sequelize.STRING,
     fullname: Sequelize.STRING,
-    menopausal_stage: Sequelize.STRING,
-    image: Sequelize.STRING,
-    registered: Sequelize.INTEGER,
-    intensity: Sequelize.STRING,
-    venue: Sequelize.STRING,
-    location: Sequelize.STRING,
     dob: Sequelize.STRING,
-    distance: Sequelize.INTEGER,
-    duration: Sequelize.INTEGER
+    menopausal_stage: Sequelize.STRING,
+    registered: Sequelize.INTEGER,
+    redcapID: Sequelize.INTEGER
   },
 
   { hooks, tableName }
 );
+
+// set hasOne association
+User.hasOne(Preference, {
+  onDelete: "CASCADE",
+  hooks: true
+});
+// set hasOne association
+User.hasOne(Picture);
+
+// set belongsTo association
+Preference.belongsTo(User);
+Picture.belongsTo(User);
 
 // eslint-disable-next-line
 User.prototype.toJSON = function() {
@@ -51,4 +59,5 @@ User.prototype.toJSON = function() {
   return values;
 };
 
+// export user model
 module.exports = User;

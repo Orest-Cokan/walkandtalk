@@ -1,6 +1,10 @@
 const User = require("../models/User");
+const Preference = require("../models/Preference");
+const Picture = require("../models/Picture");
 const authService = require("../services/auth.service");
 const bcryptService = require("../services/bcrypt.service");
+const Transporter = require("../utils/email/email");
+const newUserEmail = require("../utils/email/msgs/newUser");
 
 // User controller
 const UserController = () => {
@@ -10,21 +14,24 @@ const UserController = () => {
 
     if (body.password === body.password2) {
       try {
-        const user = await User.create({
-          email: body.email,
-          fullname: body.fullname,
-          password: body.password,
-          menopausal_stage: body.menopausal_stage,
-          intensity: body.intensity,
-          dob: body.dob,
-          venue: body.venue,
-          registered: body.registered,
-          location: body.location,
-          distance: body.distance,
-          duration: body.duration
-        });
+        const user = await User.create(
+          {
+            email: body.email,
+            fullname: body.fullname,
+            password: body.password,
+            menopausal_stage: body.menopausal_stage,
+            dob: body.dob,
+            registered: body.registered,
+            redcapID: null,
+            preference: body.preference,
+            picture: body.picture
+          },
+          {
+            include: [Preference, Picture]
+          }
+        );
         const token = authService().issue({ id: user.id });
-
+        Transporter.sendMail(newUserEmail);
         return res.status(200).json({ token, user });
       } catch (err) {
         console.log(err);
@@ -44,7 +51,8 @@ const UserController = () => {
         const user = await User.findOne({
           where: {
             email
-          }
+          },
+          include: [Preference, Picture]
         });
 
         if (!user) {
@@ -69,7 +77,7 @@ const UserController = () => {
       .json({ msg: "Bad Request: Email or password is wrong" });
   };
 
-  // validate  auser
+  // validate a user
   const validate = (req, res) => {
     const { token } = req.body;
 
@@ -85,7 +93,9 @@ const UserController = () => {
   // get all users
   const getAll = async (req, res) => {
     try {
-      const users = await User.findAll();
+      const users = await User.findAll({
+        include: [Preference, Picture]
+      });
 
       return res.status(200).json({ users });
     } catch (err) {
@@ -100,7 +110,10 @@ const UserController = () => {
     const { email } = req.params;
     console.log(email);
     try {
-      const user = await User.findAll({ where: { email: email } });
+      const user = await User.findAll({
+        where: { email: email },
+        include: [Preference, Picture]
+      });
       return res.status(200).json({ user });
     } catch (err) {
       console.log(err);
@@ -112,22 +125,38 @@ const UserController = () => {
   const updateUser = async (req, res) => {
     const { body } = req;
     console.log(body.id, body.fullname), "we are here!";
+    console.log(body.preference, "IS THIS TRIGGERED!!!!!!");
+
     await User.update(
       {
         fullname: body.fullname,
         menopausal_stage: body.menopausal_stage,
-        location: body.location,
         dob: body.dob,
-        intensity: body.intensity,
-        distance: body.distance,
-        duration: body.duration,
-        venue: body.venue
+        distance: body.preference
       },
-      { returning: true, where: { email: body.email } }
+      {
+        returning: true,
+        where: { email: body.email }
+      }
     )
-      .then(self => {
-        console.log("we get here???");
-        return res.status(200).json(self[1]);
+      .then(() => {
+        Preference.update(
+          {
+            distance: body.preference.distance,
+            duration: body.preference.duration,
+            intensity: body.preference.intensity,
+            venue: body.preference.venue,
+            location: body.preference.location
+          },
+          {
+            plain: true,
+            returning: true,
+            where: { userEmail: body.email }
+          }
+        ).then(self => {
+          console.log("we get here???");
+          return res.status(200).json(self[1]);
+        });
       })
       .catch(function(err) {
         return res.status(500).json({ msg: "Internal server error" });

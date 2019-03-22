@@ -1,6 +1,6 @@
 const WalkingRecord = require("../models/WalkingRecord");
 
-// overarching walking record controller
+// walking record controller
 const WalkingRecordController = () => {
   // create a new walkingrecord
   const create = async (req, res) => {
@@ -8,12 +8,24 @@ const WalkingRecordController = () => {
     console.log(body.email);
     try {
       WalkingRecord.create({
-        fullanem: body.fullname,
+        organizer: body.organizer,
+        fullname: body.organizer,
+        title: body.title,
         email: body.email,
-        commentsLocation: body.commentsLocation,
-        commentsWalk: body.commentsWalk,
-        walkRating: body.walkRating,
-        locationRating: body.locationRating
+        venue: body.venue,
+        date: body.date,
+        location: body.location.streetName,
+        start_time: body.start_time,
+        end_time: body.end_time,
+        distance: body.distance,
+        duration: body.duration,
+        intensity: body.intesity,
+        walk_rating: body.walk_rating,
+        walk_rating_comment: body.walk_rating_comment,
+        location_rating: body.location_rating,
+        location_rating_comment: body.location_rating_comment,
+        completed: body.completed,
+        total_attendees: body.total_attendees
       });
 
       return res
@@ -40,7 +52,9 @@ const WalkingRecordController = () => {
   const getRecords = async (req, res) => {
     const { email } = req.params;
     try {
-      const records = await WalkingRecord.findAll({ where: { email: email } });
+      const records = await WalkingRecord.findAll({
+        where: { email: email }
+      });
       return res.status(200).json({ records });
     } catch (err) {
       console.log(err);
@@ -48,10 +62,66 @@ const WalkingRecordController = () => {
     }
   };
 
+  // get completed records for a single user
+  const completedRecords = async (req, res) => {
+    const { email } = req.params;
+    try {
+      const records = await WalkingRecord.findAll({
+        where: { email: email, completed: 1 }
+      });
+      return res.status(200).json({ records });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
+  // get uncompleted records for a single user
+  const uncompletedRecords = async (req, res) => {
+    const { email } = req.params;
+    try {
+      const records = await WalkingRecord.findAll({
+        where: { email: email, completed: 0 }
+      });
+      return res.status(200).json({ records });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
+  // update record
+  const update = async (req, res) => {
+    const { body } = req;
+    WalkingRecord.update(
+      {
+        duration: body.duration,
+        distance: body.distance,
+        intensity: body.intensity,
+        venue: body.venue,
+        walk_rating: body.walk_rating,
+        walk_rating_comment: body.walk_rating_comment,
+        location_rating: body.location_rating,
+        location_rating_comment: body.location_rating_comment,
+        completed: body.completeds
+      },
+      { returning: true, where: { email: body.email, id: body.id } }
+    )
+      .then(self => {
+        return res.status(200).json(self[1]);
+      })
+      .catch(function(err) {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
+  };
+
   return {
     create,
     getAll,
-    getRecords
+    getRecords,
+    completedRecords,
+    uncompletedRecords,
+    update
   };
 };
 

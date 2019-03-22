@@ -5,13 +5,11 @@ import {
   USER_LOGIN,
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
-  USER_EDIT,
-  USER_EDIT_SUCCESS,
-  USER_EDIT_FAIL,
+  USER_EDIT
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
-import {Platform} from 'react-native';
+import { Platform } from "react-native";
 
 // action to create a user
 export const createUser = (
@@ -34,15 +32,17 @@ export const createUser = (
     fullname: fullname,
     menopausal_stage: menopausal_stage,
     dob: dob,
-    venue: venue,
-    location: location,
-    intensity: intensity,
-    duration: duration,
-    distance: distance
+    preference: {
+      venue: venue,
+      location: location,
+      intensity: intensity,
+      duration: duration,
+      distance: distance
+    }
   };
   return dispatch => {
     var ip = getIP();
-    var url = ip +"public/user";
+    var url = ip + "public/user";
     console.log(user);
     dispatch({ type: USER_CREATE });
     axios
@@ -84,7 +84,7 @@ export const loginUser = (email, password) => {
   console.log("login", USER_LOGIN);
   return dispatch => {
     var ip = getIP();
-    var url = ip +"public/login";
+    var url = ip + "public/login";
     console.log(email, password);
     dispatch({ type: USER_LOGIN });
     axios
@@ -118,8 +118,8 @@ const loginUserSuccess = (dispatch, user) => {
   Actions.app();
 };
 
- // action to edit a user
- export const editUser = (
+// action to edit a user
+export const editUser = (
   fullname,
   email,
   dob,
@@ -128,62 +128,44 @@ const loginUserSuccess = (dispatch, user) => {
   distance,
   duration,
   venue,
-  location,
+  location
 ) => {
   const user = {
-  fullname: fullname,
-  email: email,
-  dob: dob,
-  menopausal_stage: menopausal_stage,
-  intensity: intensity,
-  distance: distance,
-  duration: duration,
-  venue: venue,
-  location: location,
+    fullname: fullname,
+    email: email,
+    dob: dob,
+    menopausal_stage: menopausal_stage,
+    preference: {
+      intensity: intensity,
+      distance: distance,
+      duration: duration,
+      venue: venue,
+      location: location
+    }
   };
   return dispatch => {
     var ip = getIP();
-    var url = ip +"public/user";
-    console.log(user);
-    dispatch({ type: USER_EDIT });
-    axios                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+    var url = ip + "public/user";
+    console.log(user, "this should be a user kek");
+    axios
       .put(url, user)
       .then(res => {
         if (res.status === 200) {
-          if(res.data === 1) {
-            console.log('Succcesss');
-            editUserSuccess(dispatch);
+          if (res.data === 1) {
+            dispatch({ type: USER_EDIT, payload: user });
           }
         }
       })
       .catch(err => {
-        editUserFail(dispatch);
-        console.log('axios failure', err);
+        console.log("axios failure", err);
       });
   };
 };
 
-// dispatch user edit success
-const editUserSuccess = (dispatch) => {
-  dispatch({
-    type: USER_EDIT_SUCCESS,
-  });
-  
-  Actions.mainProfile();
-};
-
-// dispatch user edit fail
-const editUserFail = dispatch => {
-  console.log("fail", USER_EDIT_FAIL);
-  dispatch({ type: USER_EDIT_FAIL });
-};
-
-var getIP = ()=>{
-  if (Platform.OS === 'android') {
+var getIP = () => {
+  if (Platform.OS === "android") {
     return "http://10.0.2.2:2017/";
-  }
-  else if(Platform.OS === 'ios'){
+  } else if (Platform.OS === "ios") {
     return "http://127.0.0.1:2017/";
   }
-}
-
+};

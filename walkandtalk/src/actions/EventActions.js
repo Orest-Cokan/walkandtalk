@@ -1,13 +1,13 @@
 import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
-import {Platform} from 'react-native';
+import { Platform } from "react-native";
 
 // action to fetch all events
 export const fetchEvents = () => {
   return dispatch => {
     var ip = getIP();
-    var url = ip +"public/walkingevents";
+    var url = ip + "public/walkingevents";
     axios
       .get(url)
       .then(res => {
@@ -22,6 +22,7 @@ export const fetchEvents = () => {
 // action to create an event
 export const createEvent = (
   organizer,
+  email,
   title,
   date,
   start_time,
@@ -35,9 +36,10 @@ export const createEvent = (
 ) => {
   return dispatch => {
     var ip = getIP();
-    var url = ip +"public/walkingevent";
+    var url = ip + "public/walkingevent";
     const walking_event = {
       organizer: organizer,
+      email: email,
       title: title,
       date: date,
       start_time: start_time,
@@ -71,12 +73,13 @@ export const createEvent = (
 export const deleteEvent = id => {
   return dispatch => {
     var ip = getIP();
-    var url = ip +"public/walkingevent/";
+    var url = ip + "public/walkingevent/";
     axios
       .delete(url + id)
       .then(res => {
         console.log(res.data);
         dispatch({ type: EVENT_DELETE, payload: res.data });
+        Actions.reset("app");
       })
       .catch(err => {
         console.log(err);
@@ -84,13 +87,10 @@ export const deleteEvent = id => {
   };
 };
 
-
-var getIP = ()=>{
-  if (Platform.OS === 'android') {
+var getIP = () => {
+  if (Platform.OS === "android") {
     return "http://10.0.2.2:2017/";
-  }
-  else if(Platform.OS === 'ios'){
+  } else if (Platform.OS === "ios") {
     return "http://127.0.0.1:2017/";
   }
-}
-
+};

@@ -18,7 +18,12 @@ const publicRoutes = {
   // Walkingrecord routes
   "GET /walkingrecords": "WalkingRecordController.getAll",
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
+  "GET /walkingrecord/completed/:email":
+    "WalkingRecordController.completedRecords",
+  "GET /walkingrecord/uncompleted/:email":
+    "WalkingRecordController.uncompletedRecords",
   "POST /walkingrecord": "WalkingRecordController.create",
+  "PUT /walkingrecord": "WalkingRecordController.update",
 
   // Researcher routes
   "PUT /researcher/accept": "ResearcherController.acceptUser",
@@ -26,7 +31,10 @@ const publicRoutes = {
 
   // Attendee routes
   "PUT /attendee/add": "AttendeeController.addAttendees",
-  "GET /attendee/remove": "AttendeeController.removeAttendees"
+  "GET /attendee/remove": "AttendeeController.removeAttendees",
+
+  // Picture routes
+  "PUT /user/picture": "PictureController.updateImage"
 };
 
 module.exports = publicRoutes;

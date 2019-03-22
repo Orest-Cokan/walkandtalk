@@ -14,6 +14,7 @@ afterAll(() => {
 //mock
 beforeEach(async () => {
   user = await User.build({
+    fullname: "skryt cokan",
     email: "martin@mail.com",
     password: "securepassword"
   }).save();
@@ -33,10 +34,15 @@ test("User is created correctly", async () => {
 // test user updating
 test("User is updated correctly", async () => {
   await user.update({
-    email: "peter@mail.com"
+    fullname: "skryt cokan"
   });
 
-  expect(user.email).toBe("peter@mail.com");
+  expect(user.fullname).toBe("skryt cokan");
 
+  await user.destroy();
+});
+
+// test destroying a user
+test("User is destroyed correctly", async () => {
   await user.destroy();
 });
