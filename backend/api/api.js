@@ -26,7 +26,7 @@ const server = http.Server(app);
 const mappedOpenRoutes = mapRoutes(config.publicRoutes, "api/controllers/");
 const mappedAuthRoutes = mapRoutes(config.privateRoutes, "api/controllers/");
 const DB = dbService(environment, config.migrate).start();
-//const task = require("../config/cron");
+const task = require("../config/cron");
 
 // allow cross origin requests
 // configure to only allow requests from certain origins
@@ -34,7 +34,7 @@ app.use(cors());
 
 // secure express app
 app.use(
-  //task.start(),
+  task.start(),
   helmet({
     dnsPrefetchControl: false,
     frameguard: false,

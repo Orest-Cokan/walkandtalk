@@ -34,7 +34,10 @@ const publicRoutes = {
 
   // Picture routes
   "PUT /user/picture": "PictureController.updateImage",
-  "GET /user/picture": "PictureController.getImage"
+  "GET /user/picture": "PictureController.getImage",
+
+  // Excel route
+  "GET /researcher/excel": "ExcelController.getData"
 };
 
 module.exports = publicRoutes;
