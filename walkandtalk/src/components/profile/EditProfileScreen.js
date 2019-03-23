@@ -4,9 +4,9 @@ import {
   View,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   ScrollView
 } from "react-native";
-import { SegmentedControls } from "react-native-radio-buttons";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
   Container,
@@ -23,6 +23,7 @@ import { editUser } from "../../actions/UserActions";
 import DatePicker from "react-native-datepicker";
 import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
+import ImagePicker from 'react-native-image-picker';
 import { width, height, totalSize } from "react-native-dimension";
 import {
   StyledText as Text,
@@ -34,10 +35,11 @@ class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
 
-    console.log(this.props);
+    console.log('editprofile props', this.props);
     this.state = {
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
+      picture: this.props.user.user.picture,
       dob: this.props.user.user.dob,
       menopausal_stage: this.props.user.user.menopausal_stage,
       intensity: this.props.user.user.preference.intensity,
@@ -97,6 +99,7 @@ class EditProfileScreen extends Component {
     this.props.editUser(
       this.state.fullname,
       this.state.email,
+      this.state.picture,
       this.state.dob,
       this.state.menopausal_stage,
       this.state.intensity,
@@ -105,11 +108,35 @@ class EditProfileScreen extends Component {
       this.state.venue,
       this.state.location
     );
-    console.log("props on save", this.props);
+    console.log("after save profile?");
     Actions.mainProfile();
   };
 
+  addPicture = () => {
+    const options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, (response) => {
+      console.log('Response = ', response);
+    
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const uri = 'data:image/jpeg;base64,' + response.data;
+        this.setState({
+          picture: uri,
+        });
+      }
+    });
+  };
+
   render() {
+    console.log('editrender',this.state)
     // All the options displayed in radio buttons
     const intensities = [
       { label: "Slow", value: "Slow" },
@@ -166,11 +193,13 @@ class EditProfileScreen extends Component {
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           <View style={ScreenStyleSheet.profileHeader}>
             {/* Profile picture */}
-            <Image
-              style={ScreenStyleSheet.avatar}
-              source={require("../../assets/icons/default-profile.png")}
-            />
-            {/* Add + for changing profile picture */}
+            <TouchableHighlight onPress={this.addPicture} activeOpacity={0} underlayColor={'transparent'}>
+              <Image
+                style={ScreenStyleSheet.avatar}
+                // source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
+                source={require("../../assets/icons/default-profile.png")}
+              />
+            </TouchableHighlight>
           </View>
 
           {/* Full Name */}

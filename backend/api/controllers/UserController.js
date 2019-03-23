@@ -20,11 +20,11 @@ const UserController = () => {
             fullname: body.fullname,
             password: body.password,
             menopausal_stage: body.menopausal_stage,
+            picture: body.picture,
             dob: body.dob,
             registered: body.registered,
             redcapID: null,
-            preference: body.preference,
-            picture: body.picture
+            preference: body.preference
           },
           {
             include: [Preference, Picture]
@@ -131,6 +131,7 @@ const UserController = () => {
       {
         fullname: body.fullname,
         menopausal_stage: body.menopausal_stage,
+        picture: body.picture,
         dob: body.dob,
         distance: body.preference
       },

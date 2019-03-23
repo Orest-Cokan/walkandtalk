@@ -48,7 +48,6 @@ class ProfileScreen extends Component {
   };
 
   render() {
-    console.log(this.props.user.user);
     const vars = this.props.user.user;
     return (
       <Container>
@@ -71,6 +70,7 @@ class ProfileScreen extends Component {
               <TouchableHighlight
                 onPress={this.goToEditProfile}
                 activeOpacity={0}
+                underlayColor={'transparent'}
               >
                 <Image
                   style={ScreenStyleSheet.editIcon}
@@ -81,10 +81,11 @@ class ProfileScreen extends Component {
             {/* Profile picture */}
             <Image
               style={ScreenStyleSheet.avatar}
+              // source={vars.picture ? {uri: vars.picture} : require("../../assets/icons/default-profile.png")}
               source={require("../../assets/icons/default-profile.png")}
             />
             <Text style={ScreenStyleSheet.profileName}>
-              {this.props.user.user.fullname}
+              {vars.fullname}
             </Text>
           </View>
 
@@ -106,7 +107,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.dob}
+                {vars.dob}
               </Text>
             </View>
           </View>
@@ -120,7 +121,7 @@ class ProfileScreen extends Component {
                 {/* Automatically calculates the age when given date of birth */}
                 {Math.floor(
                   (new Date().getTime() -
-                    Date.parse(this.props.user.user.dob)) /
+                    Date.parse(vars.dob)) /
                     31557600000
                 )}
               </Text>
@@ -133,7 +134,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.menopausal_stage}
+                {vars.menopausal_stage}
               </Text>
             </View>
           </View>
