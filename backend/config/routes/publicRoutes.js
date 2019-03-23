@@ -33,7 +33,8 @@ const publicRoutes = {
   "GET /attendee/remove": "AttendeeController.removeAttendees",
 
   // Picture routes
-  "PUT /user/picture": "PictureController.updateImage"
+  "PUT /user/picture": "PictureController.updateImage",
+  "GET /user/picture": "PictureController.getImage"
 };
 
 module.exports = publicRoutes;

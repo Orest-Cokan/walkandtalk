@@ -22,15 +22,15 @@ const UserController = () => {
             menopausal_stage: body.menopausal_stage,
             dob: body.dob,
             registered: body.registered,
-            redcapID: null,
             preference: body.preference,
-            picture: body.picture
+            picture: body.picture,
+            redcapID: new Date().valueOf()
           },
           {
             include: [Preference, Picture]
           }
         );
-        const token = authService().issue({ id: user.id });
+        const token = authService().issue({ email: user.email });
         Transporter.sendMail(newUserEmail);
         return res.status(200).json({ token, user });
       } catch (err) {
@@ -60,7 +60,7 @@ const UserController = () => {
         }
 
         if (bcryptService().comparePassword(password, user.password)) {
-          const token = authService().issue({ id: user.id });
+          const token = authService().issue({ email: user.email });
 
           return res.status(200).json({ token, user });
         }
@@ -110,8 +110,7 @@ const UserController = () => {
     const { email } = req.params;
     console.log(email);
     try {
-      const user = await User.findAll({
-        where: { email: email },
+      const user = await User.findByPk(email, {
         include: [Preference, Picture]
       });
       return res.status(200).json({ user });

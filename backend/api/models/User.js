@@ -18,21 +18,35 @@ const tableName = "users";
 const User = sequelize.define(
   tableName,
   {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true
-    },
     email: {
       type: Sequelize.STRING,
       unique: true,
       primaryKey: true
     },
-    password: Sequelize.STRING,
-    fullname: Sequelize.STRING,
-    dob: Sequelize.STRING,
-    menopausal_stage: Sequelize.STRING,
-    registered: Sequelize.INTEGER,
-    redcapID: Sequelize.INTEGER
+    redcapID: {
+      type: Sequelize.INTEGER,
+      unique: true
+    },
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    fullname: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    dob: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    menopausal_stage: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    registered: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    }
   },
 
   { hooks, tableName }
