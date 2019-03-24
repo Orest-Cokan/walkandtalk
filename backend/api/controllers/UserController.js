@@ -20,11 +20,12 @@ const UserController = () => {
             fullname: body.fullname,
             password: body.password,
             menopausal_stage: body.menopausal_stage,
+            picture: body.picture,
             dob: body.dob,
             registered: body.registered,
             preference: body.preference,
-            picture: body.picture,
-            redcapID: new Date().valueOf()
+            redcapID: new Date().valueOf(),
+            researcher: 0
           },
           {
             include: [Preference, Picture]
@@ -152,10 +153,7 @@ const UserController = () => {
             returning: true,
             where: { userEmail: body.email }
           }
-        ).then(self => {
-          console.log("we get here???");
-          return res.status(200).json(self[1]);
-        });
+        );
       })
       .catch(function(err) {
         return res.status(500).json({ msg: "Internal server error" });

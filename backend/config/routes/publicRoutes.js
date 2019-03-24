@@ -34,7 +34,7 @@ const publicRoutes = {
 
   // Picture routes
   "PUT /user/picture": "PictureController.updateImage",
-  "GET /user/picture": "PictureController.getImage",
+  "GET /user/picture/:email": "PictureController.getImage",
 
   // Excel route
   "GET /researcher/excel": "ExcelController.getData"

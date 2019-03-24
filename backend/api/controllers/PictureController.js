@@ -28,10 +28,10 @@ const PictureController = () => {
   };
   // get image of user
   const getImage = async (req, res) => {
-    const { body } = req;
-    console.log(body.email);
+    const { email } = req.params;
+    console.log(email);
     try {
-      await Picture.findByPk(body.email).then(image => {
+      await Picture.findByPk(email).then(image => {
         return res.status(200).json(image);
       });
     } catch (err) {

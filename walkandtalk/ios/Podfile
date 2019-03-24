@@ -43,6 +43,8 @@ target 'walkandtalk' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
+
 end
 
 post_install do |installer|
