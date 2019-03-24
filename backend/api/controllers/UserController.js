@@ -20,11 +20,11 @@ const UserController = () => {
             fullname: body.fullname,
             password: body.password,
             menopausal_stage: body.menopausal_stage,
+            picture: body.picture,
             dob: body.dob,
             registered: body.registered,
             redcapID: null,
-            preference: body.preference,
-            picture: body.picture
+            preference: body.preference
           },
           {
             include: [Preference, Picture]
@@ -147,6 +147,16 @@ const UserController = () => {
             intensity: body.preference.intensity,
             venue: body.preference.venue,
             location: body.preference.location
+          },
+          {
+            plain: true,
+            returning: true,
+            where: { userEmail: body.email }
+          }
+        ),
+        Picture.update(
+          {
+            image: body.picture.image
           },
           {
             plain: true,
