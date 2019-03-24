@@ -81,8 +81,7 @@ class ProfileScreen extends Component {
             {/* Profile picture */}
             <Image
               style={ScreenStyleSheet.avatar}
-              // source={vars.picture ? {uri: vars.picture} : require("../../assets/icons/default-profile.png")}
-              source={require("../../assets/icons/default-profile.png")}
+              source={vars.picture.image ? {uri: vars.picture.image} : require("../../assets/icons/default-profile.png")}
             />
             <Text style={ScreenStyleSheet.profileName}>
               {vars.fullname}

@@ -24,6 +24,7 @@ import DatePicker from "react-native-datepicker";
 import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
 import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
 import { width, height, totalSize } from "react-native-dimension";
 import {
   StyledText as Text,
@@ -39,7 +40,7 @@ class EditProfileScreen extends Component {
     this.state = {
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
-      picture: this.props.user.user.picture,
+      picture: this.props.user.user.picture.image,
       dob: this.props.user.user.dob,
       menopausal_stage: this.props.user.user.menopausal_stage,
       intensity: this.props.user.user.preference.intensity,
@@ -119,17 +120,24 @@ class EditProfileScreen extends Component {
         path: 'images',
       },
     };
+    // Shows options for selecting a photo and returns image data once image selected
     ImagePicker.showImagePicker(options, (response) => {
-      console.log('Response = ', response);
-    
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
-        const uri = 'data:image/jpeg;base64,' + response.data;
-        this.setState({
-          picture: uri,
+        const base64 = 'data:image/jpeg;base64,' + response.data;
+        // Reduce image size and store as compressed JPEG
+        ImageResizer.createResizedImage(base64, 180, 240, 'JPEG', 80)
+        .then((response) => {
+          console.log('uri',response.uri)
+          this.setState({
+            picture: response.uri,
+          });
+        })
+        .catch(err => {
+          console.log(err);
         });
       }
     });
@@ -197,7 +205,7 @@ class EditProfileScreen extends Component {
               <Image
                 style={ScreenStyleSheet.avatar}
                 // source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
-                source={require("../../assets/icons/default-profile.png")}
+                source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
               />
             </TouchableHighlight>
           </View>
