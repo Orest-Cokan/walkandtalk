@@ -131,7 +131,6 @@ const UserController = () => {
       {
         fullname: body.fullname,
         menopausal_stage: body.menopausal_stage,
-        picture: body.picture,
         dob: body.dob,
         distance: body.preference
       },
@@ -148,6 +147,16 @@ const UserController = () => {
             intensity: body.preference.intensity,
             venue: body.preference.venue,
             location: body.preference.location
+          },
+          {
+            plain: true,
+            returning: true,
+            where: { userEmail: body.email }
+          }
+        ),
+        Picture.update(
+          {
+            image: body.picture.image
           },
           {
             plain: true,
