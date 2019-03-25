@@ -22,9 +22,9 @@ const UserController = () => {
             menopausal_stage: body.menopausal_stage,
             picture: body.picture,
             dob: body.dob,
-            registered: body.registered,
             preference: body.preference,
             redcapID: new Date().valueOf(),
+            registered: 0,
             researcher: 0
           },
           {

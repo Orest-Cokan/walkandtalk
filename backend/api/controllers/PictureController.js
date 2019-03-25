@@ -31,7 +31,7 @@ const PictureController = () => {
     const { email } = req.params;
     console.log(email);
     try {
-      await Picture.findByPk(email).then(image => {
+      await Picture.findOne({ where: { userEmail: email } }).then(image => {
         return res.status(200).json(image);
       });
     } catch (err) {
