@@ -29,7 +29,7 @@ const Preference = sequelize.define(tableName, {
   },
   location: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: true
   }
 });
 

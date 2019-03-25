@@ -134,7 +134,7 @@ export const editUser = (
   const user = {
     fullname: fullname,
     email: email,
-    picture: { 
+    picture: {
       image: image
     },
     dob: dob,

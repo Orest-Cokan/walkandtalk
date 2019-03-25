@@ -45,11 +45,11 @@ const User = sequelize.define(
     },
     registered: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: true
     },
     researcher: {
       type: Sequelize.BOOLEAN,
-      allowNull: false
+      allowNull: true
     }
   },
 
