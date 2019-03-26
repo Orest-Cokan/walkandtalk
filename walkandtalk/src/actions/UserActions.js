@@ -146,12 +146,16 @@ export const editUser = (
   return dispatch => {
     var ip = getIP();
     var url = ip + "public/user";
-    console.log(user, "this should be a user kek");
+    console.log('INSIDE EDIT USER', user)
     axios
       .put(url, user)
       .then(res => {
+        console.log('RES')
         if (res.status === 200) {
+          console.log('RES 200')
           if (res.data === 1) {
+            console.log('RES 1')
+            console.log('EDIT USER PUT REQUEST')
             dispatch({ type: USER_EDIT, payload: user });
           }
         }

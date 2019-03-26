@@ -15,13 +15,12 @@ import {
     return dispatch => {
       var ip = getIP();
       var url = ip + "public/user/picture";
-      console.log('image in edit picture', userPicture);
       axios
         .put(url, userPicture)
         .then(res => {
           if (res.status === 200) {
             if (res.data === 1) {
-              console.log('user picture in actions', userPicture)
+              console.log('dispatch edit picture', editPicture)
               dispatch({ type: PICTURE_EDIT, payload: userPicture });
             }
           }
@@ -40,7 +39,7 @@ import {
       axios
         .get(url)
         .then(res => {
-          console.log('get picture',res.data)
+          console.log('getting picture',res.data)
           dispatch({
             type: PICTURE_GET,
             payload: res.data

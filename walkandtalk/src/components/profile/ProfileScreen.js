@@ -47,14 +47,14 @@ class ProfileScreen extends Component {
     // Navigate to Past Events
     Actions.helplines();
   };
-  componentWillMount(){
-    console.log('props', this.props)
-    this.props.getPicture(
-      this.props.user.user.email
-    )
-  }
+  // componentWillMount(){
+  //   console.log('props', this.props)
+  //   this.props.getPicture(
+  //     this.props.user.user.email
+  //   )
+  // }
   render() {
-    console.log('profile props', this.props)
+    // console.log('profile props', this.props)
     const vars = this.props.user.user;
     return (
       <Container>
@@ -243,13 +243,14 @@ const mapStateToProps = state => {
   console.log("profilescreen");
   return {
     user: state.user,
-    picture: state.picture
+    // picture: state.picture
   };
 };
 
 export default connect(
   mapStateToProps,
-  {getPicture}
+  null
+  // {getPicture}
 )(ProfileScreen);
 
 // Styles

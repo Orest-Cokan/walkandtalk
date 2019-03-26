@@ -149,8 +149,6 @@ class EditProfileScreen extends Component {
   };
 
   render() {
-    console.log('editrender',this.state)
-    console.log('editrender, props', this.props)
     // All the options displayed in radio buttons
     const intensities = [
       { label: "Slow", value: "Slow" },
@@ -478,7 +476,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { editUser }
+  { editUser, editPicture }
 )(EditProfileScreen);
 
 // Styles
