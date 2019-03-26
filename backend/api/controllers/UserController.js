@@ -23,7 +23,7 @@ const UserController = () => {
             picture: body.picture,
             dob: body.dob,
             preference: body.preference,
-            redcapID: new Date().valueOf(),
+            redcapID: Math.floor(Math.random() * 10000),
             registered: 0,
             researcher: 0
           },
@@ -124,8 +124,6 @@ const UserController = () => {
   // update a user
   const updateUser = async (req, res) => {
     const { body } = req;
-    console.log(body.id, body.fullname), "we are here!";
-    console.log(body.preference, "IS THIS TRIGGERED!!!!!!");
 
     await User.update(
       {

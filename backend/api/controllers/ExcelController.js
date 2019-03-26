@@ -3,6 +3,9 @@ const excel = require("excel4node");
 const User = require("../models/User");
 const Preference = require("../models/Preference");
 const WalkingRecord = require("../models/WalkingRecord");
+const Transporter = require("../utils/email/email");
+const excelData = require("../utils/email/msgs/excelData");
+const fs = require("fs");
 
 const ExcelController = () => {
   // hmm
@@ -63,6 +66,7 @@ const ExcelController = () => {
 
     // header fields in excel
     const recordFields = [
+      "Email",
       "Location",
       "Duration MINS",
       "Distance KM",
@@ -156,58 +160,77 @@ const ExcelController = () => {
           const record = recordBad.dataValues;
           recordSheet
             .cell(idx + 2, 1)
-            .string(record.location)
+            .string(record.email)
             .style(normal);
 
           recordSheet
             .cell(idx + 2, 2)
-            .number(record.duration)
+            .string(record.location)
             .style(normal);
 
           recordSheet
             .cell(idx + 2, 3)
-            .number(record.distance)
+            .number(record.duration)
             .style(normal);
 
           recordSheet
             .cell(idx + 2, 4)
-            .string(record.intensity)
+            .number(record.distance)
             .style(normal);
 
           recordSheet
             .cell(idx + 2, 5)
-            .string(record.venue)
+            .string(record.intensity)
             .style(normal);
 
           recordSheet
             .cell(idx + 2, 6)
-            .string(record.walk_rating)
+            .string(record.venue)
             .style(normal);
 
           recordSheet
             .cell(idx + 2, 7)
-            .string(record.walk_rating_comment)
+            .string(record.walk_rating)
             .style(normal);
 
           recordSheet
             .cell(idx + 2, 8)
-            .string(record.location_rating)
+            .string(record.walk_rating_comment)
             .style(normal);
 
           recordSheet
             .cell(idx + 2, 9)
-            .string(record.location_rating_comment)
+            .string(record.location_rating)
             .style(normal);
 
           recordSheet
             .cell(idx + 2, 10)
+            .string(record.location_rating_comment)
+            .style(normal);
+
+          recordSheet
+            .cell(idx + 2, 11)
             .number(record.total_attendees)
             .style(number);
         });
       })
       .then(() => {
-        workbook.write("Excel1.xlsx");
-        return res.status(200).json({ msg: "succesfully sent the excel" });
+        workbook.write("Walk-and-Talk-DATA.xlsx");
+      })
+      .then(() => {
+        Transporter.sendMail(excelData, (err, info) => {
+          if (err) {
+            console.log(err);
+            fs.unlink("./Walk-and-Talk-DATA.xlsx");
+            return res.status(500).json({ msg: "Failed to send Excel Data!" });
+          }
+          console.log("Email sent succesfully!");
+          console.log(info);
+          fs.unlink("./Walk-and-Talk-DATA.xlsx");
+          return res
+            .status(200)
+            .json({ msg: "Succesfully sent the Excel Data!" });
+        });
       });
   };
   return {
