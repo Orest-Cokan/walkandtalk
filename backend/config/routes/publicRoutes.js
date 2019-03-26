@@ -22,7 +22,6 @@ const publicRoutes = {
     "WalkingRecordController.completedRecords",
   "GET /walkingrecord/uncompleted/:email":
     "WalkingRecordController.uncompletedRecords",
-  "POST /walkingrecord": "WalkingRecordController.create",
   "PUT /walkingrecord": "WalkingRecordController.update",
 
   // Researcher routes
@@ -34,7 +33,11 @@ const publicRoutes = {
   "GET /attendee/remove": "AttendeeController.removeAttendees",
 
   // Picture routes
-  "PUT /user/picture": "PictureController.updateImage"
+  "PUT /user/picture": "PictureController.updateImage",
+  "GET /user/picture/:email": "PictureController.getImage",
+
+  // Excel route
+  "GET /researcher/excel": "ExcelController.getData"
 };
 
 module.exports = publicRoutes;

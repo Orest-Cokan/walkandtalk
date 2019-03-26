@@ -40,3 +40,8 @@ test("Location is updated correctly", async () => {
 
   await location.destroy();
 });
+
+// test destroying a location
+test("Location is destroyed correctly", async () => {
+  location.destroy();
+});

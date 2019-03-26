@@ -7,66 +7,62 @@ const WalkingEventController = () => {
   // create a new walkingevent
   const create = async (req, res) => {
     const { body } = req;
-    console.log(body.attendees);
-    console.log(body.location);
-
-    try {
-      WalkingEvent.create(
-        {
-          organizer: body.organizer,
-          email: body.email,
-          title: body.title,
-          description: body.description,
-          date: body.date,
-          start_time: body.start_time,
-          end_time: body.end_time,
-          intensity: body.intensity,
-          venue: body.venue,
-          location: body.location,
-          total_attendees: 1
-        },
-        {
-          include: [
-            {
-              model: Location
-            }
-          ]
-        }
-      );
-
-      return res
-        .status(200)
-        .json({ msg: "Successfully added a walking event!" });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: "Internal server error" });
-    }
-  };
-
-  // get all walkingevents
-  const getAll = async (req, res) => {
-    try {
-      const events = await WalkingEvent.findAll({
+    WalkingEvent.create(
+      {
+        organizer: body.organizer,
+        email: body.email,
+        title: body.title,
+        description: body.description,
+        date: body.date,
+        start_time: body.start_time,
+        end_time: body.end_time,
+        intensity: body.intensity,
+        venue: body.venue,
+        location: body.location,
+        total_attendees: 1
+      },
+      {
         include: [
-          {
-            model: Attendee
-          },
           {
             model: Location
           }
         ]
+      }
+    )
+      .then(() => {
+        console.log("is this triggered?");
+        return res
+          .status(200)
+          .json({ msg: "Successfully added a walking event!" });
+      })
+      .catch(err => {
+        return res.status(500).json({ msg: "Internal server error" });
       });
-      return res.status(200).json({ events });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: "Internal server error" });
-    }
   };
 
-  // update an event THIS SHIT WILL NEED TO BE FIXED LATER CUZ OF LOCATIONS
+  // get all walkingevents
+  const getAll = async (req, res) => {
+    await WalkingEvent.findAll({
+      include: [
+        {
+          model: Attendee
+        },
+        {
+          model: Location
+        }
+      ]
+    })
+      .then(events => {
+        return res.status(200).json({ events });
+      })
+      .catch(err => {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
+  };
+
+  // update an event
   const updateEvent = async (req, res) => {
     const { body } = req;
-    console.log(body.id, body.title, body.description);
     await WalkingEvent.update(
       {
         title: body.title,
@@ -82,7 +78,7 @@ const WalkingEventController = () => {
       { returning: true, where: { id: body.id } }
     )
       .then(self => {
-        return res.status(200).json({ self });
+        return res.status(200).json(self[1]);
       })
       .catch(function(err) {
         return res.status(500).json({ msg: "Internal server error" });
@@ -113,18 +109,18 @@ const WalkingEventController = () => {
       });
   };
 
-  // add an attendee to an event!
+  // get a walkingevent!
   const getEvent = async (req, res) => {
     const { id } = req.params;
-    try {
-      const walkingevent = await WalkingEvent.findByPk(id, {
-        include: [Attendee, Location]
+    await WalkingEvent.findByPk(id, {
+      include: [Attendee, Location]
+    })
+      .then(walkingevent => {
+        return res.status(200).json({ walkingevent });
+      })
+      .catch(err => {
+        return res.status(500).json({ msg: "Internal server error", err: err });
       });
-      return res.status(200).json({ walkingevent });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({ msg: "Internal server error" });
-    }
   };
 
   return {

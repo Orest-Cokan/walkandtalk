@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../../config/database");
-const WalkingEvent = require("./WalkingEvent");
 
 // table name
 const tableName = "walkingrecords";
@@ -18,6 +17,7 @@ const WalkingRecord = sequelize.define(tableName, {
   email: Sequelize.STRING,
   venue: Sequelize.STRING,
   date: Sequelize.STRING,
+  start_time: Sequelize.STRING,
   end_time: Sequelize.STRING,
   distance: Sequelize.INTEGER,
   duration: Sequelize.INTEGER,

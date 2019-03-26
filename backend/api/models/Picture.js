@@ -11,7 +11,9 @@ const Picture = sequelize.define(tableName, {
     autoIncrement: true,
     primaryKey: true
   },
-  image: Sequelize.STRING
+  image: {
+    type: Sequelize.STRING
+  }
 });
 
 // export picture model

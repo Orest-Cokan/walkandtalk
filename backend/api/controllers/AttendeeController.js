@@ -51,7 +51,7 @@ const AttendeeController = () => {
           if (resp.length > 0) {
             walkingevent.removeAttendees(resp);
             Attendee.destroy({
-              where: { WalkingEventId: body.id, name: body.name }
+              where: { WalkingEventId: body.id, email: body.email }
             }).then(con => console.log(con));
           } else {
             return res

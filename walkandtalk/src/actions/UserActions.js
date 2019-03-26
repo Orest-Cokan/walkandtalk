@@ -122,6 +122,7 @@ const loginUserSuccess = (dispatch, user) => {
 export const editUser = (
   fullname,
   email,
+  image,
   dob,
   menopausal_stage,
   intensity,
@@ -133,6 +134,9 @@ export const editUser = (
   const user = {
     fullname: fullname,
     email: email,
+    picture: {
+      image: image
+    },
     dob: dob,
     menopausal_stage: menopausal_stage,
     preference: {

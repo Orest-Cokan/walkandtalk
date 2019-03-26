@@ -4,9 +4,9 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView,
+  TouchableHighlight,
+  ScrollView
 } from "react-native";
-import { SegmentedControls } from "react-native-radio-buttons";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
   Container,
@@ -23,22 +23,24 @@ import { editUser } from "../../actions/UserActions";
 import DatePicker from "react-native-datepicker";
 import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
+import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
 import { width, height, totalSize } from "react-native-dimension";
 import {
   StyledText as Text,
   StyledTextInput as TextInput
 } from "../../constants/StyledText";
 
-
 class EditProfileScreen extends Component {
   // Constructor
   constructor(props) {
     super(props);
 
-    console.log(this.props);
+    console.log('editprofile props', this.props);
     this.state = {
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
+      picture: this.props.user.user.picture.image,
       dob: this.props.user.user.dob,
       menopausal_stage: this.props.user.user.menopausal_stage,
       intensity: this.props.user.user.preference.intensity,
@@ -46,7 +48,7 @@ class EditProfileScreen extends Component {
       duration: this.props.user.user.preference.duration,
       venue: this.props.user.user.preference.venue,
       location: this.props.user.user.preference.location
-    }
+    };
   }
   onChangeFullName = text => {
     this.setState({
@@ -58,30 +60,30 @@ class EditProfileScreen extends Component {
     this.setState({
       duration: value
     });
-  };
+  }
 
   onChangeDistance(value) {
     this.setState({
       distance: value
     });
-  };
+  }
 
   setIntensity(value) {
     this.setState({
       intensity: value
     });
-  };
+  }
   setMenopauseStage(value) {
     this.setState({
       menopausal_stage: value
     });
-  };
+  }
 
   setVenue(value) {
     this.setState({
       venue: value
     });
-  };
+  }
 
   onChangeLocation = text => {
     this.setState({
@@ -98,6 +100,7 @@ class EditProfileScreen extends Component {
     this.props.editUser(
       this.state.fullname,
       this.state.email,
+      this.state.picture,
       this.state.dob,
       this.state.menopausal_stage,
       this.state.intensity,
@@ -106,11 +109,42 @@ class EditProfileScreen extends Component {
       this.state.venue,
       this.state.location
     );
-    console.log("props on save", this.props);
+    console.log("after save profile?");
     Actions.mainProfile();
   };
 
+  addPicture = () => {
+    const options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    // Shows options for selecting a photo and returns image data once image selected
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const base64 = 'data:image/jpeg;base64,' + response.data;
+        // Reduce image size and store as compressed JPEG
+        ImageResizer.createResizedImage(base64, 180, 240, 'JPEG', 80)
+        .then((response) => {
+          console.log('uri',response.uri)
+          this.setState({
+            picture: response.uri,
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      }
+    });
+  };
+
   render() {
+    console.log('editrender',this.state)
     // All the options displayed in radio buttons
     const intensities = [
       { label: "Slow", value: "Slow" },
@@ -131,21 +165,21 @@ class EditProfileScreen extends Component {
     let default_intensity = null;
     intensities.map((intensity, index) => {
       if (this.state.intensity == intensity.value) {
-        default_intensity = index
+        default_intensity = index;
         return default_intensity;
       }
     });
     let default_venue = null;
     venues.map((venue, index) => {
       if (this.state.venue == venue.value) {
-        default_venue = index
+        default_venue = index;
         return default_venue;
       }
     });
     let default_menopausal_stage = null;
     menopausal_stage.map((stage, index) => {
       if (this.state.menopausal_stage == stage.value) {
-        default_menopausal_stage = index
+        default_menopausal_stage = index;
         return default_menopausal_stage;
       }
     });
@@ -167,11 +201,13 @@ class EditProfileScreen extends Component {
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           <View style={ScreenStyleSheet.profileHeader}>
             {/* Profile picture */}
-            <Image
-              style={ScreenStyleSheet.avatar}
-              source={require("../../assets/icons/default-profile.png")}
-            />
-            {/* Add + for changing profile picture */}
+            <TouchableHighlight onPress={this.addPicture} activeOpacity={0} underlayColor={'transparent'}>
+              <Image
+                style={ScreenStyleSheet.avatar}
+                // source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
+                source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
+              />
+            </TouchableHighlight>
           </View>
 
           {/* Full Name */}
@@ -180,7 +216,7 @@ class EditProfileScreen extends Component {
               <Text style={ScreenStyleSheet.formInfo}>
                 Full Name
                 <Text style={ScreenStyleSheet.asterisk}> *</Text>
-               </Text>
+              </Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
@@ -197,9 +233,7 @@ class EditProfileScreen extends Component {
           {/* Email Address */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Email Address
-              </Text>
+              <Text style={ScreenStyleSheet.formInfo}>Email Address</Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
@@ -219,17 +253,14 @@ class EditProfileScreen extends Component {
           {/* Info Header */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={styles.subHeader}>
-                Basic Info
-              </Text>
+              <Text style={styles.subHeader}>Basic Info</Text>
             </View>
           </View>
 
           {/* Date of Birth */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Date of Birth
-              </Text>
+              <Text style={ScreenStyleSheet.formInfo}>Date of Birth</Text>
             </View>
             <View style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
@@ -281,9 +312,7 @@ class EditProfileScreen extends Component {
           {/* Preferences header */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={styles.subHeader}>
-                My Preferences
-              </Text>
+              <Text style={styles.subHeader}>My Preferences</Text>
             </View>
           </View>
 
@@ -369,9 +398,7 @@ class EditProfileScreen extends Component {
           {/* Venue */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Type of Venue
-              </Text>
+              <Text style={ScreenStyleSheet.formInfo}>Type of Venue</Text>
             </View>
           </View>
           <View style={styles.controls}>
@@ -424,12 +451,11 @@ class EditProfileScreen extends Component {
             {/* Save button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
-              onPress={(this.saveProfile)}
+              onPress={this.saveProfile}
             >
               <Text style={{ color: "white" }}>Save changes</Text>
             </TouchableOpacity>
           </View>
-
         </Content>
       </Container>
     );

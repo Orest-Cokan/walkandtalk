@@ -46,6 +46,7 @@ target 'walkandtalk' do
   pod 'GooglePlacePicker'
   pod 'GooglePlaces'
   pod 'GoogleMaps'
+  pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
 
 end
 

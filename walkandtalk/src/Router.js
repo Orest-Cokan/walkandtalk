@@ -18,7 +18,7 @@ import HelplineScreen from "./components/profile/HelplineScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
 
-
+// Navigation logic for the entire app
 const RouterComponent = () => (
   <Router>
     <Stack key="root">

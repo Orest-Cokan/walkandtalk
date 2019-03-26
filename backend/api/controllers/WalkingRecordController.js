@@ -2,7 +2,7 @@ const WalkingRecord = require("../models/WalkingRecord");
 
 // walking record controller
 const WalkingRecordController = () => {
-  // create a new walkingrecord
+  // create a new walkingrecord, this should never be called by frontend!!!
   const create = async (req, res) => {
     const { body } = req;
     console.log(body.email);
@@ -14,12 +14,12 @@ const WalkingRecordController = () => {
         email: body.email,
         venue: body.venue,
         date: body.date,
-        location: body.location,      // error: streetname is undefined
+        location: body.location.streetName,
         start_time: body.start_time,
         end_time: body.end_time,
         distance: body.distance,
         duration: body.duration,
-        intensity: body.intensity,  // a typo
+        intensity: body.intensity,
         walk_rating: body.walk_rating,
         walk_rating_comment: body.walk_rating_comment,
         location_rating: body.location_rating,
@@ -103,7 +103,7 @@ const WalkingRecordController = () => {
         walk_rating_comment: body.walk_rating_comment,
         location_rating: body.location_rating,
         location_rating_comment: body.location_rating_comment,
-        completed: body.completed
+        completed: body.completeds
       },
       { returning: true, where: { email: body.email, id: body.id } }
     )
