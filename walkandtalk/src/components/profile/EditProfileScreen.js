@@ -36,12 +36,10 @@ class EditProfileScreen extends Component {
   // Constructor
   constructor(props) {
     super(props);
-
-    console.log('editprofile props', this.props);
     this.state = {
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
-      picture: this.props.user.user.picture.image,
+      picture: this.props.picture.picture.image,
       dob: this.props.user.user.dob,
       menopausal_stage: this.props.user.user.menopausal_stage,
       intensity: this.props.user.user.preference.intensity,
@@ -97,7 +95,6 @@ class EditProfileScreen extends Component {
   }
 
   saveProfile = () => {
-    console.log("state on save", this.state);
     this.props.editUser(
       this.state.fullname,
       this.state.email,
@@ -113,8 +110,6 @@ class EditProfileScreen extends Component {
       this.state.email,
       this.state.picture
     )
-
-    console.log("after save profile?");
     Actions.mainProfile();
   };
 
@@ -136,7 +131,6 @@ class EditProfileScreen extends Component {
         // Reduce image size and store as compressed JPEG
         ImageResizer.createResizedImage(base64, 180, 240, 'JPEG', 80)
         .then((response) => {
-          console.log('uri',response.uri)
           this.setState({
             picture: response.uri,
           });
@@ -208,7 +202,6 @@ class EditProfileScreen extends Component {
             <TouchableHighlight onPress={this.addPicture} activeOpacity={0} underlayColor={'transparent'}>
               <Image
                 style={ScreenStyleSheet.avatar}
-                // source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
                 source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
               />
             </TouchableHighlight>

@@ -150,12 +150,8 @@ export const editUser = (
     axios
       .put(url, user)
       .then(res => {
-        console.log('RES')
         if (res.status === 200) {
-          console.log('RES 200')
           if (res.data === 1) {
-            console.log('RES 1')
-            console.log('EDIT USER PUT REQUEST')
             dispatch({ type: USER_EDIT, payload: user });
           }
         }

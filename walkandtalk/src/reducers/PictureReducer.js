@@ -17,6 +17,7 @@ const picture = (state = INITIAL_STATE, action) => {
             return {
             ...state,
             ...INITIAL_STATE,
+            loading: true,
             picture: action.payload
         };
         case PICTURE_GET:

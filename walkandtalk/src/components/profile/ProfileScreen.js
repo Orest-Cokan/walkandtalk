@@ -47,14 +47,8 @@ class ProfileScreen extends Component {
     // Navigate to Past Events
     Actions.helplines();
   };
-  // componentWillMount(){
-  //   console.log('props', this.props)
-  //   this.props.getPicture(
-  //     this.props.user.user.email
-  //   )
-  // }
+
   render() {
-    // console.log('profile props', this.props)
     const vars = this.props.user.user;
     return (
       <Container>
@@ -88,7 +82,7 @@ class ProfileScreen extends Component {
             {/* Profile picture */}
             <Image
               style={ScreenStyleSheet.avatar}
-              source={vars.picture.image ? {uri: vars.picture.image} : require("../../assets/icons/default-profile.png")}
+              source={this.props.picture.picture.image ? {uri: this.props.picture.picture.image} : require("../../assets/icons/default-profile.png")}
             />
             <Text style={ScreenStyleSheet.profileName}>
               {vars.fullname}
@@ -243,14 +237,13 @@ const mapStateToProps = state => {
   console.log("profilescreen");
   return {
     user: state.user,
-    // picture: state.picture
+    picture: state.picture
   };
 };
 
 export default connect(
   mapStateToProps,
   null
-  // {getPicture}
 )(ProfileScreen);
 
 // Styles

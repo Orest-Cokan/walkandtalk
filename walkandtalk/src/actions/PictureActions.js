@@ -19,10 +19,7 @@ import {
         .put(url, userPicture)
         .then(res => {
           if (res.status === 200) {
-            if (res.data === 1) {
-              console.log('dispatch edit picture', editPicture)
-              dispatch({ type: PICTURE_EDIT, payload: userPicture });
-            }
+            dispatch({ type: PICTURE_EDIT, payload: userPicture });
           }
         })
         .catch(err => {
