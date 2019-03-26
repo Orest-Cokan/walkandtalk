@@ -5,7 +5,7 @@ import {
   USER_LOGIN,
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
-  USER_EDIT
+  USER_EDIT,
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -122,7 +122,6 @@ const loginUserSuccess = (dispatch, user) => {
 export const editUser = (
   fullname,
   email,
-  image,
   dob,
   menopausal_stage,
   intensity,
@@ -134,9 +133,6 @@ export const editUser = (
   const user = {
     fullname: fullname,
     email: email,
-    picture: {
-      image: image
-    },
     dob: dob,
     menopausal_stage: menopausal_stage,
     preference: {

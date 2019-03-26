@@ -19,6 +19,7 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
+import { getPicture } from "../../actions/PictureActions";
 import {
   StyledText as Text,
   StyledTextInput as TextInput
@@ -46,8 +47,14 @@ class ProfileScreen extends Component {
     // Navigate to Past Events
     Actions.helplines();
   };
-
+  componentWillMount(){
+    console.log('props', this.props)
+    this.props.getPicture(
+      this.props.user.user.email
+    )
+  }
   render() {
+    console.log('profile props', this.props)
     const vars = this.props.user.user;
     return (
       <Container>
@@ -235,13 +242,14 @@ class ProfileScreen extends Component {
 const mapStateToProps = state => {
   console.log("profilescreen");
   return {
-    user: state.user
+    user: state.user,
+    picture: state.picture
   };
 };
 
 export default connect(
   mapStateToProps,
-  null
+  {getPicture}
 )(ProfileScreen);
 
 // Styles

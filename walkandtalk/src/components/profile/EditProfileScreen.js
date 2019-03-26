@@ -20,6 +20,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { editUser } from "../../actions/UserActions";
+import { editPicture } from "../../actions/PictureActions";
 import DatePicker from "react-native-datepicker";
 import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
@@ -100,7 +101,6 @@ class EditProfileScreen extends Component {
     this.props.editUser(
       this.state.fullname,
       this.state.email,
-      this.state.picture,
       this.state.dob,
       this.state.menopausal_stage,
       this.state.intensity,
@@ -109,6 +109,11 @@ class EditProfileScreen extends Component {
       this.state.venue,
       this.state.location
     );
+    this.props.editPicture(
+      this.state.email,
+      this.state.picture
+    )
+
     console.log("after save profile?");
     Actions.mainProfile();
   };
@@ -145,6 +150,7 @@ class EditProfileScreen extends Component {
 
   render() {
     console.log('editrender',this.state)
+    console.log('editrender, props', this.props)
     // All the options displayed in radio buttons
     const intensities = [
       { label: "Slow", value: "Slow" },
@@ -465,7 +471,8 @@ class EditProfileScreen extends Component {
 const mapStateToProps = state => {
   console.log("EditProfilescreen");
   return {
-    user: state.user
+    user: state.user,
+    picture: state.picture
   };
 };
 
