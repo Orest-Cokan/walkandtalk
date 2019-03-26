@@ -26,7 +26,9 @@ var task = cron.schedule("* * * * *", () => {
     let compareDateTime = null;
     events.map(event => {
       compareDateTime = event.date + " " + event.start_time;
-      console.log("Executing cron job" + time(now.toString(), compareDateTime));
+      console.log(
+        "Executing cron job: " + time(now.toString(), compareDateTime)
+      );
       if (time(now, compareDateTime)) {
         event.attendees.map(person => {
           WalkingRecord.create({
