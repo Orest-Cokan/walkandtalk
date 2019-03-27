@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Preference = require("../models/Preference");
 
 // Researcher controller
 const ResearcherController = () => {
@@ -49,7 +50,7 @@ const ResearcherController = () => {
     try {
       const users = await User.findAll({
         where: { registered: 0 },
-        include: [Preference, Picture]
+        include: [Preference]
       });
 
       return res.status(200).json({ users });
@@ -64,7 +65,7 @@ const ResearcherController = () => {
     try {
       const users = await User.findAll({
         where: { registered: 1 },
-        include: [Preference, Picture]
+        include: [Preference]
       });
 
       return res.status(200).json({ users });
