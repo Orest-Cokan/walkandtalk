@@ -15,14 +15,12 @@ import {
   Body,
   Title,
   Right,
-  Content
+  Content,
+  Button
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
-import {
-  StyledText as Text,
-  StyledTextInput as TextInput
-} from "../../constants/StyledText";
+import { StyledText as Text } from "../../constants/StyledText";
 
 // Profile tab
 class ProfileScreen extends Component {
@@ -57,9 +55,18 @@ class ProfileScreen extends Component {
           androidStatusBarColor={"white"}
           iosBarStyle={"dark-content"}
         >
+          <Left style={ScreenStyleSheet.headerSides}/>
           <Body style={ScreenStyleSheet.headerBody}>
             <Title style={ScreenStyleSheet.headerTitle}>Profile</Title>
           </Body>
+          <Right style={ScreenStyleSheet.headerSides}>
+            <Button transparent onPress={() => this.drawer.open()}>
+              <Image
+                style={ScreenStyleSheet.headerIcon}
+                source={require("../../assets/icons/sidebar.png")}
+              />
+            </Button>
+          </Right>
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>

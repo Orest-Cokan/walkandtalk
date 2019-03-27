@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Colors } from "../constants/Colors";
+import { Right } from "native-base";
 
 export default StyleSheet.create({
   // Screen
@@ -16,7 +17,7 @@ export default StyleSheet.create({
     fontFamily: "proxima_nova_reg"
   },
   headerBody: {
-    flex: 2,
+    flex: 1,
     alignItems: "center"
   },
   headerTitle: {
@@ -27,8 +28,9 @@ export default StyleSheet.create({
   },
 
   // Back icon
-  backIcon: {
-    size: 10
+  headerIcon: {
+    height: 20,
+    width: 20
   },
 
   // Content
@@ -249,11 +251,4 @@ export default StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start"
   },
-
-  backIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 100,
-    position: "relative"
-  }
 });

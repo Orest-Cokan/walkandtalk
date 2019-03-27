@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Image, StatusBar } from "react-native";
 import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
+import SideDrawer from './SideDrawer';
 
 import AuthScreen from "./components/login/AuthScreen";
 import SignupScreen from "./components/login/SignupScreen";
@@ -126,8 +127,10 @@ const RouterComponent = () => (
               />
             )}
             hideNavBar
-          >
-            <Scene key="mainProfile" component={ProfileScreen} />
+          > 
+            <Scene key="drawer" drawer contentComponent={SideDrawer}>
+              <Scene key="mainProfile" component={ProfileScreen} />
+            </Scene>
             <Scene key="editProfile" component={EditProfileScreen} />
             <Scene key="pastEvents" component={PastEventListScreen} />
             <Scene key="helplines" component={HelplineScreen} />
