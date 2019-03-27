@@ -19,6 +19,7 @@ import BaseCard from "../../cardview/baseCard";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import geolib from 'geolib'
 import {
   Container,
   Header,
@@ -30,16 +31,13 @@ import {
 } from "native-base";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
 
+//Search Icon present in search bar
 const searchIcon = require("../../assets/icons/search-bar.png");
-const icon2 = require("../../assets/icons/form.png");
 
-//TO DO:
-//Verfify that distance works --> will be done when lat/lon are given to events
-// Search by key word --> in name and description, whole object really
-// search returns an array of events fitting the search results
-// map these events to the map --> using different markers for diff levels etc
-// when clicking on a marker, must be able to view event
-
+//Below are the items in the filters
+// For Intensity - Slow, Intermediate, Brisk
+// For Venue - Indoor, Outdoor
+// For Distance - 5km, 10km, 15km
 const items = [
   {
     name: "Intensity",
@@ -93,16 +91,6 @@ const items = [
   }
 ];
 
-// Returns user's current location
-// Defaults to San Francisco on simulators
-export const getCurrentLocation = () => {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      position => resolve(position),
-      e => reject(e)
-    );
-  });
-};
 
 /*
 This is the search screen. Users can search for events in this screen.
@@ -132,41 +120,15 @@ class SearchMapViewScreen extends Component {
     };
   }
 
-  // async componentWillMount() {
-  //   const position = await getCurrentLocation();
-  //   if (position) {
-  //     this.setState({
-  //       currentLocation: {
-  //         currentLatitude: position.coords.latitude,
-  //         currentLongitude: position.coords.longitude,
-  //         latitudeDelta: 0.003,
-  //         longitudeDelta: 0.003
-  //       }
-  //     });
-  //   }
-  //   console.log("current location", this.state.currentLocation)
-  // }
-
+  //Fetch all events to search from
+  // Place a tracker on the position of the deivce
+  // Track movement
+  // Create the object to update this.state.mapRegion through the onRegionChange function
   componentWillMount() {
     this.props.fetchEvents;
     console.log("all events", this.props.events);
     console.log("marker state", this.state.markers);
-
-    // const position = getCurrentLocation();
-    // if (position) {
-    //   this.setState({
-    //     currentLocation: {
-    //       currentLatitude: position.coords.latitude,
-    //       currentLongitude: position.coords.longitude,
-    //       latitudeDelta: 0.003,
-    //       longitudeDelta: 0.003
-    //     }
-    //   });
-    // }
-    // console.log("current location", this.state.currentLocation)
-    //
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      // Create the object to update this.state.mapRegion through the onRegionChange function
       let region = {
         latitude:       position.coords.latitude,
         longitude:      position.coords.longitude,
@@ -177,10 +139,12 @@ class SearchMapViewScreen extends Component {
     }, (error)=>console.log(error));
   }
 
+  //Before leaving the component clear the watch of the device
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
+  //Function for setting the region and lat and lon when movement occurs
   onRegionChange(region, lastLat, lastLong) {
     this.setState({
       mapRegion: region,
@@ -191,9 +155,8 @@ class SearchMapViewScreen extends Component {
   }
 
 
-
+//Function for navigating to view the selected event
   goToEvent = index => {
-    // Navigate to view this event
     markers = JSON.stringify(this.state.markers);
     markers = JSON.parse(markers);
     console.log("current markers", markers);
@@ -207,20 +170,12 @@ class SearchMapViewScreen extends Component {
     });
   };
 
+  //Updates the list of filters selected
   onSelectedItemsChange = selectedItems => {
-    //currentItems = this.state.searchResults
-    //if(currentItems.length > selectedItems.length){
-    //this.setState({ selectedItems: selectedItems }, () => {
-    //  console.log(this.state.selectedItems, 'selected items changed...searching');
-    //});
-    //this.search()
-    //}else{
-    //this.setState({ selectedItems: selectedItems }, () => {
-    //  console.log(this.state.selectedItems, 'selected items changed... no search yet');
-    //});
     this.setState({ selectedItems: selectedItems });
   };
 
+  //Function when the select button is selected in the multi picker, and it is closed
   onConfirm = () => {
     console.log(this.state.selectedItems, "multi-select closed");
     filters = this.state.selectedItems;
@@ -239,170 +194,223 @@ class SearchMapViewScreen extends Component {
     this.search(filters);
   };
 
+
+//Takes in an array of intensity filter ids selected
+// Returns an array of events that contain the filters selected
+  check_intensity = i_arr =>{
+    var results = []
+    i_arr.forEach(function(i) {
+      if (i == 11) {
+        var i1 = events.filter(event => {
+          return event.intensity === "Slow";
+        });
+        results = results.concat(i1);
+      }
+      if (i == 22) {
+        var i2 = events.filter(event => {
+          return event.intensity === "Intermediate";
+        });
+        results = results.concat(i2);
+      }
+      if (i == 33) {
+        var i3 = events.filter(event => {
+          return event.intensity === "Brisk";
+        });
+        results = results.concat(i3);
+      }
+    });
+
+    console.log(results, "intensity results")
+    return results
+  }
+
+
+  //Takes in an array of venue filter ids selected
+  // Returns an array of events that contain the filters selected
+  check_venue = v_arr =>{
+    var results = []
+    v_arr.forEach(function(v) {
+      if (v == 44) {
+        var v1 = events.filter(event => {
+          return event.venue === "Indoor";
+        });
+        results = results.concat(v1);
+      }
+      if (v == 44) {
+        var v2 = events.filter(event => {
+          return event.venue === "Outdoor";
+        });
+        results = results.concat(v2);
+      }
+    });
+
+    console.log(results, "venue results")
+    return results
+  }
+
+  //Takes in an array of distance filter ids selected
+  // Returns an array of events that contain the filters selected
+  // Uses geolib library to calculate the distance between two points
+  check_distance = d_arr =>{
+    var results = []
+    var i;
+    var j;
+    for (i = 0; i < d_arr.length; i++) {
+      for(j=0; j< events.length; j++){
+        //distance given in meters
+        distance = geolib.getDistance(
+          {latitude: this.state.lastLat, longitude: this.state.lastLong},
+          {latitude: events[j].location.lat, longitude: events[j].location.long})
+        console.log(this.state.lastLat, "lat", this.state.lastLong, "long")
+        console.log("distance", distance)
+        distance = distance /1000
+        console.log("distance km", distance)
+
+          if(d_arr[i]==66){
+            if (distance<=5){
+              results.push(events[j])
+              console.log("5 km search")
+            }
+          }
+          if(d_arr[i]==77){
+            if(distance<=10){
+              results.push(events[j])
+              console.log("10 km search")
+            }
+          }
+          if(d_arr[i]==88){
+            if(distance<=15){
+              results.push(events[j])
+              console.log("15 km search")
+            }
+          }
+
+      }
+    }
+    console.log(results, "distance results")
+    return results
+  }
+
+
+//MAIN SEARCH function
+// Splits the array of filters into smaller arrays of filter ids in section intensity, venue and distance
+// If the length of the array is greater thatn zero will get events that fit that filter using check_*** function
+// Calls combine result
+// Sumbits results to submit results function to save to state
   search = filters => {
+
     filters = this.state.selectedItems;
     events = this.props.events;
     console.log(this.props.events, "events in search");
 
+    if(filters.length ==0){
+      return
+    }
+
+    //Array for intensity, venue and distance filters
     var results = [];
     var v_arr = [];
     var i_arr = [];
+    var d_arr = [];
 
     //sort selected filters into categories
     filters.forEach(function(f) {
       if (f == 11 || f == 22 || f == 33) {
         i_arr.push(f);
-      } else {
+      }
+      if(f == 44 || f == 55){
         v_arr.push(f);
+      }
+      if(f == 66 || f == 77 || f == 88){
+        d_arr.push(f)
       }
     });
     console.log(i_arr.length, "int arr");
     console.log(v_arr.length, "ven arr");
+    console.log(d_arr.length, "dis arr");
 
-    //only intensity filters selected
-    if (i_arr.length >= 1 && v_arr.length == 0) {
-      console.log("HERE");
-      i_arr.forEach(function(i) {
-        if (i == 11) {
-          var i1 = events.filter(event => {
-            return event.intensity === "Slow";
-          });
-          results = results.concat(i1);
-        }
-        if (i == 22) {
-          var i2 = events.filter(event => {
-            return event.intensity === "Intermediate";
-          });
-          results = results.concat(i2);
-        }
-        if (i == 33) {
-          var i3 = events.filter(event => {
-            return event.intensity === "Brisk";
-          });
-          results = results.concat(i3);
+    var howmany = 3
+
+    if (i_arr.length!=0){
+      temp = this.check_intensity(i_arr)
+      results.push(temp)
+    }else{
+      howmany = howmany -1
+    }
+
+    if (v_arr.length!=0){
+      temp = this.check_venue(v_arr)
+      results.push(temp)
+    }else{
+      howmany = howmany -1
+    }
+
+    if (d_arr.length!=0){
+      temp = this.check_distance(d_arr)
+      results.push(temp)
+    }else{
+      howmany = howmany -1
+    }
+
+  console.log("results before combine", results)
+  total_results = this.combineResults(results, howmany)
+
+  //Convert to string then to object
+  //results = JSON.stringify(total_results);
+  //results = JSON.parse(total_results);
+  console.log(total_results, "results after combine");
+
+  //SubmitSearch function to save to state
+  this.submitSearch(total_results);
+
+  }
+
+
+//finalizes the search results
+// If only one filter was selected - total_arr == 1, then return results
+// If two filters selected - total_arr == 2, check for where items exist in both arrays and return those
+// If three filters selected - total_arr == 3, check for where items exist in both arrays, then repeat again with the last array and return those
+  combineResults = (results , total_arr) => {
+    var combine_res =[]
+    if (total_arr == 1){
+      console.log("return me 1", results)
+      return results[0]
+    }
+    //Two arrays results [0] and results [1]
+    if(total_arr == 2){
+      console.log(results[0], "res 0")
+      console.log(results[1], "res 1")
+      results[0].forEach( function (res) {
+        console.log(results[1].indexOf(res), "index value")
+      if(results[1].indexOf(res) > -1) {
+        combine_res.push(res);
+        console.log("pushed", res)
         }
       });
+        console.log("return me 2", combine_res)
+      return combine_res
     }
 
-    //only venue filters selected
-    if (i_arr.length == 0 && v_arr.length >= 1) {
-      v_arr.forEach(function(v) {
-        if (v == 44) {
-          var v1 = events.filter(event => {
-            return event.venue === "Indoor";
-          });
-          results = results.concat(v1);
-        }
-        if (v == 44) {
-          var v2 = events.filter(event => {
-            return event.venue === "Outdoor";
-          });
-          results = results.concat(v2);
+    if(total_arr == 3){
+      results[0].forEach( function (res) {
+      if(results[1].indexOf(res) > -1) {
+        combine_res.push(res);
         }
       });
-    }
 
-    //Both intensity and venue filters selected - return objects that match all fields
-    if (i_arr.length >= 1 && v_arr.length >= 1) {
-      console.log("in both arr filters");
-
-      var i;
-      var j;
-      var c;
-
-      for (c = 0; c < events.length; c++) {
-        for (i = 0; i < i_arr.length; i++) {
-          for (j = 0; j < v_arr.length; j++) {
-            if (i_arr[i] == "11") {
-              intense = "Slow";
-            }
-            if (i_arr[i] == "22") {
-              intense = "Intermediate";
-            }
-            if (i_arr[i] == "33") {
-              intense = "Brisk";
-            }
-            if (v_arr[j] == "44") {
-              ven = "Indoor";
-            }
-            if (v_arr[j] == "55") {
-              ven = "Outdoor";
-            }
-
-            if (events[c].intensity == intense && events[c].venue == ven) {
-              console.log(events[c], "events of i");
-              results.push(events[c]);
-              console.log("result event", results);
-            }
-          }
-        }
-      }
-    }
-
-    //Convert to string then to object
-    results = JSON.stringify(results);
-    results = JSON.parse(results);
-    console.log(results, "results");
-
-    //SubmitSearch function to save to state
-    this.submitSearch(results);
-  };
-
-  //TBD if this works, waiting on lat and lon coordinates to be added to create events
-  getDistance = results => {
-    events = this.props.events;
-    //For 5 km
-    if (filters.indexOf(66) != -1) {
-      events.forEach(function(e) {
-        distance =
-          3959 *
-          acos(
-            cos(radians(12.966958)) *
-              cos(radians(lat)) *
-              cos(radians(lon) - radians(80.1525835)) +
-              sin(radians(12.966958)) * sin(radians(lat))
-          );
-        if (distance < 5) {
-          results.append(e);
+      var final_res = combine_res
+      combine_res.forEach( function (res) {
+      if(results[2].indexOf(res) > -1) {
+        final_res.push(res);
         }
       });
+      console.log("return me 3", final_res)
+      return final_res
     }
-    //For 10 km
-    if (filters.indexOf(77) != -1) {
-      events.forEach(function(e) {
-        distance =
-          3959 *
-          acos(
-            cos(radians(12.966958)) *
-              cos(radians(lat)) *
-              cos(radians(lon) - radians(80.1525835)) +
-              sin(radians(12.966958)) * sin(radians(lat))
-          );
-        if (distance < 10) {
-          results.append(e);
-        }
-      });
-    }
-    //For 15 km
-    if (filters.indexOf(77) != -1) {
-      events.forEach(function(e) {
-        distance =
-          3959 *
-          acos(
-            cos(radians(12.966958)) *
-              cos(radians(lat)) *
-              cos(radians(lon) - radians(80.1525835)) +
-              sin(radians(12.966958)) * sin(radians(lat))
-          );
-        if (distance < 15) {
-          results.append(e);
-        }
-      });
-    }
+  }
 
-    return results;
-  };
 
+//Saves the search results to state
   submitSearch = results => {
     this.setState({ searchResults: results }, () => {
       console.log(this.state.searchResults, "make sure state updated");
@@ -410,10 +418,12 @@ class SearchMapViewScreen extends Component {
     });
   };
 
+//Using the search results from state, convert them to markers that can be placed on the map
   makeMarkers = results => {
     console.log(results, "make marker events");
     markers = [];
     results.forEach(function(e) {
+      console.log(e.location.lat, "lat")
       e.latitude = e.location.lat;
       e.longitude = e.location.long;
       markers.push(e);
@@ -423,6 +433,8 @@ class SearchMapViewScreen extends Component {
     });
   };
 
+
+//*Fits the coordinates to map, or sets the region** needs further implementation**
   layoutMap = () => {
     markers = this.state.markers;
     if (markers.length != 0) {
@@ -439,6 +451,8 @@ class SearchMapViewScreen extends Component {
     }
   };
 
+
+//Set the keyword entered to the state, and clear it after
   setKeyword = text => {
     this.setState(
       {
@@ -454,6 +468,8 @@ class SearchMapViewScreen extends Component {
     );
   };
 
+  //Key word search
+  // Searches through out the whole object
   keywordSearch = () => {
     events = this.props.events;
     keyword = this.state.text;
@@ -483,10 +499,7 @@ class SearchMapViewScreen extends Component {
     });
 
     this.setState(
-      {
-        markers: results
-      },
-      () => {
+      {markers: results},() => {
         console.log(this.state.markers, "updated markers for display");
       }
     );
@@ -505,17 +518,6 @@ class SearchMapViewScreen extends Component {
       </Header>
     );
 
-    // currentMarker = {
-    //
-    //   latitude: this.state.lastLat + 0.00050 || -36.82339,
-    //   longitude: this.state.lastLong + 0.00050 || -73.03569,
-    //   intensity: "Current",
-    //   location: {
-    //     lat: this.state.lastLat + 0.00050 || -36.82339,
-    //     long: this.state.lastLong + 0.00050 || -73.03569
-    //   }
-    // }
-    // this.state.markers.push(currentMarker)
 
     filterPopup = (
       <View>
@@ -602,6 +604,7 @@ class SearchMapViewScreen extends Component {
           {filterPopup}
 
           <View style={ScreenStyleSheet.lineSeparator} />
+          {/* Map View */}
           <MapView
             ref={ref => {
               this.mapRef = ref;
@@ -677,7 +680,8 @@ const styles = StyleSheet.create({
     marginLeft: 3,
     height: 40,
     fontSize: 15,
-    color: "grey"
+    color: "grey",
+    width: "75%"
   },
   filterIcon: {
     fontSize: 25,
@@ -693,7 +697,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  console.log("searchscreen");
+  console.log("search map view screen");
   return {
     events: state.event.events,
     user: state.user
