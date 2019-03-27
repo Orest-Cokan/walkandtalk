@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/UserActions";
+import { getPicture } from "../../actions/PictureActions"
 import { Actions } from "react-native-router-flux";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
@@ -33,6 +34,9 @@ class AuthScreen extends Component {
     this.props.loginUser(
       this.refs.formGenerator.getValues().email,
       this.refs.formGenerator.getValues().password
+    );
+    this.props.getPicture(
+      this.refs.formGenerator.getValues().email
     );
   };
 
@@ -75,12 +79,13 @@ class AuthScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  picture: state.picture
 });
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { loginUser, getPicture }
 )(AuthScreen);
 
 //Fields the form builder takes in
