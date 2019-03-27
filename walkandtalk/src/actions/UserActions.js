@@ -5,11 +5,11 @@ import {
   USER_LOGIN,
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
-  USER_EDIT,
+  USER_EDIT
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
-import { Platform } from "react-native";
+import getIP from "../constants/Ip";
 
 // action to create a user
 export const createUser = (
@@ -146,7 +146,7 @@ export const editUser = (
   return dispatch => {
     var ip = getIP();
     var url = ip + "public/user";
-    console.log('INSIDE EDIT USER', user)
+    console.log("INSIDE EDIT USER", user);
     axios
       .put(url, user)
       .then(res => {
@@ -160,12 +160,4 @@ export const editUser = (
         console.log("axios failure", err);
       });
   };
-};
-
-var getIP = () => {
-  if (Platform.OS === "android") {
-    return "http://10.0.2.2:2017/";
-  } else if (Platform.OS === "ios") {
-    return "http://127.0.0.1:2017/";
-  }
 };
