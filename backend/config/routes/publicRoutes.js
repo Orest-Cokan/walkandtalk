@@ -27,6 +27,8 @@ const publicRoutes = {
   // Researcher routes
   "PUT /researcher/accept": "ResearcherController.acceptUser",
   "POST /researcher/deny": "ResearcherController.denyUser",
+  "GET /researcher/registered": "ResearcherController.getUnregisteredUsers",
+  "GET /researcher/unregistered": "ResearcherController.getRegisteredUsers",
 
   // Attendee routes
   "PUT /attendee/add": "AttendeeController.addAttendees",

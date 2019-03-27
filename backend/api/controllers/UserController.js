@@ -151,7 +151,9 @@ const UserController = () => {
             returning: true,
             where: { userEmail: body.email }
           }
-        );
+        ).then(self => {
+          return res.status(200).json(self[1]);
+        });
       })
       .catch(function(err) {
         return res.status(500).json({ msg: "Internal server error" });
@@ -163,6 +165,7 @@ const UserController = () => {
     login,
     validate,
     getAll,
+    getUnregisteredUsers,
     getUser,
     updateUser
   };

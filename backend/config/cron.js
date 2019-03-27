@@ -90,4 +90,4 @@ var task = cron.schedule("* * * * *", () => {
   });
 });
 
-module.exports = task;
+//module.exports = task;

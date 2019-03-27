@@ -238,5 +238,5 @@ const ExcelController = () => {
   };
 };
 
-// export the picturecontroller
+// export the excelcontroller
 module.exports = ExcelController;
