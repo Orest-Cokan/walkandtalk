@@ -165,7 +165,6 @@ const UserController = () => {
     login,
     validate,
     getAll,
-    getUnregisteredUsers,
     getUser,
     updateUser
   };
