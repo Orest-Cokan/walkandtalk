@@ -1,6 +1,6 @@
 // Past Event List Screen View
 import React, { Component } from "react";
-import { Image, TouchableOpacity } from "react-native";
+import { Image} from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -11,7 +11,6 @@ import {
   Right,
   Content,
   Button,
-  StatusBar
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
@@ -21,17 +20,13 @@ import { getCompletedRecords } from "../../actions/RecordActions";
 class PastEventListScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("inside constructor");
-    console.log("before", this.props);
     this.props.getCompletedRecords = this.props.getCompletedRecords(
       this.props.user.user.email
     );
-    console.log("after", this.props);
   }
 
   componentDidMount() {
     this.props.getCompletedRecords;
-    console.log("componentmount", this.props);
   }
 
   getEvents() {
@@ -47,7 +42,6 @@ class PastEventListScreen extends Component {
         />
       );
     });
-    console.log("end", this.props);
     return records;
   }
 
@@ -60,8 +54,8 @@ class PastEventListScreen extends Component {
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
-          androidStatusBarColor="white"
-          androidStatusBarStyle="dark-content"
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
         >
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>

@@ -1,7 +1,6 @@
 import React from "react";
-import { View, Image, StatusBar } from "react-native";
+import { Image} from "react-native";
 import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
-import SideDrawer from './SideDrawer';
 
 import AuthScreen from "./components/login/AuthScreen";
 import SignupScreen from "./components/login/SignupScreen";
@@ -27,7 +26,7 @@ const RouterComponent = () => (
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
       </Stack>
-      <Stack key="app" hideNavBar panHandlers={null}>
+      <Stack key="app" hideNavBar panHandlers={null} type="reset">
         <Tabs
           showLabel={false}
           activeBackgroundColor="#A680B8"
@@ -128,9 +127,7 @@ const RouterComponent = () => (
             )}
             hideNavBar
           > 
-            <Scene key="drawer" drawer contentComponent={SideDrawer}>
-              <Scene key="mainProfile" component={ProfileScreen} />
-            </Scene>
+            <Scene key="mainProfile" component={ProfileScreen} />
             <Scene key="editProfile" component={EditProfileScreen} />
             <Scene key="pastEvents" component={PastEventListScreen} />
             <Scene key="helplines" component={HelplineScreen} />

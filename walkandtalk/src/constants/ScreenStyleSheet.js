@@ -26,6 +26,12 @@ export default StyleSheet.create({
   headerSides: {
     flex: 1
   },
+  sideBarHeaderBody: {
+    marginLeft: 5
+  },
+  sideBarTextItem: {
+    marginLeft: 10
+  }, 
 
   // Back icon
   headerIcon: {

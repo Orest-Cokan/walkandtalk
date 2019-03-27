@@ -11,7 +11,6 @@ import {
   Right,
   Content,
   Button,
-  StatusBar
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
