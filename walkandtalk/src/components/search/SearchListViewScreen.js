@@ -107,7 +107,7 @@ export const getCurrentLocation = () => {
 /*
 This is the search screen. Users can search for events in this screen.
 */
-class SearchScreen extends Component {
+class SearchListViewScreen extends Component {
   //text stores the input from user which is initalized to an empty string.
   //
   constructor(props) {
@@ -124,8 +124,7 @@ class SearchScreen extends Component {
         currentLongitude: 0,
         latitudeDelta: 0,
         longitudeDelta: 0
-      },
-      markers: []
+      }
     };
   }
 
@@ -184,12 +183,10 @@ class SearchScreen extends Component {
 
     this.setState(
       {
-        selectedItems: [],
-        markers: []
+        selectedItems: []
       },
       () => {
         console.log(this.state.selectedItems, "confirm SI state updated");
-        console.log(this.state.markers, "confirm markers state updated");
       }
     );
 
@@ -363,44 +360,21 @@ class SearchScreen extends Component {
   submitSearch = results => {
     this.setState({ searchResults: results }, () => {
       console.log(this.state.searchResults, "make sure state updated");
-      this.makeMarkers(results);
     });
   };
 
-  makeMarkers = results => {
-    console.log(results, "make marker events");
-    markers = [];
-    results.forEach(function(e) {
-      e.latitude = e.location.lat;
-      e.longitude = e.location.long;
-      markers.push(e);
-    });
-    this.setState({ markers: markers }, () => {
-      console.log(markers, "markers");
-    });
-  };
 
-  layoutMap = () => {
-    markers = this.state.markers;
-    if (markers.length != 0) {
-      this.mapRef.fitToCoordinates(this.state.markers, {
-        edgePadding: { top: 50, right: 10, bottom: 10, left: 10 },
-        animated: false
-      });
-    }
-  };
+
 
   setKeyword = text => {
     this.setState(
       {
         text: text,
-        selectedItems: [],
-        markers: []
+        selectedItems: []
       },
       () => {
         console.log(this.state.text, "keyword state updated");
         console.log(this.state.selectedItems, "SI state updated");
-        console.log(this.state.markers, "markers state updated");
       }
     );
   };
@@ -411,11 +385,10 @@ class SearchScreen extends Component {
 
     this.setState(
       {
-        markers: [],
         text: ""
       },
       () => {
-        console.log(this.state.markers, "cleared markers for keyword search");
+        console.log(this.state.text, "cleared tetx for keyword search");
       }
     );
 
@@ -435,13 +408,56 @@ class SearchScreen extends Component {
 
     this.setState(
       {
-        markers: results
+        searchResults: results
       },
       () => {
-        console.log(this.state.markers, "updated markers for display");
+        console.log(this.state.searchResults, "updated searchResults for display");
       }
     );
   };
+
+  getSearchResults() {
+    let events = [];
+    searchItems = this.state.searchResults;
+    console.log(searchItems, "searched")
+    const fullname = this.props.user.user.fullname;
+    searchItems.map(event => {
+      let badge = null;
+      if (fullname == event.organizer) {
+        badge = "HOSTING";
+        events.unshift(
+          <BaseCard
+            key={event.id}
+            id={event.id}
+            date={event.date}
+            start_time={event.start_time}
+            title={event.title}
+            location={event.location.streetName}
+            badge={badge}
+          />
+        );
+      } else {
+        for (let i = 0; i < event.attendees.length; i++) {
+          if (event.attendees[i].name == fullname) {
+            badge = "GOING";
+            events.unshift(
+              <BaseCard
+                key={event.id}
+                id={event.id}
+                date={event.date}
+                start_time={event.start_time}
+                title={event.title}
+                location={event.location.streetName}
+                badge={badge}
+              />
+            );
+
+          }
+        }
+      }
+    });
+    return events;
+  }
 
   render() {
     filterHeader = (
@@ -518,15 +534,7 @@ class SearchScreen extends Component {
 
     return (
       <Container>
-        <Header
-          style={ScreenStyleSheet.header}
-          androidStatusBarColor={"white"}
-          iosBarStyle={"dark-content"}
-        >
-          <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Search</Title>
-          </Body>
-        </Header>
+
 
         <Content
           contentContainerStyle={[ScreenStyleSheet.content, { flex: 1 }]}
@@ -550,42 +558,9 @@ class SearchScreen extends Component {
           {filterPopup}
 
           <View style={ScreenStyleSheet.lineSeparator} />
-          <MapView
-            ref={ref => {
-              this.mapRef = ref;
-            }}
-            onLayout={() => {
-              this.layoutMap;
-            }}
-            provider={PROVIDER_GOOGLE}
-            style={styles.map}
-            showsUserLocation={true}
-          >
-            {this.state.markers.map((marker, idx) => (
-              <Marker
-                key={idx}
-                coordinate={{
-                  latitude: marker.location.lat,
-                  longitude: marker.location.long
-                }}
-                pinColor={
-                  marker.intensity == "Slow"
-                    ? "blue"
-                    : marker.intensity == "Intermediate"
-                    ? "turquoise"
-                    : marker.intensity == "Brisk"
-                    ? "lime"
-                    : "purple"
-                }
-              >
-                <Callout onPress={() => this.goToEvent(idx)}>
-                  <TouchableHighlight underlayColor="transparent">
-                    <Text>{marker.title}</Text>
-                  </TouchableHighlight>
-                </Callout>
-              </Marker>
-            ))}
-          </MapView>
+
+          {this.getSearchResults()}
+
         </Content>
       </Container>
     );
@@ -648,4 +623,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { fetchEvents }
-)(SearchScreen);
+)(SearchListViewScreen);
