@@ -20,6 +20,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { editUser } from "../../actions/UserActions";
+import { editPicture } from "../../actions/PictureActions";
 import DatePicker from "react-native-datepicker";
 import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
@@ -35,12 +36,10 @@ class EditProfileScreen extends Component {
   // Constructor
   constructor(props) {
     super(props);
-
-    console.log('editprofile props', this.props);
     this.state = {
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
-      picture: this.props.user.user.picture.image,
+      picture: this.props.picture.picture.image,
       dob: this.props.user.user.dob,
       menopausal_stage: this.props.user.user.menopausal_stage,
       intensity: this.props.user.user.preference.intensity,
@@ -96,11 +95,9 @@ class EditProfileScreen extends Component {
   }
 
   saveProfile = () => {
-    console.log("state on save", this.state);
     this.props.editUser(
       this.state.fullname,
       this.state.email,
-      this.state.picture,
       this.state.dob,
       this.state.menopausal_stage,
       this.state.intensity,
@@ -109,7 +106,10 @@ class EditProfileScreen extends Component {
       this.state.venue,
       this.state.location
     );
-    console.log("after save profile?");
+    this.props.editPicture(
+      this.state.email,
+      this.state.picture
+    )
     Actions.mainProfile();
   };
 
@@ -131,7 +131,6 @@ class EditProfileScreen extends Component {
         // Reduce image size and store as compressed JPEG
         ImageResizer.createResizedImage(base64, 180, 240, 'JPEG', 80)
         .then((response) => {
-          console.log('uri',response.uri)
           this.setState({
             picture: response.uri,
           });
@@ -144,7 +143,6 @@ class EditProfileScreen extends Component {
   };
 
   render() {
-    console.log('editrender',this.state)
     // All the options displayed in radio buttons
     const intensities = [
       { label: "Slow", value: "Slow" },
@@ -204,7 +202,6 @@ class EditProfileScreen extends Component {
             <TouchableHighlight onPress={this.addPicture} activeOpacity={0} underlayColor={'transparent'}>
               <Image
                 style={ScreenStyleSheet.avatar}
-                // source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
                 source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
               />
             </TouchableHighlight>
@@ -465,13 +462,14 @@ class EditProfileScreen extends Component {
 const mapStateToProps = state => {
   console.log("EditProfilescreen");
   return {
-    user: state.user
+    user: state.user,
+    picture: state.picture
   };
 };
 
 export default connect(
   mapStateToProps,
-  { editUser }
+  { editUser, editPicture }
 )(EditProfileScreen);
 
 // Styles

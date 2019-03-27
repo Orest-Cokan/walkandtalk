@@ -21,6 +21,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
+import { getPicture } from "../../actions/PictureActions";
 
 // Profile tab
 class ProfileScreen extends Component {
@@ -88,7 +89,7 @@ class ProfileScreen extends Component {
             {/* Profile picture */}
             <Image
               style={ScreenStyleSheet.avatar}
-              source={vars.picture.image ? {uri: vars.picture.image} : require("../../assets/icons/default-profile.png")}
+              source={this.props.picture.picture.image ? {uri: this.props.picture.picture.image} : require("../../assets/icons/default-profile.png")}
             />
             <Text style={ScreenStyleSheet.profileName}>
               {vars.fullname}
@@ -242,7 +243,8 @@ class ProfileScreen extends Component {
 const mapStateToProps = state => {
   console.log("profilescreen");
   return {
-    user: state.user
+    user: state.user,
+    picture: state.picture
   };
 };
 
