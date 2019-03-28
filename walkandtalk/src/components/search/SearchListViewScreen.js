@@ -91,6 +91,16 @@ const items = [
 ];
 
 
+// Returns user's current location
+// Defaults to San Francisco on simulators
+export const getCurrentLocation = () => {
+ return new Promise((resolve, reject) => {
+   navigator.geolocation.getCurrentPosition(position =>
+     resolve(position),
+     e => reject(e));
+ });
+};
+
 
 /*
 This is the list view search screen. Users can search for events in this screen.
@@ -111,9 +121,32 @@ class SearchListViewScreen extends Component {
       mapRegion: null,
       lastLat: null,
       lastLong: null,
+      currentLocation: {
+        currentLatitude: 0,
+        currentLongitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0
+      }
     };
   }
 
+
+  async componentWillMount() {
+    const position = await getCurrentLocation();
+     if (position) {
+       //Tracking location is still necessary for distance queries
+       this.watchID = navigator.geolocation.watchPosition((position) => {
+         let region = {
+           latitude:       position.coords.latitude,
+           longitude:      position.coords.longitude,
+           latitudeDelta:  0.00922*1.5,
+           longitudeDelta: 0.00421*1.5
+         }
+         this.onRegionChange(region, region.latitude, region.longitude);
+       }, (error)=>console.log(error));
+
+     }
+   }
 
   /*
   Fetch all events to search from
@@ -124,17 +157,6 @@ class SearchListViewScreen extends Component {
   componentWillMount() {
     this.props.fetchEvents;
     console.log("all events", this.props.events);
-
-    //Tracking location is still necessary for distance queries
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      let region = {
-        latitude:       position.coords.latitude,
-        longitude:      position.coords.longitude,
-        latitudeDelta:  0.00922*1.5,
-        longitudeDelta: 0.00421*1.5
-      }
-      this.onRegionChange(region, region.latitude, region.longitude);
-    }, (error)=>console.log(error));
 
   }
 

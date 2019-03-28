@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Colors } from "../constants/Colors";
+import { Right } from "native-base";
 
 export default StyleSheet.create({
   // Screen
@@ -16,7 +17,7 @@ export default StyleSheet.create({
     fontFamily: "proxima_nova_reg"
   },
   headerBody: {
-    flex: 2,
+    flex: 1,
     alignItems: "center"
   },
   headerTitle: {
@@ -25,10 +26,17 @@ export default StyleSheet.create({
   headerSides: {
     flex: 1
   },
+  sideBarHeaderBody: {
+    marginLeft: 5
+  },
+  sideBarTextItem: {
+    marginLeft: 10
+  }, 
 
   // Back icon
-  backIcon: {
-    size: 10
+  headerIcon: {
+    height: 20,
+    width: 20
   },
 
   // Content
@@ -40,7 +48,7 @@ export default StyleSheet.create({
   // Side-by-side buttons
   rowContainer: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   leftRightButton: {
     width: "45%",
@@ -167,6 +175,19 @@ export default StyleSheet.create({
     marginTop: 15
   },
 
+  // Validation
+  formInputError: {
+    borderBottomWidth: 2,
+    borderBottomColor: "red",
+  },
+  formInputValid: {
+    borderBottomWidth: 0,
+    borderBottomColor: "transparent",
+  },
+  formErrorMessage: {
+    color: "red",
+  },
+
   //Events
   EventSectionTitle: {
     fontWeight: "bold",
@@ -249,11 +270,4 @@ export default StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start"
   },
-
-  backIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 100,
-    position: "relative"
-  }
 });

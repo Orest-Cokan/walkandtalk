@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Image, StatusBar } from "react-native";
+import { Image} from "react-native";
 import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
 
 import AuthScreen from "./components/login/AuthScreen";
@@ -19,6 +19,7 @@ import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
+import Dispatch from "./components/form/FormDispatch";
 import EditEventSceen from "./components/event/EditEventScreen"
 
 // Navigation logic for the entire app
@@ -29,7 +30,7 @@ const RouterComponent = () => (
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
       </Stack>
-      <Stack key="app" hideNavBar panHandlers={null}>
+      <Stack key="app" hideNavBar panHandlers={null} type="reset">
         <Tabs
           showLabel={false}
           activeBackgroundColor="#A680B8"
@@ -95,11 +96,14 @@ const RouterComponent = () => (
             )}
             hideNavBar
           >
+            <Scene key="formDispatch" component={Dispatch} />
             <Scene key="mainFormPage" component={FormScreen} />
             <Scene key="submitRecord" component={SubmitRecordScreen} />
+            <Scene key="mainRequestPage" component={RequestsScreen} />
+            <Scene key="viewRequest" component={ViewRequestScreen} />
           </Scene>
           {/*If the user is a researcher, this tab will show instead of forms tab*/}
-          {/*<Scene
+          {/* <Scene
             key="request"
             icon={({ focused }) => (
               <Image
@@ -115,7 +119,7 @@ const RouterComponent = () => (
           >
             <Scene key="mainRequestPage" component={RequestsScreen} />
             <Scene key="viewRequest" component={ViewRequestScreen} />
-          </Scene>*/}
+          </Scene> */}
           <Scene
             key="profile"
             icon={({ focused }) => (
@@ -129,7 +133,7 @@ const RouterComponent = () => (
               />
             )}
             hideNavBar
-          >
+          > 
             <Scene key="mainProfile" component={ProfileScreen} />
             <Scene key="editProfile" component={EditProfileScreen} />
             <Scene key="pastEvents" component={PastEventListScreen} />
