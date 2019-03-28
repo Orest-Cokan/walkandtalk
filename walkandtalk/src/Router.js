@@ -17,6 +17,7 @@ import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
+import EditEventSceen from "./components/event/EditEventScreen"
 
 // Navigation logic for the entire app
 const RouterComponent = () => (
@@ -135,6 +136,7 @@ const RouterComponent = () => (
         </Tabs>
         <Scene key="questionnaire" component={QuestionnaireScreen} />
         <Scene key="viewEvent" component={ViewEventScreen} />
+        <Scene key="editEvent" component={EditEventSceen} />
       </Stack>
     </Stack>
   </Router>

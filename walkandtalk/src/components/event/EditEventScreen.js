@@ -20,32 +20,31 @@ import {
   Content,
   StatusBar
 } from "native-base";
-import { SegmentedControls } from "react-native-radio-buttons";
+import SwitchSelector from "react-native-switch-selector";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { createEvent } from "../../actions/EventActions";
+import { editEvent } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
 import RNGooglePlaces from "react-native-google-places";
 
-class AddEventScreen extends Component {
+class EditEventScreen extends Component {
   constructor(props) {
     super(props);
 
+    // Find event data for clicked event
+    let event = this.props.events.find(e => e.id === this.props.data);
     // State
+    console.log(event, "EVENT")
     this.state = {
-      organizer: this.props.user.user.fullname,
-      email: this.props.user.user.email,
-      title: null,
-      description: null,
-      date: null,
-      startTime: null,
-      endTime: null,
-      //default values for intensity and venue
-      intensity: "Slow",
-      venue: "Indoor",
-      location: null,
-      lat: null,
-      long: null
+      title: event.title,
+      id: event.id,
+      description: event.description,
+      date: event.date,
+      startTime: event.start_time,
+      endTime: event.end_time,
+      intensity: event.intensity,
+      venue: event.venue,
+      location: event.location,
     };
   }
 
@@ -74,12 +73,9 @@ class AddEventScreen extends Component {
   }
 
   onFinish = () => {
-    console.log("we are here!");
-    console.log("event: ", this.state);
-    this.props.createEvent(
-      this.state.organizer,
-      this.state.email,
+    this.props.editEvent(
       this.state.title,
+      this.state.id,
       this.state.date,
       this.state.startTime,
       this.state.endTime,
@@ -87,9 +83,8 @@ class AddEventScreen extends Component {
       this.state.intensity,
       this.state.venue,
       this.state.location,
-      this.state.lat,
-      this.state.long
     );
+    Actions.pop();
   };
 
   onCancel = () => {
@@ -126,9 +121,30 @@ class AddEventScreen extends Component {
 
   render() {
     // All the options displayed in radio buttons
-    const intensities = ["Slow", "Intermediate", "Brisk"];
-    const venues = ["Indoor", "Outdoor"];
-
+    const intensities = [
+        { label: "Slow", value: "Slow" },
+        { label: "Intermediate", value: "Intermediate" },
+        { label: "Brisk", value: "Brisk" }
+      ];
+      const venues = [
+        { label: "Indoor", value: "Indoor" },
+        { label: "Outdoor", value: "Outdoor" }
+      ];
+    // Setting default values for slide bars
+    let default_intensity = null;
+    intensities.map((intensity, index) => {
+      if (this.state.intensity == intensity.value) {
+        default_intensity = index;
+        return default_intensity;
+      }
+    });
+    let default_venue = null;
+    venues.map((venue, index) => {
+      if (this.state.venue == venue.value) {
+        default_venue = index;
+        return default_venue;
+      }
+    });
     return (
       <Container>
         {/* Header */}
@@ -138,7 +154,7 @@ class AddEventScreen extends Component {
           iosBarStyle={"dark-content"}
         >
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Create Event</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Edit Event</Title>
           </Body>
         </Header>
 
@@ -154,7 +170,9 @@ class AddEventScreen extends Component {
               <TextInput
                 style={ScreenStyleSheet.formInput}
                 onChangeText={this.onChangeTitle}
-              />
+              >
+              {this.state.title}
+              </TextInput>
             </View>
           </View>
           {/* Date */}
@@ -247,7 +265,9 @@ class AddEventScreen extends Component {
                 numberOfLines={4}
                 maxLength={140}
                 onChangeText={this.onChangeDescription}
-              />
+              >
+              {this.state.description}
+              </TextInput>
             </View>
           </View>
 
@@ -257,22 +277,17 @@ class AddEventScreen extends Component {
               <Text style={ScreenStyleSheet.formInfo}>Intensity</Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
-          <View style={styles.segmentedControls}>
-            <SegmentedControls
-              tint={"#A680B8"}
-              backTint={"#ffffff"}
-              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={this.state.intensity}
-              onSelection={this.setIntensity.bind(this)}
-              optionContainerStyle={{
-                flex: 1,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2
-              }}
+          <View style={styles.controls}>
+            <SwitchSelector
               options={intensities}
+              initial={default_intensity}
+              onPress={value => this.setIntensity(value)}
+              textColor={"#A680B8"} //'#7a44cf'
+              selectedColor={"#ffffff"}
+              buttonColor={"#A680B8"}
+              borderColor={"#A680B8"}
+              borderRadius={8}
+              hasPadding
             />
           </View>
 
@@ -282,22 +297,17 @@ class AddEventScreen extends Component {
               <Text style={ScreenStyleSheet.formInfo}>Type of venue</Text>
             </View>
           </View>
-          {/* React-Native radio button as multi option button */}
-          <View style={styles.segmentedControls}>
-            <SegmentedControls
-              tint={"#A680B8"}
-              backTint={"#ffffff"}
-              optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-              selectedOption={this.state.venue}
-              onSelection={this.setVenue.bind(this)}
-              optionContainerStyle={{
-                flex: 1,
-                height: 40,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 2
-              }}
+          <View style={styles.controls}>
+            <SwitchSelector
               options={venues}
+              initial={default_venue}
+              onPress={value => this.setVenue(value)}
+              textColor={"#A680B8"} //'#7a44cf'
+              selectedColor={"#ffffff"}
+              buttonColor={"#A680B8"}
+              borderColor={"#A680B8"}
+              borderRadius={8}
+              hasPadding
             />
           </View>
 
@@ -317,7 +327,7 @@ class AddEventScreen extends Component {
                 onPress={() => this.openSearchModal()}
               >
                 <Text>
-                  {this.state.location ? this.state.location : "Add a Location"}
+                  {this.state.location.streetName}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -350,22 +360,25 @@ class AddEventScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    user: state.user
+    console.log("EditEventScreen");
+    return {
+        events: state.event.events,
+        user: state.user
+    };
   };
-};
 
 export default connect(
-  mapStateToProps,
-  { createEvent }
-)(AddEventScreen);
+    mapStateToProps,
+    { editEvent }
+)(EditEventScreen);
 
 // Styles
 const styles = StyleSheet.create({
-  segmentedControls: {
-    marginLeft: 15,
-    marginRight: 15,
-    marginBottom: 15
+  controls: {
+    marginBottom: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
   },
   buttonContainer: {
     marginVertical: 10,

@@ -1,4 +1,4 @@
-import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE } from "./types";
+import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE, EVENT_EDIT } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 import getIP from "../constants/Ip";
@@ -65,6 +65,46 @@ export const createEvent = (
       })
       .catch(err => {
         console.log(err, "kek");
+      });
+  };
+};
+
+// action to edit an event
+export const editEvent = (
+  title,
+  id,
+  date,
+  startTime,
+  endTime,
+  description,
+  intensity,
+  venue,
+  location,
+) => {
+  const event = {
+    title: title,
+    id: id,
+    date: date,
+    start_time: startTime,
+    end_time: endTime,
+    description: description,
+    intensity: intensity,
+    venue: venue,
+    location: location
+  }
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/walkingevent";
+    axios
+      .put(url, event)
+      .then(res => {
+        if (res.status === 200) {
+          console.log('event', event)
+          dispatch({ type: EVENT_EDIT, payload: event });
+        }
+      })
+      .catch(err => {
+        console.log("axios failure", err);
       });
   };
 };

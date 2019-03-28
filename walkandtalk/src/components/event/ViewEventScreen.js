@@ -138,6 +138,12 @@ class ViewEventScreen extends Component {
     this.props.deleteEvent(this.state.eventId);
   };
 
+  // When edit event button is clicked
+  goToEditEvent = () => {
+    // Navigate to edit event
+    Actions.editEvent(this.state.eventId);
+  };
+
   render() {
     const attendingOptions = ["Not Going", "Going"];
 
@@ -171,7 +177,7 @@ class ViewEventScreen extends Component {
     if (this.state.badge == "HOSTING") {
       buttons = (
         <View>
-          <TouchableOpacity style={styles.editButton} onPress={this.editEvent}>
+          <TouchableOpacity style={styles.editButton} onPress={this.goToEditEvent}>
             {/*Edit Event*/}
             <Text style={styles.buttonText}> EDIT </Text>
           </TouchableOpacity>
@@ -329,7 +335,6 @@ class ViewEventScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("homescreen");
   return {
     events: state.event.events,
     user: state.user

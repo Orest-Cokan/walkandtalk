@@ -1,4 +1,4 @@
-import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE } from "../actions/types";
+import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE, EVENT_EDIT } from "../actions/types";
 
 const INITIAL_STATE = {
   events: []
@@ -12,6 +12,8 @@ const event = (state = INITIAL_STATE, action) => {
     case EVENT_CREATE:
       return { ...state, event: action.payload };
     case EVENT_DELETE:
+      return { ...state, event: action.payload };
+    case EVENT_EDIT:
       return { ...state, event: action.payload };
     default:
       return state;
