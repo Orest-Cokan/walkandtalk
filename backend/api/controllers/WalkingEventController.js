@@ -59,6 +59,42 @@ const WalkingEventController = () => {
       });
   };
 
+  // get user walkingevents
+  const getUserEvents = async (req, res) => {
+    const { email } = req.params;
+    let events = [];
+    await WalkingEvent.findAll({
+      include: [
+        {
+          model: Attendee
+        },
+        {
+          model: Location
+        }
+      ]
+    })
+      .then(walkingevents => {
+        walkingevents.forEach(event => {
+          if (event.email === email) {
+            events.unshift(event);
+          } else {
+            for (let i = 0; i < event.attendees.length; i++) {
+              if (event.attendees[i].email === email) {
+                events.unshift(event);
+              } else {
+                continue;
+              }
+            }
+          }
+        });
+      })
+      .then(() => {
+        return res.status(200).json({ events });
+      })
+      .catch(err => {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
+  };
   // update an event
   const updateEvent = async (req, res) => {
     const { body } = req;
@@ -133,6 +169,7 @@ const WalkingEventController = () => {
   return {
     create,
     getAll,
+    getUserEvents,
     updateEvent,
     destroy,
     getEvent

@@ -10,6 +10,7 @@ const publicRoutes = {
 
   // Walkingevent routes
   "GET /walkingevents": "WalkingEventController.getAll",
+  "GET /walkingevents/:email": "WalkingEventController.getUserEvents",
   "POST /walkingevent": "WalkingEventController.create",
   "GET /walkingevent/:id": "WalkingEventController.getEvent",
   "PUT /walkingevent": "WalkingEventController.updateEvent",
