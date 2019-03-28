@@ -1,3 +1,4 @@
+// time to check time because no easy way to parse date text
 const time = (now, event_time) => {
   if (
     now.slice(-2).toLowerCase() == "am" &&

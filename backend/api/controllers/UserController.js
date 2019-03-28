@@ -32,9 +32,9 @@ const UserController = () => {
             include: [Preference, Picture]
           }
         );
-        const token = authService().issue({ email: user.email });
+        //const token = authService().issue({ email: user.email });
         Transporter.sendMail(newUserEmail);
-        return res.status(200).json({ token, user });
+        return res.status(200).json({ user });
       } catch (err) {
         console.log(err);
         return res.status(500).json({ msg: "Internal server error" });
@@ -65,8 +65,8 @@ const UserController = () => {
           bcryptService().comparePassword(password, user.password) &&
           authPolicy(user.registered)
         ) {
-          const token = authService().issue({ email: user.email });
-          return res.status(200).json({ token, user });
+          //const token = authService().issue({ email: user.email });
+          return res.status(200).json({ user });
         }
 
         return res.status(401).json({ msg: "Unauthorized" });
@@ -132,8 +132,7 @@ const UserController = () => {
       {
         fullname: body.fullname,
         menopausal_stage: body.menopausal_stage,
-        dob: body.dob,
-        distance: body.preference
+        dob: body.dob
       },
       {
         returning: true,
@@ -154,11 +153,15 @@ const UserController = () => {
             returning: true,
             where: { userEmail: body.email }
           }
-        ).then(self => {
-          return res.status(200).json(self[1]);
-        });
+        )
+          .then(self => {
+            return res.status(200).json(self[1]);
+          })
+          .catch(err => {
+            return res.status(500).json({ msg: "Internal server error" });
+          });
       })
-      .catch(function(err) {
+      .catch(err => {
         return res.status(500).json({ msg: "Internal server error" });
       });
   };
