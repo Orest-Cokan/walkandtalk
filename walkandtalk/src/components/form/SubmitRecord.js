@@ -115,11 +115,14 @@ class SubmitRecordScreen extends Component {
     });
   };
 
-  hasCompleted() {
-    this.state.completed = 1;
-  }
+  changeHandler(value) {
+      this.setState({ completed: value}, () =>
+      console.log(this.state.completed));
+   }
 
   onSubmit = () => {
+    console.log("state", this.state);
+    console.log("props", this.props);
     this.props.updateRecord(
       this.state.id,
       this.state.email,
@@ -131,9 +134,11 @@ class SubmitRecordScreen extends Component {
       this.state.walkRatingComment,
       this.state.locationRating,
       this.state.locationRatingComment,
-      this.state.completed
+      1
+      //this.state.completed, tried everything, will fix later
     );
-    console.log(this.props);
+    console.log("update", this.props);
+    Actions.mainFormPage();
   };
 
   onCancel = () => {
@@ -395,7 +400,7 @@ class SubmitRecordScreen extends Component {
             {/* Finish button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
-              onPress={(this.hasCompleted, this.onSubmit)}
+              onPress={(this.onSubmit)}
             >
               <Text style={{ color: "white" }}>Submit</Text>
             </TouchableOpacity>

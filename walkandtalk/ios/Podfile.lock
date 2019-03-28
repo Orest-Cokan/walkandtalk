@@ -27,13 +27,24 @@ PODS:
   - GoogleMaps/Base (2.5.0)
   - GoogleMaps/Maps (2.5.0):
     - GoogleMaps/Base
+  - GooglePlacePicker (2.5.0):
+    - GoogleMaps (= 2.5.0)
+    - GooglePlaces (= 2.5.0)
+  - GooglePlaces (2.5.0):
+    - GoogleMaps/Base (= 2.5.0)
   - React (0.58.6):
     - React/Core (= 0.58.6)
+  - react-native-fetch-blob (0.10.6):
+    - React/Core
   - react-native-google-maps (0.23.0):
     - Google-Maps-iOS-Utils (= 2.1.0)
     - GoogleMaps (= 2.5.0)
     - React
+  - react-native-image-picker (0.28.0):
+    - React
   - react-native-maps (0.23.0):
+    - React
+  - react-native-webview (5.3.1):
     - React
   - React/Core (0.58.6):
     - yoga (= 0.58.6.React)
@@ -90,8 +101,13 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Google-Maps-iOS-Utils
   - GoogleMaps
-  - react-native-google-maps (from `../node_modules/react-native-maps`)
-  - react-native-maps (from `../node_modules/react-native-maps`)
+  - GooglePlacePicker
+  - GooglePlaces
+  - react-native-fetch-blob (from `../node_modules/react-native-fetch-blob`)
+  - react-native-google-maps (from `../node_modules/react-native-maps/`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
+  - react-native-maps (from `../node_modules/react-native-maps/`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
@@ -112,6 +128,8 @@ SPEC REPOS:
     - boost-for-react-native
     - Google-Maps-iOS-Utils
     - GoogleMaps
+    - GooglePlacePicker
+    - GooglePlaces
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -122,10 +140,16 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
+  react-native-fetch-blob:
+    :path: "../node_modules/react-native-fetch-blob"
   react-native-google-maps:
-    :path: "../node_modules/react-native-maps"
+    :path: "../node_modules/react-native-maps/"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-maps:
-    :path: "../node_modules/react-native-maps"
+    :path: "../node_modules/react-native-maps/"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
@@ -136,11 +160,16 @@ SPEC CHECKSUMS:
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
+  GooglePlacePicker: 1573e644ab54564d95c2643edc0f29091609e966
+  GooglePlaces: dd70d9d71ea1c7944846afe67de3712c99b30a77
   React: 130b87b2d5e2baac646954282cab87be986d98fc
+  react-native-fetch-blob: 2bef9be702de8726f4d7bf58d2345579aaaee60d
   react-native-google-maps: 544d2208b09a7e2ec2c6112c8a97c4e7f921f74d
+  react-native-image-picker: e6e06d4315e3c85bad17e4b2002cd29f11d202c8
   react-native-maps: 9469741f77f270c605cafec603ce47327dc5b5f8
+  react-native-webview: 01182c885fc982887e268ef3b1e0e5eac6bcc45c
   yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
 
-PODFILE CHECKSUM: a2f4edd296797f06a7d7a2b0ce800f0cb44e7bff
+PODFILE CHECKSUM: 1dea1336440147fbeee5285eab61b2d63bb5a052
 
 COCOAPODS: 1.6.1

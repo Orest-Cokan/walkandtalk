@@ -9,6 +9,13 @@ import {
   StyledText as Text,
   StyledTextInput as TextInput
 } from "../../constants/StyledText";
+import {
+  Container,
+  Header,
+  Content,
+} from "native-base";
+import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+
 
 class AuthScreen extends Component {
   state = {
@@ -48,32 +55,39 @@ class AuthScreen extends Component {
   //render the screen
   render() {
     return (
-      <View>
+      <Container>
         {/* Header */}
-        <Text style={styles.logo}>WALK AND TALK</Text>
-        <View>
-          <GenerateForm ref="formGenerator" fields={fields} />
-        </View>
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={this.onPressLogin}
-        >
-          {/* Login Button - redirect user to home screen if successfull */}
-          <Text style={styles.buttonText}> LOGIN </Text>
-        </TouchableOpacity>
-        <Text style={styles.signUp}>New to Walk and Talk?</Text>
-        <View style={styles.nestedButtonView}>
-          {/* Signup Button - redirect user to signup screen if successfull */}
-          <Text style={styles.signUp}>Sign up </Text>
+        <Header
+          style={{height: 0}}
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
+        />
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
+          <Text style={styles.logo}>WALK AND TALK</Text>
+          <View accessibilityLabel="form">
+            <GenerateForm ref="formGenerator" fields={fields} />
+          </View>
           <TouchableOpacity
-            style={styles.signupButton}
-            onPress={this.onPressSignUp}
+            style={styles.loginButton}
+            onPress={this.onPressLogin}
           >
-            <Text style={styles.here}>here</Text>
+            {/* Login Button - redirect user to home screen if successfull */}
+            <Text style={styles.buttonText}> LOGIN </Text>
           </TouchableOpacity>
-          <Text style={styles.signUp}>.</Text>
-        </View>
-      </View>
+          <Text style={styles.signUp}>New to Walk and Talk?</Text>
+          <View style={styles.nestedButtonView}>
+            {/* Signup Button - redirect user to signup screen if successfull */}
+            <Text style={styles.signUp}>Sign up </Text>
+            <TouchableOpacity
+              style={styles.signupButton}
+              onPress={this.onPressSignUp}
+            >
+              <Text style={styles.here}>here</Text>
+            </TouchableOpacity>
+            <Text style={styles.signUp}>.</Text>
+          </View>
+        </Content>
+      </Container>
     );
   }
 }
