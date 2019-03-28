@@ -8,14 +8,14 @@ export const USER_CREATE = "USER_CREATE";
 export const USER_CREATE_FAIL = "USER_CREATE_FAIL";
 export const USER_CREATE_SUCCESS = "USER_CREATE_SUCCESS";
 export const USER_EDIT = "USER_EDIT";
-
 export const PICTURE_EDIT = "PICTURE_EDIT";
-export const PICTURE_GET = "PICTURE_GET"
+export const PICTURE_GET = "PICTURE_GET";
 
 // EVENT TYPES
 export const SET_EVENTS = "SET_EVENTS";
 export const EVENT_CREATE = "EVENT_CREATE";
 export const EVENT_DELETE = "EVENT_DELETE";
+export const EVENT_EDIT = "EVENT_EDIT";
 
 // EVENT RECORD TYPES
 export const RECORD_UPDATE = "RECORD_UPDATE";

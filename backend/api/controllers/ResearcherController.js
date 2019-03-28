@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Preference = require("../models/Preference");
 
 // Researcher controller
 const ResearcherController = () => {
@@ -8,7 +9,8 @@ const ResearcherController = () => {
     const { body } = req;
     await User.update(
       {
-        registered: 1
+        registered: 1,
+        redcapID: body.redcapID
       },
       { returning: true, where: { email: body.email } }
     )
@@ -43,9 +45,41 @@ const ResearcherController = () => {
       });
   };
 
+  // get unregistered users
+  const getUnregisteredUsers = async (req, res) => {
+    try {
+      const users = await User.findAll({
+        where: { registered: 0 },
+        include: [Preference]
+      });
+
+      return res.status(200).json({ users });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
+  // get registered users
+  const getRegisteredUsers = async (req, res) => {
+    try {
+      const users = await User.findAll({
+        where: { registered: 1 },
+        include: [Preference]
+      });
+
+      return res.status(200).json({ users });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
   return {
     acceptUser,
-    denyUser
+    denyUser,
+    getUnregisteredUsers,
+    getRegisteredUsers
   };
 };
 

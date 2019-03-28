@@ -21,7 +21,6 @@ import { deleteEvent } from "../../actions/EventActions";
 class ViewEventScreen extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props.fetchEvents());
 
     // Set state on inital profile signup
     this.state = {
@@ -89,10 +88,10 @@ class ViewEventScreen extends Component {
     //The following is for viewing an event from the homescreen
     // The user might be attending the event (GOING) or HOSTING the event
     if (this.props.searchScreen == false) {
-      console.log("eventID", this.props.eventId);
+      // console.log("eventID", this.props.eventId);
       id = this.props.eventId;
       events = this.props.events;
-      console.log("events", events);
+      // console.log("events", events);
       //retrieve the current event
       let currEvent = events.find(e => e.id === id);
 
@@ -111,7 +110,7 @@ class ViewEventScreen extends Component {
         });
       }
 
-      console.log("currEvent", currEvent);
+      // console.log("currEvent", currEvent);
       this.setState(
         {
           eventId: currEvent.id,
@@ -127,7 +126,7 @@ class ViewEventScreen extends Component {
           description: currEvent.description
         },
         () => {
-          console.log(this.state, "state updated");
+          // console.log(this.state, "state updated");
         }
       );
     }
@@ -136,6 +135,12 @@ class ViewEventScreen extends Component {
   deleteEvent = () => {
     console.log("we are deleting event with id", this.state.eventId);
     this.props.deleteEvent(this.state.eventId);
+  };
+
+  // When edit event button is clicked
+  goToEditEvent = () => {
+    // Navigate to edit event
+    Actions.editEvent(this.state.eventId);
   };
 
   render() {
@@ -171,7 +176,7 @@ class ViewEventScreen extends Component {
     if (this.state.badge == "HOSTING") {
       buttons = (
         <View>
-          <TouchableOpacity style={styles.editButton} onPress={this.editEvent}>
+          <TouchableOpacity style={styles.editButton} onPress={this.goToEditEvent}>
             {/*Edit Event*/}
             <Text style={styles.buttonText}> EDIT </Text>
           </TouchableOpacity>
@@ -329,7 +334,6 @@ class ViewEventScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("homescreen");
   return {
     events: state.event.events,
     user: state.user

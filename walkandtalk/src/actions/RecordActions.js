@@ -4,9 +4,8 @@ import {
   SET_COMPLETED_RECORDS,
   SET_UNCOMPLETED_RECORDS
 } from "./types";
-import { Actions } from "react-native-router-flux";
+import getIP from "../constants/Ip";
 import axios from "axios";
-import { Platform } from "react-native";
 
 // action to update event record
 export const updateRecord = (
@@ -110,12 +109,4 @@ export const getUncompletedRecords = email => {
         console.log(err);
       });
   };
-};
-
-var getIP = () => {
-  if (Platform.OS === "android") {
-    return "http://10.0.2.2:2017/";
-  } else if (Platform.OS === "ios") {
-    return "http://127.0.0.1:2017/";
-  }
 };

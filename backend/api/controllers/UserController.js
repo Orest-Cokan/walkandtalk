@@ -22,9 +22,9 @@ const UserController = () => {
             menopausal_stage: body.menopausal_stage,
             picture: body.picture,
             dob: body.dob,
-            registered: body.registered,
             preference: body.preference,
-            redcapID: new Date().valueOf(),
+            redcapID: Math.floor(Math.random() * 10000),
+            registered: 0,
             researcher: 0
           },
           {
@@ -137,20 +137,20 @@ const UserController = () => {
         where: { email: body.email }
       }
     )
-    .then(() => {
-      Preference.update(
-        {
-          distance: body.preference.distance,
-          duration: body.preference.duration,
-          intensity: body.preference.intensity,
-          venue: body.preference.venue,
-          location: body.preference.location
-        },
-        {
-          plain: true,
-          returning: true,
-          where: { userEmail: body.email }
-        }
+      .then(() => {
+        Preference.update(
+          {
+            distance: body.preference.distance,
+            duration: body.preference.duration,
+            intensity: body.preference.intensity,
+            venue: body.preference.venue,
+            location: body.preference.location
+          },
+          {
+            plain: true,
+            returning: true,
+            where: { userEmail: body.email }
+          }
         ).then(self => {
           return res.status(200).json(self[1]);
         });

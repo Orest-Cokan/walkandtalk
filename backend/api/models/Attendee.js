@@ -10,7 +10,7 @@ const Attendee = sequelize.define(tableName, {
     type: Sequelize.STRING,
     primaryKey: true
   },
-  name: Sequelize.STRING
+  fullname: Sequelize.STRING
 });
 
 // export attendee model

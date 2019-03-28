@@ -8,6 +8,8 @@ const WalkingRecord = require("../api/models/WalkingRecord");
 
 // cron job check for events to delete every hour
 var task = cron.schedule("* * * * *", () => {
+  let nukedTotal = 0;
+  let recordsMade = 0;
   const today = dateFormat(new Date(), "ddd, mmm d");
   const now = dateFormat(new Date(), "ddd, mmm d hh:MMtt");
   WalkingEvent.findAll({
@@ -24,9 +26,9 @@ var task = cron.schedule("* * * * *", () => {
     let compareDateTime = null;
     events.map(event => {
       compareDateTime = event.date + " " + event.start_time;
-      console.log(now, "this is now");
-      console.log(compareDateTime, "comparing to this");
-      console.log(time(now.toString(), compareDateTime));
+      console.log(
+        "Executing cron job: " + time(now.toString(), compareDateTime)
+      );
       if (time(now, compareDateTime)) {
         event.attendees.map(person => {
           WalkingRecord.create({
@@ -49,6 +51,7 @@ var task = cron.schedule("* * * * *", () => {
             location_rating_comment: null,
             completed: 0
           });
+          recordsMade = recordsMade + 1;
         });
         WalkingRecord.create({
           organizer: event.organizer,
@@ -70,20 +73,21 @@ var task = cron.schedule("* * * * *", () => {
           location_rating_comment: null,
           completed: 0
         });
+        recordsMade = recordsMade + 1;
         WalkingEvent.destroy({
           where: {
             id: event.id
           },
           include: [Attendee, Location]
         });
-        console.log(compareDateTime, "NUKED WALKING EVENTS");
+        nukedTotal = nukedTotal + 1;
+        console.log("Nuked a total of " + nukedTotal + " walking events");
+        console.log(
+          "Made a total of  " + recordsMade + " walking records to be filled in"
+        );
       }
     });
   });
-
-  console.log(
-    "!!!!!!!!!!!!!!!!!!!!!!running a task every minute!!!!!!!!!!!!!!!!!\n!!!!!!!!!!\n!!!!!!!!!"
-  );
 });
 
-module.exports = task;
+//module.exports = task;

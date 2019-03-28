@@ -1,7 +1,7 @@
-import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE } from "./types";
+import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE, EVENT_EDIT } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
-import { Platform } from "react-native";
+import getIP from "../constants/Ip";
 
 // action to fetch all events
 export const fetchEvents = () => {
@@ -69,6 +69,46 @@ export const createEvent = (
   };
 };
 
+// action to edit an event
+export const editEvent = (
+  title,
+  id,
+  date,
+  startTime,
+  endTime,
+  description,
+  intensity,
+  venue,
+  location,
+) => {
+  const event = {
+    title: title,
+    id: id,
+    date: date,
+    start_time: startTime,
+    end_time: endTime,
+    description: description,
+    intensity: intensity,
+    venue: venue,
+    location: location
+  }
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/walkingevent";
+    axios
+      .put(url, event)
+      .then(res => {
+        if (res.status === 200) {
+          console.log('event', event)
+          dispatch({ type: EVENT_EDIT, payload: event });
+        }
+      })
+      .catch(err => {
+        console.log("axios failure", err);
+      });
+  };
+};
+
 // action to delete an event
 export const deleteEvent = id => {
   return dispatch => {
@@ -85,12 +125,4 @@ export const deleteEvent = id => {
         console.log(err);
       });
   };
-};
-
-var getIP = () => {
-  if (Platform.OS === "android") {
-    return "http://10.0.2.2:2017/";
-  } else if (Platform.OS === "ios") {
-    return "http://127.0.0.1:2017/";
-  }
 };

@@ -1,7 +1,7 @@
-import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE } from "../actions/types";
+import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE, EVENT_EDIT } from "../actions/types";
 
 const INITIAL_STATE = {
-  events: []
+  events: [],
 };
 
 // event reducer
@@ -13,6 +13,8 @@ const event = (state = INITIAL_STATE, action) => {
       return { ...state, event: action.payload };
     case EVENT_DELETE:
       return { ...state, event: action.payload };
+    case EVENT_EDIT:
+      return { ...state };
     default:
       return state;
   }
