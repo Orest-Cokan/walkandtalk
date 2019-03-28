@@ -5,7 +5,8 @@ import {
   USER_LOGIN,
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
-  USER_EDIT
+  USER_EDIT,
+  GET_UNREGISTERED_USERS
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -38,7 +39,7 @@ export const createUser = (
       intensity: intensity,
       duration: duration,
       distance: distance
-    }
+    },
   };
   return dispatch => {
     var ip = getIP();
@@ -158,6 +159,22 @@ export const editUser = (
       })
       .catch(err => {
         console.log("axios failure", err);
+      });
+  };
+};
+
+//get unregistered users 
+export const getUnregisteredUsers = () => {
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/researcher/unregistered";
+    axios
+      .get(url)
+      .then(res => {
+        dispatch({ type: GET_UNREGISTERED_USERS, payload: res.data.users });
+      })
+      .catch(err => {
+        console.log(err);
       });
   };
 };

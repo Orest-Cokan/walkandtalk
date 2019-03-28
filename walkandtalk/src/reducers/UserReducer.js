@@ -5,7 +5,8 @@ import {
   USER_CREATE_SUCCESS,
   USER_CREATE,
   USER_EDIT,
-  USER_LOGIN_SUCCESS
+  USER_LOGIN_SUCCESS,
+  GET_UNREGISTERED_USERS
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -62,6 +63,8 @@ const user = (state = INITIAL_STATE, action) => {
         loading: true,
         user: action.payload
       };
+    case GET_UNREGISTERED_USERS:
+      return { ...state, users: action.payload };
     default:
       return state;
   }

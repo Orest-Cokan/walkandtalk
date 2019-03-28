@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity, Alert } from "react-native";
 import RequestCard from "../../cardview/requestCard";
+import { getUnregisteredUsers } from "../../actions/UserActions";
 import { connect } from "react-redux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
@@ -22,51 +23,62 @@ class RequestsScreen extends Component {
   constructor(props) {
     super(props);
     console.log("inside constructor");
-
+    this.props.getUnregisteredUsers();
+    
     // Sample data
     this.state = {
-      requests: [
-        {
-          fullname: "Anne Taylor",
-          email: "anntaylor@gmail.com",
-          dob: "1965-03-20",
-          menopausal_stage: "Peri",
-          intensity: "Slow",
-          distance: 10,
-          duration: 60,
-          venue: "Indoor",
-          location: "Summerside"
-        },
-        {
-          fullname: "Rose Zapata",
-          email: "rosezapata@gmail.com",
-          dob: "1975-05-04",
-          menopausal_stage: "Pre",
-          intensity: "Brisk",
-          distance: 10,
-          duration: 60,
-          venue: "Outdoor",
-          location: "Riverbend area"
-        }
-      ]
+      requests: [{
+        email:'1',
+        redcapID: 1,
+        fullname: '1',
+        registered: 0,
+      }],
+      users : null
     };
   }
 
-  // The following code is to be used when real data is to be integrated
-  /* componentDidMount() {
-    this.props.[insert get request action here];
-  }*/
+  componentWillMount() {
+    this.props.getUnregisteredUsers;
+  }
 
+  // The following code is to be used when real data is to be integrated
+  // componentDidMount() {
+  //   this.props.getUnregisteredUsers;
+  //   console.log("THIS IS DID MOUNT")
+  //   console.log(this.props.users);
+
+  // }
+
+
+
+  
   // Switch request view
   viewRequest(index) {
     Actions.viewRequest({ request: this.state.requests[index] });
   }
 
+  setUsers(){
+    console.log(this.props.users);
+    this.setState({
+      users: this.props.users
+    });
+    console.log(this.state.users);
+  }
+
   //
   getRequests() {
     let requests = [];
-    console.log(this.props);
+    var users = [];
+    let unregisteredUsers = this.props.users;
+    console.log(this.props.users);
+    console.log("UNREGIESTERED USERS", unregisteredUsers);
+    this.setState({
+      users: unregisteredUsers
+    });
+
+    //console.log("THIS IS IN GETREQUEST" , this.state.users);
     this.state.requests.map((request, index) => {
+
       requests.unshift(
         <TouchableOpacity
           key={index}
@@ -76,7 +88,7 @@ class RequestsScreen extends Component {
         </TouchableOpacity>
       );
     });
-    console.log(this.props);
+    //console.log(this.props);
     return requests;
   }
 
@@ -102,11 +114,13 @@ class RequestsScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("requestscreen");
-  return {};
+  console.log("THIS IS IN MAP", state)
+  return {
+    users: state.user.users
+  };
 };
 
 export default connect(
   mapStateToProps,
-  null
+  {getUnregisteredUsers}
 )(RequestsScreen);
