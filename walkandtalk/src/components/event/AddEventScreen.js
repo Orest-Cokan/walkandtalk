@@ -191,7 +191,7 @@ class AddEventScreen extends Component {
         this.state.lat,
         this.state.long
       );
-      Alert.alert("You have successfully created an event!");
+      Alert.alert("Your event has been successfully created.");
     } else {
       Alert.alert("You must fill in all required fields.");
     }

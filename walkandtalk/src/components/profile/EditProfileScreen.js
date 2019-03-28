@@ -5,7 +5,7 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight,
-  ScrollView
+  Alert
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
@@ -37,6 +37,8 @@ class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
+
+      // Fields
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
       picture: this.props.picture.picture.image,
@@ -46,72 +48,71 @@ class EditProfileScreen extends Component {
       distance: this.props.user.user.preference.distance,
       duration: this.props.user.user.preference.duration,
       venue: this.props.user.user.preference.venue,
-      location: this.props.user.user.preference.location
+      location: this.props.user.user.preference.location,
+
+      // Error messages
+      errorFullname: null,
+      errorLocation: null
     };
+
+    // Component refs 
+    this.fullname = React.createRef();
+    this.location = React.createRef();
+
   }
-  onChangeFullName = text => {
-    this.setState({
-      fullname: text
-    });
+
+  // Set state
+  onChange(name, value) {
+    this.setState({ [name]: value });
   };
 
-  onChangeDuration(value) {
-    this.setState({
-      duration: value
-    });
+  // Checks if input is null or empty
+  isValid(input) {
+    if (input == null || input == '' ) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
-  onChangeDistance(value) {
-    this.setState({
-      distance: value
-    });
+  // Shows error message
+  showError(input, ref, error) {
+    // If input is valid 
+    if (this.isValid(input)) {
+      // Keep or set back to default 
+      ref.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.setState({ [error] : null });
+    }
+    // Otherwise, show errors
+    else {
+      ref.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ [error] : this.errorMessage("This is a required field.") });
+    }
   }
 
-  setIntensity(value) {
-    this.setState({
-      intensity: value
-    });
-  }
-  setMenopauseStage(value) {
-    this.setState({
-      menopausal_stage: value
-    });
-  }
-
-  setVenue(value) {
-    this.setState({
-      venue: value
-    });
+  // Error message for text input fields
+  errorMessage(message) {
+    return (
+      <View style={ScreenStyleSheet.rowContainer}>
+        <View style={ScreenStyleSheet.formRowInfo}>
+          <Text style={ScreenStyleSheet.formErrorMessage}>
+            {message}
+          </Text>
+        </View>
+      </View>);
   }
 
-  onChangeLocation = text => {
-    this.setState({
-      location: text
-    });
-  };
-
-  onCancel() {
-    Actions.pop();
+  // Checks if all input fields are valid
+  inputCheck = () => {
+    if (this.isValid(this.state.fullname) 
+      && this.isValid(this.state.location)) {
+      return true;
+    } else {
+      this.showError(this.state.fullname, this.fullname, 'errorFullname');
+      this.showError(this.state.location, this.location, 'errorLocation');
+      return false;
+    }
   }
-
-  saveProfile = () => {
-    this.props.editUser(
-      this.state.fullname,
-      this.state.email,
-      this.state.dob,
-      this.state.menopausal_stage,
-      this.state.intensity,
-      this.state.distance,
-      this.state.duration,
-      this.state.venue,
-      this.state.location
-    );
-    this.props.editPicture(
-      this.state.email,
-      this.state.picture
-    )
-    Actions.mainProfile();
-  };
 
   addPicture = () => {
     const options = {
@@ -141,6 +142,36 @@ class EditProfileScreen extends Component {
       }
     });
   };
+
+  // When save changes button is clicked
+  onSaveChanges = () => {
+    if (this.inputCheck()) {
+    this.props.editUser(
+      this.state.fullname,
+      this.state.email,
+      this.state.dob,
+      this.state.menopausal_stage,
+      this.state.intensity,
+      this.state.distance,
+      this.state.duration,
+      this.state.venue,
+      this.state.location
+    );
+    this.props.editPicture(
+      this.state.email,
+      this.state.picture
+    )
+    Alert.alert("Your changes have been saved.");
+    Actions.mainProfile();
+    } else {
+    Alert.alert("You must fill in all required fields.");
+    }
+  }
+
+  // When cancel button is clicked
+  onCancel() {
+    Actions.pop();
+  }
 
   render() {
     // All the options displayed in radio buttons
@@ -207,6 +238,13 @@ class EditProfileScreen extends Component {
             </TouchableHighlight>
           </View>
 
+          {/* Info Header */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={styles.subHeader}>Basic Info</Text>
+            </View>
+          </View>
+
           {/* Full Name */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -217,15 +255,19 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
+            <View 
+              ref={this.fullname}
+              style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeFullName}
+                onChangeText={this.onChange.bind(this, 'fullname')}
+                onEndEditing={this.showError.bind(this, this.state.fullname, this.fullname, 'errorFullname')}
               >
                 {this.state.fullname}
               </TextInput>
             </View>
           </View>
+          {this.state.errorFullname}
 
           {/* Email Address */}
           <View style={ScreenStyleSheet.rowContainer}>
@@ -241,16 +283,6 @@ class EditProfileScreen extends Component {
               >
                 {this.state.email}
               </TextInput>
-            </View>
-          </View>
-
-          {/* On screen separator */}
-          <View style={ScreenStyleSheet.lineSeparator} />
-
-          {/* Info Header */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={styles.subHeader}>Basic Info</Text>
             </View>
           </View>
 
@@ -293,8 +325,8 @@ class EditProfileScreen extends Component {
             <SwitchSelector
               options={menopausal_stage}
               initial={default_menopausal_stage}
-              onPress={value => this.setMenopauseStage(value)}
-              textColor={"#A680B8"} //'#7a44cf'
+              onPress={this.onChange.bind(this, 'menopausal_stage')}
+              textColor={"#A680B8"} 
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
@@ -327,7 +359,7 @@ class EditProfileScreen extends Component {
               initValue={this.state.distance}
               value={this.state.distance}
               minValue={0}
-              onChange={value => this.onChangeDistance(value)}
+              onChange={this.onChange.bind(this, 'distance')}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -355,7 +387,7 @@ class EditProfileScreen extends Component {
               initValue={this.state.duration}
               value={this.state.duration}
               minValue={0}
-              onChange={value => this.onChangeDuration(value)}
+              onChange={this.onChange.bind(this, 'duration')}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -382,8 +414,8 @@ class EditProfileScreen extends Component {
             <SwitchSelector
               options={intensities}
               initial={default_intensity}
-              onPress={value => this.setIntensity(value)}
-              textColor={"#A680B8"} //'#7a44cf'
+              onPress={this.onChange.bind(this, 'intensity')}
+              textColor={"#A680B8"}
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
@@ -402,8 +434,8 @@ class EditProfileScreen extends Component {
             <SwitchSelector
               options={venues}
               initial={default_venue}
-              onPress={value => this.setVenue(value)}
-              textColor={"#A680B8"} //'#7a44cf'
+              onPress={this.onChange.bind(this, 'venue')}
+              textColor={"#A680B8"}
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
@@ -422,15 +454,19 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
+            <View
+              ref={this.location} 
+              style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeLocation}
+                onChangeText={this.onChange.bind(this, 'location')}
+                onEndEditing={this.showError.bind(this, this.state.location, this.location, 'errorLocation')}
               >
                 {this.state.location}
               </TextInput>
             </View>
           </View>
+          {this.state.errorLocation}
 
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
@@ -448,7 +484,7 @@ class EditProfileScreen extends Component {
             {/* Save button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
-              onPress={this.saveProfile}
+              onPress={this.onSaveChanges}
             >
               <Text style={{ color: "white" }}>Save changes</Text>
             </TouchableOpacity>
