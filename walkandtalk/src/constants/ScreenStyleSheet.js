@@ -48,7 +48,7 @@ export default StyleSheet.create({
   // Side-by-side buttons
   rowContainer: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   leftRightButton: {
     width: "45%",
@@ -173,6 +173,19 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     marginTop: 15
+  },
+
+  // Validation
+  formInputError: {
+    borderBottomWidth: 2,
+    borderBottomColor: "red",
+  },
+  formInputValid: {
+    borderBottomWidth: 0,
+    borderBottomColor: "transparent",
+  },
+  formErrorMessage: {
+    color: "red",
   },
 
   //Events
