@@ -19,6 +19,7 @@ import PastEventListScreen from "./components/profile/ViewPastEventList";
 import HelplineScreen from "./components/profile/HelplineScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
+import Dispatch from "./components/form/FormDispatch";
 import EditEventSceen from "./components/event/EditEventScreen"
 
 // Navigation logic for the entire app
@@ -95,11 +96,14 @@ const RouterComponent = () => (
             )}
             hideNavBar
           >
+            <Scene key="formDispatch" component={Dispatch} />
             <Scene key="mainFormPage" component={FormScreen} />
             <Scene key="submitRecord" component={SubmitRecordScreen} />
+            <Scene key="mainRequestPage" component={RequestsScreen} />
+            <Scene key="viewRequest" component={ViewRequestScreen} />
           </Scene>
           {/*If the user is a researcher, this tab will show instead of forms tab*/}
-          {/*<Scene
+          {/* <Scene
             key="request"
             icon={({ focused }) => (
               <Image
@@ -115,7 +119,7 @@ const RouterComponent = () => (
           >
             <Scene key="mainRequestPage" component={RequestsScreen} />
             <Scene key="viewRequest" component={ViewRequestScreen} />
-          </Scene>*/}
+          </Scene> */}
           <Scene
             key="profile"
             icon={({ focused }) => (
