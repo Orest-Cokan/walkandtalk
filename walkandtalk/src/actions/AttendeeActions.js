@@ -1,7 +1,7 @@
 import { ATTENDEE_ADD, ATTENDEE_DELETE } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
-import { Platform } from "react-native";
+import getIP from "../constants/Ip";
 
 // action to add an attendee
 export const addAttendees = (id, name, email) => {
@@ -45,12 +45,4 @@ export const removeAttendees = (id, email) => {
         console.log(err);
       });
   };
-};
-
-var getIP = () => {
-  if (Platform.OS === "android") {
-    return "http://10.0.2.2:2017/";
-  } else if (Platform.OS === "ios") {
-    return "http://127.0.0.1:2017/";
-  }
 };

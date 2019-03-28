@@ -43,7 +43,6 @@
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		44CC0FB3E786427D983DEACF /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FFB5B8ED7102440E9660B351 /* AntDesign.ttf */; };
 		4C675262C0E144B2A9F553EB /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 390C8790935A4E0EAC4FD677 /* Zocial.ttf */; };
-		4FAE0090A0BA4195BC379439 /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 62459890B0894703BA50BBCD /* libRNGooglePlaces.a */; };
 		75856318D0C94169BBB5F5F5 /* proxima_nova_reg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9AA5CDB24FD64B4A8FE3BDAD /* proxima_nova_reg.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8475F262A7FA487680F9E1CA /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8539DBDFEB94232B549E354 /* Ionicons.ttf */; };
@@ -56,6 +55,7 @@
 		9C051A8958AE4995A0648509 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A76797BF796430BA597DBC1 /* EvilIcons.ttf */; };
 		9E01B6755D9A40DAA61B8D62 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70E3EA5693884B368A043E4A /* FontAwesome5_Brands.ttf */; };
 		A3B43F6BDC67463CBE8BC551 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6214FAA750B04EDA927BF605 /* Foundation.ttf */; };
+		A73C61E5224410D00091ED2A /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE39C7212240513C002A6879 /* libRNGooglePlaces.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		AFB3695EA9064EA798FB5619 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65A54A7875164D348951AD86 /* FontAwesome5_Solid.ttf */; };
 		BDC0625377494226A09BCFBD /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1AC23F59B8B04C448854C8BB /* FontAwesome5_Regular.ttf */; };
@@ -449,7 +449,7 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				94262C7E1EA54553B8C9F5C9 /* libRNDatePicker.a in Frameworks */,
 				9A238E115A064453D568BB51 /* libPods-walkandtalk.a in Frameworks */,
-				4FAE0090A0BA4195BC379439 /* libRNGooglePlaces.a in Frameworks */,
+				A73C61E5224410D00091ED2A /* libRNGooglePlaces.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1322,12 +1322,16 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-walkandtalk/Pods-walkandtalk-resources.sh",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlacePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GooglePlaces.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

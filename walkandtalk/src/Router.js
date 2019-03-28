@@ -1,12 +1,14 @@
 import React from "react";
-import { View, Image, StatusBar } from "react-native";
+import { Image} from "react-native";
 import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
 
 import AuthScreen from "./components/login/AuthScreen";
 import SignupScreen from "./components/login/SignupScreen";
 import AddEventScreen from "./components/event/AddEventScreen";
 import HomeScreen from "./components/home/HomeScreen";
-import SearchScreen from "./components/search/SearchScreen";
+import SearchTabScreen from "./components/search/SearchTabScreen";
+import SearchMapViewScreen from "./components/search/SearchMapViewScreen";
+import SearchListViewScreen from "./components/search/SearchListViewScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
 import RequestsScreen from "./components/form/RequestsScreen";
 import ViewRequestScreen from "./components/form/ViewRequestScreen";
@@ -18,6 +20,7 @@ import HelplineScreen from "./components/profile/HelplineScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
 import Dispatch from "./components/form/FormDispatch";
+import EditEventSceen from "./components/event/EditEventScreen"
 
 // Navigation logic for the entire app
 const RouterComponent = () => (
@@ -27,7 +30,7 @@ const RouterComponent = () => (
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
       </Stack>
-      <Stack key="app" hideNavBar panHandlers={null}>
+      <Stack key="app" hideNavBar panHandlers={null} type="reset">
         <Tabs
           showLabel={false}
           activeBackgroundColor="#A680B8"
@@ -51,7 +54,7 @@ const RouterComponent = () => (
           />
           <Scene
             key="search"
-            component={SearchScreen}
+            component={SearchTabScreen}
             icon={({ focused }) => (
               <Image
                 source={
@@ -130,7 +133,7 @@ const RouterComponent = () => (
               />
             )}
             hideNavBar
-          >
+          > 
             <Scene key="mainProfile" component={ProfileScreen} />
             <Scene key="editProfile" component={EditProfileScreen} />
             <Scene key="pastEvents" component={PastEventListScreen} />
@@ -139,6 +142,9 @@ const RouterComponent = () => (
         </Tabs>
         <Scene key="questionnaire" component={QuestionnaireScreen} />
         <Scene key="viewEvent" component={ViewEventScreen} />
+        <Scene key="editEvent" component={EditEventSceen} />
+        <Scene key="searchList" component={SearchListViewScreen} />
+        <Scene key="searchMap" component={SearchMapViewScreen} />
       </Stack>
     </Stack>
   </Router>

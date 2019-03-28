@@ -22,9 +22,9 @@ const UserController = () => {
             menopausal_stage: body.menopausal_stage,
             picture: body.picture,
             dob: body.dob,
-            registered: body.registered,
             preference: body.preference,
-            redcapID: new Date().valueOf(),
+            redcapID: Math.floor(Math.random() * 10000),
+            registered: 0,
             researcher: 0
           },
           {
@@ -124,8 +124,6 @@ const UserController = () => {
   // update a user
   const updateUser = async (req, res) => {
     const { body } = req;
-    console.log(body.id, body.fullname), "we are here!";
-    console.log(body.preference, "IS THIS TRIGGERED!!!!!!");
 
     await User.update(
       {
@@ -153,7 +151,9 @@ const UserController = () => {
             returning: true,
             where: { userEmail: body.email }
           }
-        );
+        ).then(self => {
+          return res.status(200).json(self[1]);
+        });
       })
       .catch(function(err) {
         return res.status(500).json({ msg: "Internal server error" });
