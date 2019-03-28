@@ -1,13 +1,11 @@
-// Create Event Screen View
+// Edit Event Screen View
 import React, { Component } from "react";
 import {
   StyleSheet,
   View,
   Text,
   TextInput,
-  TouchableOpacity,
-  Button,
-  Alert
+  TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -23,18 +21,15 @@ import {
 import SwitchSelector from "react-native-switch-selector";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { editEvent } from "../../actions/EventActions";
+import { editEvent, fetchEvents } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
 import RNGooglePlaces from "react-native-google-places";
 
 class EditEventScreen extends Component {
   constructor(props) {
     super(props);
-
     // Find event data for clicked event
     let event = this.props.events.find(e => e.id === this.props.data);
-    // State
-    console.log(event, "EVENT")
     this.state = {
       title: event.title,
       id: event.id,
@@ -71,22 +66,19 @@ class EditEventScreen extends Component {
       venue: selectedOption
     });
   }
-
-  onFinish = () => {
-    this.props.editEvent(
-      this.state.title,
-      this.state.id,
-      this.state.date,
-      this.state.startTime,
-      this.state.endTime,
-      this.state.description,
-      this.state.intensity,
-      this.state.venue,
-      this.state.location,
-    );
-    Actions.pop();
-  };
-
+  
+  // Has to be asynchronous in case edit finishes before 
+  // fetching which will cause state not to be updated
+  onFinish = async () => {
+    await new Promise((resolve, reject) => {
+          // Edit the event user clicks
+          this.props.editEvent(this.state.title, this.state.id, this.state.date, this.state.startTime, this.state.endTime, this.state.description, this.state.intensity, this.state.venue, this.state.location);
+          resolve();
+      });
+      // fetch updated event(s) to pass to homescreen
+      this.props.fetchEvents();
+      Actions.home();
+  }
   onCancel = () => {
     Actions.home();
   };
@@ -360,16 +352,15 @@ class EditEventScreen extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log("EditEventScreen");
     return {
-        events: state.event.events,
-        user: state.user
+      events: state.event.events,
+      user: state.user
     };
   };
 
 export default connect(
     mapStateToProps,
-    { editEvent }
+    { fetchEvents, editEvent }
 )(EditEventScreen);
 
 // Styles
