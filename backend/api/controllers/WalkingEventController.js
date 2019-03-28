@@ -76,10 +76,19 @@ const WalkingEventController = () => {
       },
       { returning: true, where: { id: body.id } }
     )
-      .then(self => {
-        return res.status(200).json(self[1]);
+      .then(() => {
+        Location.update(
+          {
+            streetName: body.location.streetName,
+            lat: body.location.lat,
+            long: body.location.long
+          },
+          { returning: true, where: { walkingeventId: body.id } }
+        ).then(self => {
+          return res.status(200).json(self[1]);
+        });
       })
-      .catch(function(err) {
+      .catch(err => {
         return res.status(500).json({ msg: "Internal server error" });
       });
   };
