@@ -15,6 +15,7 @@ export const PICTURE_GET = "PICTURE_GET";
 export const SET_EVENTS = "SET_EVENTS";
 export const EVENT_CREATE = "EVENT_CREATE";
 export const EVENT_DELETE = "EVENT_DELETE";
+export const EVENT_EDIT = "EVENT_EDIT";
 
 // EVENT RECORD TYPES
 export const RECORD_UPDATE = "RECORD_UPDATE";
