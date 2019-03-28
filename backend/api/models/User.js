@@ -44,7 +44,7 @@ const User = sequelize.define(
       allowNull: false
     },
     registered: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.BOOLEAN,
       allowNull: true
     },
     researcher: {

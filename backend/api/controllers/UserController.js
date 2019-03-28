@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Preference = require("../models/Preference");
 const Picture = require("../models/Picture");
 const authService = require("../services/auth.service");
+const authPolicy = require("../policies/auth.policy");
 const bcryptService = require("../services/bcrypt.service");
 const Transporter = require("../utils/email/email");
 const newUserEmail = require("../utils/email/msgs/newUser");
@@ -60,9 +61,11 @@ const UserController = () => {
           return res.status(400).json({ msg: "Bad Request: User not found" });
         }
 
-        if (bcryptService().comparePassword(password, user.password)) {
+        if (
+          bcryptService().comparePassword(password, user.password) &&
+          authPolicy(user.registered)
+        ) {
           const token = authService().issue({ email: user.email });
-
           return res.status(200).json({ token, user });
         }
 
