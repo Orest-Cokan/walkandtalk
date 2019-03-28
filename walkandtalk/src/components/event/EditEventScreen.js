@@ -1,13 +1,11 @@
-// Create Event Screen View
+// Edit Event Screen View
 import React, { Component } from "react";
 import {
   StyleSheet,
   View,
   Text,
   TextInput,
-  TouchableOpacity,
-  Button,
-  Alert
+  TouchableOpacity
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -23,29 +21,25 @@ import {
 import SwitchSelector from "react-native-switch-selector";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { createEvent } from "../../actions/EventActions";
+import { editEvent, fetchEvents } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
 import RNGooglePlaces from "react-native-google-places";
 
-class AddEventScreen extends Component {
+class EditEventScreen extends Component {
   constructor(props) {
     super(props);
-
-    // State
+    // Find event data for clicked event
+    let event = this.props.events.find(e => e.id === this.props.data);
     this.state = {
-      organizer: this.props.user.user.fullname,
-      email: this.props.user.user.email,
-      title: null,
-      description: null,
-      date: null,
-      startTime: null,
-      endTime: null,
-      //default values for intensity and venue
-      intensity: "Slow",
-      venue: "Indoor",
-      location: null,
-      lat: null,
-      long: null
+      title: event.title,
+      id: event.id,
+      description: event.description,
+      date: event.date,
+      startTime: event.start_time,
+      endTime: event.end_time,
+      intensity: event.intensity,
+      venue: event.venue,
+      location: event.location,
     };
   }
 
@@ -72,26 +66,19 @@ class AddEventScreen extends Component {
       venue: selectedOption
     });
   }
-
-  onFinish = () => {
-    console.log("we are here!");
-    console.log("event: ", this.state);
-    this.props.createEvent(
-      this.state.organizer,
-      this.state.email,
-      this.state.title,
-      this.state.date,
-      this.state.startTime,
-      this.state.endTime,
-      this.state.description,
-      this.state.intensity,
-      this.state.venue,
-      this.state.location,
-      this.state.lat,
-      this.state.long
-    );
-  };
-
+  
+  // Has to be asynchronous in case edit finishes before 
+  // fetching which will cause state not to be updated
+  onFinish = async () => {
+    await new Promise((resolve, reject) => {
+          // Edit the event user clicks
+          this.props.editEvent(this.state.title, this.state.id, this.state.date, this.state.startTime, this.state.endTime, this.state.description, this.state.intensity, this.state.venue, this.state.location);
+          resolve();
+      });
+      // fetch updated event(s) to pass to homescreen
+      this.props.fetchEvents();
+      Actions.home();
+  }
   onCancel = () => {
     Actions.home();
   };
@@ -127,29 +114,29 @@ class AddEventScreen extends Component {
   render() {
     // All the options displayed in radio buttons
     const intensities = [
-      { label: "Slow", value: "Slow" },
-      { label: "Intermediate", value: "Intermediate" },
-      { label: "Brisk", value: "Brisk" }
-    ];
-    const venues = [
-      { label: "Indoor", value: "Indoor" },
-      { label: "Outdoor", value: "Outdoor" }
-    ];
-  // Setting default values for slide bars
-  let default_intensity = null;
-  intensities.map((intensity, index) => {
-    if (this.state.intensity == intensity.value) {
-      default_intensity = index;
-      return default_intensity;
-    }
-  });
-  let default_venue = null;
-  venues.map((venue, index) => {
-    if (this.state.venue == venue.value) {
-      default_venue = index;
-      return default_venue;
-    }
-  });
+        { label: "Slow", value: "Slow" },
+        { label: "Intermediate", value: "Intermediate" },
+        { label: "Brisk", value: "Brisk" }
+      ];
+      const venues = [
+        { label: "Indoor", value: "Indoor" },
+        { label: "Outdoor", value: "Outdoor" }
+      ];
+    // Setting default values for slide bars
+    let default_intensity = null;
+    intensities.map((intensity, index) => {
+      if (this.state.intensity == intensity.value) {
+        default_intensity = index;
+        return default_intensity;
+      }
+    });
+    let default_venue = null;
+    venues.map((venue, index) => {
+      if (this.state.venue == venue.value) {
+        default_venue = index;
+        return default_venue;
+      }
+    });
     return (
       <Container>
         {/* Header */}
@@ -159,7 +146,7 @@ class AddEventScreen extends Component {
           iosBarStyle={"dark-content"}
         >
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Create Event</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Edit Event</Title>
           </Body>
         </Header>
 
@@ -175,7 +162,9 @@ class AddEventScreen extends Component {
               <TextInput
                 style={ScreenStyleSheet.formInput}
                 onChangeText={this.onChangeTitle}
-              />
+              >
+              {this.state.title}
+              </TextInput>
             </View>
           </View>
           {/* Date */}
@@ -268,7 +257,9 @@ class AddEventScreen extends Component {
                 numberOfLines={4}
                 maxLength={140}
                 onChangeText={this.onChangeDescription}
-              />
+              >
+              {this.state.description}
+              </TextInput>
             </View>
           </View>
 
@@ -328,7 +319,7 @@ class AddEventScreen extends Component {
                 onPress={() => this.openSearchModal()}
               >
                 <Text>
-                  {this.state.location ? this.state.location : "Add a Location"}
+                  {this.state.location.streetName}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -361,15 +352,16 @@ class AddEventScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    user: state.user
+    return {
+      events: state.event.events,
+      user: state.user
+    };
   };
-};
 
 export default connect(
-  mapStateToProps,
-  { createEvent }
-)(AddEventScreen);
+    mapStateToProps,
+    { fetchEvents, editEvent }
+)(EditEventScreen);
 
 // Styles
 const styles = StyleSheet.create({

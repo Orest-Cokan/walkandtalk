@@ -19,7 +19,7 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
-import { getPicture } from "../../actions/PictureActions";
+
 import {
   StyledText as Text,
   StyledTextInput as TextInput

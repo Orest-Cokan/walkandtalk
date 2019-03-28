@@ -18,17 +18,16 @@ import BaseCard from "../../cardview/baseCard";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("inside constructor");
-    this.props.fetchEvents();
-    console.log("constructor", this.props);
   }
   componentDidMount() {
-    this.props.fetchEvents;
+    console.log('fetching events')
+    this.props.fetchEvents();
   }
 
   getEvents() {
     let events = [];
     const fullname = this.props.user.user.fullname;
+    console.log(this.props.events)
     this.props.events.map(event => {
       let badge = null;
       if (fullname == event.organizer) {
