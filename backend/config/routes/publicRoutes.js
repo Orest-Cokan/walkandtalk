@@ -39,8 +39,11 @@ const publicRoutes = {
   "PUT /user/picture": "PictureController.updateImage",
   "GET /user/picture/:email": "PictureController.getImage",
 
-  // Excel route
-  "GET /researcher/excel": "ExcelController.getData"
+  // Excel routes
+  "GET /researcher/excel": "ExcelController.getData",
+
+  // Redcap routes
+  "PUT /redcap/:email": "RedcapController.updateUser"
 };
 
 module.exports = publicRoutes;
