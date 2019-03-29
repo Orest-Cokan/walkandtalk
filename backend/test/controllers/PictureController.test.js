@@ -1,5 +1,6 @@
 const request = require("supertest");
 const { beforeAction, afterAction } = require("../setup/_setup");
+const User = require("../../api/models/User");
 
 let api;
 
@@ -46,9 +47,16 @@ test("Picture | updateImage", async () => {
       email: "dank@gmail.com"
     })
     .expect(200);
+  User.destroy({
+    where: { email: "dank@gmail.com" }
+  });
+});
 
-  const DBuser = await request(api)
-    .get("/public/user/dank@gmail.com")
+test("Picture | getImage", async () => {
+  const res = await request(api)
+    .get("/public/user/picture/dank@gmail.com")
     .set("Accept", /json/)
-    .expect(200);
+    .send();
+  console.log(res.body.image, "what info is this shit");
+  expect(res.body.image).toBe("Orest Image");
 });

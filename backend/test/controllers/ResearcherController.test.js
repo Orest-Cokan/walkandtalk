@@ -27,7 +27,9 @@ beforeEach(async () => {
       intensity: "slow",
       venue: "indoor",
       location: "riverbend"
-    }
+    },
+    registered: 0,
+    researcher: 0
   }).save();
 });
 
@@ -66,4 +68,88 @@ test("Denying a user | denyUser", async () => {
       );
     });
   await user.destroy();
+});
+
+// get unregistered users
+test("Get unregistered users | getUnregisteredUsers", async () => {
+  const user2 = await User.build({
+    fullname: "orest cokan",
+    email: "martin12@gmail.com",
+    password: "securepassword",
+    password2: "securepassword",
+    dob: "1960-10-10",
+    menopausal_stage: "peri",
+    preference: {
+      duration: 10,
+      distance: 10,
+      intensity: "slow",
+      venue: "indoor",
+      location: "riverbend"
+    },
+    registered: 0,
+    researcher: 0
+  }).save();
+
+  request(api)
+    .get("/public/researcher/unregistered")
+    .set("Accept", /json/)
+    .send()
+    .then(res => {
+      console.log(res.body);
+      expect(res.body.users).toHaveLength(2);
+    });
+  await user.destroy();
+  await user2.destroy();
+});
+
+// get registered users
+test("Get registered users | getRegisteredUsers", async () => {
+  const user2 = await User.build({
+    fullname: "orest cokan",
+    email: "martin12@gmail.com",
+    password: "securepassword",
+    password2: "securepassword",
+    dob: "1960-10-10",
+    menopausal_stage: "peri",
+    preference: {
+      duration: 10,
+      distance: 10,
+      intensity: "slow",
+      venue: "indoor",
+      location: "riverbend"
+    },
+    registered: 1,
+    researcher: 1
+  }).save();
+
+  const user3 = await User.build({
+    fullname: "orest cokan",
+    email: "martin13@gmail.com",
+    password: "securepassword",
+    password2: "securepassword",
+    dob: "1960-10-10",
+    menopausal_stage: "peri",
+    preference: {
+      duration: 10,
+      distance: 10,
+      intensity: "slow",
+      venue: "indoor",
+      location: "riverbend"
+    },
+    registered: 1,
+    researcher: 1
+  }).save();
+
+  request(api)
+    .get("/public/researcher/registered")
+    .set("Accept", /json/)
+    .send()
+    .then(res => {
+      console.log(res.body);
+      expect(res.body.users).toHaveLength(2);
+    });
+
+  await user.destroy();
+  await user2.destroy();
+  await user3.destroy();
 });
