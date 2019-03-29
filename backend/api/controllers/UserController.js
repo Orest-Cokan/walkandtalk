@@ -107,7 +107,6 @@ const UserController = () => {
 
   // get a single user
   const getUser = async (req, res) => {
-    console.log("WTF REEEEE");
     const { email } = req.params;
     console.log(email);
     try {

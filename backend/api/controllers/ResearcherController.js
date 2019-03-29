@@ -15,7 +15,6 @@ const ResearcherController = () => {
       { returning: true, where: { email: body.email } }
     )
       .then(self => {
-        console.log("we get here???");
         return res.status(200).json(self[1]);
       })
       .catch(err => {
@@ -27,7 +26,6 @@ const ResearcherController = () => {
   // in the future add email memes
   const denyUser = async (req, res) => {
     const { body } = req;
-    console.log(body.id, body.fullname);
     await User.destroy({ truncate: true, where: { email: body.email } })
       .then(rowsRemoved => {
         if (rowsRemoved == 1) {

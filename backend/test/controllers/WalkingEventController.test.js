@@ -15,16 +15,30 @@ afterAll(() => {
   afterAction();
 });
 
-// test creating a walking event
-test("WalkingEvent | create", async () => {
+//mock
+beforeEach(async () => {
   walkingEvent = await WalkingEvent.build({
     id: 5,
+    organizer: "orest cokan",
     title: "walking with friends",
+    email: "skryt@gmail.com",
     description: "i want to go",
     intensity: "slow",
-    venue: "indoor"
+    venue: "indoor",
+    start_time: "08:00pm",
+    end_time: "10:00pm",
+    date: "Fri, Mar 28",
+    location: {
+      streetName: "riverbend",
+      long: 12,
+      lat: 13
+    },
+    total_attendees: 1
   }).save();
+});
 
+// test creating a walking event
+test("WalkingEvent | create", async () => {
   const walkingevent = await WalkingEvent.findById(5, {
     include: [
       {
@@ -35,8 +49,6 @@ test("WalkingEvent | create", async () => {
       }
     ]
   });
-  console.log(walkingevent.dataValues, "REEEEEEEEEEEEEEE");
-  console.log(walkingevent.location, "reeee");
   expect(walkingevent.id).toBe(5);
   expect(walkingevent.title).toBe("walking with friends");
   expect(walkingevent.description).toBe("i want to go");
@@ -47,15 +59,6 @@ test("WalkingEvent | create", async () => {
 
 // test destroying a walking event
 test("WalkingEvent | destroy", async () => {
-  walkingEvent = await WalkingEvent.build({
-    id: 5,
-    title: "walking with friends",
-    description: "i want to go",
-    intensity: "slow",
-    venue: "indoor"
-  }).save();
-
-  console.log("wtf is going on in here!!!");
   const response = await request(api)
     .del("/public/walkingevent/5")
     .set("Accept", /json/)

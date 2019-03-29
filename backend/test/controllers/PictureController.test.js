@@ -21,7 +21,16 @@ beforeEach(async () => {
       fullname: "skryt",
       email: "dank@gmail.com",
       password: "skryt",
-      password2: "skryt"
+      password2: "skryt",
+      dob: "1996-10-10",
+      menopausal_stage: "peri",
+      preference: {
+        distance: 10,
+        duration: 10,
+        intensity: "slow",
+        venue: "indoor",
+        location: "riverbend"
+      }
     })
     .expect(200);
 });
