@@ -3,6 +3,7 @@ const bcryptService = require("../services/bcrypt.service");
 const sequelize = require("../../config/database");
 const Preference = require("./Preference");
 const Picture = require("./Picture");
+const Redcap = require("./Redcap");
 
 // hook for a user to encrypt their password
 const hooks = {
@@ -22,10 +23,6 @@ const User = sequelize.define(
       type: Sequelize.STRING,
       unique: true,
       primaryKey: true
-    },
-    redcapID: {
-      type: Sequelize.INTEGER,
-      unique: true
     },
     password: {
       type: Sequelize.STRING,
@@ -56,17 +53,21 @@ const User = sequelize.define(
   { hooks, tableName }
 );
 
-// set hasOne association
+// set hasOne association Prefernece
 User.hasOne(Preference, {
   onDelete: "CASCADE",
   hooks: true
 });
-// set hasOne association
+// set hasOne association Picture
 User.hasOne(Picture);
+
+//set hasOne association with Redcap
+User.hasOne(Redcap);
 
 // set belongsTo association
 Preference.belongsTo(User);
 Picture.belongsTo(User);
+Redcap.belongsTo(User);
 
 // eslint-disable-next-line
 User.prototype.toJSON = function() {

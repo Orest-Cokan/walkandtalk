@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Preference = require("../models/Preference");
 const Picture = require("../models/Picture");
+const Redcap = require("../models/Redcap");
 const authService = require("../services/auth.service");
 const authPolicy = require("../policies/auth.policy");
 const bcryptService = require("../services/bcrypt.service");
@@ -24,12 +25,12 @@ const UserController = () => {
             picture: body.picture,
             dob: body.dob,
             preference: body.preference,
-            redcapID: Math.floor(Math.random() * 10000),
+            redcap: body.redcap,
             registered: 0,
             researcher: 0
           },
           {
-            include: [Preference, Picture]
+            include: [Preference, Picture, Redcap]
           }
         );
         //const token = authService().issue({ email: user.email });
@@ -98,7 +99,7 @@ const UserController = () => {
   const getAll = async (req, res) => {
     try {
       const users = await User.findAll({
-        include: [Preference, Picture]
+        include: [Preference, Picture, Redcap]
       });
 
       return res.status(200).json({ users });
@@ -115,7 +116,7 @@ const UserController = () => {
     console.log(email);
     try {
       const user = await User.findByPk(email, {
-        include: [Preference, Picture]
+        include: [Preference, Picture, Redcap]
       });
       return res.status(200).json({ user });
     } catch (err) {

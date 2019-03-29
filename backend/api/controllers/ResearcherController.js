@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Preference = require("../models/Preference");
+const Redcap = require("../models/Redcap");
 
 // Researcher controller
 const ResearcherController = () => {
@@ -9,11 +10,20 @@ const ResearcherController = () => {
     const { body } = req;
     await User.update(
       {
-        registered: 1,
-        redcapID: body.redcapID
+        registered: 1
       },
       { returning: true, where: { email: body.email } }
     )
+      .then(
+        Redcap.update(
+          {
+            id: body.redcapID,
+            remind: true,
+            date: new Date().toISOString().split("T")[0]
+          },
+          { returning: true, where: { userEmail: body.email } }
+        )
+      )
       .then(self => {
         console.log("we get here???");
         return res.status(200).json(self[1]);
