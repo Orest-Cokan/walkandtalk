@@ -14,12 +14,12 @@ export const addAttendees = (id, name, email) => {
       email: email
     };
     axios
-      .post(url, attendee)
+      .put(url, attendee)
       .then(res => {
         if (res.status === 200) {
           console.log(res.status, "is this logged???");
           console.log(attendee, "attendee adding...");
-          dispatch({ type: ATTENDEE_ADD });
+          dispatch({ type: ATTENDEE_ADD , payload: attendee});
           Actions.reset("app");
         }
       })
