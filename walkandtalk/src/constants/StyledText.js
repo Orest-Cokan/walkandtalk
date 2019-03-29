@@ -11,6 +11,7 @@ class StyledText extends React.Component {
             {
               fontFamily: "proxima_nova_reg",
               fontSize: 15,
+              fontWeight: "normal",
               color: "grey"
             },
             this.props.style
@@ -25,6 +26,7 @@ class StyledText extends React.Component {
             {
               fontFamily: "Proxima Nova",
               fontSize: 15,
+              fontWeight: "normal",
               color: "grey"
             },
             this.props.style

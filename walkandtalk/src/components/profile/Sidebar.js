@@ -6,12 +6,12 @@ import { Button,
   Right, 
   Body, 
   Title, 
-  Text, 
   List, 
   ListItem 
 } from 'native-base';
 import { Image} from 'react-native';
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import { StyledText as Text } from "../../constants/StyledText";
 import { Actions}  from 'react-native-router-flux';
 
 
