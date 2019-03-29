@@ -55,7 +55,6 @@
 		9C051A8958AE4995A0648509 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0A76797BF796430BA597DBC1 /* EvilIcons.ttf */; };
 		9E01B6755D9A40DAA61B8D62 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70E3EA5693884B368A043E4A /* FontAwesome5_Brands.ttf */; };
 		A3B43F6BDC67463CBE8BC551 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6214FAA750B04EDA927BF605 /* Foundation.ttf */; };
-		A73C61E5224410D00091ED2A /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE39C7212240513C002A6879 /* libRNGooglePlaces.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		AFB3695EA9064EA798FB5619 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 65A54A7875164D348951AD86 /* FontAwesome5_Solid.ttf */; };
 		BDC0625377494226A09BCFBD /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1AC23F59B8B04C448854C8BB /* FontAwesome5_Regular.ttf */; };
@@ -64,6 +63,7 @@
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		FACD73DB53B2418FAE756E9B /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3AA6C338EFE24F6AA600D3B8 /* Roboto_medium.ttf */; };
+		FEDBE4F0224D80D80056B4F9 /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FEDBE4ED224D80A00056B4F9 /* libRNGooglePlaces.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -354,9 +354,9 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
-		FE39C7202240513C002A6879 /* PBXContainerItemProxy */ = {
+		FEDBE4EC224D80A00056B4F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 7A3CBF0CEDB44D4FBA270321 /* RNGooglePlaces.xcodeproj */;
+			containerPortal = FEDBE4C2224D80A00056B4F9 /* RNGooglePlaces.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNGooglePlaces;
@@ -406,7 +406,6 @@
 		70E3EA5693884B368A043E4A /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/native-base/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		759DC32F76354CB4A1A2253A /* libRNDatePicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDatePicker.a; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
-		7A3CBF0CEDB44D4FBA270321 /* RNGooglePlaces.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGooglePlaces.xcodeproj; path = "../node_modules/react-native-google-places/ios/RNGooglePlaces.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		99CE96BCACA642B99BF548AE /* Roboto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Roboto.ttf; path = "../node_modules/native-base/Fonts/Roboto.ttf"; sourceTree = "<group>"; };
 		9AA5CDB24FD64B4A8FE3BDAD /* proxima_nova_reg.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = proxima_nova_reg.ttf; path = ../src/assets/fonts/proxima_nova_reg.ttf; sourceTree = "<group>"; };
@@ -418,6 +417,7 @@
 		D8539DBDFEB94232B549E354 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		FEDBE4C2224D80A00056B4F9 /* RNGooglePlaces.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNGooglePlaces.xcodeproj; path = "../node_modules/react-native-google-places/ios/RNGooglePlaces.xcodeproj"; sourceTree = "<group>"; };
 		FFB5B8ED7102440E9660B351 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -434,6 +434,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FEDBE4F0224D80D80056B4F9 /* libRNGooglePlaces.a in Frameworks */,
 				ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
@@ -449,7 +450,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				94262C7E1EA54553B8C9F5C9 /* libRNDatePicker.a in Frameworks */,
 				9A238E115A064453D568BB51 /* libPods-walkandtalk.a in Frameworks */,
-				A73C61E5224410D00091ED2A /* libRNGooglePlaces.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,6 +680,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				FEDBE4C2224D80A00056B4F9 /* RNGooglePlaces.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -694,7 +695,6 @@
 				139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */,
 				5A5C542DF7A042DC8E804A92 /* RNVectorIcons.xcodeproj */,
 				5DC3017C32344F41B6E19F38 /* RNDatePicker.xcodeproj */,
-				7A3CBF0CEDB44D4FBA270321 /* RNGooglePlaces.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -754,10 +754,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FE39C71D2240513C002A6879 /* Products */ = {
+		FEDBE4C3224D80A00056B4F9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FE39C7212240513C002A6879 /* libRNGooglePlaces.a */,
+				FEDBE4ED224D80A00056B4F9 /* libRNGooglePlaces.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -868,6 +868,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -928,8 +929,8 @@
 					ProjectRef = 5DC3017C32344F41B6E19F38 /* RNDatePicker.xcodeproj */;
 				},
 				{
-					ProductGroup = FE39C71D2240513C002A6879 /* Products */;
-					ProjectRef = 7A3CBF0CEDB44D4FBA270321 /* RNGooglePlaces.xcodeproj */;
+					ProductGroup = FEDBE4C3224D80A00056B4F9 /* Products */;
+					ProjectRef = FEDBE4C2224D80A00056B4F9 /* RNGooglePlaces.xcodeproj */;
 				},
 				{
 					ProductGroup = 7252BA6D22286ED500749959 /* Products */;
@@ -1220,11 +1221,11 @@
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		FE39C7212240513C002A6879 /* libRNGooglePlaces.a */ = {
+		FEDBE4ED224D80A00056B4F9 /* libRNGooglePlaces.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNGooglePlaces.a;
-			remoteRef = FE39C7202240513C002A6879 /* PBXContainerItemProxy */;
+			remoteRef = FEDBE4EC224D80A00056B4F9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1515,6 +1516,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				GCC_NO_COMMON_BLOCKS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)..",
@@ -1532,7 +1534,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
@@ -1547,6 +1548,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				GCC_NO_COMMON_BLOCKS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)..",
@@ -1564,7 +1566,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
