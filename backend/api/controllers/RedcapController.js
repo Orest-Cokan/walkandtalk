@@ -15,7 +15,7 @@ const RedcapController = () => {
     );
     redcapUser
       .update({
-        remind: false,
+        notify: false,
         date: date.toString()
       })
       .then(resp => {

@@ -18,7 +18,7 @@ const ResearcherController = () => {
         Redcap.update(
           {
             id: body.redcapID,
-            remind: true,
+            notify: true,
             date: new Date().toISOString().split("T")[0]
           },
           { returning: true, where: { userEmail: body.email } }

@@ -11,7 +11,7 @@ const Redcap = sequelize.define(tableName, {
     unique: true,
     primaryKey: true
   },
-  remind: Sequelize.BOOLEAN,
+  notify: Sequelize.BOOLEAN,
   date: Sequelize.STRING
 });
 
