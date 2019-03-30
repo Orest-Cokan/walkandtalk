@@ -23,62 +23,24 @@ class RequestsScreen extends Component {
   constructor(props) {
     super(props);
     console.log("inside constructor");
-    this.props.getUnregisteredUsers();
-    
+    this.props.unregisteredUsers = this.props.getUnregisteredUsers();
     // Sample data
-    this.state = {
-      requests: [{
-        email:'1',
-        redcapID: 1,
-        fullname: '1',
-        registered: 0,
-      }],
-      users : null
-    };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getUnregisteredUsers;
   }
-
-  // The following code is to be used when real data is to be integrated
-  // componentDidMount() {
-  //   this.props.getUnregisteredUsers;
-  //   console.log("THIS IS DID MOUNT")
-  //   console.log(this.props.users);
-
-  // }
-
-
 
   
   // Switch request view
   viewRequest(index) {
-    Actions.viewRequest({ request: this.state.requests[index] });
+    Actions.viewRequest({ request: this.props.unregisteredUsers[index] });
   }
-
-  setUsers(){
-    console.log(this.props.users);
-    this.setState({
-      users: this.props.users
-    });
-    console.log(this.state.users);
-  }
-
   //
   getRequests() {
     let requests = [];
-    var users = [];
-    let unregisteredUsers = this.props.users;
-    console.log(this.props.users);
-    console.log("UNREGIESTERED USERS", unregisteredUsers);
-    this.setState({
-      users: unregisteredUsers
-    });
-
     //console.log("THIS IS IN GETREQUEST" , this.state.users);
-    this.state.requests.map((request, index) => {
-
+    this.props.unregisteredUsers.map((request, index) => {
       requests.unshift(
         <TouchableOpacity
           key={index}
@@ -116,11 +78,11 @@ class RequestsScreen extends Component {
 const mapStateToProps = state => {
   console.log("THIS IS IN MAP", state)
   return {
-    users: state.user.users
+    unregisteredUsers: state.user.unregisteredUsers
   };
 };
 
 export default connect(
   mapStateToProps,
-  {getUnregisteredUsers}
+  { getUnregisteredUsers }
 )(RequestsScreen);

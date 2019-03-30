@@ -13,7 +13,8 @@ const INITIAL_STATE = {
   errorLoging: "",
   errorCreating: "",
   loading: false,
-  user: ""
+  user: "",
+  unregisteredUsers: []
 };
 
 // user reducer
@@ -64,7 +65,7 @@ const user = (state = INITIAL_STATE, action) => {
         user: action.payload
       };
     case GET_UNREGISTERED_USERS:
-      return { ...state, users: action.payload };
+      return { ...state, unregisteredUsers: action.payload };
     default:
       return state;
   }
