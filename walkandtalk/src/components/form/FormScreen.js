@@ -27,30 +27,20 @@ class FormScreen extends Component {
       refreshing: false,
       records: []
     }
-  
-
     this.props.getUncompletedRecords = this.props.getUncompletedRecords(
       this.props.user.user.email
     );
-    
-    console.log('------PROPS-------', this.props)
-    console.log('------STATE-------', this.state)
+
   }
 
   componentDidMount() {
-    console.log('------B4 MOUNT-------', this.state)
     this.props.getUncompletedRecords;
-    console.log('------AFTER MOUNT-------', this.state)
-
   }
 
   _onRefresh = () => {
-    console.log('------refresh-------', this.state)
     this.setState({ refreshing: true });
-    console.log('------while refresh-------', this.state)
     this.forceUpdate();
     this.setState({refreshing: false});
-    console.log('------refresh done-------', this.state)
   }
 
   submitRecord(index) {
@@ -81,13 +71,7 @@ class FormScreen extends Component {
     return records;
   }
 
-  isInitialRender() {
-    return this.numRenders == 2;
-  }
-
   render() {
-    this.numRenders++;
-    console.log("----------------------adding RENDERS!!!---------------------", this.numRenders, this.state)
     return (
       <Container>
         <Header

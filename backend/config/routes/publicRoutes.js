@@ -38,6 +38,11 @@ const publicRoutes = {
   "PUT /user/picture": "PictureController.updateImage",
   "GET /user/picture/:email": "PictureController.getImage",
 
+  // Notification routes
+  "POST /notification": "NotificationController.create",
+  "GET /notifications": "NotificationController.getAll",
+  "GET /notification/:email": "NotificationController.getNotifications",
+
   // Excel route
   "GET /researcher/excel": "ExcelController.getData"
 };

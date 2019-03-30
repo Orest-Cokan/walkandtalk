@@ -508,9 +508,12 @@ class SearchMapViewScreen extends Component {
     console.log("keyword", keyword);
     //convert each item to a string and see if the key word exists as a subset
     // if so, push that event to the list of results to be displayed
+    //Case insensitive
     var results = [];
+    keyword = keyword.toUpperCase()
     events.forEach(function(e) {
       var stringItem = JSON.stringify(e);
+      stringItem = stringItem.toUpperCase()
       if (stringItem.includes(keyword)) {
         if (results.indexOf(e) == -1) {
           results.push(e);
