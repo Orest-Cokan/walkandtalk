@@ -7,19 +7,18 @@ import getIP from "../constants/Ip";
 export const addAttendees = (id, name, email) => {
   return dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevent";
+    var url = ip + "public/attendee/";
     const attendee = {
-      id: id,
       name: name,
       email: email
     };
     axios
-      .post(url, attendee)
+      .put(url, attendee)
       .then(res => {
         if (res.status === 200) {
           console.log(res.status, "is this logged???");
           console.log(attendee, "attendee adding...");
-          dispatch({ type: ATTENDEE_ADD });
+          dispatch({ type: ATTENDEE_ADD , payload: attendee});
           Actions.reset("app");
         }
       })
@@ -33,7 +32,7 @@ export const addAttendees = (id, name, email) => {
 export const removeAttendees = (id, email) => {
   return dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevent/";
+    var url = ip + "public/attendee/";
     axios
       .delete(url + id)
       .then(res => {
