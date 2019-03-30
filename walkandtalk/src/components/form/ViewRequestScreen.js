@@ -5,8 +5,7 @@ import {
   View,
   Image,
   TouchableOpacity,
-  TouchableHighlight,
-  ScrollView
+  Alert
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
@@ -21,6 +20,7 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
+import axios from "axios";
 
 // View Request screen
 class ViewRequestScreen extends Component {
@@ -38,15 +38,95 @@ class ViewRequestScreen extends Component {
       distance: this.props.request.distance,
       duration: this.props.request.duration,
       venue: this.props.request.venue,
-      location: this.props.request.location
+      location: this.props.request.location,
+      header: {
+        headers: {
+          "Accept" : "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      },
+      redcapID: this.props.redcapID,
+      //responseStatus is the flag for HTTP request status code
+      responseStatus: false
     };
   }
 
   // Approves request to be a user
-  approveRequest = () => {};
+  getNextRecordID = () => {
+    const data =
+      "token=8038CE0F65642ECC477913BE85991380" +
+      "&content=generateNextRecordName"; 
+    return axios
+    .post(
+      "https://med-rcdev.med.ualberta.ca/api/",
+      data,
+      this.state.header
+    )
+    .then(res => {
+      this.setState({responseStatus: true})
+      return res.data
+    })
+    .catch(error => {
+      console.log(error);
+      this.setState({responseStatus: false})
+    });
+  };
+
+  //Register user on REDCap with basic fields: fullname, email, dob, meno_stage
+  importToRedcap = () =>{
+    var userData = 'token=8038CE0F65642ECC477913BE85991380'
+    + '&content=record'
+    + '&format=json'
+    + '&type=flat;'
+    + '&overwriteBehavior=normal'
+    + '&forceAutoNumber=false'
+     + '&data=[{"record_id":' + this.state.redcapID 
+     + ', "full_name": "' + this.state.fullname + '"'
+     + ', "email": "' + this.state.email + '"'
+     + ', "dob": "' + this.state.dob + '"'
+     + ', "meno_stage": "' +  this.state.menopausal_stage + '"'
+     + ', "profile_complete": ' +  2 + '}]'
+    + '&returnContent=count'
+    + '&returnFormat=json';
+    return axios
+    .post(
+      "https://med-rcdev.med.ualberta.ca/api/",
+      userData,
+      this.state.header
+    )
+    .then(res => {
+      //returning so await works 
+      return res.data;
+    })
+    .catch(error => {
+      console.log(error);
+      this.setState({responseStatus: false})
+    });
+  }
+
+  showErroMessage = () => {
+    Alert.alert("Something went wrong, please try again later.")
+  }
+
+  approveRequest = async () => {
+    //await for getNextRecordID to return
+    this.setState({ redcapID: await this.getNextRecordID()});
+    if (this.state.responseStatus){
+      //import New user into REDCap 
+      await this.importToRedcap();
+      if (this.state.responseStatus) {
+        Alert.alert("The request from " + this.state.fullname + " has been approved.");
+        return 
+      }
+    };
+    this.showErroMessage()
+  
+  };
 
   // Declines request to be a user
-  declineRequest = () => {};
+  declineRequest = () => {
+    Alert.alert("The request from " + this.state.fullname + " has been declined.");
+  };
 
   // Navigate back to Requests page
   onBack = () => {
@@ -65,7 +145,7 @@ class ViewRequestScreen extends Component {
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>
               <Image
-                style={ScreenStyleSheet.backIcon}
+                style={ScreenStyleSheet.headerIcon}
                 source={require("../../assets/icons/back-button.png")}
               />
             </Button>

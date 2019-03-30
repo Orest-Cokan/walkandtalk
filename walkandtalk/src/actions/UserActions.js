@@ -33,7 +33,6 @@ export const createUser = (
     fullname: fullname,
     menopausal_stage: menopausal_stage,
     dob: dob,
-    researcher: true, 
     preference: {
       venue: venue,
       location: location,
