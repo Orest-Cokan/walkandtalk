@@ -7,9 +7,8 @@ import getIP from "../constants/Ip";
 export const addAttendees = (id, name, email) => {
   return dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevent";
+    var url = ip + "public/attendee/";
     const attendee = {
-      id: id,
       name: name,
       email: email
     };
@@ -33,7 +32,7 @@ export const addAttendees = (id, name, email) => {
 export const removeAttendees = (id, email) => {
   return dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevent/";
+    var url = ip + "public/attendee/";
     axios
       .delete(url + id)
       .then(res => {
