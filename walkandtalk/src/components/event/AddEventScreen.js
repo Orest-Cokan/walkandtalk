@@ -209,7 +209,10 @@ class AddEventScreen extends Component {
   // Google places search with autocomplete
 
   openSearchModal() {
-    RNGooglePlaces.openAutocompleteModal()
+    RNGooglePlaces.openAutocompleteModal({
+      useOverlay: true
+      // limiting search results to coordinates and name
+    })
       .then(place => {
         this.setState({
           location: place.address,

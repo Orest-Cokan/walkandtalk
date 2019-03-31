@@ -10,6 +10,7 @@ const publicRoutes = {
 
   // Walkingevent routes
   "GET /walkingevents": "WalkingEventController.getAll",
+  "GET /walkingevents/:email": "WalkingEventController.getUserEvents",
   "POST /walkingevent": "WalkingEventController.create",
   "GET /walkingevent/:id": "WalkingEventController.getEvent",
   "PUT /walkingevent": "WalkingEventController.updateEvent",
@@ -38,8 +39,11 @@ const publicRoutes = {
   "PUT /user/picture": "PictureController.updateImage",
   "GET /user/picture/:email": "PictureController.getImage",
 
-  // Excel route
-  "GET /researcher/excel": "ExcelController.getData"
+  // Excel routes
+  "GET /researcher/excel": "ExcelController.getData",
+
+  // Redcap routes
+  "PUT /redcap/:email": "RedcapController.updateUser"
 };
 
 module.exports = publicRoutes;

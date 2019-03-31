@@ -1,7 +1,9 @@
 const User = require("../models/User");
 const Preference = require("../models/Preference");
 const Picture = require("../models/Picture");
+const Redcap = require("../models/Redcap");
 const authService = require("../services/auth.service");
+const authPolicy = require("../policies/auth.policy");
 const bcryptService = require("../services/bcrypt.service");
 const Transporter = require("../utils/email/email");
 const newUserEmail = require("../utils/email/msgs/newUser");
@@ -23,17 +25,17 @@ const UserController = () => {
             picture: body.picture,
             dob: body.dob,
             preference: body.preference,
-            redcapID: Math.floor(Math.random() * 10000),
+            redcap: body.redcap,
             registered: 0,
             researcher: 0
           },
           {
-            include: [Preference, Picture]
+            include: [Preference, Picture, Redcap]
           }
         );
         const token = authService().issue({ email: user.email });
         Transporter.sendMail(newUserEmail);
-        return res.status(200).json({ token, user });
+        return res.status(200).json({ user, token });
       } catch (err) {
         console.log(err);
         return res.status(500).json({ msg: "Internal server error" });
@@ -62,8 +64,7 @@ const UserController = () => {
 
         if (bcryptService().comparePassword(password, user.password)) {
           const token = authService().issue({ email: user.email });
-
-          return res.status(200).json({ token, user });
+          return res.status(200).json({ user, token });
         }
 
         return res.status(401).json({ msg: "Unauthorized" });
@@ -94,7 +95,7 @@ const UserController = () => {
   const getAll = async (req, res) => {
     try {
       const users = await User.findAll({
-        include: [Preference, Picture]
+        include: [Preference, Picture, Redcap]
       });
 
       return res.status(200).json({ users });
@@ -110,7 +111,7 @@ const UserController = () => {
     console.log(email);
     try {
       const user = await User.findByPk(email, {
-        include: [Preference, Picture]
+        include: [Preference, Picture, Redcap]
       });
       return res.status(200).json({ user });
     } catch (err) {
@@ -126,8 +127,7 @@ const UserController = () => {
       {
         fullname: body.fullname,
         menopausal_stage: body.menopausal_stage,
-        dob: body.dob,
-        distance: body.preference
+        dob: body.dob
       },
       {
         returning: true,
@@ -148,11 +148,15 @@ const UserController = () => {
             returning: true,
             where: { userEmail: body.email }
           }
-        ).then(self => {
-          return res.status(200).json(self[1]);
-        });
+        )
+          .then(self => {
+            return res.status(200).json(self[1]);
+          })
+          .catch(err => {
+            return res.status(500).json({ msg: "Internal server error" });
+          });
       })
-      .catch(function(err) {
+      .catch(err => {
         return res.status(500).json({ msg: "Internal server error" });
       });
   };

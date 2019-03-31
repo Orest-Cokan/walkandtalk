@@ -17,11 +17,11 @@ const WalkingEvent = sequelize.define(tableName, {
     type: Sequelize.STRING,
     allowNull: false
   },
-  title: {
-    type: Sequelize.STRING,
-    allowNull: false
-  },
   email: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  title: {
     type: Sequelize.STRING,
     allowNull: false
   },
@@ -51,7 +51,7 @@ const WalkingEvent = sequelize.define(tableName, {
   },
   total_attendees: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: true
   }
 });
 

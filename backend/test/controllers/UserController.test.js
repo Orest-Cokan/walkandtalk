@@ -81,17 +81,6 @@ test("User | login", async () => {
 
 // getting all users
 test("User | get all (auth)", async () => {
-  const res = await request(api)
-    .post("/public/login")
-    .set("Accept", /json/)
-    .send({
-      email: "martin@mail.com",
-      password: "securepassword"
-    })
-    .expect(200);
-
-  expect(res.body.token).toBeTruthy();
-
   const res2 = await request(api)
     .get("/public/users")
     .set("Accept", /json/)

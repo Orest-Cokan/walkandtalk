@@ -11,12 +11,14 @@ import {
   Content,
   Button
 } from "native-base";
-import { SegmentedControls } from "react-native-radio-buttons";
+import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import BaseCard from "../../cardview/baseCard";
 import { Actions } from "react-native-router-flux";
 import { fetchEvents } from "../../actions/EventActions";
 import { deleteEvent } from "../../actions/EventActions";
+import { addAttendees } from "../../actions/AttendeeActions";
+import { removeAttendees } from "../../actions/AttendeeActions";
 
 class ViewEventScreen extends Component {
   constructor(props) {
@@ -48,7 +50,7 @@ class ViewEventScreen extends Component {
   // First we want to determine props available and set state with the necessary values
   //
   // First will do for search events
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchEvents;
 
     if (this.props.searchScreen == true) {
@@ -91,14 +93,16 @@ class ViewEventScreen extends Component {
       // console.log("eventID", this.props.eventId);
       id = this.props.eventId;
       events = this.props.events;
-      // console.log("events", events);
+      console.log("events", events, "event id", id);
+
       //retrieve the current event
       let currEvent = events.find(e => e.id === id);
+      console.log("current event", currEvent)
 
       //check if hosting, going or not going
       var badge = "";
       const fullname = this.props.user.user.fullname;
-      if (fullname === currEvent.organizer) {
+      if (fullname == currEvent.organizer) {
         badge = "HOSTING";
       } else {
         //get event and see if user is attending
@@ -126,7 +130,7 @@ class ViewEventScreen extends Component {
           description: currEvent.description
         },
         () => {
-          // console.log(this.state, "state updated");
+          console.log(this.state, "state updated");
         }
       );
     }
@@ -143,33 +147,60 @@ class ViewEventScreen extends Component {
     Actions.editEvent(this.state.eventId);
   };
 
-  render() {
-    const attendingOptions = ["Not Going", "Going"];
+  // Set state
+  onChange(name, value) {
+    console.log("name", name, "value", value)
+    this.setState({ [name]: value });
+    console.log("am i going???", this.state.badge)
+    console.log("current user", this.props.user.user.email)
+    if (this.state.badge == "GOING"){
+      this.props.addAttendees(
+        this.state.eventId,
+        this.props.user.user.fullname,
+        this.props.user.user.email
+      );
+      console.log("You joined!")
+    }else{
+      this.props.removeAttendees(
+        this.state.eventId,
+        this.props.user.user.email
+      );
+      console.log("You left!")
+    }
+    
+  };
 
-    //Should be checking if neither going nor hosting
+  render() {
+    //const attendingOptions = ["Not Going", "Going"];
+
+    const attendingOptions = [
+      { label: "Not Going", value: ""},
+      { label: "Going", value: "GOING" }
+    ];
+
+    //Conditional rendering for the buttons present on view event
+    //If going or not going, will display those buttons
+    //If hosting, will display edit and delete buttons
     if (this.state.badge == "GOING" || this.state.badge == "") {
       //check if user going or not
+      var going = 0
       if (this.state.badge == "GOING") {
-        var going = attendingOptions[1];
-      } else {
-        var going = attendingOptions[0];
-      }
+        going = 1;
+      } 
+      console.log(going, "going")
       buttons = (
         <View style={styles.segmentedControls}>
-          <SegmentedControls
-            tint={"#A680B8"}
-            backTint={"#ffffff"}
-            optionStyle={{ fontFamily: "AvenirNext-Medium" }}
-            selectedOption={going}
-            optionContainerStyle={{
-              flex: 1,
-              height: 40,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 2
-            }}
-            options={attendingOptions}
-          />
+          <SwitchSelector
+              options={attendingOptions}
+              initial={going}
+              onPress={this.onChange.bind(this, 'badge')}
+              textColor={"#A680B8"} //'#7a44cf'
+              selectedColor={"#ffffff"}
+              buttonColor={"#A680B8"}
+              borderColor={"#A680B8"}
+              borderRadius={8}
+              hasPadding
+            />
         </View>
       );
     }
@@ -192,7 +223,8 @@ class ViewEventScreen extends Component {
       );
     }
 
-    if (this.state.badge == "GOING") {
+    //conditional rendering for the description
+    if (this.state.badge == "GOING" || this.state.badge == "") {
       description = (
         <View style={ScreenStyleSheet.rowContainerEvent}>
           <Text style={ScreenStyleSheet.eventDescription}>
@@ -342,7 +374,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchEvents, deleteEvent }
+  { fetchEvents, deleteEvent, addAttendees, removeAttendees }
 )(ViewEventScreen);
 
 const styles = {
