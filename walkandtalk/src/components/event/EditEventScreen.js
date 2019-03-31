@@ -22,6 +22,7 @@ import SwitchSelector from "react-native-switch-selector";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { editEvent, fetchEvents } from "../../actions/EventActions";
+import { sendNotification } from "../../actions/NotificationActions";
 import { Actions } from "react-native-router-flux";
 import RNGooglePlaces from "react-native-google-places";
 
@@ -40,6 +41,7 @@ class EditEventScreen extends Component {
       intensity: event.intensity,
       venue: event.venue,
       location: event.location,
+      notifType: 'updatedEvent'
     };
   }
 
@@ -72,7 +74,21 @@ class EditEventScreen extends Component {
   onFinish = async () => {
     await new Promise((resolve, reject) => {
           // Edit the event user clicks
-          this.props.editEvent(this.state.title, this.state.id, this.state.date, this.state.startTime, this.state.endTime, this.state.description, this.state.intensity, this.state.venue, this.state.location);
+          this.props.editEvent(
+            this.state.title, 
+            this.state.id, 
+            this.state.date, 
+            this.state.startTime, 
+            this.state.endTime, 
+            this.state.description, 
+            this.state.intensity, 
+            this.state.venue, 
+            this.state.location);
+          this.props.sendNotification(
+            this.state.id,
+            this.state.title,
+            this.state.notifType
+          )  
           resolve();
       });
       // fetch updated event(s) to pass to homescreen
@@ -360,7 +376,7 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { fetchEvents, editEvent }
+    { fetchEvents, editEvent, sendNotification }
 )(EditEventScreen);
 
 // Styles

@@ -1,5 +1,6 @@
 import { 
   NOTIFICATION_CREATE,
+  NOTIFICATION_UPDATE,
   SET_NOTIFICATIONS 
 } from "../actions/types";
   
@@ -13,6 +14,8 @@ import {
     switch (action.type) {
       case NOTIFICATION_CREATE:
         return { ...state, notification: action.payload };
+      case NOTIFICATION_UPDATE:
+        return { ...state, notification: action.payload };  
       case SET_NOTIFICATIONS:
         return { ...state, notifications: action.payload };
       default:

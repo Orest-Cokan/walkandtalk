@@ -6,10 +6,7 @@ const tableName = "attendees";
 
 // Attendee model
 const Attendee = sequelize.define(tableName, {
-  email: {
-    type: Sequelize.STRING,
-    primaryKey: true
-  },
+  email: Sequelize.STRING,
   fullname: Sequelize.STRING
 });
 

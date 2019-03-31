@@ -498,7 +498,7 @@ class SearchListViewScreen extends Component {
         badge = "HOSTING";
       } else {
         for (let i = 0; i < event.attendees.length; i++) {
-          if (event.attendees[i].name == fullname) {
+          if (event.attendees[i].fullname == fullname) {
             badge = "GOING";
             break;
           }

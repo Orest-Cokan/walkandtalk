@@ -13,32 +13,14 @@ import {
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import BaseCard from "../../cardview/baseCard";
 import { Actions } from "react-native-router-flux";
-import { fetchEvents } from "../../actions/EventActions";
-import { deleteEvent } from "../../actions/EventActions";
-import { addAttendees } from "../../actions/AttendeeActions";
-import { removeAttendees } from "../../actions/AttendeeActions";
+import { fetchEvents, deleteEvent } from "../../actions/EventActions";
+import { sendNotification } from "../../actions/NotificationActions";
+import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 
 class ViewEventScreen extends Component {
   constructor(props) {
     super(props);
-
-    // Set state on inital profile signup
-    this.state = {
-      eventId: 0,
-      date: "WED, MAR 3 AT",
-      startTime: "10:00PM",
-      endTime: "2:00AM",
-      title: "Walk in the park",
-      location: "Hawrelak Park",
-      badge: "GOING",
-      organizer: "Beatrice",
-      intensity: "Brisk",
-      attending: 6,
-      description:
-        "Hello All. Im writing this description to see how it looks on the screen if you think it looks good gimme a thumbs up"
-    };
   }
 
   onBack = () => {
@@ -52,7 +34,6 @@ class ViewEventScreen extends Component {
   // First will do for search events
   componentWillMount() {
     this.props.fetchEvents;
-
     if (this.props.searchScreen == true) {
       searchEvent = this.props.markerSent;
       console.log(searchEvent, "markerSent");
@@ -60,13 +41,14 @@ class ViewEventScreen extends Component {
       //check if hosting, going or not going
       var badge = "";
       const fullname = this.props.user.user.fullname;
+      console.log('SEARCH EVENT', searchEvent)
       if (fullname === searchEvent.organizer) {
         badge = "HOSTING";
       } else {
         //get event and see if user is attending
         attendees = searchEvent.attendees;
         attendees.forEach(function(a) {
-          if (a == fullname) {
+          if (a.fullname == fullname) {
             badge = "GOING";
           }
         });
@@ -108,7 +90,7 @@ class ViewEventScreen extends Component {
         //get event and see if user is attending
         attendees = currEvent.attendees;
         attendees.forEach(function(a) {
-          if (a == fullname) {
+          if (a.fullname == fullname) {
             badge = "GOING";
           }
         });
@@ -139,6 +121,11 @@ class ViewEventScreen extends Component {
   deleteEvent = () => {
     console.log("we are deleting event with id", this.state.eventId);
     this.props.deleteEvent(this.state.eventId);
+    this.props.sendNotification(
+      this.state.eventId,
+      this.state.title,
+      'cancelledEvent'
+      );
   };
 
   // When edit event button is clicked
@@ -150,7 +137,12 @@ class ViewEventScreen extends Component {
   // Set state
   onChange(name, value) {
     console.log("name", name, "value", value)
-    this.setState({ [name]: value });
+    this.setState({ [name] : value }, function () {
+      this.updateAttendees();
+  });
+}
+
+  updateAttendees() {
     console.log("am i going???", this.state.badge)
     console.log("current user", this.props.user.user.email)
     if (this.state.badge == "GOING"){
@@ -159,7 +151,7 @@ class ViewEventScreen extends Component {
         this.props.user.user.fullname,
         this.props.user.user.email
       );
-      console.log("You joined!")
+      console.log("You joined!", this.props)
     }else{
       this.props.removeAttendees(
         this.state.eventId,
@@ -374,7 +366,11 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchEvents, deleteEvent, addAttendees, removeAttendees }
+  { fetchEvents, 
+    deleteEvent, 
+    addAttendees, 
+    removeAttendees, 
+    sendNotification }
 )(ViewEventScreen);
 
 const styles = {

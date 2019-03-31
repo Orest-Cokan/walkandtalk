@@ -6,6 +6,7 @@ import AuthScreen from "./components/login/AuthScreen";
 import SignupScreen from "./components/login/SignupScreen";
 import AddEventScreen from "./components/event/AddEventScreen";
 import HomeScreen from "./components/home/HomeScreen";
+import NotificationPlayground from "./components/home/NotificationPlayground";
 import SearchTabScreen from "./components/search/SearchTabScreen";
 import SearchMapViewScreen from "./components/search/SearchMapViewScreen";
 import SearchListViewScreen from "./components/search/SearchListViewScreen";
@@ -142,6 +143,7 @@ const RouterComponent = () => (
             <Scene key="helplines" component={HelplineScreen} />
           </Scene>
         </Tabs>
+        <Scene key="notifications" component={NotificationPlayground} />
         <Scene key="questionnaire" component={QuestionnaireScreen} />
         <Scene key="viewEvent" component={ViewEventScreen} />
         <Scene key="editEvent" component={EditEventSceen} />

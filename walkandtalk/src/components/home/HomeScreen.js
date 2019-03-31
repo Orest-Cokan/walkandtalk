@@ -17,16 +17,14 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import BaseCard from "../../cardview/baseCard";
 import Popover from 'react-native-popover-view'
 import { StyledText as Text } from "../../constants/StyledText";
+import { Actions } from "react-native-router-flux";
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isVisibleNotifications: false
-    }
     
-    this.showNotifications = this.showNotifications.bind(this);
-    this.closeNotifications = this.closeNotifications.bind(this);
+    //this.showNotifications = this.showNotifications.bind(this);
+    //this.closeNotifications = this.closeNotifications.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +53,7 @@ class HomeScreen extends Component {
         );
       } else {
         for (let i = 0; i < event.attendees.length; i++) {
-          if (event.attendees[i].name == fullname) {
+          if (event.attendees[i].fullname == fullname) {
             badge = "GOING";
             events.unshift(
               <BaseCard
@@ -77,15 +75,7 @@ class HomeScreen extends Component {
   }
 
   showNotifications() {
-    this.setState({
-      isVisibleNotifications: true
-    });
-  };
-
-  closeNotifications() {
-    this.setState({
-      isVisibleNotifications: false
-    });
+    Actions.notifications();
   };
 
   render() {
@@ -103,34 +93,16 @@ class HomeScreen extends Component {
             <Title style={ScreenStyleSheet.headerTitle}>Home</Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides}>
-            <Button transparent onPress={this.showNotifications} ref={ref => this.notification = ref}>
+            <Button transparent onPress={this.showNotifications.bind(this)}>
               <Image
                 style={ScreenStyleSheet.headerIcon}
-                source={ 
-                  this.state.isVisibleNotifications
-                  ? require("../../assets/icons/notification-full.png") 
-                  : require("../../assets/icons/notification.png") 
-                }
+                source={require("../../assets/icons/notification.png")}
               />
             </Button>
           </Right>
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          <Popover
-            isVisible={this.state.isVisibleNotifications}
-            fromView={this.notification}
-            onClose={this.closeNotifications}
-            placement="bottom"
-            translucent={false}
-            showBackground={true}
-            popoverStyle={{borderColor: "pink", borderRadius: 5, padding: 10}}
-            >
-            <View>
-              <Text>Hello</Text>
-              <Text>Notifications</Text>
-            </View>
-          </Popover>
           {this.getEvents()}
         </Content>
       </Container>

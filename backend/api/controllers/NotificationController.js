@@ -12,8 +12,10 @@ const NotificationController = () => {
         email: body.email,
         isRead: body.isRead,
         type: body.type,        // types: upcomingEvent, updatedEvent, cancelledEvent, eventRecord, questionnaire
-        eventID: body.eventID,  // for types (updatedEvent, upcomingEvent), otherwise null
-        recordID: body.recordID // for type (eventRecord), otherwise null
+        eventId: body.eventId,  // for types (updatedEvent, upcomingEvent), otherwise null
+        eventTitle: body.eventTitle, // for types (updatedEvent, upcomingEvent), otherwise null
+        recordId: body.recordId, // for type (eventRecord), otherwise null
+        recordTitle: body.recordTitle // for type (eventRecord), otherwise null
       });
 
       return res
@@ -21,8 +23,25 @@ const NotificationController = () => {
         .json({ msg: "Successfully added a notification" });
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ msg: "Internal server error m" });
+      return res.status(500).json({ msg: "Internal server error" });
     }
+  };
+
+  // Update notification
+  const update = async (req, res) => {
+    const { body } = req;
+    Notification.update(
+      {
+        isRead: body.isRead
+      },
+      { returning: true, where: { id: body.id } }
+    )
+      .then(self => {
+        return res.status(200).json(self[1]);
+      })
+      .catch(function(err) {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
   };
 
   // Get notifications (for testing only)
@@ -52,6 +71,7 @@ const NotificationController = () => {
 
   return {
     create,
+    update,
     getAll,
     getNotifications,
   };
