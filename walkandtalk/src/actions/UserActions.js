@@ -6,6 +6,8 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
   USER_EDIT,
+  USER_APPROVE,
+  USER_DECLINE,
   GET_UNREGISTERED_USERS
 } from "./types";
 import { Actions } from "react-native-router-flux";
@@ -172,6 +174,46 @@ export const getUnregisteredUsers = () => {
       .get(url)
       .then(res => {
         dispatch({ type: GET_UNREGISTERED_USERS, payload: res.data.users });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+
+//approve request of a user 
+export const approveUser = (email, redcapID) => {
+  const user = {
+    email: email,
+    redcapID: redcapID
+  };
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/researcher/accept";
+    axios
+      .put(url,user )
+      .then(res => {
+        dispatch({ type: USER_APPROVE });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+//decline request of a user 
+export const declineUser = (email) => {
+  const user = {
+    email: email
+  };
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/researcher/deny";
+    axios
+      .post(url,user )
+      .then(res => {
+        dispatch({ type: USER_DECLINE });
       })
       .catch(err => {
         console.log(err);

@@ -21,6 +21,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import axios from "axios";
+import {approveUser, declineUser } from "../../actions/UserActions";
 
 // View Request screen
 class ViewRequestScreen extends Component {
@@ -114,6 +115,7 @@ class ViewRequestScreen extends Component {
     if (this.state.responseStatus){
       //import New user into REDCap 
       await this.importToRedcap();
+      this.props.approveUser(this.state.email, this.state.redcapID);
       if (this.state.responseStatus) {
         Alert.alert("The request from " + this.state.fullname + " has been approved.");
         return 
@@ -125,6 +127,7 @@ class ViewRequestScreen extends Component {
 
   // Declines request to be a user
   declineRequest = () => {
+    this.props.declineUser(this.state.email);
     Alert.alert("The request from " + this.state.fullname + " has been declined.");
   };
 
@@ -329,7 +332,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  null
+  {approveUser, declineUser}
 )(ViewRequestScreen);
 
 // Styles
