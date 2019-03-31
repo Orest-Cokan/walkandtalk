@@ -54,11 +54,11 @@ class QuestionnaireScreen extends Component {
       "&format=json" +
       "&type=flat" +
       "&records[0]=" +
-      this.props.user.user.id.toString() + //to be changed to user redcap id
+      this.props.user.user.redcapID.toString() + //to be changed to user redcap id
       "&forms[0]=" +
       this.props.questionnaire +
       "&returnFormat=json";
-
+    console.log(instanceData);
     axios
       .post(
         "https://med-rcdev.med.ualberta.ca/api/",
@@ -66,6 +66,7 @@ class QuestionnaireScreen extends Component {
         this.state.header
       )
       .then(res => {
+        console.log(res.data);
         return res.data;
       })
       .then(body => {
@@ -120,11 +121,10 @@ class QuestionnaireScreen extends Component {
       this.props.questionnaire +
       "&event=" +
       "&record=" +
-      this.props.user.user.id.toString() + //to be changed to user redcap id
+      this.props.user.user.redcapID.toString() + //to be changed to user redcap id
       "&repeat_instance=" +
       this.state.instance.toString() +
       "&returnFormat=json";
-
     axios
       .post(
         "https://med-rcdev.med.ualberta.ca/api/",
@@ -132,15 +132,15 @@ class QuestionnaireScreen extends Component {
         this.state.header
       )
       .then(res => {
-        this.setState({ source: { url: res.data } });
+        this.setState({ source: { uri: res.data } });
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-  async componentWillMount() {
-    await this.setSurveyLink();
+  componentWillMount() {
+    this.setSurveyLink();
   }
 
   render() {
@@ -155,7 +155,7 @@ class QuestionnaireScreen extends Component {
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>
               <Image
-                style={ScreenStyleSheet.backIcon}
+                style={ScreenStyleSheet.headerIcon}
                 source={require("../../assets/icons/back-button.png")}
               />
             </Button>
