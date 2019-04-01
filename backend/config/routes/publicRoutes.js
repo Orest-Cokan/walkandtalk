@@ -32,7 +32,7 @@ const publicRoutes = {
 
   // Attendee routes
   "PUT /attendee/add": "AttendeeController.addAttendees",
-  "GET /attendee/remove": "AttendeeController.removeAttendees",
+  "PUT /attendee/remove": "AttendeeController.removeAttendees",
 
   // Picture routes
   "PUT /user/picture": "PictureController.updateImage",

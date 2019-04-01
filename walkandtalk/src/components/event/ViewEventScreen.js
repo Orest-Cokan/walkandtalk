@@ -13,13 +13,12 @@ import {
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+
 import UserCard from "../../cardview/userCard";
-import { Actions } from "react-native-router-flux";
-import { fetchEvents } from "../../actions/EventActions";
-import { deleteEvent } from "../../actions/EventActions";
-import { addAttendees } from "../../actions/AttendeeActions";
-import { removeAttendees } from "../../actions/AttendeeActions";
 import Modal from "react-native-modal";
+import { Actions } from "react-native-router-flux";
+import { fetchEvents, deleteEvent } from "../../actions/EventActions";
+import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 
 class ViewEventScreen extends Component {
   constructor(props) {
@@ -54,7 +53,6 @@ class ViewEventScreen extends Component {
   // First will do for search events
   componentWillMount() {
     this.props.fetchEvents;
-
     if (this.props.searchScreen == true) {
       searchEvent = this.props.markerSent;
       console.log(searchEvent, "markerSent");
@@ -68,7 +66,7 @@ class ViewEventScreen extends Component {
         //get event and see if user is attending
         attendees = searchEvent.attendees;
         attendees.forEach(function(a) {
-          if (a == fullname) {
+          if (a.fullname == fullname) {
             badge = "GOING";
           }
         });
@@ -111,7 +109,7 @@ class ViewEventScreen extends Component {
         //get event and see if user is attending
         attendees = currEvent.attendees;
         attendees.forEach(function(a) {
-          if (a == fullname) {
+          if (a.fullname == fullname) {
             badge = "GOING";
           }
         });
@@ -174,6 +172,12 @@ class ViewEventScreen extends Component {
   // Set state
   onChange(name, value) {
     console.log("name", name, "value", value)
+    this.setState({ [name] : value }, function () {
+      this.updateAttendees();
+  });
+}
+
+  updateAttendees() {
     this.setState({ [name]: value });
     console.log("am i going???", this.state.badge)
     console.log("current user", this.props.user.user.email)
@@ -184,7 +188,7 @@ class ViewEventScreen extends Component {
         this.props.user.user.email
       );
       console.log("You joined!")
-    }else{
+    } else {
       this.props.removeAttendees(
         this.state.eventId,
         this.props.user.user.email
@@ -439,7 +443,10 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchEvents, deleteEvent, addAttendees, removeAttendees }
+  { fetchEvents, 
+    deleteEvent, 
+    addAttendees, 
+    removeAttendees }
 )(ViewEventScreen);
 
 const styles = {

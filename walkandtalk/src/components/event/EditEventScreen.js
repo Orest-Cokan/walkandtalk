@@ -72,7 +72,16 @@ class EditEventScreen extends Component {
   onFinish = async () => {
     await new Promise((resolve, reject) => {
           // Edit the event user clicks
-          this.props.editEvent(this.state.title, this.state.id, this.state.date, this.state.startTime, this.state.endTime, this.state.description, this.state.intensity, this.state.venue, this.state.location);
+          this.props.editEvent(
+            this.state.title, 
+            this.state.id, 
+            this.state.date, 
+            this.state.startTime, 
+            this.state.endTime, 
+            this.state.description, 
+            this.state.intensity, 
+            this.state.venue, 
+            this.state.location);
           resolve();
       });
       // fetch updated event(s) to pass to homescreen
