@@ -11,28 +11,8 @@ afterAll(() => {
   afterAction();
 });
 
-beforeEach(async () => {
-  user = await User.build({
-    fullname: "orest cokan",
-    email: "martin@mail.com",
-    password: "securepassword",
-    password2: "securepassword",
-    dob: "1960-10-10",
-    menopausal_stage: "peri",
-    preference: {
-      duration: 10,
-      distance: 10,
-      intensity: "slow",
-      venue: "indoor",
-      location: "riverbend"
-    }
-  }).save();
-});
-
 // test creating a user
 test("User | create", async () => {
-  await User.destroy({ where: { email: "martin@mail.com" } });
-
   const res = await request(api)
     .post("/public/user")
     .set("Accept", /json/)
@@ -59,8 +39,6 @@ test("User | create", async () => {
 
   const user = await User.findByPk(res.body.user.email);
   expect(user.email).toBe(res.body.user.email);
-
-  await User.destroy({ where: { email: "martin@mail.com" } });
 });
 
 // test logging in a user
@@ -74,9 +52,7 @@ test("User | login", async () => {
     })
     .expect(200);
 
-  expect(user).toBeTruthy();
-
-  await User.destroy({ where: { email: "martin@mail.com" } });
+  expect(res).toBeTruthy();
 });
 
 // getting all users
@@ -84,14 +60,10 @@ test("User | get all (auth)", async () => {
   const res2 = await request(api)
     .get("/public/users")
     .set("Accept", /json/)
-    .set("Authorization", `Bearer ${res.body.token}`)
-    .set("Content-Type", "application/json")
     .expect(200);
 
   expect(res2.body.users).toBeTruthy();
   expect(res2.body.users.length).toBe(1);
-
-  await User.destroy({ where: { email: "martin@mail.com" } });
 });
 
 // test duplicate user creation
@@ -116,7 +88,6 @@ test("User | Duplicate User", async () => {
     })
     .expect(500);
   expect(res2.body.msg).toBe("Internal server error");
-  await User.destroy({ where: { email: "martin@mail.com" } });
 });
 
 // test updating a user
@@ -135,7 +106,9 @@ test("User | updateUser", async () => {
         intensity: "fast",
         venue: "outdoor",
         location: "riverbend"
-      }
+      },
+      registered: 0,
+      researcher: 0
     })
     .expect(200);
 
@@ -143,13 +116,11 @@ test("User | updateUser", async () => {
     where: { email: "martin@mail.com" },
     include: [Preference]
   }).then(user => {
-    console.log(user, "what value is this");
     expect(user.preference.distance).toBe(20);
     expect(user.preference.duration).toBe(20);
-    expect(user.preference).toHaveLength(5);
-  });
-  await User.destroy({
-    where: { email: "martin@mail.com" }
+    expect(user.preference.intensity).toBe("fast");
+    expect(user.preference.location).toBe("riverbend");
+    expect(user.preference.venue).toBe("outdoor");
   });
 });
 

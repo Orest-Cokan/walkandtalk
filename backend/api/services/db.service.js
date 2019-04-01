@@ -1,4 +1,6 @@
 const database = require("../../config/database");
+const initialize = require("./research.service");
+const recordsTask = require("../../config/cron/records");
 
 const dbService = (environment, migrate) => {
   const authenticateDB = () => database.authenticate();
@@ -91,16 +93,28 @@ const dbService = (environment, migrate) => {
     switch (environment) {
       case "development":
         await startDev();
+        await initialize();
+        await recordsTask();
         break;
+
       case "staging":
         await startStage();
+        await initialize();
+        await recordsTask();
         break;
+
       case "testing":
         await startTest();
+        await initialize();
+        await recordsTask();
         break;
+
       case "production":
         await startProd();
+        await initialize();
+        await recordsTask();
         break;
+
       default:
         await wrongEnvironment();
     }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, RefreshControl } from "react-native";
 import BaseCard from "../../cardview/baseCard";
 import QuestionnaireCard from "../../cardview/questionnaireCard";
 import { connect } from "react-redux";
@@ -22,14 +22,35 @@ This is the forms screen. Users will see the two static questionnaires and event
 class FormScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("inside constructor");
+    this.numRenders = 0;
+    this.state = {
+      refreshing: false,
+      records: []
+    }
+  
+
     this.props.getUncompletedRecords = this.props.getUncompletedRecords(
       this.props.user.user.email
     );
+    
+    console.log('------PROPS-------', this.props)
+    console.log('------STATE-------', this.state)
   }
 
   componentDidMount() {
+    console.log('------B4 MOUNT-------', this.state)
     this.props.getUncompletedRecords;
+    console.log('------AFTER MOUNT-------', this.state)
+
+  }
+
+  _onRefresh = () => {
+    console.log('------refresh-------', this.state)
+    this.setState({ refreshing: true });
+    console.log('------while refresh-------', this.state)
+    this.forceUpdate();
+    this.setState({refreshing: false});
+    console.log('------refresh done-------', this.state)
   }
 
   submitRecord(index) {
@@ -40,7 +61,6 @@ class FormScreen extends Component {
 
   getRecords() {
     let records = [];
-    console.log(this.props);
     this.props.uncompleted_records.map((record, index) => {
       records.unshift(
         <TouchableOpacity
@@ -61,7 +81,13 @@ class FormScreen extends Component {
     return records;
   }
 
+  isInitialRender() {
+    return this.numRenders == 2;
+  }
+
   render() {
+    this.numRenders++;
+    console.log("----------------------adding RENDERS!!!---------------------", this.numRenders, this.state)
     return (
       <Container>
         <Header
@@ -74,7 +100,15 @@ class FormScreen extends Component {
           </Body>
         </Header>
 
-        <Content contentContainerStyle={ScreenStyleSheet.content}>
+        <Content 
+          contentContainerStyle={ScreenStyleSheet.content}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />
+          }
+        >
           <Text style={ScreenStyleSheet.sectionTitle}>Questionnaires</Text>
           <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
           <View style={ScreenStyleSheet.lineSeparator} />

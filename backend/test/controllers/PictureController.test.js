@@ -57,6 +57,5 @@ test("Picture | getImage", async () => {
     .get("/public/user/picture/dank@gmail.com")
     .set("Accept", /json/)
     .send();
-  console.log(res.body.image, "what info is this shit");
   expect(res.body.image).toBe("Orest Image");
 });

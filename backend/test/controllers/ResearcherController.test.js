@@ -95,7 +95,6 @@ test("Get unregistered users | getUnregisteredUsers", async () => {
     .set("Accept", /json/)
     .send()
     .then(res => {
-      console.log(res.body);
       expect(res.body.users).toHaveLength(2);
     });
   await user.destroy();
@@ -145,7 +144,6 @@ test("Get registered users | getRegisteredUsers", async () => {
     .set("Accept", /json/)
     .send()
     .then(res => {
-      console.log(res.body);
       expect(res.body.users).toHaveLength(2);
     });
 

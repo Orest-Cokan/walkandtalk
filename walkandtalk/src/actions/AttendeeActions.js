@@ -1,25 +1,28 @@
 import { ATTENDEE_ADD, ATTENDEE_DELETE } from "./types";
-import { Actions } from "react-native-router-flux";
 import axios from "axios";
 import getIP from "../constants/Ip";
 
 // action to add an attendee
-export const addAttendees = (id, name, email) => {
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/attendee/";
+export const addAttendees = (
+    id, 
+    fullname, 
+    email
+  ) => {
     const attendee = {
-      name: name,
+      id: id,
+      fullname: fullname,
       email: email
     };
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/attendee/add";
     axios
       .put(url, attendee)
       .then(res => {
         if (res.status === 200) {
           console.log(res.status, "is this logged???");
           console.log(attendee, "attendee adding...");
-          dispatch({ type: ATTENDEE_ADD , payload: attendee});
-          Actions.reset("app");
+          dispatch({ type: ATTENDEE_ADD , payload: attendee });
         }
       })
       .catch(err => {
@@ -29,19 +32,28 @@ export const addAttendees = (id, name, email) => {
 };
 
 // action to remove an attendee
-export const removeAttendees = (id, email) => {
+export const removeAttendees = (
+  id, 
+  email
+) => {
+  const attendee = {
+    id: id,
+    email: email
+  };
   return dispatch => {
     var ip = getIP();
-    var url = ip + "public/attendee/";
+    var url = ip + "public/attendee/remove";
     axios
-      .delete(url + id)
+      .put(url, attendee)
       .then(res => {
-        console.log(res.data);
-        dispatch({ type: ATTENDEE_DELETE, payload: res.data });
-        Actions.reset("app");
+        if (res.status === 200) {
+          console.log(res.status, "is this logged???");
+          console.log(attendee, "attendee deleting...");
+          dispatch({ type: ATTENDEE_DELETE , payload: attendee });
+        }
       })
       .catch(err => {
-        console.log(err);
+        console.log(err, "kek");
       });
   };
 };

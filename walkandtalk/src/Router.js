@@ -16,6 +16,7 @@ import FormScreen from "./components/form/FormScreen";
 import SubmitRecordScreen from "./components/form/SubmitRecord";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
+import ViewPastEventRecord from "./components/profile/ViewPastEventRecord";
 import HelplineScreen from "./components/profile/HelplineScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
@@ -137,6 +138,7 @@ const RouterComponent = () => (
             <Scene key="mainProfile" component={ProfileScreen} />
             <Scene key="editProfile" component={EditProfileScreen} />
             <Scene key="pastEvents" component={PastEventListScreen} />
+            <Scene key="viewPastEvent" component={ViewPastEventRecord} />
             <Scene key="helplines" component={HelplineScreen} />
           </Scene>
         </Tabs>

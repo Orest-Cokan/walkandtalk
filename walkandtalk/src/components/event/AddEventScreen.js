@@ -61,6 +61,9 @@ class AddEventScreen extends Component {
     if (name == "startTime") {
       this.showError(this.state.startTime, this.startTime, "errorStartTime");
     }
+    if (name == "startTime") {
+      this.showError(this.state.startTime, this.startTime, "errorStartTime");
+    }
     if (name == "endTime") {
       this.showError(this.state.endTime, this.endTime, "errorEndTime");
     }
@@ -118,6 +121,7 @@ class AddEventScreen extends Component {
     }
     // If input is invalid, show errors
     else {
+      console.log(input, error);
       ref.current.setNativeProps(ScreenStyleSheet.formInputError);
       if (this.date == ref || this.startTime == ref || this.endTime == ref) {
         this.setState({
