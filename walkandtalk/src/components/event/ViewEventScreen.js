@@ -103,7 +103,7 @@ class ViewEventScreen extends Component {
           startTime: currEvent.start_time,
           endTime: currEvent.end_time,
           title: currEvent.title,
-          location: currEvent.location.streetName,
+          location: currEvent.location,
           badge: badge,
           organizer: currEvent.organizer,
           intensity: currEvent.intensity,
@@ -294,7 +294,7 @@ class ViewEventScreen extends Component {
             </View>
             <View s>
               <Text style={ScreenStyleSheet.eventInfoInput}>
-                {this.state.location}
+                {this.state.location.streetName}
               </Text>
             </View>
           </View>
