@@ -2,30 +2,22 @@ import React, { Component } from "react";
 import { fetchEvents } from "../../actions/EventActions";
 import {
   View,
-  Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  TouchableHighlight,
-  Alert,
   Image,
   Dimensions
 } from "react-native";
-import Ionicon from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import Entypo from "react-native-vector-icons/Entypo";
 import BaseCard from "../../cardview/baseCard";
 import { connect } from "react-redux";
-import { Actions } from "react-native-router-flux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
   Container,
   Header,
-  Left,
   Body,
   Title,
-  Right,
   Content
 } from "native-base";
 
@@ -462,9 +454,12 @@ class SearchListViewScreen extends Component {
     console.log("keyword", keyword);
     //convert each item to a string and see if the key word exists as a subset
     // if so, push that event to the list of results to be displayed
+    // Case insensitive
+    keyword = keyword.toUpperCase()
     var results = [];
     events.forEach(function(e) {
       var stringItem = JSON.stringify(e);
+      stringItem = stringItem.toUpperCase()
       if (stringItem.includes(keyword)) {
         if (results.indexOf(e) == -1) {
           results.push(e);
@@ -483,48 +478,39 @@ class SearchListViewScreen extends Component {
   };
 
 
-//Maps the search results to card view items that can be clicked to view further detials
+  //Maps the search results to card view items that can be clicked to view further detials
   getSearchResults() {
     let events = [];
     searchItems = this.state.searchResults;
-    console.log(searchItems, "searched")
+    console.log(searchItems, "search results in get Search results")
     const fullname = this.props.user.user.fullname;
     searchItems.map(event => {
       let badge = null;
       if (fullname == event.organizer) {
         badge = "HOSTING";
-        events.unshift(
-          <BaseCard
-            key={event.id}
-            id={event.id}
-            date={event.date}
-            start_time={event.start_time}
-            title={event.title}
-            location={event.location.streetName}
-            badge={badge}
-          />
-        );
-      } else {
+      } 
+      else {
         for (let i = 0; i < event.attendees.length; i++) {
-          if (event.attendees[i].name == fullname) {
+          if (event.attendees[i].fullname == fullname) {
             badge = "GOING";
-            events.unshift(
-              <BaseCard
-                key={event.id}
-                id={event.id}
-                date={event.date}
-                start_time={event.start_time}
-                title={event.title}
-                location={event.location.streetName}
-                badge={badge}
-              />
-            );
-
+            break;
           }
         }
       }
+      events.unshift(
+        <BaseCard
+          key={event.id}
+          id={event.id}
+          date={event.date}
+          start_time={event.start_time}
+          title={event.title}
+          location={event.location.streetName}
+          badge={badge}
+        />
+      );
     });
     return events;
+
   }
 
   render() {
