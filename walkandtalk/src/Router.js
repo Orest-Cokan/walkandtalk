@@ -10,6 +10,7 @@ import SearchTabScreen from "./components/search/SearchTabScreen";
 import SearchMapViewScreen from "./components/search/SearchMapViewScreen";
 import SearchListViewScreen from "./components/search/SearchListViewScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
+import OtherProfileScreen from "./components/profile/OtherProfileScreen";
 import RequestsScreen from "./components/form/RequestsScreen";
 import ViewRequestScreen from "./components/form/ViewRequestScreen";
 import FormScreen from "./components/form/FormScreen";
@@ -147,6 +148,7 @@ const RouterComponent = () => (
         <Scene key="editEvent" component={EditEventSceen} />
         <Scene key="searchList" component={SearchListViewScreen} />
         <Scene key="searchMap" component={SearchMapViewScreen} />
+        <Scene key="otherProfile" component={OtherProfileScreen} />
       </Stack>
     </Stack>
   </Router>

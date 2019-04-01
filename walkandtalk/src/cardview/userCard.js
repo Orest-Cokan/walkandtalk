@@ -19,66 +19,23 @@ Returns: The list view that contains information about the event.
 
 class UserCard extends Component {
 
-    constructor(props) {
-        super(props);
-        this.props.getUser = this.props.getUser(
-            this.props.user.user.email
-          );
-    }
-
-    componentDidMount() {
-        this.props.getUser;
-      }
-
-    viewOtherProfile = () => {
-        // Navigate to view this event
-       console.log("we are going to view other profile")
-      };
-
-    checkIfResearcher = () =>{
-
-        if(this.props.user.user.researcher == false){
-            return(
-                <View style={styles.userCardView}>
-                <View>
-                <Image
-                style={styles.imageView}
-                source={require("../assets/icons/default-profile.png")}
-                />
-                </View>
-                <View>
-                <Text style={styles.userNameView}>
-                    {this.props.fullname}
-                </Text>
-                </View>
-            </View>
-
-            );
-        }else{
-            return(
-            <TouchableOpacity onPress={this.viewOtherProfile}>
-            <View style={styles.userCardView}>
-                <View>
-                <Image
-                style={styles.imageView}
-                source={require("../assets/icons/default-profile.png")}
-                />
-                </View>
-                <View>
-                <Text style={styles.userNameView}>
-                    {this.props.fullname}
-                </Text>
-                </View>
-            </View>
-            </TouchableOpacity>
-            );
-
-        }
-    }
-
 
     render() {
-        return this.checkIfResearcher();
+        return (
+          <View style={styles.userCardView}>
+                <View>
+                <Image
+                style={styles.imageView}
+                source={require("../assets/icons/default-profile.png")}
+                />
+                </View>
+                <View>
+                <Text style={styles.userNameView}>
+                    {this.props.fullname}
+                </Text>
+                </View>
+            </View>
+        );
       }
     }
 
@@ -107,15 +64,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapStateToProps = state => {
-    return {
-      user: state.user
-    };
-  };
-  
-  export default connect(
-    mapStateToProps,
-    {getUser}
-  )(UserCard);
+
+export default UserCard;
 
 

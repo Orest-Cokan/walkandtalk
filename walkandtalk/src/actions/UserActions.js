@@ -134,6 +134,7 @@ export const getUser = email => {
       })
       .catch(err => {
         console.log(err);
+        console.log("ERROR in getUser")
       });
   };
 };

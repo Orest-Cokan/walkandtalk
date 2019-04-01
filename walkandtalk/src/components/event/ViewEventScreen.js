@@ -38,15 +38,12 @@ class ViewEventScreen extends Component {
       attending: 6,
       description:"none",
       visibleModal: false,
-      attendees:[]
+      attendees:[],
+      researcher:""
     };
   }
 
-  onBack = () => {
-    // Navigate back to profile page
-    Actions.pop();
-  };
-
+ 
   //Depending on whether we are viewing an event in home or in search different props will be passing
   // First we want to determine props available and set state with the necessary values
   //
@@ -84,7 +81,8 @@ class ViewEventScreen extends Component {
         intensity: searchEvent.intensity,
         attending: searchEvent.total_attendees,
         description: searchEvent.description,
-        attendees: searchEvent.attendees
+        attendees: searchEvent.attendees,
+        researcher: this.props.user.user.researcher
       });
     }
 
@@ -129,7 +127,8 @@ class ViewEventScreen extends Component {
           intensity: currEvent.intensity,
           attending: currEvent.total_attendees,
           description: currEvent.description,
-          attendees: currEvent.attendees
+          attendees: currEvent.attendees,
+          researcher: this.props.user.user.researcher
         },
         () => {
           console.log(this.state, "state updated");
@@ -138,16 +137,29 @@ class ViewEventScreen extends Component {
     }
   }
 
-  deleteEvent = () => {
-    console.log("we are deleting event with id", this.state.eventId);
-    this.props.deleteEvent(this.state.eventId);
-  };
+  componentWillUnmount(){
+    this.setState({visibleModal:false})
+  }
+
 
   // When edit event button is clicked
   goToEditEvent = () => {
     // Navigate to edit event
     Actions.editEvent(this.state.eventId);
   };
+
+  viewOtherProfile = email => {
+    // Navigate to view this event
+    this.setState({visibleModal:false})
+   console.log("we are going to view other profile")
+   Actions.otherProfile({email:email})
+  };
+
+  onBack = () => {
+    // Navigate back to profile page
+    Actions.pop();
+  };
+
 
   // When edit event button is clicked
   openModal = () => {
@@ -169,6 +181,11 @@ class ViewEventScreen extends Component {
     }
   };
 
+  deleteEvent = () => {
+    console.log("we are deleting event with id", this.state.eventId);
+    this.props.deleteEvent(this.state.eventId);
+  };
+
   // Set state
   onChange(name, value) {
     console.log("name", name, "value", value)
@@ -178,7 +195,7 @@ class ViewEventScreen extends Component {
 }
 
   updateAttendees() {
-    this.setState({ [name]: value });
+    //this.setState({ [name]: value });
     console.log("am i going???", this.state.badge)
     console.log("current user", this.props.user.user.email)
     if (this.state.badge == "GOING"){
@@ -197,6 +214,27 @@ class ViewEventScreen extends Component {
     }
     
   };
+
+  getAttendees(){
+    let attendee_list = [];
+    console.log(this.state.attendees, "attending list")
+    this.state.attendees.map((a, index) => {
+      attendee_list.unshift(
+        <TouchableOpacity 
+        key={index}
+        disabled={!this.state.researcher}
+         onPress={this.viewOtherProfile.bind(this, a.email)}>
+        <UserCard
+          key={a.email}
+          email={a.email}
+          fullname={a.fullname}
+          researcher = {this.state.researcher}
+        />
+        </TouchableOpacity>
+      );
+    });
+    return attendee_list;
+  }
 
   render() {
     //const attendingOptions = ["Not Going", "Going"];
@@ -377,7 +415,6 @@ class ViewEventScreen extends Component {
           {/*Pop up modal that displays the users attending*/}
           <Modal
           isVisible={this.state.visibleModal == true}
-          onSwipeComplete={() => this.setState({ visibleModal: false })}
           onBackdropPress={() => this.setState({ visibleModal: false })}
           swipeDirection="down"
           scrollTo={this.handleScrollTo}
@@ -392,22 +429,8 @@ class ViewEventScreen extends Component {
               ref={ref => (this.scrollViewRef = ref)}
               onScroll={this.handleOnScroll}
               scrollEventThrottle={16}>
-              <UserCard
-              key = {1}
-              fullname = {"Other Attendee"}
-              email = {"123@gmail.com"}
-              />
-              <UserCard
-              key = {2}
-              fullname = {"Other Attendee"}
-              email = {"123@gmail.com"}
-              />
-              <UserCard
-              key = {3}
-              fullname = {"Other Attendee"}
-              email = {"123@gmail.com"}
-              />
-            
+              {this.getAttendees()}
+                    
             </ScrollView>
           </View>
         </Modal>
