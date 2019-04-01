@@ -17,6 +17,7 @@ import { Actions } from "react-native-router-flux";
 import { fetchEvents, deleteEvent } from "../../actions/EventActions";
 import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 
+
 class ViewEventScreen extends Component {
   constructor(props) {
     super(props);
@@ -73,9 +74,11 @@ class ViewEventScreen extends Component {
       // console.log("eventID", this.props.eventId);
       id = this.props.eventId;
       events = this.props.events;
+      console.log("events", events, "event id", id);
 
       //retrieve the current event
       let currEvent = events.find(e => e.id === id);
+      console.log("current event", currEvent)
 
       //check if hosting, going or not going
       var badge = "";
@@ -108,6 +111,7 @@ class ViewEventScreen extends Component {
           description: currEvent.description
         },
         () => {
+          console.log(this.state, "state updated");
         }
       );
     }
@@ -133,6 +137,7 @@ class ViewEventScreen extends Component {
 }
 
   updateAttendees() {
+    this.setState({ [name]: value });
     console.log("am i going???", this.state.badge)
     console.log("current user", this.props.user.user.email)
     if (this.state.badge == "GOING"){
@@ -141,8 +146,8 @@ class ViewEventScreen extends Component {
         this.props.user.user.fullname,
         this.props.user.user.email
       );
-      console.log("You joined!", this.props)
-    }else{
+      console.log("You joined!")
+    } else {
       this.props.removeAttendees(
         this.state.eventId,
         this.props.user.user.email
