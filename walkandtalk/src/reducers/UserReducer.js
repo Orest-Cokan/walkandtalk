@@ -5,7 +5,8 @@ import {
   USER_CREATE_SUCCESS,
   USER_CREATE,
   USER_EDIT,
-  USER_LOGIN_SUCCESS
+  USER_LOGIN_SUCCESS,
+  SET_USER
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -62,8 +63,11 @@ const user = (state = INITIAL_STATE, action) => {
         loading: true,
         user: action.payload
       };
+    case SET_USER:
+      return { ...state, user: action.payload };
     default:
       return state;
+    
   }
 };
 

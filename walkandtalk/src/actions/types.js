@@ -10,6 +10,7 @@ export const USER_CREATE_SUCCESS = "USER_CREATE_SUCCESS";
 export const USER_EDIT = "USER_EDIT";
 export const PICTURE_EDIT = "PICTURE_EDIT";
 export const PICTURE_GET = "PICTURE_GET";
+export const SET_USER = "SET_USER";
 
 // EVENT TYPES
 export const SET_EVENTS = "SET_EVENTS";

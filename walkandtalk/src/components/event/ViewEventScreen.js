@@ -13,12 +13,13 @@ import {
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import BaseCard from "../../cardview/baseCard";
+import UserCard from "../../cardview/userCard";
 import { Actions } from "react-native-router-flux";
 import { fetchEvents } from "../../actions/EventActions";
 import { deleteEvent } from "../../actions/EventActions";
 import { addAttendees } from "../../actions/AttendeeActions";
 import { removeAttendees } from "../../actions/AttendeeActions";
+import Modal from "react-native-modal";
 
 class ViewEventScreen extends Component {
   constructor(props) {
@@ -36,8 +37,9 @@ class ViewEventScreen extends Component {
       organizer: "Beatrice",
       intensity: "Brisk",
       attending: 6,
-      description:
-        "Hello All. Im writing this description to see how it looks on the screen if you think it looks good gimme a thumbs up"
+      description:"none",
+      visibleModal: false,
+      attendees:[]
     };
   }
 
@@ -83,7 +85,8 @@ class ViewEventScreen extends Component {
         organizer: searchEvent.organizer,
         intensity: searchEvent.intensity,
         attending: searchEvent.total_attendees,
-        description: searchEvent.description
+        description: searchEvent.description,
+        attendees: searchEvent.attendees
       });
     }
 
@@ -127,7 +130,8 @@ class ViewEventScreen extends Component {
           organizer: currEvent.organizer,
           intensity: currEvent.intensity,
           attending: currEvent.total_attendees,
-          description: currEvent.description
+          description: currEvent.description,
+          attendees: currEvent.attendees
         },
         () => {
           console.log(this.state, "state updated");
@@ -145,6 +149,26 @@ class ViewEventScreen extends Component {
   goToEditEvent = () => {
     // Navigate to edit event
     Actions.editEvent(this.state.eventId);
+  };
+
+  // When edit event button is clicked
+  openModal = () => {
+    // Navigate to edit event
+    this.setState({visibleModal: true})
+  };
+
+  //Used when scrolling in the Modal
+  handleOnScroll = event => {
+    this.setState({
+      scrollOffset: event.nativeEvent.contentOffset.y,
+    });
+  };
+
+  //Handles the reference of the Modal goes to
+  handleScrollTo = p => {
+    if (this.scrollViewRef) {
+      this.scrollViewRef.scrollTo(p);
+    }
   };
 
   // Set state
@@ -333,15 +357,56 @@ class ViewEventScreen extends Component {
                 source={require("../../assets/icons/user-group.png")}
               />
             </View>
+
             <View style={ScreenStyleSheet.rowContainerEvent2}>
+            <TouchableOpacity onPress={this.openModal}>
               <Text style={ScreenStyleSheet.attending}>
                 {this.state.attending} people
               </Text>
+              </TouchableOpacity>
               <Text style={ScreenStyleSheet.attendingText}>
                 are attending this event
               </Text>
             </View>
           </View>
+
+          {/*Pop up modal that displays the users attending*/}
+          <Modal
+          isVisible={this.state.visibleModal == true}
+          onSwipeComplete={() => this.setState({ visibleModal: false })}
+          onBackdropPress={() => this.setState({ visibleModal: false })}
+          swipeDirection="down"
+          scrollTo={this.handleScrollTo}
+          scrollOffset={this.state.scrollOffset}
+          scrollOffsetMax={400 - 300} 
+          style={styles.bottomModal}>
+          <View style={styles.scrollableModal}>
+            <View style={styles.modalTextView}>
+            <Text style={styles.modalText}>Going </Text>
+            </View>
+            <ScrollView
+              ref={ref => (this.scrollViewRef = ref)}
+              onScroll={this.handleOnScroll}
+              scrollEventThrottle={16}>
+              <UserCard
+              key = {1}
+              fullname = {"Other Attendee"}
+              email = {"123@gmail.com"}
+              />
+              <UserCard
+              key = {2}
+              fullname = {"Other Attendee"}
+              email = {"123@gmail.com"}
+              />
+              <UserCard
+              key = {3}
+              fullname = {"Other Attendee"}
+              email = {"123@gmail.com"}
+              />
+            
+            </ScrollView>
+          </View>
+        </Modal>
 
           {/* On screen separator */}
           <View style={ScreenStyleSheet.EventLineSeparator} />
@@ -414,5 +479,30 @@ const styles = {
     textAlign: "center",
     fontSize: 15,
     fontWeight: "bold"
+  },
+  scrollableModal: {
+    height: 300,
+    backgroundColor:"white",
+  },
+  bottomModal: {
+    display: "flex",
+    justifyContent: "center",
+    margin:"auto",
+    margin: 0,
+    marginRight: 20,
+    marginLeft:20
+  },
+  modalTextView:{
+    height: 50,
+    backgroundColor: "#A680B8",
+    alignItems:"center"
+  },
+  modalText: { 
+    color:  "white", 
+    borderBottomColor:"gray",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    paddingTop: 15
   }
 };

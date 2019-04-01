@@ -45,6 +45,10 @@ class ProfileScreen extends Component {
     Actions.editProfile();
   };
 
+  componentWillMount(){
+    vars = this.props.user.user
+  }
+
   render() {
     const vars = this.props.user.user;
     return (

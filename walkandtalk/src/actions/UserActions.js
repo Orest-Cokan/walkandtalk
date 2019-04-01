@@ -5,7 +5,8 @@ import {
   USER_LOGIN,
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
-  USER_EDIT
+  USER_EDIT,
+  SET_USER
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -117,6 +118,26 @@ const loginUserSuccess = (dispatch, user) => {
   });
   Actions.app();
 };
+
+// action to get a single users
+export const getUser = email => {
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/user/" + email;
+    console.log("inside get a single user", email)
+    axios
+      .get(url)
+      .then(res => {
+        dispatch({ 
+          type: SET_USER, 
+          payload: res.data.user });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
 
 // action to edit a user
 export const editUser = (
