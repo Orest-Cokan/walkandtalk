@@ -55,8 +55,16 @@ class AddEventScreen extends Component {
   onChange(name, value) {
     this.setState({ [name]: value });
     // For datetime pickers
+<<<<<<< HEAD
     if (name == "date") {
       this.showError(this.state.date, this.date, "errorDate");
+=======
+    if (name == 'date') {
+      this.showError(this.state.date, this.date, 'errorDate');
+    }
+    if (name == 'startTime') {
+      this.showError(this.state.startTime, this.startTime, 'errorStartTime');
+>>>>>>> development
     }
     if (name == "startTime") {
       this.showError(this.state.startTime, this.startTime, "errorStartTime");
@@ -118,6 +126,7 @@ class AddEventScreen extends Component {
     }
     // If input is invalid, show errors
     else {
+      console.log(input, error);
       ref.current.setNativeProps(ScreenStyleSheet.formInputError);
       if (this.date == ref || this.startTime == ref || this.endTime == ref) {
         this.setState({

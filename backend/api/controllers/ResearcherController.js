@@ -36,7 +36,7 @@ const ResearcherController = () => {
   // in the future add email memes
   const denyUser = async (req, res) => {
     const { body } = req;
-    await User.destroy({ truncate: true, where: { email: body.email } })
+    await User.destroy({ where: { email: body.email } })
       .then(rowsRemoved => {
         if (rowsRemoved == 1) {
           return res.status(200).json({
