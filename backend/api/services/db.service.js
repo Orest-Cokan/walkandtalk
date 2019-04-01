@@ -1,4 +1,5 @@
 const database = require("../../config/database");
+const initialize = require("./research.service");
 
 const dbService = (environment, migrate) => {
   const authenticateDB = () => database.authenticate();
@@ -91,15 +92,23 @@ const dbService = (environment, migrate) => {
     switch (environment) {
       case "development":
         await startDev();
+        await initialize();
+
         break;
       case "staging":
         await startStage();
+        await initialize();
+
         break;
       case "testing":
         await startTest();
+        await initialize();
+
         break;
       case "production":
         await startProd();
+        await initialize();
+
         break;
       default:
         await wrongEnvironment();
