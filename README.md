@@ -59,7 +59,8 @@ react-native run-ios
 ```
 # 🎱Backend 
 
-The backend has 3 different states: testing, development and production. Sqlite is used for the database, with 
+The backend has 3 different states: testing, development and production. Sqlite is used for the database, with various policies/services to be used as hooks. The backend contains the Model and the Controllers for the Frontend with various cron jobs.
+
 ## Running the server
 
 Ensure you are in the ```walk-and-talk``` directory
