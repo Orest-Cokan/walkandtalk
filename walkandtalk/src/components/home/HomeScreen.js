@@ -1,6 +1,7 @@
 // Create Event Screen View
 import React, { Component } from "react";
 import { fetchEvents } from "../../actions/EventActions";
+import { getUnreadNotifications } from "../../actions/NotificationActions";
 import { connect } from "react-redux";
 import { Image, View, StatusBar } from "react-native";
 import {
@@ -15,22 +16,28 @@ import {
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import BaseCard from "../../cardview/baseCard";
-import Popover from 'react-native-popover-view'
-import { StyledText as Text } from "../../constants/StyledText";
 import { Actions } from "react-native-router-flux";
+import IconWithBadge from "../../constants/IconWithBadge";
 
 class HomeScreen extends Component {
   constructor(props) {
-    super(props);
-    
-    //this.showNotifications = this.showNotifications.bind(this);
-    //this.closeNotifications = this.closeNotifications.bind(this);
+    super(props);    
+    this.props.fetchEvents();
+    this.props.getUnreadNotifications(this.props.user.user.email);
   }
 
   componentDidMount() {
-    console.log('fetching events')
-    this.props.fetchEvents();
+    this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
+      console.log('HomeScreen did focus'); 
+      this.props.fetchEvents();
+      this.props.getUnreadNotifications(this.props.user.user.email);
+    })
   }
+
+  componentWillUnmount() {
+    this.didFocusListener.remove();
+  }
+
 
   getEvents() {
     let events = [];
@@ -94,9 +101,14 @@ class HomeScreen extends Component {
           </Body>
           <Right style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.showNotifications.bind(this)}>
-              <Image
-                style={ScreenStyleSheet.headerIcon}
-                source={require("../../assets/icons/notification.png")}
+              <IconWithBadge 
+                icon={
+                  <Image
+                    style={ScreenStyleSheet.headerIcon}
+                    source={require("../../assets/icons/notification.png")}
+                  />
+                }
+                total_unread={this.props.unread_notifications.length}
               />
             </Button>
           </Right>
@@ -114,11 +126,12 @@ const mapStateToProps = state => {
   console.log("homescreen");
   return {
     events: state.event.events,
+    unread_notifications: state.notification.unread_notifications,
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchEvents }
+  { fetchEvents, getUnreadNotifications }
 )(HomeScreen);

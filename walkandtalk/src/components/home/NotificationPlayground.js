@@ -18,19 +18,37 @@ import { Actions}  from 'react-native-router-flux';
 import { connect } from "react-redux";
 import { getNotifications, updateNotification } from "../../actions/NotificationActions"
 
-class NotificationPlayground extends Component{
+class NotificationScreen extends Component{
   constructor(props) {
     super(props);
 
     this.state = {
       isRead: 1
     }
-    this.props.getNotifications = this.props.getNotifications(this.props.user.user.email);
 
+    this.props.getNotifications(this.props.user.user.email);
   }
 
   componentDidMount() {
-    this.props.getNotifications;
+    this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
+      console.log('Notification did focus'); 
+      this.props.getNotifications(this.props.user.user.email);
+      console.log('did focus...', this.props.notification);
+    });
+    this.didBlurListener = this.props.navigation.addListener('willBlur', () => {
+      console.log('Notification did blur'); 
+      this.props.notifications.map((notification) => {
+        this.props.updateNotification(
+          notification.id,
+          this.state.isRead
+        );
+      });
+    });
+  }
+
+  componentWillUnmount() {
+    this.didFocusListener.remove();
+    this.didBlurListener.remove();
   }
 
   viewEvent(eventId) {
@@ -55,10 +73,6 @@ class NotificationPlayground extends Component{
     let onPress = null;
     let createdAt = '';
     this.props.notifications.map((notification, index) => {
-      this.props.updateNotification(
-        notification.id,
-        this.state.isRead
-      )
       createdAt = moment(notification.createdAt).fromNow();
       if (notification.type == 'updatedEvent') {
         message = "The details for " + notification.eventTitle + " have been updated."
@@ -78,11 +92,17 @@ class NotificationPlayground extends Component{
       if (notification.type == 'questionnaire') {
         message = "It is time to fill in your monthly questionnaires."
       }
+      if (notification.isRead == 0) {
+        backgroundColor = "#DBDAF2";
+      } else {
+        backgroundColor = "#FFFFFF";
+      }
       notifications.unshift(
         <ListItem
             button={true}
             key={index}
             onPress={onPress}
+            style={{backgroundColor: backgroundColor}}
         >
           <View style={{flexDirection: 'column'}}>
             <View style={{flex: 1}}>
@@ -121,6 +141,7 @@ class NotificationPlayground extends Component{
         </Header>
         
         <Content>
+          <View><Text> </Text></View>
           <List>
             {this.getNotifications()}
           </List>
@@ -141,4 +162,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   { getNotifications, updateNotification }
-)(NotificationPlayground);
+)(NotificationScreen);

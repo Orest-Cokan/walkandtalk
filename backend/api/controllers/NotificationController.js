@@ -69,11 +69,26 @@ const NotificationController = () => {
     }
   };
 
+   // Get unread notifications for a user
+   const getUnreadNotifications = async (req, res) => {
+    const { email } = req.params;
+    try {
+      const notifications = await Notification.findAll({
+        where: { email: email, isRead: 0 }
+      });
+      return res.status(200).json({ notifications });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
   return {
     create,
     update,
     getAll,
     getNotifications,
+    getUnreadNotifications
   };
 };
 

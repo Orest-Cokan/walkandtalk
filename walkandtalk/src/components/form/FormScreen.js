@@ -27,20 +27,19 @@ class FormScreen extends Component {
       refreshing: false,
       records: []
     }
-    this.props.getUncompletedRecords = this.props.getUncompletedRecords(
-      this.props.user.user.email
-    );
+    this.props.getUncompletedRecords(this.props.user.user.email);
 
   }
 
   componentDidMount() {
-    this.props.getUncompletedRecords;
+    this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
+      console.log('Formscreen did focus'); 
+      this.props.getUncompletedRecords(this.props.user.user.email);
+    })
   }
 
-  _onRefresh = () => {
-    this.setState({ refreshing: true });
-    this.forceUpdate();
-    this.setState({refreshing: false});
+  componentWillUnmount() {
+    this.didFocusListener.remove();
   }
 
   submitRecord(index) {
@@ -84,15 +83,7 @@ class FormScreen extends Component {
           </Body>
         </Header>
 
-        <Content 
-          contentContainerStyle={ScreenStyleSheet.content}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-        >
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
           <Text style={ScreenStyleSheet.sectionTitle}>Questionnaires</Text>
           <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
           <View style={ScreenStyleSheet.lineSeparator} />

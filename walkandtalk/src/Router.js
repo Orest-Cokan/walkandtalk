@@ -1,5 +1,5 @@
 import React from "react";
-import { Image} from "react-native";
+import { Image } from "react-native";
 import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
 
 import AuthScreen from "./components/login/AuthScreen";
@@ -23,6 +23,7 @@ import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
 import Dispatch from "./components/form/FormDispatch";
 import EditEventSceen from "./components/event/EditEventScreen"
+import IconWithBadge from './constants/IconWithBadge';
 
 // Navigation logic for the entire app
 const RouterComponent = () => (
@@ -42,16 +43,18 @@ const RouterComponent = () => (
             key="home"
             component={HomeScreen}
             icon={({ focused }) => (
-              <Image
-                source={
-                  focused
-                    ? require("./assets/icons/home-full.png")
-                    : require("./assets/icons/home.png")
+              <IconWithBadge icon={
+                <Image
+                  source={
+                    focused
+                      ? require("./assets/icons/home-full.png")
+                      : require("./assets/icons/home.png")
+                  }
+                  style={{ width: 28, height: 28 }}
+                />
                 }
-                style={{ width: 28, height: 28 }}
               />
             )}
-            title="Home"
             hideNavBar
           />
           <Scene

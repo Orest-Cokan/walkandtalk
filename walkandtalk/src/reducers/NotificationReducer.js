@@ -1,11 +1,13 @@
 import { 
   NOTIFICATION_CREATE,
   NOTIFICATION_UPDATE,
-  SET_NOTIFICATIONS 
+  SET_NOTIFICATIONS,
+  SET_UNREAD_NOTIFICATIONS,
 } from "../actions/types";
   
   const INITIAL_STATE = {
     notification: [],
+    unread_notifications: [],
     notifications: []
   };
   
@@ -18,6 +20,8 @@ import {
         return { ...state, notification: action.payload };  
       case SET_NOTIFICATIONS:
         return { ...state, notifications: action.payload };
+      case SET_UNREAD_NOTIFICATIONS:
+        return { ...state, unread_notifications: action.payload };
       default:
         return state;
     }

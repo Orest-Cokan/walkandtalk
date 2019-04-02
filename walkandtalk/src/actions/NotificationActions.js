@@ -1,7 +1,8 @@
 import {
     NOTIFICATION_CREATE,
     NOTIFICATION_UPDATE,
-    SET_NOTIFICATIONS
+    SET_NOTIFICATIONS,
+    SET_UNREAD_NOTIFICATIONS
   } from "./types";
   import getIP from "../constants/Ip";
   import axios from "axios";
@@ -82,6 +83,26 @@ import {
         .then(res => {
           dispatch({
             type: SET_NOTIFICATIONS,
+            payload: res.data.notifications
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    };
+  };
+
+  // Action to get unread notifications by user
+  export const getUnreadNotifications = email => {
+    console.log('in actions')
+    return dispatch => {
+      var ip = getIP();
+      var url = ip + "public/notification/unread/" + email;
+      axios
+        .get(url)
+        .then(res => {
+          dispatch({
+            type: SET_UNREAD_NOTIFICATIONS,
             payload: res.data.notifications
           });
         })
