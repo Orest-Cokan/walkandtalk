@@ -140,8 +140,7 @@ const WalkingEventController = () => {
       where: {
         id: id
       },
-      include: [Attendee, Location],
-      truncate: true
+      include: [Attendee, Location]
     })
       .then(rowDeleted => {
         if (rowDeleted == 1) {

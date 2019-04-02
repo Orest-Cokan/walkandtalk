@@ -33,9 +33,9 @@ const UserController = () => {
             include: [Preference, Picture, Redcap]
           }
         );
-        //const token = authService().issue({ email: user.email });
+        const token = authService().issue({ email: user.email });
         Transporter.sendMail(newUserEmail);
-        return res.status(200).json({ user });
+        return res.status(200).json({ user, token });
       } catch (err) {
         console.log(err);
         return res.status(500).json({ msg: "Internal server error" });
@@ -55,24 +55,20 @@ const UserController = () => {
           where: {
             email
           },
-          include: [Preference, Picture]
+          include: [Preference, Picture, Redcap]
         });
 
         if (!user) {
           return res.status(400).json({ msg: "Bad Request: User not found" });
         }
 
-        if (
-          bcryptService().comparePassword(password, user.password) &&
-          authPolicy(user.registered)
-        ) {
-          //const token = authService().issue({ email: user.email });
-          return res.status(200).json({ user });
+        if (bcryptService().comparePassword(password, user.password)) {
+          const token = authService().issue({ email: user.email });
+          return res.status(200).json({ user, token });
         }
 
         return res.status(401).json({ msg: "Unauthorized" });
       } catch (err) {
-        console.log(err);
         return res.status(500).json({ msg: "Internal server error" });
       }
     }
@@ -111,7 +107,6 @@ const UserController = () => {
 
   // get a single user
   const getUser = async (req, res) => {
-    console.log("WTF REEEEE");
     const { email } = req.params;
     console.log(email);
     try {
@@ -120,7 +115,6 @@ const UserController = () => {
       });
       return res.status(200).json({ user });
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ msg: "Internal server error" });
     }
   };

@@ -5,17 +5,13 @@ const PictureController = () => {
   // update an image
   const updateImage = async (req, res) => {
     const { body } = req;
-    console.log(body.id, body.email);
     try {
       const user = await User.findByPk(body.email, {
         include: [Picture]
       });
-      console.log(user, "this is our user!");
-      console.log(body.image, "do we even get an image?");
       await Picture.create({
         image: body.image
       }).then(resp => {
-        console.log(resp);
         user.setPicture(resp);
       });
       return res
@@ -29,7 +25,6 @@ const PictureController = () => {
   // get image of user
   const getImage = async (req, res) => {
     const { email } = req.params;
-    console.log(email);
     try {
       await Picture.findOne({ where: { userEmail: email } }).then(image => {
         return res.status(200).json(image);
