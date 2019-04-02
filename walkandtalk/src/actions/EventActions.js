@@ -17,7 +17,7 @@ export const fetchEvents = () => {
     axios
       .get(url)
       .then(res => {
-        dispatch({ type: SET_USER_EVENTS, payload: res.data.events });
+        dispatch({ type: SET_EVENTS, payload: res.data.events });
       })
       .catch(err => {
         console.log(err);
@@ -25,7 +25,7 @@ export const fetchEvents = () => {
   };
 };
 
-// action to fetch all events
+// action to fetch user events
 export const fetchUserEvents = email => {
   return dispatch => {
     var ip = getIP();
@@ -34,7 +34,7 @@ export const fetchUserEvents = email => {
       .get(url)
       .then(res => {
         console.log(res.data.events, "is this anything?");
-        dispatch({ type: SET_EVENTS, payload: res.data.events });
+        dispatch({ type: SET_USER_EVENTS, payload: res.data.events });
       })
       .catch(err => {
         console.log(err);

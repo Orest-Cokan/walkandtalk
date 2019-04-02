@@ -165,7 +165,7 @@ export const editUser = (
   };
 };
 
-//get unregistered users 
+//get unregistered users
 export const getUnregisteredUsers = () => {
   return async dispatch => {
     var ip = getIP();
@@ -181,8 +181,7 @@ export const getUnregisteredUsers = () => {
   };
 };
 
-
-//approve request of a user 
+//approve request of a user
 export const approveUser = (email, redcapID) => {
   const user = {
     email: email,
@@ -192,7 +191,7 @@ export const approveUser = (email, redcapID) => {
     var ip = getIP();
     var url = ip + "public/researcher/accept";
     await axios
-      .put(url,user )
+      .put(url, user)
       .then(res => {
         dispatch({ type: USER_APPROVE });
       })
@@ -202,8 +201,8 @@ export const approveUser = (email, redcapID) => {
   };
 };
 
-//decline request of a user 
-export const declineUser = (email) => {
+//decline request of a user
+export const declineUser = email => {
   const user = {
     email: email
   };
@@ -211,7 +210,7 @@ export const declineUser = (email) => {
     var ip = getIP();
     var url = ip + "public/researcher/deny";
     await axios
-      .post(url,user )
+      .put(url, user)
       .then(res => {
         dispatch({ type: USER_DECLINE });
       })

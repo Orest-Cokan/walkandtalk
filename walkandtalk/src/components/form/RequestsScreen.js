@@ -4,14 +4,8 @@ import RequestCard from "../../cardview/requestCard";
 import { getUnregisteredUsers } from "../../actions/UserActions";
 import { connect } from "react-redux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import Loader from "../loader/loader";
-import {
-  Container,
-  Header,
-  Body,
-  Title,
-  Content
-} from "native-base";
+import Loader from "../../constants/loader";
+import { Container, Header, Body, Title, Content } from "native-base";
 import { Actions } from "react-native-router-flux";
 
 /*
@@ -31,15 +25,14 @@ class RequestsScreen extends Component {
   /* Listener that updates the list view of the unregiesterd users  */
   componentDidMount() {
     this.didFocusListener = this.props.navigation.addListener(
-      'didFocus',
+      "didFocus",
       () => {
         this.props.getUnregisteredUsers();
         console.log(this.props.unregisteredUsers);
-      },
+      }
     );
   }
 
-  
   // Switch request view
   viewRequest(index) {
     Actions.viewRequest({ request: this.props.unregisteredUsers[index] });
@@ -65,8 +58,7 @@ class RequestsScreen extends Component {
   render() {
     return (
       <Container>
-        <Loader
-          loading={this.state.loading} />
+        <Loader loading={this.state.loading} />
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}

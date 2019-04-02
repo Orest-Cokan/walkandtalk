@@ -15,7 +15,7 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
-import Loader from "../loader/loader";
+import Loader from "../../constants/loader";
 
 /* This is the questionnaire screen, user will be taken to corresponding questionnaire link here.
  */
@@ -26,7 +26,7 @@ class QuestionnaireScreen extends Component {
     this.state = {
       //gives warning when initial url is null
       source: {
-        uri : null
+        uri: null
       },
       instance: 1,
       header: {
@@ -112,7 +112,7 @@ class QuestionnaireScreen extends Component {
       })
       .catch(error => {
         console.log(error);
-        Alert.alert("Something went wrong, please try again later.")
+        Alert.alert("Something went wrong, please try again later.");
       });
   };
 
@@ -137,11 +137,11 @@ class QuestionnaireScreen extends Component {
       )
       .then(res => {
         this.setState({ source: { uri: res.data } });
-        this.setState({loading: false});
+        this.setState({ loading: false });
       })
       .catch(error => {
         console.log(error);
-        Alert.alert("Something went wrong, please try again later.")
+        Alert.alert("Something went wrong, please try again later.");
       });
   };
 
@@ -153,8 +153,7 @@ class QuestionnaireScreen extends Component {
     return (
       <Container>
         {/* Header */}
-        <Loader
-          loading={this.state.loading} />
+        <Loader loading={this.state.loading} />
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
