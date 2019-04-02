@@ -1,6 +1,6 @@
 // Past Event List Screen View
 import React, { Component } from "react";
-import { Image} from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -15,34 +15,46 @@ import {
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
 import BaseCard from "../../cardview/baseCard";
-import { getCompletedRecords } from "../../actions/RecordActions";
+import { getRecords } from "../../actions/RecordActions";
 
 class PastEventListScreen extends Component {
   constructor(props) {
     super(props);
-    this.props.getCompletedRecords = this.props.getCompletedRecords(
+    this.props.getRecords = this.props.getRecords(
       this.props.user.user.email
     );
   }
 
   componentDidMount() {
-    this.props.getCompletedRecords;
+    this.props.getRecords;
   }
 
-  getEvents() {
-    let records = [];
-    this.props.records.map(record => {
-      records.unshift(
-        <BaseCard
-          key={record.id}
-          date={record.date}
-          start_time={record.start_time}
-          title={record.title}
-          location={record.location}
-        />
+  viewPastEvent(index) {
+    Actions.viewPastEvent({
+      record: this.props.records[index]
+    });
+  }
+
+  getPastEvents() {
+    let past_events = [];
+    this.props.records.map((past_event, index) => {
+      past_events.unshift(
+        <TouchableOpacity
+          key={index}
+          onPress={this.viewPastEvent.bind(this, index)}
+        >
+          <BaseCard
+            key={past_event.id}
+            date={past_event.date}
+            start_time={past_event.start_time}
+            title={past_event.title}
+            location={past_event.location}
+          />
+        </TouchableOpacity>
       );
     });
-    return records;
+    console.log(this.props);
+    return past_events;
   }
 
   onBack = () => {
@@ -53,10 +65,10 @@ class PastEventListScreen extends Component {
       <Container>
         {/* Header */}
         <Header
-          style={ScreenStyleSheet.header}
-          androidStatusBarColor={"white"}
-          iosBarStyle={"dark-content"}
-        >
+        style={ScreenStyleSheet.header}
+        androidStatusBarColor={"white"}
+        iosBarStyle={"dark-content"}
+      >
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>
               <Image
@@ -72,7 +84,7 @@ class PastEventListScreen extends Component {
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {this.getEvents()}
+          {this.getPastEvents()}
         </Content>
       </Container>
     );
@@ -82,12 +94,12 @@ class PastEventListScreen extends Component {
 const mapStateToProps = state => {
   console.log("pastrecordlistscreen");
   return {
-    records: state.record.completed_records,
+    records: state.record.records,
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getCompletedRecords }
+  { getRecords }
 )(PastEventListScreen);
