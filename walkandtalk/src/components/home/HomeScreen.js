@@ -20,8 +20,12 @@ class HomeScreen extends Component {
     super(props);
   }
   componentDidMount() {
-    console.log('fetching events')
+    this.didFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      () => {console.log("did focus....");
     this.props.fetchEvents();
+  },
+  );
   }
 
   getEvents() {

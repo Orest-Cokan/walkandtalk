@@ -6,7 +6,8 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
   USER_EDIT,
-  SET_USER
+  SET_USER,
+  SET_ALL_USERS
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -119,7 +120,7 @@ const loginUserSuccess = (dispatch, user) => {
   Actions.app();
 };
 
-// action to get a single users
+// action to get a single user
 export const getUser = email => {
   return dispatch => {
     var ip = getIP();
@@ -135,6 +136,26 @@ export const getUser = email => {
       .catch(err => {
         console.log(err);
         console.log("ERROR in getUser")
+      });
+  };
+};
+
+// action to get all users
+export const getAll = () => {
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/users";
+    console.log("inside get all users")
+    axios
+      .get(url)
+      .then(res => {
+        dispatch({ 
+          type: SET_ALL_USERS, 
+          payload: res.data.users });
+      })
+      .catch(err => {
+        console.log(err);
+        console.log("ERROR in get all users")
       });
   };
 };

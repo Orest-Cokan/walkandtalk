@@ -6,14 +6,16 @@ import {
   USER_CREATE,
   USER_EDIT,
   USER_LOGIN_SUCCESS,
-  SET_USER
+  SET_USER,
+  SET_ALL_USERS
 } from "../actions/types";
 
 const INITIAL_STATE = {
   errorLoging: "",
   errorCreating: "",
   loading: false,
-  user: ""
+  user: "",
+  users:[]
 };
 
 // user reducer
@@ -65,6 +67,8 @@ const user = (state = INITIAL_STATE, action) => {
       };
     case SET_USER:
       return { ...state, user: action.payload };
+    case SET_ALL_USERS:
+      return { ...state, users: action.payload };
     default:
       return state;
     

@@ -20,21 +20,25 @@ import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
 import { getPicture } from "../../actions/PictureActions";
-import {getUser} from "../../actions/UserActions";
+import {getAll} from "../../actions/UserActions";
 
 // Profile tab
 class OtherProfileScreen extends Component {
+
   constructor(props) {
     super(props);
-    console.log("Props on profile", this.props);
+    console.log("we are viewing another profile")
+    //console.log("Props on profile", this.props);
     //this.props.getUser(this.props.email);
-
+    this.props.getAll();
+    console.log(this.props.getAll(), "all users consoled")
+    
 }
 
-componentWillMount() {
-   this.props.user = this.props.getUser(this.props.email);
+componentDidMount() {
+  this.props.users;
     console.log(this.props.email, "email")
-    console.log(this.props.user, "getUser results")
+    console.log(this.props.users, "getUser results")
   }
 
   onBack = () =>{
@@ -42,7 +46,7 @@ componentWillMount() {
   }
 
   render() {
-    const otherUser = this.props.user;
+    //const otherUser = this.props.users;
     return (
       <Container>
 
@@ -61,7 +65,7 @@ componentWillMount() {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>{otherUser.fullname}</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>fullname</Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={() => this.openDrawer()}>
@@ -83,7 +87,7 @@ componentWillMount() {
               source={require("../../assets/icons/default-profile.png")}
             />
             <Text style={ScreenStyleSheet.profileName}>
-              {otherUser.fullname}
+              fullname
             </Text>
           </View>
 
@@ -105,7 +109,7 @@ componentWillMount() {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {otherUser.dob}
+                dob
               </Text>
             </View>
           </View>
@@ -119,7 +123,7 @@ componentWillMount() {
                 {/* Automatically calculates the age when given date of birth */}
                 {Math.floor(
                   (new Date().getTime() -
-                    Date.parse(otherUser.dob)) /
+                    Date.parse("Mar 30, 2019")) /
                     31557600000
                 )}
               </Text>
@@ -132,7 +136,7 @@ componentWillMount() {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {otherUser.menopausal_stage}
+                menopause
               </Text>
             </View>
           </View>
@@ -157,7 +161,7 @@ componentWillMount() {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {otherUser.distance} km
+                distance km
               </Text>
             </View>
           </View>
@@ -170,7 +174,7 @@ componentWillMount() {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {otherUser.duration} min
+                duration min
               </Text>
             </View>
           </View>
@@ -181,7 +185,7 @@ componentWillMount() {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {otherUser.intensity}
+                intensity
               </Text>
             </View>
           </View>
@@ -192,7 +196,7 @@ componentWillMount() {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {otherUser.venue}
+                venue
               </Text>
             </View>
           </View>
@@ -203,7 +207,7 @@ componentWillMount() {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {otherUser.location}
+                location
               </Text>
             </View>
           </View>
@@ -216,14 +220,13 @@ componentWillMount() {
 const mapStateToProps = state => {
     console.log("otherprofilescreen");
     return {
-      user: state.user,
-      picture: state.picture
+      users: state.users
     };
   };
 
 export default connect(
   mapStateToProps,
-  {getUser}
+  {getAll}
 )(OtherProfileScreen);
 
 // Styles
