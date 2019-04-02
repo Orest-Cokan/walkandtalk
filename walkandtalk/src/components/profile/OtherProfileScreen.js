@@ -20,7 +20,7 @@ import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
 import { getPicture } from "../../actions/PictureActions";
-import {getAll} from "../../actions/UserActions";
+import {getAllUsers} from "../../actions/UserActions";
 
 // Profile tab
 class OtherProfileScreen extends Component {
@@ -30,15 +30,14 @@ class OtherProfileScreen extends Component {
     console.log("we are viewing another profile")
     //console.log("Props on profile", this.props);
     //this.props.getUser(this.props.email);
-    this.props.getAll();
-    console.log(this.props.getAll(), "all users consoled")
+    
     
 }
 
-componentDidMount() {
-  this.props.users;
+componentWillMount() {
+  this.props.users = this.props.getAllUsers();
+    console.log(this.props.users, "all users consoled")
     console.log(this.props.email, "email")
-    console.log(this.props.users, "getUser results")
   }
 
   onBack = () =>{
@@ -220,13 +219,15 @@ componentDidMount() {
 const mapStateToProps = state => {
     console.log("otherprofilescreen");
     return {
-      users: state.users
+      users: state.user.users,
+      user: state.user,
+      picture: state.picture
     };
   };
 
 export default connect(
   mapStateToProps,
-  {getAll}
+  {getAllUsers}
 )(OtherProfileScreen);
 
 // Styles

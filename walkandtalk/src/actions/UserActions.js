@@ -141,7 +141,7 @@ export const getUser = email => {
 };
 
 // action to get all users
-export const getAll = () => {
+export const getAllUsers = () => {
   return dispatch => {
     var ip = getIP();
     var url = ip + "public/users";
@@ -149,9 +149,11 @@ export const getAll = () => {
     axios
       .get(url)
       .then(res => {
+        console.log(res.data.users, "payload")
         dispatch({ 
           type: SET_ALL_USERS, 
-          payload: res.data.users });
+          payload: res.data.users,
+         });
       })
       .catch(err => {
         console.log(err);
