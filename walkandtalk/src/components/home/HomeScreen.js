@@ -18,6 +18,7 @@ import BaseCard from "../../cardview/baseCard";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
+    this.props.fetchUserEvents(this.props.user.user.email);
   }
   componentDidMount() {
     console.log("fetching events");

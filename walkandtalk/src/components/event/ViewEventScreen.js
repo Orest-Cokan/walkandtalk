@@ -17,7 +17,6 @@ import { Actions } from "react-native-router-flux";
 import { fetchEvents, deleteEvent } from "../../actions/EventActions";
 import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 
-
 class ViewEventScreen extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +32,7 @@ class ViewEventScreen extends Component {
   //
   // First will do for search events
   componentWillMount() {
-    this.props.fetchEvents;
+    this.props.fetchUserEvents;
     if (this.props.searchScreen == true) {
       searchEvent = this.props.markerSent;
       console.log(searchEvent, "markerSent");
@@ -78,7 +77,7 @@ class ViewEventScreen extends Component {
 
       //retrieve the current event
       let currEvent = events.find(e => e.id === id);
-      console.log("current event", currEvent)
+      console.log("current event", currEvent);
 
       //check if hosting, going or not going
       var badge = "";
@@ -130,38 +129,37 @@ class ViewEventScreen extends Component {
 
   // Set state
   onChange(name, value) {
-    console.log("name", name, "value", value)
-    this.setState({ [name] : value }, function () {
+    console.log("name", name, "value", value);
+    this.setState({ [name]: value }, function() {
       this.updateAttendees();
-  });
-}
+    });
+  }
 
   updateAttendees() {
     this.setState({ [name]: value });
-    console.log("am i going???", this.state.badge)
-    console.log("current user", this.props.user.user.email)
-    if (this.state.badge == "GOING"){
+    console.log("am i going???", this.state.badge);
+    console.log("current user", this.props.user.user.email);
+    if (this.state.badge == "GOING") {
       this.props.addAttendees(
         this.state.eventId,
         this.props.user.user.fullname,
         this.props.user.user.email
       );
-      console.log("You joined!")
+      console.log("You joined!");
     } else {
       this.props.removeAttendees(
         this.state.eventId,
         this.props.user.user.email
       );
-      console.log("You left!")
+      console.log("You left!");
     }
-    
-  };
+  }
 
   render() {
     //const attendingOptions = ["Not Going", "Going"];
 
     const attendingOptions = [
-      { label: "Not Going", value: ""},
+      { label: "Not Going", value: "" },
       { label: "Going", value: "GOING" }
     ];
 
@@ -170,31 +168,34 @@ class ViewEventScreen extends Component {
     //If hosting, will display edit and delete buttons
     if (this.state.badge == "GOING" || this.state.badge == "") {
       //check if user going or not
-      var going = 0
+      var going = 0;
       if (this.state.badge == "GOING") {
         going = 1;
-      } 
-      console.log(going, "going")
+      }
+      console.log(going, "going");
       buttons = (
         <View style={styles.segmentedControls}>
           <SwitchSelector
-              options={attendingOptions}
-              initial={going}
-              onPress={this.onChange.bind(this, 'badge')}
-              textColor={"#A680B8"} //'#7a44cf'
-              selectedColor={"#ffffff"}
-              buttonColor={"#A680B8"}
-              borderColor={"#A680B8"}
-              borderRadius={8}
-              hasPadding
-            />
+            options={attendingOptions}
+            initial={going}
+            onPress={this.onChange.bind(this, "badge")}
+            textColor={"#A680B8"} //'#7a44cf'
+            selectedColor={"#ffffff"}
+            buttonColor={"#A680B8"}
+            borderColor={"#A680B8"}
+            borderRadius={8}
+            hasPadding
+          />
         </View>
       );
     }
     if (this.state.badge == "HOSTING") {
       buttons = (
         <View>
-          <TouchableOpacity style={styles.editButton} onPress={this.goToEditEvent}>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={this.goToEditEvent}
+          >
             {/*Edit Event*/}
             <Text style={styles.buttonText}> EDIT </Text>
           </TouchableOpacity>
@@ -361,10 +362,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchEvents, 
-    deleteEvent, 
-    addAttendees, 
-    removeAttendees }
+  { fetchEvents, deleteEvent, addAttendees, removeAttendees }
 )(ViewEventScreen);
 
 const styles = {
