@@ -30,8 +30,10 @@ nodejs - version > 9
 npm - version > 6
 ```
 
-## 🚀 Run the App!
-## Git Clone
+# Frontend
+
+
+## Clone the pp
 
 
 ```
@@ -40,15 +42,6 @@ git clone https://github.com/cmput401-winter2019/walk-and-talk.git
 cd walkandtalk
 ```
 
-## Running the server
-
-Ensure you are in the ```walk-and-talk``` directory
-
-``` 
-cd backend
-npm install
-npm start
-```
 
 ## Run the app
 
@@ -64,6 +57,46 @@ react-native run-android
 react-native run-ios
 
 ```
+# 🎱Backend 
+
+The backend has 3 different states: testing, development and production. Sqlite is used for the database, with various policies/services to be used as hooks. The backend contains the Model and the Controllers for the Frontend with various cron jobs.
+
+## Running the server
+
+Ensure you are in the ```walk-and-talk``` directory
+
+Running the server locally
+``` 
+cd backend
+npm install
+npm start
+```
+
+Running the server in production mode
+```
+cd backend
+npm install
+npm run production
+```
+
+Running the server in development mode
+```
+cd backend
+npm install
+npm run dev
+```
+
+## Hosting the Backend
+
+The following assumes you are hosting it on Cybera, using Ubuntu 16.04 and NGINX
+
+```
+1) SSH into the server
+2) Install nodejs (version > 9) 
+3) Install npm (version > 6)
+The following is a link for the above https://websiteforstudents.com/install-the-latest-node-js-and-nmp-packages-on-ubuntu-16-04-18-04-lts/
+4) Pull the Repo and run via NGINX https://www.phusionpassenger.com/library/walkthroughs/deploy/nodejs/ownserver/nginx/oss/xenial/deploy_app.html
+```
 
 ## Run backend tests
 
@@ -75,5 +108,131 @@ npm install
 npm test
 ```
 
+## Other backend commands
+
+Ensure you are in the ```walk-and-talk``` directory
+
+```
+cd backend
+npm install
+npm test
+```
+
+```npm run dev``` - simply start the server without a watcher
+
+```npm run create-sqlite-db``` - creates the sqlite database
+
+```npm run drop-sqlite-db``` - drops ONLY the sqlite database
+
+```npm run lint``` - linting with eslint
+
+```npm run nodemon``` - same as `npm start`
+
+```npm run prepush``` - a hook wich runs before pushing to a repository, runs npm test and npm run dropDB
+
+```pretest``` - runs linting before npm test
+
+```test-ci``` - only runs tests, nothing in pretest, nothing in posttest, for better use with ci tools
+
+## Policies
+
+Policies are middleware functions that can run before hitting a apecific or more specified route(s).
+
+For example, this policy will only allow the user to access specific routes if they're researchers
+
+```js
+module.exports = (req, res, next) => {
+  if(req.body.userrole === 'admin') {
+    // do some verification stuff
+    const verified = verifyResearcher(req.body.researcher);
+
+    if(verified) {
+      return next();
+    }
+
+    return res.status(401).json({ msg: 'Unauthorized' });
+  }
+
+  return res.status(401).json({ msg: 'Unauthorized' });
+};
+```
+
+You can apply this policy to all routes or specific one
+
+api.js
+
+```js
+const researcherPolicy = require('./policies/researcher.policy');
+
+app.all('/researcher/*', (req, res, next) => researchPolicy(req,res,next));
+```
+
+or for a single route if wanted
+
+```js
+const researcherPolicy = require('./policies/research.policy');
+
+app.get('/researcher/myroute',
+  (req, res, next) => researcherPolicy(req,res,next),
+  (req, res) => {
+  //do some fancy stuff
+});
+```
+
+## Services
+
+Services are little useful snippets, or calls to another API that are not the main focus of your API.
+
+Example service used in this app is to create Researcher accounts upon initializing the db.
+
+```js
+// initialize all the required researches upon initializing the DB.
+const initializeResearchers = () =>
+  User.create(
+    {
+      fullname: "Researcher Account",
+      email: "ResearcherAccount@gmail.com",
+      password: "ResearcherAccount",
+      password2: "ResearcherAccount",
+      dob: "Researcher Account",
+      menopausal_stage: "Researcher Account",
+      registered: 1,
+      researcher: 1,
+      preference: {
+        intensity: "Researcher Account",
+        venue: "Researcher Account",
+        distance: 0,
+        duration: 0,
+        location: "Researcher Account"
+      },
+      picture: {}
+    },
+    {
+      include: [Preference, Picture, Redcap]
+    }
+  );
+
+module.exports = initializeResearchers;
+```
+
+## Create Routes
+
+There are 2 route modes, public and private. A private route requires authentication (through a policy), whereas a public route is accesible by all.
+```Note: Only supported Methods are POST, GET, PUT, and DELETE.```
+
+An example of public routes.
+
+```js
+const publicRoutes = {
+  // User routes
+  "POST /user": "UserController.register",
+  "POST /register": "UserController.register", // alias for POST /user
+  "POST /login": "UserController.login",
+  "POST /validate": "UserController.validate",
+  "GET /users": "UserController.getAll",
+  "GET /user/:email": "UserController.getUser",
+  "PUT /user": "UserController.updateUser",
+}
+```
 
 

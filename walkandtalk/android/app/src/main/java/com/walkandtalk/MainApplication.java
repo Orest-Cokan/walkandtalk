@@ -3,10 +3,13 @@ package com.walkandtalk;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+<<<<<<< HEAD
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+=======
+import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
+>>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
-import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.henninghall.date_picker.DatePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -32,11 +35,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new ReactNativePushNotificationPackage(),
-            new ImageResizerPackage(),
-            new RNCWebViewPackage(),
-            new RNGooglePlacesPackage(),
-            new ImagePickerPackage(),
+          new RNGooglePlacesPackage(),
+          new ImageResizerPackage(),
+          new RNCWebViewPackage(),
+          new ImagePickerPackage(),
           new DatePickerPackage(),
           new VectorIconsPackage(),
           new RNFetchBlobPackage(),

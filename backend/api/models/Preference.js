@@ -6,11 +6,6 @@ const tableName = "preferences";
 
 // Preference model
 const Preference = sequelize.define(tableName, {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-  },
   distance: {
     type: Sequelize.INTEGER,
     allowNull: false

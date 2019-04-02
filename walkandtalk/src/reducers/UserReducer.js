@@ -5,14 +5,18 @@ import {
   USER_CREATE_SUCCESS,
   USER_CREATE,
   USER_EDIT,
-  USER_LOGIN_SUCCESS
+  USER_LOGIN_SUCCESS,
+  GET_UNREGISTERED_USERS,
+  USER_APPROVE,
+  USER_DECLINE
 } from "../actions/types";
 
 const INITIAL_STATE = {
   errorLoging: "",
   errorCreating: "",
   loading: false,
-  user: ""
+  user: "",
+  unregisteredUsers: []
 };
 
 // user reducer
@@ -62,6 +66,12 @@ const user = (state = INITIAL_STATE, action) => {
         loading: true,
         user: action.payload
       };
+    case GET_UNREGISTERED_USERS:
+      return { ...state, unregisteredUsers: action.payload };
+    case USER_APPROVE:
+      return { ...state};
+    case USER_DECLINE:
+      return { ...state};
     default:
       return state;
   }

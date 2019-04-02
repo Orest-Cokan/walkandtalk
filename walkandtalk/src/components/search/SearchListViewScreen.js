@@ -2,30 +2,22 @@ import React, { Component } from "react";
 import { fetchEvents } from "../../actions/EventActions";
 import {
   View,
-  Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  TouchableHighlight,
-  Alert,
   Image,
   Dimensions
 } from "react-native";
-import Ionicon from "react-native-vector-icons/Ionicons";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import Entypo from "react-native-vector-icons/Entypo";
 import BaseCard from "../../cardview/baseCard";
 import { connect } from "react-redux";
-import { Actions } from "react-native-router-flux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
   Container,
   Header,
-  Left,
   Body,
   Title,
-  Right,
   Content
 } from "native-base";
 
@@ -486,7 +478,7 @@ class SearchListViewScreen extends Component {
   };
 
 
-//Maps the search results to card view items that can be clicked to view further detials
+  //Maps the search results to card view items that can be clicked to view further detials
   getSearchResults() {
     let events = [];
     searchItems = this.state.searchResults;
@@ -496,7 +488,8 @@ class SearchListViewScreen extends Component {
       let badge = null;
       if (fullname == event.organizer) {
         badge = "HOSTING";
-      } else {
+      } 
+      else {
         for (let i = 0; i < event.attendees.length; i++) {
           if (event.attendees[i].fullname == fullname) {
             badge = "GOING";

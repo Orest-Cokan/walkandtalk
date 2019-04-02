@@ -15,7 +15,10 @@ import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
 import { fetchEvents, deleteEvent } from "../../actions/EventActions";
+<<<<<<< HEAD
 import { sendNotification } from "../../actions/NotificationActions";
+=======
+>>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
 import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 
 class ViewEventScreen extends Component {
@@ -33,7 +36,11 @@ class ViewEventScreen extends Component {
   //
   // First will do for search events
   componentWillMount() {
+<<<<<<< HEAD
     this.props.fetchEvents;
+=======
+    this.props.fetchUserEvents;
+>>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
     if (this.props.searchScreen == true) {
       searchEvent = this.props.markerSent;
       console.log(searchEvent, "markerSent");
@@ -79,7 +86,7 @@ class ViewEventScreen extends Component {
 
       //retrieve the current event
       let currEvent = events.find(e => e.id === id);
-      console.log("current event", currEvent)
+      console.log("current event", currEvent);
 
       //check if hosting, going or not going
       var badge = "";
@@ -104,7 +111,7 @@ class ViewEventScreen extends Component {
           startTime: currEvent.start_time,
           endTime: currEvent.end_time,
           title: currEvent.title,
-          location: currEvent.location.streetName,
+          location: currEvent.location,
           badge: badge,
           organizer: currEvent.organizer,
           intensity: currEvent.intensity,
@@ -136,6 +143,7 @@ class ViewEventScreen extends Component {
 
   // Set state
   onChange(name, value) {
+<<<<<<< HEAD
     console.log("name", name, "value", value)
     this.setState({ [name] : value }, function () {
       this.updateAttendees();
@@ -146,27 +154,44 @@ class ViewEventScreen extends Component {
     console.log("am i going???", this.state.badge)
     console.log("current user", this.props.user.user.email)
     if (this.state.badge == "GOING"){
+=======
+    console.log("name", name, "value", value);
+    this.setState({ [name]: value }, function() {
+      this.updateAttendees();
+    });
+  }
+
+  updateAttendees() {
+    this.setState({ [name]: value });
+    console.log("am i going???", this.state.badge);
+    console.log("current user", this.props.user.user.email);
+    if (this.state.badge == "GOING") {
+>>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
       this.props.addAttendees(
         this.state.eventId,
         this.props.user.user.fullname,
         this.props.user.user.email
       );
+<<<<<<< HEAD
       console.log("You joined!", this.props)
     }else{
+=======
+      console.log("You joined!");
+    } else {
+>>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
       this.props.removeAttendees(
         this.state.eventId,
         this.props.user.user.email
       );
-      console.log("You left!")
+      console.log("You left!");
     }
-    
-  };
+  }
 
   render() {
     //const attendingOptions = ["Not Going", "Going"];
 
     const attendingOptions = [
-      { label: "Not Going", value: ""},
+      { label: "Not Going", value: "" },
       { label: "Going", value: "GOING" }
     ];
 
@@ -175,31 +200,34 @@ class ViewEventScreen extends Component {
     //If hosting, will display edit and delete buttons
     if (this.state.badge == "GOING" || this.state.badge == "") {
       //check if user going or not
-      var going = 0
+      var going = 0;
       if (this.state.badge == "GOING") {
         going = 1;
-      } 
-      console.log(going, "going")
+      }
+      console.log(going, "going");
       buttons = (
         <View style={styles.segmentedControls}>
           <SwitchSelector
-              options={attendingOptions}
-              initial={going}
-              onPress={this.onChange.bind(this, 'badge')}
-              textColor={"#A680B8"} //'#7a44cf'
-              selectedColor={"#ffffff"}
-              buttonColor={"#A680B8"}
-              borderColor={"#A680B8"}
-              borderRadius={8}
-              hasPadding
-            />
+            options={attendingOptions}
+            initial={going}
+            onPress={this.onChange.bind(this, "badge")}
+            textColor={"#A680B8"} //'#7a44cf'
+            selectedColor={"#ffffff"}
+            buttonColor={"#A680B8"}
+            borderColor={"#A680B8"}
+            borderRadius={8}
+            hasPadding
+          />
         </View>
       );
     }
     if (this.state.badge == "HOSTING") {
       buttons = (
         <View>
-          <TouchableOpacity style={styles.editButton} onPress={this.goToEditEvent}>
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={this.goToEditEvent}
+          >
             {/*Edit Event*/}
             <Text style={styles.buttonText}> EDIT </Text>
           </TouchableOpacity>
@@ -299,7 +327,7 @@ class ViewEventScreen extends Component {
             </View>
             <View s>
               <Text style={ScreenStyleSheet.eventInfoInput}>
-                {this.state.location}
+                {this.state.location.streetName}
               </Text>
             </View>
           </View>

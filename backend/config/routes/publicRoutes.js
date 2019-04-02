@@ -10,6 +10,7 @@ const publicRoutes = {
 
   // Walkingevent routes
   "GET /walkingevents": "WalkingEventController.getAll",
+  "GET /walkingevents/:email": "WalkingEventController.getUserEvents",
   "POST /walkingevent": "WalkingEventController.create",
   "GET /walkingevent/:id": "WalkingEventController.getEvent",
   "PUT /walkingevent": "WalkingEventController.updateEvent",
@@ -26,7 +27,7 @@ const publicRoutes = {
 
   // Researcher routes
   "PUT /researcher/accept": "ResearcherController.acceptUser",
-  "POST /researcher/deny": "ResearcherController.denyUser",
+  "PUT /researcher/deny": "ResearcherController.denyUser",
   "GET /researcher/registered": "ResearcherController.getRegisteredUsers",
   "GET /researcher/unregistered": "ResearcherController.getUnregisteredUsers",
 
@@ -45,8 +46,10 @@ const publicRoutes = {
   "GET /notification/:email": "NotificationController.getNotifications",
   "GET /notification/unread/:email": "NotificationController.getUnreadNotifications",
 
-  // Excel route
-  "GET /researcher/excel": "ExcelController.getData"
+  "GET /researcher/excel": "ExcelController.getData",
+
+  // Redcap routes
+  "PUT /redcap/:email": "RedcapController.updateUser"
 };
 
 module.exports = publicRoutes;

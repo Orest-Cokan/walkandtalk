@@ -25,7 +25,10 @@ class BaseCard extends Component {
   checkIfBadge = () => {
     if (!this.props.badge) {
       return (
+<<<<<<< HEAD
 
+=======
+>>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
         <TouchableOpacity onPress={this.goToEvent}>
         <View style={ScreenStyleSheet.baseCard}>
           <Text style={ScreenStyleSheet.cardEventTime}>

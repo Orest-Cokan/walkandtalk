@@ -10,9 +10,13 @@ export const USER_CREATE_SUCCESS = "USER_CREATE_SUCCESS";
 export const USER_EDIT = "USER_EDIT";
 export const PICTURE_EDIT = "PICTURE_EDIT";
 export const PICTURE_GET = "PICTURE_GET";
+export const USER_APPROVE = "USER_APPROVE";
+export const USER_DECLINE = "USER_DECLINE";
+export const GET_UNREGISTERED_USERS = "GET_UNREGISTERED_USERS";
 
 // EVENT TYPES
 export const SET_EVENTS = "SET_EVENTS";
+export const SET_USER_EVENTS = "SET_USER_EVENTS";
 export const EVENT_CREATE = "EVENT_CREATE";
 export const EVENT_DELETE = "EVENT_DELETE";
 export const EVENT_EDIT = "EVENT_EDIT";

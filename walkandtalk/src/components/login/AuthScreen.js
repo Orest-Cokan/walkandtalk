@@ -32,20 +32,26 @@ class AuthScreen extends Component {
     });
   };
 
-  onPressLogin = () => {
-    const formValues = this.refs.formGenerator.getValues();
-    console.log(formValues.email, formValues.password);
+  onPressLogin = async () => {
+    await new Promise((resolve, reject) => {
+      // Edit the event user clicks
     this.props.loginUser(
       this.refs.formGenerator.getValues().email,
       this.refs.formGenerator.getValues().password
     );
+      resolve();
+    });
     this.props.getPicture(
       this.refs.formGenerator.getValues().email
     );
+<<<<<<< HEAD
     /* Socket.emit('login', {
       email: this.refs.formGenerator.getValues().email,
       password: this.refs.formGenerator.getValues().password
     }); */
+=======
+
+>>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
   };
 
   onPressSignUp = () => {
