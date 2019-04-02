@@ -33,9 +33,9 @@ const UserController = () => {
             include: [Preference, Picture, Redcap]
           }
         );
-        const token = authService().issue({ email: user.email });
+        //const token = authService().issue({ email: user.email });
         Transporter.sendMail(newUserEmail);
-        return res.status(200).json({ user, token });
+        return res.status(200).json({ user });
       } catch (err) {
         console.log(err);
         return res.status(500).json({ msg: "Internal server error" });
@@ -63,8 +63,8 @@ const UserController = () => {
         }
 
         if (bcryptService().comparePassword(password, user.password)) {
-          const token = authService().issue({ email: user.email });
-          return res.status(200).json({ user, token });
+          //const token = authService().issue({ email: user.email });
+          return res.status(200).json({ user });
         }
 
         return res.status(401).json({ msg: "Unauthorized" });
