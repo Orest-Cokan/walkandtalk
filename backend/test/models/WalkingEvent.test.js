@@ -17,9 +17,20 @@ afterAll(() => {
 beforeEach(async () => {
   walkingEvent = await WalkingEvent.build({
     title: "walking with friends",
+    organizer: "orest cokan",
+    email: "skryt@gmail.com",
+    date: "Fri, Mar 28",
+    start_time: "10:00pm",
+    end_time: "11:00pm",
     description: "i want to go",
     intensity: "slow",
-    venue: "indoor"
+    venue: "indoor",
+    location: {
+      streetName: "riverbend",
+      long: 10,
+      lat: 11
+    },
+    total_attendees: 1
   }).save();
 });
 

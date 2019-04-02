@@ -99,7 +99,6 @@ const ExcelController = () => {
     await User.findAll({
       include: [Preference]
     }).then(users => {
-      console.log(users, "this is our users");
       users.forEach((userBad, idx) => {
         const user = userBad.dataValues;
         userSheet

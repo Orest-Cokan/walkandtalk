@@ -16,7 +16,13 @@ beforeEach(async () => {
   user = await User.build({
     fullname: "skryt cokan",
     email: "martin@mail.com",
-    password: "securepassword"
+    password: "securepassword",
+    password2: "securepassword",
+    dob: "2020-10-10",
+    menopausal_stage: "peri",
+    redcapID: 10,
+    registered: 0,
+    researcher: 0
   }).save();
 });
 

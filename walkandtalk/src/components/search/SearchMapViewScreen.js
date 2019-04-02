@@ -91,6 +91,16 @@ const items = [
   }
 ];
 
+// Returns user's current location
+// Defaults to San Francisco on simulators
+export const getCurrentLocation = () => {
+ return new Promise((resolve, reject) => {
+   navigator.geolocation.getCurrentPosition(position =>
+     resolve(position),
+     e => reject(e));
+ });
+};
+
 
 /*
 This is the search screen. Users can search for events in this screen.
@@ -120,23 +130,33 @@ class SearchMapViewScreen extends Component {
     };
   }
 
+
+
+  async componentWillMount() {
+    const position = await getCurrentLocation();
+     if (position) {
+       //Tracking location is still necessary for distance queries
+       this.watchID = navigator.geolocation.watchPosition((position) => {
+         let region = {
+           latitude:       position.coords.latitude,
+           longitude:      position.coords.longitude,
+           latitudeDelta:  0.00922*1.5,
+           longitudeDelta: 0.00421*1.5
+         }
+         this.onRegionChange(region, region.latitude, region.longitude);
+       }, (error)=>console.log(error));
+
+     }
+   }
+
   //Fetch all events to search from
   // Place a tracker on the position of the deivce
   // Track movement
   // Create the object to update this.state.mapRegion through the onRegionChange function
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchEvents;
-    console.log("all events", this.props.events);
-    console.log("marker state", this.state.markers);
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      let region = {
-        latitude:       position.coords.latitude,
-        longitude:      position.coords.longitude,
-        latitudeDelta:  0.00922*1.5,
-        longitudeDelta: 0.00421*1.5
-      }
-      this.onRegionChange(region, region.latitude, region.longitude);
-    }, (error)=>console.log(error));
+    console.log("all events in component did mount", this.props.events);
+    console.log("marker state in component did mount", this.state.markers);
   }
 
   //Before leaving the component clear the watch of the device
@@ -488,9 +508,12 @@ class SearchMapViewScreen extends Component {
     console.log("keyword", keyword);
     //convert each item to a string and see if the key word exists as a subset
     // if so, push that event to the list of results to be displayed
+    //Case insensitive
     var results = [];
+    keyword = keyword.toUpperCase()
     events.forEach(function(e) {
       var stringItem = JSON.stringify(e);
+      stringItem = stringItem.toUpperCase()
       if (stringItem.includes(keyword)) {
         if (results.indexOf(e) == -1) {
           results.push(e);

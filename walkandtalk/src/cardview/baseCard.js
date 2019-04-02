@@ -1,6 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Actions } from "react-native-router-flux";
+import { StyledText as Text } from "../constants/StyledText";
+import ScreenStyleSheet from "../constants/ScreenStyleSheet";
+
 
 /*
 This is the view for event card.
@@ -22,14 +25,16 @@ class BaseCard extends Component {
   checkIfBadge = () => {
     if (!this.props.badge) {
       return (
-        <View style={styles.card}>
-          <Text style={styles.eventTime}>
+        <TouchableOpacity onPress={this.goToEvent}>
+        <View style={ScreenStyleSheet.baseCard}>
+          <Text style={ScreenStyleSheet.cardEventTime}>
             {this.props.date.toUpperCase()} AT{" "}
             {this.props.start_time.toUpperCase()}
           </Text>
-          <Text style={styles.eventTitle}>{this.props.title}</Text>
+          <Text style={ScreenStyleSheet.cardEventTitle}>{this.props.title}</Text>
           <Text>{this.props.location}</Text>
         </View>
+        </TouchableOpacity>
       );
     } else {
       return this.changeBadgeColour();
@@ -45,17 +50,17 @@ class BaseCard extends Component {
     if (this.props.badge.toUpperCase() == "GOING") {
       return (
         <TouchableOpacity onPress={this.goToEvent}>
-          <View style={styles.card}>
-            <View style={styles.withBadge}>
-              <Text style={styles.eventTime}>
+          <View style={ScreenStyleSheet.baseCard}>
+            <View style={ScreenStyleSheet.timeWithBadge}>
+              <Text style={ScreenStyleSheet.cardEventTime}>
                 {this.props.date.toUpperCase()} AT{" "}
                 {this.props.start_time.toUpperCase()}
               </Text>
-              <Text style={[styles.going, styles.Badge]}>
+              <Text style={ScreenStyleSheet.goingBadge}>
                 {this.props.badge}
               </Text>
             </View>
-            <Text style={styles.eventTitle}>{this.props.title}</Text>
+            <Text style={ScreenStyleSheet.cardEventTitle}>{this.props.title}</Text>
             <Text>{this.props.location}</Text>
           </View>
         </TouchableOpacity>
@@ -63,17 +68,17 @@ class BaseCard extends Component {
     } else if (this.props.badge.toUpperCase() == "HOSTING") {
       return (
         <TouchableOpacity onPress={this.goToEvent}>
-          <View style={styles.card}>
-            <View style={styles.withBadge}>
-              <Text style={styles.eventTime}>
+          <View style={ScreenStyleSheet.baseCard}>
+            <View style={ScreenStyleSheet.timeWithBadge}>
+              <Text style={ScreenStyleSheet.cardEventTime}>
                 {this.props.date.toUpperCase()} AT{" "}
                 {this.props.start_time.toUpperCase()}
               </Text>
-              <Text style={[styles.hosting, styles.Badge]}>
+              <Text style={ScreenStyleSheet.hostingBadge}>
                 {this.props.badge}
               </Text>
             </View>
-            <Text style={styles.eventTitle}>{this.props.title}</Text>
+            <Text style={ScreenStyleSheet.cardEventTitle}>{this.props.title}</Text>
             <Text>{this.props.location}</Text>
           </View>
         </TouchableOpacity>
@@ -85,44 +90,5 @@ class BaseCard extends Component {
     return this.checkIfBadge();
   }
 }
-
-const styles = StyleSheet.create({
-  card: {
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: "grey",
-    paddingHorizontal: "5%",
-    marginBottom: 10,
-    height: 85,
-    justifyContent: "center"
-  },
-
-  eventTime: {
-    color: "#A680B8"
-  },
-  eventTitle: {
-    fontWeight: "bold"
-  },
-  withBadge: {
-    width: "100%",
-    margin: 0,
-    padding: 0,
-    flexDirection: "row"
-  },
-  Badge: {
-    marginLeft: "auto",
-    width: "25%",
-    color: "white",
-    fontWeight: "bold",
-    borderRadius: 4,
-    textAlign: "center"
-  },
-  going: {
-    backgroundColor: "#6dbf1a"
-  },
-  hosting: {
-    backgroundColor: "#3399FF"
-  }
-});
 
 export default BaseCard;

@@ -57,7 +57,7 @@ class QuestionnaireScreen extends Component {
       "&format=json" +
       "&type=flat" +
       "&records[0]=" +
-      this.props.user.user.redcapID.toString() + //to be changed to user redcap id
+      this.props.user.user.redcap.id.toString() + //to be changed to user redcap id
       "&forms[0]=" +
       this.props.questionnaire +
       "&returnFormat=json";
@@ -125,7 +125,7 @@ class QuestionnaireScreen extends Component {
       this.props.questionnaire +
       "&event=" +
       "&record=" +
-      this.props.user.user.redcapID.toString() + //to be changed to user redcap id
+      this.props.user.user.redcap.id.toString() + //to be changed to user redcap id
       "&repeat_instance=" +
       this.state.instance.toString() +
       "&returnFormat=json";

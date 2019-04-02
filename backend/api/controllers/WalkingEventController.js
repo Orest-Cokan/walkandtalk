@@ -59,6 +59,42 @@ const WalkingEventController = () => {
       });
   };
 
+  // get user walkingevents
+  const getUserEvents = async (req, res) => {
+    const { email } = req.params;
+    let events = [];
+    await WalkingEvent.findAll({
+      include: [
+        {
+          model: Attendee
+        },
+        {
+          model: Location
+        }
+      ]
+    })
+      .then(walkingevents => {
+        walkingevents.forEach(event => {
+          if (event.email === email) {
+            events.unshift(event);
+          } else {
+            for (let i = 0; i < event.attendees.length; i++) {
+              if (event.attendees[i].email === email) {
+                events.unshift(event);
+              } else {
+                continue;
+              }
+            }
+          }
+        });
+      })
+      .then(() => {
+        return res.status(200).json({ events });
+      })
+      .catch(err => {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
+  };
   // update an event
   const updateEvent = async (req, res) => {
     const { body } = req;
@@ -76,10 +112,23 @@ const WalkingEventController = () => {
       },
       { returning: true, where: { id: body.id } }
     )
-      .then(self => {
-        return res.status(200).json(self[1]);
+      .then(() => {
+        Location.update(
+          {
+            streetName: body.location.streetName,
+            lat: body.location.lat,
+            long: body.location.long
+          },
+          { returning: true, where: { walkingeventId: body.id } }
+        )
+          .then(self => {
+            return res.status(200).json(self[1]);
+          })
+          .catch(err => {
+            return res.status(500).json({ msg: "Internal server error" });
+          });
       })
-      .catch(function(err) {
+      .catch(err => {
         return res.status(500).json({ msg: "Internal server error" });
       });
   };
@@ -91,8 +140,7 @@ const WalkingEventController = () => {
       where: {
         id: id
       },
-      include: [Attendee, Location],
-      truncate: true
+      include: [Attendee, Location]
     })
       .then(rowDeleted => {
         if (rowDeleted == 1) {
@@ -124,6 +172,7 @@ const WalkingEventController = () => {
   return {
     create,
     getAll,
+    getUserEvents,
     updateEvent,
     destroy,
     getEvent

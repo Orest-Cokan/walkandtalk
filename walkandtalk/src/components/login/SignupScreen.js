@@ -64,6 +64,7 @@ class SignupScreen extends Component {
   // Set state
   onChange(name, value) {
     this.setState({ [name]: value });
+    // For datetime pickers
     if (name == 'dob') {
       this.showError(this.state.dob, this.dob, 'errorDOB');
     }

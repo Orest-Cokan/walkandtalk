@@ -1,5 +1,6 @@
 const request = require("supertest");
 const { beforeAction, afterAction } = require("../setup/_setup");
+const User = require("../../api/models/User");
 
 let api;
 
@@ -21,7 +22,16 @@ beforeEach(async () => {
       fullname: "skryt",
       email: "dank@gmail.com",
       password: "skryt",
-      password2: "skryt"
+      password2: "skryt",
+      dob: "1996-10-10",
+      menopausal_stage: "peri",
+      preference: {
+        distance: 10,
+        duration: 10,
+        intensity: "slow",
+        venue: "indoor",
+        location: "riverbend"
+      }
     })
     .expect(200);
 });
@@ -37,9 +47,15 @@ test("Picture | updateImage", async () => {
       email: "dank@gmail.com"
     })
     .expect(200);
+  User.destroy({
+    where: { email: "dank@gmail.com" }
+  });
+});
 
-  const DBuser = await request(api)
-    .get("/public/user/dank@gmail.com")
+test("Picture | getImage", async () => {
+  const res = await request(api)
+    .get("/public/user/picture/dank@gmail.com")
     .set("Accept", /json/)
-    .expect(200);
+    .send();
+  expect(res.body.image).toBe("Orest Image");
 });

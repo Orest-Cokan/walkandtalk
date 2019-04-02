@@ -1,4 +1,10 @@
-import { SET_EVENTS, EVENT_CREATE, EVENT_DELETE, EVENT_EDIT } from "./types";
+import {
+  SET_EVENTS,
+  SET_USER_EVENTS,
+  EVENT_CREATE,
+  EVENT_DELETE,
+  EVENT_EDIT
+} from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 import getIP from "../constants/Ip";
@@ -11,6 +17,23 @@ export const fetchEvents = () => {
     axios
       .get(url)
       .then(res => {
+        dispatch({ type: SET_USER_EVENTS, payload: res.data.events });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+};
+
+// action to fetch all events
+export const fetchUserEvents = email => {
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/walkingevents/" + email;
+    axios
+      .get(url)
+      .then(res => {
+        console.log(res.data.events, "is this anything?");
         dispatch({ type: SET_EVENTS, payload: res.data.events });
       })
       .catch(err => {
@@ -79,7 +102,7 @@ export const editEvent = (
   description,
   intensity,
   venue,
-  location,
+  location
 ) => {
   const event = {
     title: title,
@@ -91,7 +114,7 @@ export const editEvent = (
     intensity: intensity,
     venue: venue,
     location: location
-  }
+  };
   return dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingevent";
@@ -99,7 +122,7 @@ export const editEvent = (
       .put(url, event)
       .then(res => {
         if (res.status === 200) {
-          console.log('event', event)
+          console.log("event", event);
           dispatch({ type: EVENT_EDIT, payload: event });
         }
       })
