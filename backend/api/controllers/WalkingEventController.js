@@ -62,7 +62,7 @@ const WalkingEventController = () => {
   // get user walkingevents
   const getUserEvents = async (req, res) => {
     const { email } = req.params;
-    let walkingevents = [];
+    let events = [];
     await WalkingEvent.findAll({
       include: [
         {
@@ -73,14 +73,14 @@ const WalkingEventController = () => {
         }
       ]
     })
-      .then(events => {
-        events.forEach(event => {
+      .then(walkingevents => {
+        walkingevents.forEach(event => {
           if (event.email === email) {
-            walkingevents.unshift(event);
+            events.unshift(event);
           } else {
             for (let i = 0; i < event.attendees.length; i++) {
               if (event.attendees[i].email === email) {
-                walkingevents.unshift(event);
+                events.unshift(event);
               } else {
                 continue;
               }
@@ -89,7 +89,7 @@ const WalkingEventController = () => {
         });
       })
       .then(() => {
-        return res.status(200).json({ walkingevents });
+        return res.status(200).json({ events });
       })
       .catch(err => {
         return res.status(500).json({ msg: "Internal server error" });

@@ -19,7 +19,6 @@ const ResearcherController = () => {
       .then(
         Redcap.update(
           {
-            id: body.redcapID,
             notify: true,
             date: new Date().toISOString().split("T")[0]
           },
