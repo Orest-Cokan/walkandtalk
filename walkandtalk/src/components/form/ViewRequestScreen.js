@@ -28,34 +28,35 @@ import {approveUser, declineUser } from "../../actions/UserActions";
 class ViewRequestScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("Props on view request", this.props);
-
-    // Sample data
+    // Setting infomation of the user to state
     this.state = {
       fullname: this.props.request.fullname,
       email: this.props.request.email,
       dob: this.props.request.dob,
       menopausal_stage: this.props.request.menopausal_stage,
-      intensity: this.props.request.intensity,
-      distance: this.props.request.distance,
-      duration: this.props.request.duration,
-      venue: this.props.request.venue,
-      location: this.props.request.location,
+      intensity: this.props.request.preference.intensity,
+      distance: this.props.request.preference.distance,
+      duration: this.props.request.preference.duration,
+      venue: this.props.request.preference.venue,
+      location: this.props.request.preference.location,
+      redcapID: this.props.redcapID,
+      //HTTP header to REDCap calls 
       header: {
         headers: {
           "Accept" : "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
         }
       },
-      redcapID: this.props.redcapID,
       //responseStatus is the flag for HTTP request status code
       responseStatus: false,
+      //show approve or decline button, hide after approving or declining
       showButtons: true,
+      //flag for loading screen
       loading: false
     };
   }
 
-  // Approves request to be a user
+  /* Get the next available record ID from REDCap */
   getNextRecordID = () => {
     const data =
       "token=8038CE0F65642ECC477913BE85991380" +
@@ -112,6 +113,7 @@ class ViewRequestScreen extends Component {
     Alert.alert("Something went wrong, please try again later.")
   }
 
+  //Thhis function assigns redcap ID to state and upload user information onto REDCap
   approveRequest = async () => {
     this.setState({loading: true});
     //await for getNextRecordID to return

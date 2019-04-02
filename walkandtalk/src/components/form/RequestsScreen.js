@@ -8,10 +8,8 @@ import Loader from "../loader/loader";
 import {
   Container,
   Header,
-  Left,
   Body,
   Title,
-  Right,
   Content
 } from "native-base";
 import { Actions } from "react-native-router-flux";
@@ -23,7 +21,6 @@ This is the requests screen. Researchers will see the users that have signed up 
 class RequestsScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("inside constructor");
     this.props.unregisteredUsers = this.props.getUnregisteredUsers();
     // Sample data
     this.state = {
@@ -31,13 +28,12 @@ class RequestsScreen extends Component {
     };
   }
 
+  /* Listener that updates the list view of the unregiesterd users  */
   componentDidMount() {
     this.didFocusListener = this.props.navigation.addListener(
       'didFocus',
       () => {
-        this.setState({loading: true});
         this.props.getUnregisteredUsers();
-        this.setState({loading: false});
         console.log(this.props.unregisteredUsers);
       },
     );
@@ -90,7 +86,6 @@ class RequestsScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("THIS IS IN MAP", state)
   return {
     unregisteredUsers: state.user.unregisteredUsers
   };
