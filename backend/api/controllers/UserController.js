@@ -55,7 +55,7 @@ const UserController = () => {
           where: {
             email
           },
-          include: [Preference, Picture]
+          include: [Preference, Picture, Redcap]
         });
 
         if (!user) {

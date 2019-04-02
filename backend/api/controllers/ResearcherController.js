@@ -19,6 +19,7 @@ const ResearcherController = () => {
       .then(
         Redcap.update(
           {
+            redcapID: Math.floor(Math.random() * 10000),
             notify: true,
             date: new Date().toISOString().split("T")[0]
           },
