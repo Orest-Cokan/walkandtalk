@@ -167,10 +167,10 @@ export const editUser = (
 
 //get unregistered users 
 export const getUnregisteredUsers = () => {
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/researcher/unregistered";
-    axios
+    await axios
       .get(url)
       .then(res => {
         dispatch({ type: GET_UNREGISTERED_USERS, payload: res.data.users });
@@ -188,10 +188,10 @@ export const approveUser = (email, redcapID) => {
     email: email,
     redcapID: redcapID
   };
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/researcher/accept";
-    axios
+    await axios
       .put(url,user )
       .then(res => {
         dispatch({ type: USER_APPROVE });
@@ -207,10 +207,10 @@ export const declineUser = (email) => {
   const user = {
     email: email
   };
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/researcher/deny";
-    axios
+    await axios
       .post(url,user )
       .then(res => {
         dispatch({ type: USER_DECLINE });

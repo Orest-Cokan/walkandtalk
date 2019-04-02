@@ -8,6 +8,7 @@ import {
   Alert
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import Loader from "../loader/loader";
 import {
   Container,
   Header,
@@ -48,7 +49,9 @@ class ViewRequestScreen extends Component {
       },
       redcapID: this.props.redcapID,
       //responseStatus is the flag for HTTP request status code
-      responseStatus: false
+      responseStatus: false,
+      showButtons: true,
+      loading: false
     };
   }
 
@@ -110,6 +113,7 @@ class ViewRequestScreen extends Component {
   }
 
   approveRequest = async () => {
+    this.setState({loading: true});
     //await for getNextRecordID to return
     this.setState({ redcapID: await this.getNextRecordID()});
     if (this.state.responseStatus){
@@ -117,10 +121,14 @@ class ViewRequestScreen extends Component {
       await this.importToRedcap();
       this.props.approveUser(this.state.email, this.state.redcapID);
       if (this.state.responseStatus) {
+        this.setState({showButtons: false});
+        this.setState({loading: false});
         Alert.alert("The request from " + this.state.fullname + " has been approved.");
         return 
       }
     };
+    //if there's an error and breaks out of the if statments 
+    this.setState({loading: false});
     this.showErroMessage()
   
   };
@@ -128,6 +136,7 @@ class ViewRequestScreen extends Component {
   // Declines request to be a user
   declineRequest = () => {
     this.props.declineUser(this.state.email);
+    this.setState({showButtons: false});
     Alert.alert("The request from " + this.state.fullname + " has been declined.");
   };
 
@@ -139,6 +148,8 @@ class ViewRequestScreen extends Component {
   render() {
     return (
       <Container>
+        <Loader
+          loading={this.state.loading} />
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
@@ -299,26 +310,27 @@ class ViewRequestScreen extends Component {
             </View>
           </View>
 
-          {/* Options */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            {/* Decline button */}
-            <TouchableOpacity
-              style={[styles.buttonContainer, { borderWidth: 1 }]}
-              onPress={this.declineRequest}
-            >
-              <Text>Decline</Text>
-            </TouchableOpacity>
-            {/* Approve button */}
-            <TouchableOpacity
-              style={[
-                styles.buttonContainer,
-                { backgroundColor: "#A680B8", borderColor: "#A680B8" }
-              ]}
-              onPress={this.approveRequest}
-            >
-              <Text style={{ color: "white" }}>Approve</Text>
-            </TouchableOpacity>
-          </View>
+          {this.state.showButtons &&
+            <View style={ScreenStyleSheet.rowContainer}>
+              {/* Decline button */}
+              <TouchableOpacity
+                style={[styles.buttonContainer, { borderWidth: 1 }]}
+                onPress={this.declineRequest}
+              >
+                <Text>Decline</Text>
+              </TouchableOpacity>
+              {/* Approve button */}
+              <TouchableOpacity
+                style={[
+                  styles.buttonContainer,
+                  { backgroundColor: "#A680B8", borderColor: "#A680B8" }
+                ]}
+                onPress={this.approveRequest}
+              >
+                <Text style={{ color: "white" }}>Approve</Text>
+              </TouchableOpacity>
+            </View>
+          }
         </Content>
       </Container>
     );

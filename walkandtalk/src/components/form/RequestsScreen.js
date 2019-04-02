@@ -4,6 +4,7 @@ import RequestCard from "../../cardview/requestCard";
 import { getUnregisteredUsers } from "../../actions/UserActions";
 import { connect } from "react-redux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import Loader from "../loader/loader";
 import {
   Container,
   Header,
@@ -25,10 +26,21 @@ class RequestsScreen extends Component {
     console.log("inside constructor");
     this.props.unregisteredUsers = this.props.getUnregisteredUsers();
     // Sample data
+    this.state = {
+      loading: false
+    };
   }
 
   componentDidMount() {
-    this.props.getUnregisteredUsers;
+    this.didFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      () => {
+        this.setState({loading: true});
+        this.props.getUnregisteredUsers();
+        this.setState({loading: false});
+        console.log(this.props.unregisteredUsers);
+      },
+    );
   }
 
   
@@ -57,6 +69,8 @@ class RequestsScreen extends Component {
   render() {
     return (
       <Container>
+        <Loader
+          loading={this.state.loading} />
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
