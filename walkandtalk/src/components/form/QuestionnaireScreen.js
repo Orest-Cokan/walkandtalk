@@ -8,12 +8,14 @@ import {
   Body,
   Title,
   Right,
-  Button
+  Button,
+  Alert
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
+import Loader from "../loader/loader";
 
 /* This is the questionnaire screen, user will be taken to corresponding questionnaire link here.
  */
@@ -24,7 +26,7 @@ class QuestionnaireScreen extends Component {
     this.state = {
       //gives warning when initial url is null
       source: {
-        html: "<h1 style=text-align:center;font-size:50px>Loading...</h1>"
+        uri : null
       },
       instance: 1,
       header: {
@@ -32,7 +34,8 @@ class QuestionnaireScreen extends Component {
           Accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded"
         }
-      }
+      },
+      loading: true
     };
   }
 
@@ -46,7 +49,7 @@ class QuestionnaireScreen extends Component {
     if not, set instance number to last instance number, else, increment the instance number.
     Then get the survey link by calling getSurveyLink
     */
-  setSurveyLink = () => {
+  setSurveyLink = async () => {
     //get instance number
     const instanceData =
       "token=8038CE0F65642ECC477913BE85991380" +
@@ -58,14 +61,15 @@ class QuestionnaireScreen extends Component {
       "&forms[0]=" +
       this.props.questionnaire +
       "&returnFormat=json";
-
-    axios
+    console.log(instanceData);
+    await axios
       .post(
         "https://med-rcdev.med.ualberta.ca/api/",
         instanceData,
         this.state.header
       )
       .then(res => {
+        console.log(res.data);
         return res.data;
       })
       .then(body => {
@@ -108,10 +112,11 @@ class QuestionnaireScreen extends Component {
       })
       .catch(error => {
         console.log(error);
+        Alert.alert("Something went wrong, please try again later.")
       });
   };
 
-  getSurveyLink = () => {
+  getSurveyLink = async () => {
     const linkData =
       "token=8038CE0F65642ECC477913BE85991380" +
       "&content=surveyLink" +
@@ -124,29 +129,32 @@ class QuestionnaireScreen extends Component {
       "&repeat_instance=" +
       this.state.instance.toString() +
       "&returnFormat=json";
-
-    axios
+    await axios
       .post(
         "https://med-rcdev.med.ualberta.ca/api/",
         linkData,
         this.state.header
       )
       .then(res => {
-        this.setState({ source: { url: res.data } });
+        this.setState({ source: { uri: res.data } });
+        this.setState({loading: false});
       })
       .catch(error => {
         console.log(error);
+        Alert.alert("Something went wrong, please try again later.")
       });
   };
 
-  async componentWillMount() {
-    await this.setSurveyLink();
+  componentWillMount() {
+    this.setSurveyLink();
   }
 
   render() {
     return (
       <Container>
         {/* Header */}
+        <Loader
+          loading={this.state.loading} />
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
@@ -155,7 +163,7 @@ class QuestionnaireScreen extends Component {
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>
               <Image
-                style={ScreenStyleSheet.backIcon}
+                style={ScreenStyleSheet.headerIcon}
                 source={require("../../assets/icons/back-button.png")}
               />
             </Button>
