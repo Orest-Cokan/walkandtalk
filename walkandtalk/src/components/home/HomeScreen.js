@@ -21,8 +21,13 @@ class HomeScreen extends Component {
     this.props.fetchUserEvents(this.props.user.user.email);
   }
   componentDidMount() {
-    console.log("fetching events");
-    this.props.fetchUserEvents(this.props.user.user.email);
+    this.didFocusListener = this.props.navigation.addListener(
+      'didFocus',
+      () => {console.log("did focus....");
+      console.log("fetching events");
+      this.props.fetchUserEvents(this.props.user.user.email);
+  },
+  );
   }
 
   getEvents() {

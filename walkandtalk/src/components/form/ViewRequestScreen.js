@@ -39,7 +39,7 @@ class ViewRequestScreen extends Component {
       duration: this.props.request.preference.duration,
       venue: this.props.request.preference.venue,
       location: this.props.request.preference.location,
-      redcapID: this.props.redcapID,
+      redcapID: null,
       //HTTP header to REDCap calls
       header: {
         headers: {
