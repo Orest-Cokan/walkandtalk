@@ -23,7 +23,7 @@ import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { editEvent, fetchEvents } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
-import RNGooglePlaces from "react-native-google-places";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 class EditEventScreen extends Component {
   constructor(props) {
@@ -93,37 +93,6 @@ class EditEventScreen extends Component {
   onCancel = () => {
     Actions.home();
   };
-
-  // Google places search with autocomplete
-  openSearchModal() {
-    RNGooglePlaces.openAutocompleteModal(
-      {
-        // Restricting autofill results to alberta to limit requests
-        locationRestriction: {
-          latitudeSW: 48.9966667,
-          longitudeSW: -120.0013835,
-          latitudeNE: 60.0004216,
-          longitudeNE: -110.0047639
-        },
-        // Renders search on current page rather than new page
-        useOverlay: true,
-        country: "CA"
-        // limiting search results to coordinates and name
-      },
-      ["location", "address"]
-    )
-      .then(place => {
-        console.log('PLACE',place)
-        this.setState({
-          location: {
-            streetName: place.address,
-            lat: place.location.latitude,
-            long: place.location.longitude
-          }
-        });
-      })
-      .catch(error => console.log(error.message));
-  }
 
   render() {
     // All the options displayed in radio buttons
@@ -320,25 +289,53 @@ class EditEventScreen extends Component {
           {/* Location */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Location *</Text>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Location
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <TouchableOpacity
-                style={[
-                  styles.searchButton,
-                  { borderWidth: 1, borderColor: "black" }
-                ]}
-                onPress={() => this.openSearchModal()}
-              >
-                <Text>
-                  {this.state.location.streetName}
-                </Text>
-              </TouchableOpacity>
+            <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
+            <GooglePlacesAutocomplete
+            placeholder='Add a Location'
+            minLength={2}
+            autoFocus={false}
+            returnKeyType={'search'}
+            keyboardAppearance={'light'}
+            // Exit search dropdown results when result selected
+            listViewDisplayed={false}
+            fetchDetails={true}
+            renderDescription={row => row.description}
+            onPress={(data, details = null) => {
+              this.setState({
+                location: details.name,
+                lat: details.geometry.location.lat,
+                long: details.geometry.location.lng
+              });
+            }}
+      
+            getDefaultValue={() => ''}
+            query={{
+              key: 'AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0',
+              language: 'en',
+              types: 'geocode',
+              // Unique token for a session of searching
+              sessionToken: Math.random().toString(36).substr(2, 5)
+            }}
+            styles={{
+              textInputContainer: {
+                width: '100%'
+              },
+              description: {
+                fontWeight: 'bold'
+              }
+            }}
+            // Time in ms of when to issue a request after the user stops typing
+            debounce={800}
+            /> 
             </View>
           </View>
-
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}
