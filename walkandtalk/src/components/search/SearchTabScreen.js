@@ -110,13 +110,7 @@ class SearchTabScreen extends Component {
       searchResults: [],
       mapRegion: null,
       lastLat: null,
-      lastLong: null,
-      currentLocation: {
-        currentLatitude: 0,
-        currentLongitude: 0,
-        latitudeDelta: 0,
-        longitudeDelta: 0
-      },
+      lastLong: null
     };
     this.props.fetchEvents();
     console.log('events.....', this.props.events);
@@ -463,27 +457,25 @@ keywordSearch = () => {
   );
 };
 
-//Using the search results from state, convert them to markers that can be placed on the map
-makeMarkers = results => {
-  console.log(results, "make marker events");
-  markers = [];
+//Using the search results from state, convert them to coordinate objects that can be placed on the map
+makeCoords = (results) => {
+  coords = [];
   results.forEach(function(e) {
-    markers.push({
+    coords.push({
       latitude: e.location.lat,
       longitude: e.location.long
     });
   });
-  return markers
+  return coords
 };
 
-getMarkers() {
+getCoords() {
   if (this.state.searchResults.length == 0) {
-    markers = this.makeMarkers(this.props.events);
+    coords = this.makeCoords(this.props.events);
   } else {
-    markers = this.makeMarkers(this.state.searchResults)
+    coords = this.makeCoords(this.state.searchResults)
   }
-  console.log('markers updated', markers)
-  return markers
+  return coords
 }
 
 //Maps the search results to card view items that can be clicked to view further detials
@@ -640,13 +632,12 @@ getSearchResults() {
             }>
             <TabTwo 
               onRegionChange={this.onRegionChange.bind(this)}
-              markers={this.getMarkers()}
+              resultsCoords={this.getCoords()}
               results={this.state.searchResults}
               region={this.state.mapRegion}
             />
           </Tab>
-        </Tabs>
-        
+        </Tabs>  
       </Content>
     </Container>
     );

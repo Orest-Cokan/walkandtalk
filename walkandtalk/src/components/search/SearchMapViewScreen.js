@@ -14,7 +14,6 @@ import {
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import geolib from 'geolib'
 import {
   Container,
   Content
@@ -30,7 +29,12 @@ class SearchMapViewScreen extends Component {
   //
   constructor(props) {
     super(props);
-    console.log("map props", this.props);
+    this.state = {
+      defaultCoords: {
+        latitude: this.props.region.latitude,
+        longitude: this.props.region.longitude
+      }
+    }
   }
 //Function for navigating to view the selected event
   goToEvent = (event) => {
@@ -53,7 +57,7 @@ class SearchMapViewScreen extends Component {
   };
 
   showMarkers() {
-    if (this.props.results == 0){
+    if (this.props.results.length == 0){
       markers = this.props.events;
     } else {
       markers = this.props.results;
@@ -85,6 +89,14 @@ class SearchMapViewScreen extends Component {
       ))
     )
   }
+
+  getCoords(){
+    if (this.props.resultsCoords.length == 0) {
+      return [this.state.defaultCoords];
+    } else{
+      return this.props.resultsCoords;
+    }
+  }
   
   render() {
     return (
@@ -99,7 +111,7 @@ class SearchMapViewScreen extends Component {
               this.mapRef = ref;
             }}
             onMapReady={() => {
-              this.mapRef.fitToCoordinates(this.props.markers, { 
+              this.mapRef.fitToCoordinates(this.getCoords(), { 
                 edgePadding: { 
                   top: 200, 
                   right: 40, 
@@ -109,7 +121,7 @@ class SearchMapViewScreen extends Component {
                 })
             }}
             onLayout={() => {
-              this.mapRef.fitToCoordinates(this.props.markers, { 
+              this.mapRef.fitToCoordinates(this.getCoords(), { 
                 edgePadding: { 
                   top: 200, 
                   right: 40, 

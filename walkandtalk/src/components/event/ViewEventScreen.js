@@ -13,6 +13,9 @@ import {
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+
+import UserCard from "../../cardview/userCard";
+import Modal from "react-native-modal";
 import { Actions } from "react-native-router-flux";
 import { fetchUserEvents, deleteEvent } from "../../actions/EventActions";
 import { sendNotification } from "../../actions/NotificationActions";
@@ -21,7 +24,7 @@ import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 class ViewEventScreen extends Component {
   constructor(props) {
     super(props);
-  
+
     // Mapping the passed props to the component state
     this.state = {
       id: this.props.event.id,
@@ -59,9 +62,48 @@ class ViewEventScreen extends Component {
     Actions.editEvent({ event: this.props.event});
   };
 
-  // Set state of attending status
-  onChangeStatus(name, value) {
-    this.setState({ [name] : value }, function () {
+  viewOtherProfile = email => {
+    // Navigate to view this event
+    this.setState({visibleModal:false})
+   console.log("we are going to view other profile")
+   Actions.otherProfile({email:email})
+  };
+
+  onBack = () => {
+    // Navigate back to profile page
+    Actions.pop();
+  };
+
+
+  // When edit event button is clicked
+  openModal = () => {
+    // Navigate to edit event
+    this.setState({visibleModal: true})
+  };
+
+  //Used when scrolling in the Modal
+  handleOnScroll = event => {
+    this.setState({
+      scrollOffset: event.nativeEvent.contentOffset.y,
+    });
+  };
+
+  //Handles the reference of the Modal goes to
+  handleScrollTo = p => {
+    if (this.scrollViewRef) {
+      this.scrollViewRef.scrollTo(p);
+    }
+  };
+
+  deleteEvent = () => {
+    console.log("we are deleting event with id", this.state.eventId);
+    this.props.deleteEvent(this.state.eventId);
+  };
+
+  // Set state
+  onChange(name, value) {
+    console.log("name", name, "value", value);
+    this.setState({ [name]: value }, function() {
       this.updateAttendees();
     });
   }
@@ -82,6 +124,25 @@ class ViewEventScreen extends Component {
     }
   }
 
+  getAttendees(){
+    let attendee_list = [];
+    this.state.attendees.map((a, index) => {
+      attendee_list.unshift(
+        <TouchableOpacity 
+        key={index}
+        disabled={!this.state.researcher}
+         onPress={this.viewOtherProfile.bind(this, a.email)}>
+        <UserCard
+          key={a.email}
+          email={a.email}
+          fullname={a.fullname}
+          researcher = {this.state.researcher}
+        />
+        </TouchableOpacity>
+      );
+    });
+    return attendee_list;
+  }
     // Conditional rendering for the buttons present on view event
     // If going or not going, will display those buttons
     // Otherwise, you're hosting the event and edit and delete buttons will be displayed
@@ -135,7 +196,7 @@ class ViewEventScreen extends Component {
       );
     }
   }
-
+  
   render() {
     return (
       <Container>
@@ -233,15 +294,41 @@ class ViewEventScreen extends Component {
                 source={require("../../assets/icons/user-group.png")}
               />
             </View>
+
             <View style={ScreenStyleSheet.rowContainerEvent2}>
+            <TouchableOpacity onPress={this.openModal}>
               <Text style={ScreenStyleSheet.attending}>
                 {this.state.attending} people
               </Text>
+              </TouchableOpacity>
               <Text style={ScreenStyleSheet.attendingText}>
                 are attending this event
               </Text>
             </View>
           </View>
+
+          {/*Pop up modal that displays the users attending*/}
+          <Modal
+          isVisible={this.state.visibleModal == true}
+          onBackdropPress={() => this.setState({ visibleModal: false })}
+          swipeDirection="down"
+          scrollTo={this.handleScrollTo}
+          scrollOffset={this.state.scrollOffset}
+          scrollOffsetMax={400 - 300} 
+          style={styles.bottomModal}>
+          <View style={styles.scrollableModal}>
+            <View style={styles.modalTextView}>
+            <Text style={styles.modalText}>Going </Text>
+            </View>
+            <ScrollView
+              ref={ref => (this.scrollViewRef = ref)}
+              onScroll={this.handleOnScroll}
+              scrollEventThrottle={16}>
+              {this.getAttendees()}
+                    
+            </ScrollView>
+          </View>
+        </Modal>
 
           {/* On screen separator */}
           <View style={ScreenStyleSheet.EventLineSeparator} />
@@ -324,5 +411,30 @@ const styles = {
     textAlign: "center",
     fontSize: 15,
     fontWeight: "bold"
+  },
+  scrollableModal: {
+    height: 300,
+    backgroundColor:"white",
+  },
+  bottomModal: {
+    display: "flex",
+    justifyContent: "center",
+    margin:"auto",
+    margin: 0,
+    marginRight: 20,
+    marginLeft:20
+  },
+  modalTextView:{
+    height: 50,
+    backgroundColor: "#A680B8",
+    alignItems:"center"
+  },
+  modalText: { 
+    color:  "white", 
+    borderBottomColor:"gray",
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    paddingTop: 15
   }
 };

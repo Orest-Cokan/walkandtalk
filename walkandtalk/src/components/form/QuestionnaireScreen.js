@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image } from "react-native";
+import { Image, Alert } from "react-native";
 import { WebView } from "react-native-webview";
 import {
   Container,
@@ -9,7 +9,6 @@ import {
   Title,
   Right,
   Button,
-  Alert
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
@@ -112,6 +111,7 @@ class QuestionnaireScreen extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.setState({ loading: false });
         Alert.alert("Something went wrong, please try again later.");
       });
   };
@@ -141,6 +141,7 @@ class QuestionnaireScreen extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.setState({ loading: false });
         Alert.alert("Something went wrong, please try again later.");
       });
   };
