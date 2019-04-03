@@ -142,21 +142,43 @@ class EditProfileScreen extends Component {
       }
     });
   };
-
+  onFinish = async () => {
+    await new Promise((resolve, reject) => {
+          // Edit the event user clicks
+          console.log("EVENT TO BE EDITED", this.state.location)
+          this.props.editEvent(
+            this.state.title, 
+            this.state.id, 
+            this.state.date, 
+            this.state.startTime, 
+            this.state.endTime, 
+            this.state.description, 
+            this.state.intensity, 
+            this.state.venue, 
+            this.state.location);
+          resolve();
+      });
+      // fetch updated event(s) to pass to homescreen
+      this.props.fetchEvents();
+      Actions.home();
+  }
   // When save changes button is clicked
-  onSaveChanges = () => {
+  onSaveChanges = async () => {
     if (this.inputCheck()) {
-    this.props.editUser(
-      this.state.fullname,
-      this.state.email,
-      this.state.dob,
-      this.state.menopausal_stage,
-      this.state.intensity,
-      this.state.distance,
-      this.state.duration,
-      this.state.venue,
-      this.state.location
-    );
+      await new Promise((resolve, reject) => {
+        this.props.editUser(
+          this.state.fullname,
+          this.state.email,
+          this.state.dob,
+          this.state.menopausal_stage,
+          this.state.intensity,
+          this.state.distance,
+          this.state.duration,
+          this.state.venue,
+          this.state.location
+        )
+      resolve();
+    });
     this.props.editPicture(
       this.state.email,
       this.state.picture

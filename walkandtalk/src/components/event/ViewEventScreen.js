@@ -20,6 +20,7 @@ import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 class ViewEventScreen extends Component {
   constructor(props) {
     super(props);
+    this.props.fetchUserEvents(this.props.user.user.email);
   }
 
   onBack = () => {
