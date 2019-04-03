@@ -251,7 +251,7 @@ class AddEventScreen extends Component {
               fontWeight: 'bold'
             }
           }}
-          debounce={300} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+          debounce={800} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
         />
       );
     } else if(Platform.OS === "android") {
