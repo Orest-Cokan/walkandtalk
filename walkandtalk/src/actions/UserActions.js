@@ -15,6 +15,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 import getIP from "../constants/Ip";
+import { Alert } from "react-native";
 
 // action to create a user
 export const createUser = (
@@ -97,12 +98,19 @@ export const loginUser = (email, password) => {
       .then(res => {
         if (res.status === 200) {
           console.log(res.data.user, "meh memes!");
-          loginUserSuccess(dispatch, res.data.user);
+          if (res.data.user.registered){
+            loginUserSuccess(dispatch, res.data.user);
+          }
+          else{
+            loginUserFail(dispatch);
+            Alert.alert("Please wait for the researchers to review your profile.");
+          }
+          
         }
       })
       .catch(err => {
-        loginUserFail(dispatch);
         console.log(err);
+        Alert.alert("Something went wrong. Please check your username and password.")
       });
   };
 };
