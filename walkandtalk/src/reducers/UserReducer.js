@@ -7,7 +7,10 @@ import {
   USER_EDIT,
   USER_LOGIN_SUCCESS,
   SET_USER,
-  SET_ALL_USERS
+  SET_ALL_USERS,
+  GET_UNREGISTERED_USERS,
+  USER_APPROVE,
+  USER_DECLINE
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -16,7 +19,8 @@ const INITIAL_STATE = {
   loading: false,
   user: "",
   otherUser:'',
-  users:[]
+  users:[],
+  unregisteredUsers: []
 };
 
 // user reducer
@@ -70,6 +74,12 @@ const user = (state = INITIAL_STATE, action) => {
       return { ...state, otherUser: action.payload };
     case SET_ALL_USERS:
       return { ...state, users: action.payload };
+    case GET_UNREGISTERED_USERS:
+      return { ...state, unregisteredUsers: action.payload };
+    case USER_APPROVE:
+      return { ...state};
+    case USER_DECLINE:
+      return { ...state};
     default:
       return state;
     

@@ -1,36 +1,47 @@
 const User = require("../models/User");
 const Preference = require("../models/Preference");
+const Redcap = require("../models/Redcap");
+const transporter = require("../utils/email/email");
+const acceptEmail = require("../Utils/email/msgs/acceptUser");
+const declineEmail = require("../Utils/email/msgs/declineUser");
 
 // Researcher controller
 const ResearcherController = () => {
   // Accept a user -> turn regsitered value from 0 to 1
-  // in the future add email memes here
   const acceptUser = async (req, res) => {
     const { body } = req;
     await User.update(
       {
-        registered: 1,
-        redcapID: body.redcapID
+        registered: 1
       },
       { returning: true, where: { email: body.email } }
     )
+      .then(
+        Redcap.update(
+          {
+            redcapID: Math.floor(Math.random() * 10000),
+            notify: true,
+            date: new Date().toISOString().split("T")[0]
+          },
+          { returning: true, where: { userEmail: body.email } }
+        )
+      )
       .then(self => {
-        console.log("we get here???");
+        transporter.sendMail(acceptEmail(body.email));
         return res.status(200).json(self[1]);
       })
       .catch(err => {
-        return res.status(500).json({ msg: "Error updating a user" });
+        return res.status(500).json({ msg: "Error accepting a user" });
       });
   };
 
   // Deny a user -> destroy the user and remove from db (returns 1 if successful or 0 if didn't denyUser)
-  // in the future add email memes
   const denyUser = async (req, res) => {
     const { body } = req;
-    console.log(body.id, body.fullname);
-    await User.destroy({ truncate: true, where: { email: body.email } })
+    await User.destroy({ where: { email: body.email } })
       .then(rowsRemoved => {
         if (rowsRemoved == 1) {
+          transporter.sendMail(declineEmail(body.email));
           return res.status(200).json({
             msg: "Succesfully removed the user by the email of " + body.email,
             removed: rowsRemoved
@@ -40,7 +51,6 @@ const ResearcherController = () => {
         }
       })
       .catch(err => {
-        console.log(err);
         return res.status(500).json({ msg: "Internal server error" });
       });
   };
@@ -55,7 +65,6 @@ const ResearcherController = () => {
 
       return res.status(200).json({ users });
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ msg: "Internal server error" });
     }
   };
@@ -70,7 +79,6 @@ const ResearcherController = () => {
 
       return res.status(200).json({ users });
     } catch (err) {
-      console.log(err);
       return res.status(500).json({ msg: "Internal server error" });
     }
   };

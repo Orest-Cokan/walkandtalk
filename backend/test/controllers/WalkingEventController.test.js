@@ -5,7 +5,6 @@ const Location = require("../../api/models/Location");
 const Attendee = require("../../api/models/Attendee");
 
 let api;
-let walkingEvent;
 
 beforeAll(async () => {
   api = await beforeAction();
@@ -17,15 +16,28 @@ afterAll(() => {
 
 // test creating a walking event
 test("WalkingEvent | create", async () => {
-  walkingEvent = await WalkingEvent.build({
-    id: 5,
-    title: "walking with friends",
-    description: "i want to go",
-    intensity: "slow",
-    venue: "indoor"
-  }).save();
+  await request(api)
+    .post("/public/walkingevent")
+    .set("Accept", /json/)
+    .send({
+      organizer: "orest cokan",
+      title: "walking with friends",
+      email: "skryt@gmail.com",
+      description: "i want to go",
+      intensity: "slow",
+      venue: "indoor",
+      start_time: "08:00pm",
+      end_time: "10:00pm",
+      date: "Fri, Mar 28",
+      location: {
+        streetName: "riverbend",
+        long: 12,
+        lat: 13
+      }
+    })
+    .expect(200);
 
-  const walkingevent = await WalkingEvent.findById(5, {
+  const walkingevent = await WalkingEvent.findByPk(1, {
     include: [
       {
         model: Attendee
@@ -35,32 +47,113 @@ test("WalkingEvent | create", async () => {
       }
     ]
   });
-  console.log(walkingevent.dataValues, "REEEEEEEEEEEEEEE");
-  console.log(walkingevent.location, "reeee");
-  expect(walkingevent.id).toBe(5);
+  expect(walkingevent.id).toBe(1);
   expect(walkingevent.title).toBe("walking with friends");
   expect(walkingevent.description).toBe("i want to go");
   expect(walkingevent.venue).toBe("indoor");
   expect(walkingevent.intensity).toBe("slow");
-  await walkingEvent.destroy();
+});
+
+// test getting all walking events
+test("WalkingEvent | getAll", async () => {
+  await request(api)
+    .post("/public/walkingevent")
+    .set("Accept", /json/)
+    .send({
+      organizer: "orest cokan",
+      title: "walking with friends",
+      email: "skryt@gmail.com",
+      description: "i want to go",
+      intensity: "slow",
+      venue: "indoor",
+      start_time: "08:00pm",
+      end_time: "10:00pm",
+      date: "Fri, Mar 28",
+      location: {
+        streetName: "riverbend",
+        long: 12,
+        lat: 13
+      }
+    })
+    .expect(200);
+  const walkingevent = await WalkingEvent.findAll({
+    include: [
+      {
+        model: Attendee
+      },
+      {
+        model: Location
+      }
+    ]
+  });
+  expect(walkingevent.length).toBe(2);
 });
 
 // test destroying a walking event
 test("WalkingEvent | destroy", async () => {
-  walkingEvent = await WalkingEvent.build({
-    id: 5,
-    title: "walking with friends",
-    description: "i want to go",
-    intensity: "slow",
-    venue: "indoor"
-  }).save();
-
-  console.log("wtf is going on in here!!!");
   const response = await request(api)
-    .del("/public/walkingevent/5")
+    .del("/public/walkingevent/1")
     .set("Accept", /json/)
     .expect(200);
   expect(response.body.msg).toBe("Deleted!");
+});
 
-  await walkingEvent.destroy();
+// test updating a walking event
+test("WalkingEvent | update", async () => {
+  await request(api)
+    .put("/public/walkingevent")
+    .set("Accept", /json/)
+    .send({
+      id: 2,
+      organizer: "eleni beate",
+      title: "walking with only researchers",
+      description: "no cats or dogs",
+      intensity: "slow",
+      venue: "outdoor",
+      start_time: "08:00pm",
+      end_time: "10:00pm",
+      date: "Fri, Mar 28",
+      location: {
+        streetName: "millwoods",
+        long: 15,
+        lat: 16
+      }
+    })
+    .expect(200);
+
+  const walkingevent = await WalkingEvent.findByPk(2, {
+    include: [
+      {
+        model: Attendee
+      },
+      {
+        model: Location
+      }
+    ]
+  });
+
+  expect(walkingevent.title).toBe("walking with only researchers");
+  expect(walkingevent.location.streetName).toBe("millwoods");
+  expect(walkingevent.location.long).toBe(15);
+  expect(walkingevent.location.lat).toBe(16);
+});
+
+// test getting a single walking event
+test("WalkingEvent | getEvent", async () => {
+  const response = await request(api)
+    .get("/public/walkingevent/2")
+    .set("Accept", /json/)
+    .expect(200);
+  expect(response.body.walkingevent).toBeTruthy();
+  expect(response.body.walkingevent.id).toBe(2);
+});
+
+// test getting a users walking event
+test("WalkingEvent | getUserEvents", async () => {
+  const response = await request(api)
+    .get("/public/walkingevents/skryt@gmail.com")
+    .set("Accept", /json/)
+    .expect(200);
+  console.log(response.body, "what is this meme");
+  expect(response.body.walkingevents.length).toBe(1);
 });

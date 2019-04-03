@@ -1,19 +1,8 @@
 // Create Event Screen View
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Alert
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Alert } from "react-native";
 import { connect } from "react-redux";
-import {
-  Container,
-  Header,
-  Body,
-  Title,
-  Content,
-} from "native-base";
+import { Container, Header, Body, Title, Content } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
@@ -51,32 +40,34 @@ class AddEventScreen extends Component {
       errorDate: null,
       errorStartTime: null,
       errorEndTime: null,
-      errorLocation: null,
+      errorLocation: null
     };
 
-    // Component refs 
+    // Component refs
     this.title = React.createRef();
-    this.date =  React.createRef();
+    this.date = React.createRef();
     this.startTime = React.createRef();
     this.endTime = React.createRef();
     this.location = React.createRef();
-
   }
 
   // Set state
   onChange(name, value) {
     this.setState({ [name]: value });
     // For datetime pickers
-    if (name == 'date') {
-      this.showError(this.state.date, this.date, 'errorDate');
+    if (name == "date") {
+      this.showError(this.state.date, this.date, "errorDate");
     }
-    if (name == 'startTime') {
-      this.showError(this.state.startTime, this.startTime, 'errorStartTime');
+    if (name == "startTime") {
+      this.showError(this.state.startTime, this.startTime, "errorStartTime");
     }
-    if (name == 'endTime') {
-      this.showError(this.state.endTime, this.endTime, 'errorEndTime');
+    if (name == "startTime") {
+      this.showError(this.state.startTime, this.startTime, "errorStartTime");
     }
-  };
+    if (name == "endTime") {
+      this.showError(this.state.endTime, this.endTime, "errorEndTime");
+    }
+  }
 
   // Checks if start and end times work
   isValidTime = () => {
@@ -89,7 +80,7 @@ class AddEventScreen extends Component {
 
   // Checks if input is null or empty
   isValid(input) {
-    if (input == null || input == '' ) {
+    if (input == null || input == "") {
       return false;
     } else {
       return true;
@@ -98,36 +89,48 @@ class AddEventScreen extends Component {
 
   // Shows error message
   showError(input, ref, error) {
-    // If input is valid 
+    // If input is valid
     if (this.isValid(input)) {
       // Checks if startTime < endTime
       if (this.startTime == ref || this.endTime == ref) {
         if (this.isValidTime()) {
-          this.startTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
+          this.startTime.current.setNativeProps(
+            ScreenStyleSheet.formInputValid
+          );
           this.endTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
-          this.setState({ errorStartTime : null });
-          this.setState({ errorEndTime : null });
+          this.setState({ errorStartTime: null });
+          this.setState({ errorEndTime: null });
         } else {
-          this.startTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
+          this.startTime.current.setNativeProps(
+            ScreenStyleSheet.formInputValid
+          );
           this.endTime.current.setNativeProps(ScreenStyleSheet.formInputError);
-          this.setState({ errorStartTime : null });
-          this.setState({ errorEndTime : this.errorMessageDate("The end time must be later than the start time.") });
+          this.setState({ errorStartTime: null });
+          this.setState({
+            errorEndTime: this.errorMessageDate(
+              "The end time must be later than the start time."
+            )
+          });
         }
       }
-      // Otherwise, keep or set back to default 
+      // Otherwise, keep or set back to default
       else {
-      ref.current.setNativeProps(ScreenStyleSheet.formInputValid);
-      this.setState({ [error] : null });
+        ref.current.setNativeProps(ScreenStyleSheet.formInputValid);
+        this.setState({ [error]: null });
       }
-    } 
+    }
     // If input is invalid, show errors
     else {
       console.log(input, error);
       ref.current.setNativeProps(ScreenStyleSheet.formInputError);
       if (this.date == ref || this.startTime == ref || this.endTime == ref) {
-        this.setState({ [error] : this.errorMessageDate("This is a required field.") });
+        this.setState({
+          [error]: this.errorMessageDate("This is a required field.")
+        });
       } else {
-        this.setState({ [error] : this.errorMessage("This is a required field.") });
+        this.setState({
+          [error]: this.errorMessage("This is a required field.")
+        });
       }
     }
   }
@@ -137,11 +140,10 @@ class AddEventScreen extends Component {
     return (
       <View style={ScreenStyleSheet.rowContainer}>
         <View style={ScreenStyleSheet.formRowInfo}>
-          <Text style={ScreenStyleSheet.formErrorMessage}>
-            {message}
-          </Text>
+          <Text style={ScreenStyleSheet.formErrorMessage}>{message}</Text>
         </View>
-      </View>);
+      </View>
+    );
   }
 
   // Error message for datetime pickers
@@ -149,31 +151,36 @@ class AddEventScreen extends Component {
     return (
       <View style={ScreenStyleSheet.rowContainer}>
         <View style={ScreenStyleSheet.formRowInfo}>
-          <Text style={[ScreenStyleSheet.formErrorMessage, {textAlign: 'right'}]}>
+          <Text
+            style={[ScreenStyleSheet.formErrorMessage, { textAlign: "right" }]}
+          >
             {message}
           </Text>
         </View>
-      </View>);
+      </View>
+    );
   }
 
   // Checks if all input fields are valid
   inputCheck = () => {
-    if (this.isValid(this.state.title) 
-      && this.isValid(this.state.date)
-      && this.isValid(this.state.startTime)
-      && this.isValid(this.state.endTime)
-      && this.isValidTime()
-      && this.isValid(this.state.location)) {
+    if (
+      this.isValid(this.state.title) &&
+      this.isValid(this.state.date) &&
+      this.isValid(this.state.startTime) &&
+      this.isValid(this.state.endTime) &&
+      this.isValidTime() &&
+      this.isValid(this.state.location)
+    ) {
       return true;
     } else {
-      this.showError(this.state.title, this.title, 'errorTitle');
-      this.showError(this.state.date, this.date, 'errorDate');
-      this.showError(this.state.startTime, this.startTime, 'errorStartTime');
-      this.showError(this.state.endTime, this.endTime, 'errorEndTime');
-      this.showError(this.state.location, this.location, 'errorLocation');
+      this.showError(this.state.title, this.title, "errorTitle");
+      this.showError(this.state.date, this.date, "errorDate");
+      this.showError(this.state.startTime, this.startTime, "errorStartTime");
+      this.showError(this.state.endTime, this.endTime, "errorEndTime");
+      this.showError(this.state.location, this.location, "errorLocation");
       return false;
     }
-  }
+  };
 
   // When finish button is clicked
   onFinish = () => {
@@ -206,29 +213,19 @@ class AddEventScreen extends Component {
   // Google places search with autocomplete
 
   openSearchModal() {
-    RNGooglePlaces.openAutocompleteModal({ 
-      // Restricting autofill results to alberta to limit requests
-      locationRestriction: {
-        latitudeSW: 48.9966667, 
-        longitudeSW: -120.0013835, 
-        latitudeNE: 60.0004216, 
-        longitudeNE: -110.0047639
-      },
-      // Renders search on current page rather than new page
-      useOverlay: true,
-      country: 'CA',
+    RNGooglePlaces.openAutocompleteModal({
+      useOverlay: true
       // limiting search results to coordinates and name
-      }, ['location', 'address']
-    )
-    .then((place) => {
-      this.setState({
-        location: place.address,
-        lat: place.location.latitude,
-        long: place.location.longitude
-      });
-      this.showError(this.state.location, this.location, 'errorLocation');
     })
-    .catch(error => console.log(error.message));
+      .then(place => {
+        this.setState({
+          location: place.address,
+          lat: place.location.latitude,
+          long: place.location.longitude
+        });
+        this.showError(this.state.location, this.location, "errorLocation");
+      })
+      .catch(error => console.log(error.message));
   }
 
   render() {
@@ -257,7 +254,6 @@ class AddEventScreen extends Component {
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-
           {/* Event name */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -268,13 +264,16 @@ class AddEventScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View 
-              ref={this.title}
-              style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.title} style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChange.bind(this, 'title')}
-                onEndEditing={this.showError.bind(this, this.state.title, this.title, 'errorTitle')}
+                onChangeText={this.onChange.bind(this, "title")}
+                onEndEditing={this.showError.bind(
+                  this,
+                  this.state.title,
+                  this.title,
+                  "errorTitle"
+                )}
                 accessibilityLabel="createEventName"
               />
             </View>
@@ -289,9 +288,7 @@ class AddEventScreen extends Component {
                 <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
             </View>
-            <View 
-              ref={this.date}
-              style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.date} style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
                 style={{ width: "100%" }}
                 date={this.state.date}
@@ -303,7 +300,7 @@ class AddEventScreen extends Component {
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{}}
-                onDateChange={this.onChange.bind(this, 'date')}
+                onDateChange={this.onChange.bind(this, "date")}
                 accessibilityLabel="createEventDatePicker"
               />
             </View>
@@ -318,9 +315,7 @@ class AddEventScreen extends Component {
                 <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
             </View>
-            <View 
-              ref={this.startTime}
-              style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.startTime} style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
                 style={{ width: "100%" }}
                 date={this.state.startTime}
@@ -335,7 +330,7 @@ class AddEventScreen extends Component {
                     alignItems: "center"
                   }
                 }}
-                onDateChange={this.onChange.bind(this, 'startTime')}
+                onDateChange={this.onChange.bind(this, "startTime")}
                 accessibilityLabel="createEventStartTimePicker"
               />
             </View>
@@ -350,9 +345,7 @@ class AddEventScreen extends Component {
                 <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
             </View>
-            <View 
-              ref={this.endTime}
-              style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.endTime} style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
                 style={{ width: "100%" }}
                 date={this.state.endTime}
@@ -367,7 +360,7 @@ class AddEventScreen extends Component {
                     alignItems: "center"
                   }
                 }}
-                onDateChange={this.onChange.bind(this, 'endTime')}
+                onDateChange={this.onChange.bind(this, "endTime")}
                 accessibilityLabel="createEventEndTimePicker"
               />
             </View>
@@ -377,9 +370,7 @@ class AddEventScreen extends Component {
           {/* Description */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Description
-              </Text>
+              <Text style={ScreenStyleSheet.formInfo}>Description</Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
@@ -389,7 +380,7 @@ class AddEventScreen extends Component {
                 multiline={true}
                 numberOfLines={4}
                 maxLength={140}
-                onChangeText={this.onChange.bind(this, 'description')}
+                onChangeText={this.onChange.bind(this, "description")}
                 accessibilityLabel="createEventDescription"
               />
             </View>
@@ -408,7 +399,7 @@ class AddEventScreen extends Component {
             <SwitchSelector
               options={intensities}
               initial={0}
-              onPress={this.onChange.bind(this, 'intensity')}
+              onPress={this.onChange.bind(this, "intensity")}
               textColor={"#A680B8"}
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -432,7 +423,7 @@ class AddEventScreen extends Component {
             <SwitchSelector
               options={venues}
               initial={0}
-              onPress={this.onChange.bind(this, 'venue')}
+              onPress={this.onChange.bind(this, "venue")}
               textColor={"#A680B8"}
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -453,15 +444,15 @@ class AddEventScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View 
-              ref={this.location}
-              style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
               <TouchableOpacity
                 style={styles.locationButton}
                 onPress={() => this.openSearchModal()}
                 accessibilityLabel="createEventLocation"
               >
-                <Text style={{color: this.state.location ? "#333" : "#C9C9C9" }}>
+                <Text
+                  style={{ color: this.state.location ? "#333" : "#C9C9C9" }}
+                >
                   {this.state.location ? this.state.location : "Add a Location"}
                 </Text>
               </TouchableOpacity>
@@ -486,7 +477,7 @@ class AddEventScreen extends Component {
             {/* Finish button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
-              onPress={(this.onFinish)}
+              onPress={this.onFinish}
               accessibilityLabel="createEventFinish"
             >
               <Text style={{ color: "white" }}>Finish</Text>
@@ -533,6 +524,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     borderColor: "#AAA",
-    borderWidth: 1,
+    borderWidth: 1
   }
 });

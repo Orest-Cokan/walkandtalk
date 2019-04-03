@@ -1,6 +1,6 @@
 // Create Event Screen View
 import React, { Component } from "react";
-import { fetchEvents } from "../../actions/EventActions";
+import { fetchUserEvents } from "../../actions/EventActions";
 import { connect } from "react-redux";
 import {
   Container,
@@ -18,12 +18,14 @@ import BaseCard from "../../cardview/baseCard";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
+    this.props.fetchUserEvents(this.props.user.user.email);
   }
   componentDidMount() {
     this.didFocusListener = this.props.navigation.addListener(
       'didFocus',
       () => {console.log("did focus....");
-    this.props.fetchEvents();
+      console.log("fetching events");
+      this.props.fetchUserEvents(this.props.user.user.email);
   },
   );
   }
@@ -31,7 +33,7 @@ class HomeScreen extends Component {
   getEvents() {
     let events = [];
     const fullname = this.props.user.user.fullname;
-    console.log(this.props.events)
+    console.log(this.props.events);
     this.props.events.map(event => {
       let badge = null;
       if (fullname == event.organizer) {
@@ -95,12 +97,12 @@ class HomeScreen extends Component {
 const mapStateToProps = state => {
   console.log("homescreen");
   return {
-    events: state.event.events,
+    events: state.event.userEvents,
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchEvents }
+  { fetchUserEvents }
 )(HomeScreen);

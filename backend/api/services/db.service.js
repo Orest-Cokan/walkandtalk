@@ -1,4 +1,6 @@
-const database = require('../../config/database');
+const database = require("../../config/database");
+const initialize = require("./research.service");
+const recordsTask = require("../../config/cron/records");
 
 const dbService = (environment, migrate) => {
   const authenticateDB = () => database.authenticate();
@@ -7,16 +9,18 @@ const dbService = (environment, migrate) => {
 
   const syncDB = () => database.sync();
 
-  const successfulDBStart = () => (
-    console.info('connection to the database has been established successfully')
-  );
+  const successfulDBStart = () =>
+    console.info(
+      "connection to the database has been established successfully"
+    );
 
-  const errorDBStart = (err) => (
-    console.info('unable to connect to the database:', err)
-  );
+  const errorDBStart = err =>
+    console.info("unable to connect to the database:", err);
 
   const wrongEnvironment = () => {
-    console.warn(`only development, staging, test and production are valid NODE_ENV variables but ${environment} is specified`);
+    console.warn(
+      `only development, staging, test and production are valid NODE_ENV variables but ${environment} is specified`
+    );
     return process.exit(1);
   };
 
@@ -87,25 +91,37 @@ const dbService = (environment, migrate) => {
 
   const start = async () => {
     switch (environment) {
-      case 'development':
+      case "development":
         await startDev();
+        await initialize();
+        await recordsTask();
         break;
-      case 'staging':
+
+      case "staging":
         await startStage();
+        await initialize();
+        await recordsTask();
         break;
-      case 'testing':
+
+      case "testing":
         await startTest();
+        await initialize();
+        await recordsTask();
         break;
-      case 'production':
+
+      case "production":
         await startProd();
+        await initialize();
+        await recordsTask();
         break;
+
       default:
         await wrongEnvironment();
     }
   };
 
   return {
-    start,
+    start
   };
 };
 

@@ -1,17 +1,11 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity, Alert } from "react-native";
 import RequestCard from "../../cardview/requestCard";
+import { getUnregisteredUsers } from "../../actions/UserActions";
 import { connect } from "react-redux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import {
-  Container,
-  Header,
-  Left,
-  Body,
-  Title,
-  Right,
-  Content
-} from "native-base";
+import Loader from "../../constants/loader";
+import { Container, Header, Body, Title, Content } from "native-base";
 import { Actions } from "react-native-router-flux";
 
 /*
@@ -21,52 +15,33 @@ This is the requests screen. Researchers will see the users that have signed up 
 class RequestsScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("inside constructor");
-
+    this.props.unregisteredUsers = this.props.getUnregisteredUsers();
     // Sample data
     this.state = {
-      requests: [
-        {
-          fullname: "Anne Taylor",
-          email: "anntaylor@gmail.com",
-          dob: "1965-03-20",
-          menopausal_stage: "Peri",
-          intensity: "Slow",
-          distance: 10,
-          duration: 60,
-          venue: "Indoor",
-          location: "Summerside"
-        },
-        {
-          fullname: "Rose Zapata",
-          email: "rosezapata@gmail.com",
-          dob: "1975-05-04",
-          menopausal_stage: "Pre",
-          intensity: "Brisk",
-          distance: 10,
-          duration: 60,
-          venue: "Outdoor",
-          location: "Riverbend area"
-        }
-      ]
+      loading: false
     };
   }
 
-  // The following code is to be used when real data is to be integrated
-  /* componentDidMount() {
-    this.props.[insert get request action here];
-  }*/
+  /* Listener that updates the list view of the unregiesterd users  */
+  componentDidMount() {
+    this.didFocusListener = this.props.navigation.addListener(
+      "didFocus",
+      () => {
+        this.props.getUnregisteredUsers();
+        console.log(this.props.unregisteredUsers);
+      }
+    );
+  }
 
   // Switch request view
   viewRequest(index) {
-    Actions.viewRequest({ request: this.state.requests[index] });
+    Actions.viewRequest({ request: this.props.unregisteredUsers[index] });
   }
-
   //
   getRequests() {
     let requests = [];
-    console.log(this.props);
-    this.state.requests.map((request, index) => {
+    //console.log("THIS IS IN GETREQUEST" , this.state.users);
+    this.props.unregisteredUsers.map((request, index) => {
       requests.unshift(
         <TouchableOpacity
           key={index}
@@ -76,13 +51,14 @@ class RequestsScreen extends Component {
         </TouchableOpacity>
       );
     });
-    console.log(this.props);
+    //console.log(this.props);
     return requests;
   }
 
   render() {
     return (
       <Container>
+        <Loader loading={this.state.loading} />
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
@@ -102,11 +78,12 @@ class RequestsScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("requestscreen");
-  return {};
+  return {
+    unregisteredUsers: state.user.unregisteredUsers
+  };
 };
 
 export default connect(
   mapStateToProps,
-  null
+  { getUnregisteredUsers }
 )(RequestsScreen);

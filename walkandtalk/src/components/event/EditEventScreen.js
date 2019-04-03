@@ -30,6 +30,7 @@ class EditEventScreen extends Component {
     super(props);
     // Find event data for clicked event
     let event = this.props.events.find(e => e.id === this.props.data);
+    console.log('THE PASSED EVENT',event)
     this.state = {
       title: event.title,
       id: event.id,
@@ -72,6 +73,7 @@ class EditEventScreen extends Component {
   onFinish = async () => {
     await new Promise((resolve, reject) => {
           // Edit the event user clicks
+          console.log("EVENT TO BE EDITED", this.state.location)
           this.props.editEvent(
             this.state.title, 
             this.state.id, 
@@ -111,10 +113,13 @@ class EditEventScreen extends Component {
       ["location", "address"]
     )
       .then(place => {
+        console.log('PLACE',place)
         this.setState({
-          location: place.address,
-          lat: place.location.latitude,
-          long: place.location.longitude
+          location: {
+            streetName: place.address,
+            lat: place.location.latitude,
+            long: place.location.longitude
+          }
         });
       })
       .catch(error => console.log(error.message));
