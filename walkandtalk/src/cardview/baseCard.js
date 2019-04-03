@@ -12,10 +12,6 @@ Returns: The list view that contains information about the event.
 */
 
 class BaseCard extends Component {
-  goToEvent = () => {
-    // Navigate to view this event
-    Actions.viewEvent({ eventId: this.props.id, searchScreen: false });
-  };
   /*
   This is funtion checks if badge is null.
   Parameters: Time, title, locaiton and badge of the event.
@@ -25,11 +21,6 @@ class BaseCard extends Component {
   checkIfBadge = () => {
     if (!this.props.badge) {
       return (
-<<<<<<< HEAD
-
-=======
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
-        <TouchableOpacity onPress={this.goToEvent}>
         <View style={ScreenStyleSheet.baseCard}>
           <Text style={ScreenStyleSheet.cardEventTime}>
             {this.props.date.toUpperCase()} AT{" "}
@@ -38,7 +29,6 @@ class BaseCard extends Component {
           <Text style={ScreenStyleSheet.cardEventTitle}>{this.props.title}</Text>
           <Text>{this.props.location}</Text>
         </View>
-        </TouchableOpacity>
       );
     } else {
       return this.changeBadgeColour();
@@ -51,41 +41,37 @@ class BaseCard extends Component {
   if the badge is 'hosting', returns the card view with a blue badge.
   */
   changeBadgeColour = () => {
-    if (this.props.badge.toUpperCase() == "GOING") {
+    if (this.props.badge == "GOING") {
       return (
-        <TouchableOpacity onPress={this.goToEvent}>
-          <View style={ScreenStyleSheet.baseCard}>
-            <View style={ScreenStyleSheet.timeWithBadge}>
-              <Text style={ScreenStyleSheet.cardEventTime}>
-                {this.props.date.toUpperCase()} AT{" "}
-                {this.props.start_time.toUpperCase()}
-              </Text>
-              <Text style={ScreenStyleSheet.goingBadge}>
-                {this.props.badge}
-              </Text>
-            </View>
-            <Text style={ScreenStyleSheet.cardEventTitle}>{this.props.title}</Text>
-            <Text>{this.props.location}</Text>
+        <View style={ScreenStyleSheet.baseCard}>
+          <View style={ScreenStyleSheet.timeWithBadge}>
+            <Text style={ScreenStyleSheet.cardEventTime}>
+              {this.props.date.toUpperCase()} AT{" "}
+              {this.props.start_time.toUpperCase()}
+            </Text>
+            <Text style={ScreenStyleSheet.goingBadge}>
+              {this.props.badge}
+            </Text>
           </View>
-        </TouchableOpacity>
+          <Text style={ScreenStyleSheet.cardEventTitle}>{this.props.title}</Text>
+          <Text>{this.props.location}</Text>
+        </View>
       );
-    } else if (this.props.badge.toUpperCase() == "HOSTING") {
+    } else if (this.props.badge == "HOSTING") {
       return (
-        <TouchableOpacity onPress={this.goToEvent}>
-          <View style={ScreenStyleSheet.baseCard}>
-            <View style={ScreenStyleSheet.timeWithBadge}>
-              <Text style={ScreenStyleSheet.cardEventTime}>
-                {this.props.date.toUpperCase()} AT{" "}
-                {this.props.start_time.toUpperCase()}
-              </Text>
-              <Text style={ScreenStyleSheet.hostingBadge}>
-                {this.props.badge}
-              </Text>
-            </View>
-            <Text style={ScreenStyleSheet.cardEventTitle}>{this.props.title}</Text>
-            <Text>{this.props.location}</Text>
+        <View style={ScreenStyleSheet.baseCard}>
+          <View style={ScreenStyleSheet.timeWithBadge}>
+            <Text style={ScreenStyleSheet.cardEventTime}>
+              {this.props.date.toUpperCase()} AT{" "}
+              {this.props.start_time.toUpperCase()}
+            </Text>
+            <Text style={ScreenStyleSheet.hostingBadge}>
+              {this.props.badge}
+            </Text>
           </View>
-        </TouchableOpacity>
+          <Text style={ScreenStyleSheet.cardEventTitle}>{this.props.title}</Text>
+          <Text>{this.props.location}</Text>
+        </View>
       );
     }
   };

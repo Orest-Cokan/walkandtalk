@@ -3,11 +3,7 @@ package com.walkandtalk;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-<<<<<<< HEAD
-import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
-=======
 import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.imagepicker.ImagePickerPackage;

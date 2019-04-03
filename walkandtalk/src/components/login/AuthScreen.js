@@ -44,14 +44,12 @@ class AuthScreen extends Component {
     this.props.getPicture(
       this.refs.formGenerator.getValues().email
     );
-<<<<<<< HEAD
+
     /* Socket.emit('login', {
       email: this.refs.formGenerator.getValues().email,
       password: this.refs.formGenerator.getValues().password
     }); */
-=======
-
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
+    
   };
 
   onPressSignUp = () => {

@@ -14,122 +14,40 @@ import {
 import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
-import { fetchEvents, deleteEvent } from "../../actions/EventActions";
-<<<<<<< HEAD
+import { fetchUserEvents, deleteEvent } from "../../actions/EventActions";
 import { sendNotification } from "../../actions/NotificationActions";
-=======
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
 import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 
 class ViewEventScreen extends Component {
   constructor(props) {
     super(props);
+  
+    // Mapping the passed props to the component state
+    this.state = {
+      id: this.props.event.id,
+      email: this.props.event.email,
+      title: this.props.event.title,
+      date: this.props.event.date,
+      startTime: this.props.event.start_time,
+      endTime: this.props.event.end_time,
+      location: this.props.event.location.streetName,
+      organizer: this.props.event.organizer,
+      intensity: this.props.event.intensity,
+      attending: this.props.event.total_attendees,
+      description: this.props.event.description,
+      badge: this.props.badge
+    }
   }
-
+  // Navigate back to previous screen
   onBack = () => {
-    // Navigate back to profile page
     Actions.pop();
   };
 
-  //Depending on whether we are viewing an event in home or in search different props will be passing
-  // First we want to determine props available and set state with the necessary values
-  //
-  // First will do for search events
-  componentWillMount() {
-<<<<<<< HEAD
-    this.props.fetchEvents;
-=======
-    this.props.fetchUserEvents;
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
-    if (this.props.searchScreen == true) {
-      searchEvent = this.props.markerSent;
-      console.log(searchEvent, "markerSent");
-
-      //check if hosting, going or not going
-      var badge = "";
-      const fullname = this.props.user.user.fullname;
-      console.log('SEARCH EVENT', searchEvent)
-      if (fullname === searchEvent.organizer) {
-        badge = "HOSTING";
-      } else {
-        //get event and see if user is attending
-        attendees = searchEvent.attendees;
-        attendees.forEach(function(a) {
-          if (a.fullname == fullname) {
-            badge = "GOING";
-          }
-        });
-      }
-
-      this.setState({
-        eventId: searchEvent.id,
-        date: searchEvent.date,
-        startTime: searchEvent.start_time,
-        endTime: searchEvent.end_time,
-        title: searchEvent.title,
-        location: searchEvent.location.streetName,
-        badge: badge,
-        organizer: searchEvent.organizer,
-        intensity: searchEvent.intensity,
-        attending: searchEvent.total_attendees,
-        description: searchEvent.description
-      });
-    }
-
-    //The following is for viewing an event from the homescreen
-    // The user might be attending the event (GOING) or HOSTING the event
-    if (this.props.searchScreen == false) {
-      // console.log("eventID", this.props.eventId);
-      id = this.props.eventId;
-      events = this.props.events;
-      console.log("events", events, "event id", id);
-
-      //retrieve the current event
-      let currEvent = events.find(e => e.id === id);
-      console.log("current event", currEvent);
-
-      //check if hosting, going or not going
-      var badge = "";
-      const fullname = this.props.user.user.fullname;
-      if (fullname == currEvent.organizer) {
-        badge = "HOSTING";
-      } else {
-        //get event and see if user is attending
-        attendees = currEvent.attendees;
-        attendees.forEach(function(a) {
-          if (a.fullname == fullname) {
-            badge = "GOING";
-          }
-        });
-      }
-
-      // console.log("currEvent", currEvent);
-      this.setState(
-        {
-          eventId: currEvent.id,
-          date: currEvent.date,
-          startTime: currEvent.start_time,
-          endTime: currEvent.end_time,
-          title: currEvent.title,
-          location: currEvent.location,
-          badge: badge,
-          organizer: currEvent.organizer,
-          intensity: currEvent.intensity,
-          attending: currEvent.total_attendees,
-          description: currEvent.description
-        },
-        () => {
-          console.log(this.state, "state updated");
-        }
-      );
-    }
-  }
-
+  // Deletes the event
   deleteEvent = () => {
-    console.log("we are deleting event with id", this.state.eventId);
-    this.props.deleteEvent(this.state.eventId);
+    this.props.deleteEvent(this.state.id);
     this.props.sendNotification(
-      this.state.eventId,
+      this.state.id,
       this.state.title,
       'cancelledEvent'
       );
@@ -138,79 +56,54 @@ class ViewEventScreen extends Component {
   // When edit event button is clicked
   goToEditEvent = () => {
     // Navigate to edit event
-    Actions.editEvent(this.state.eventId);
+    Actions.editEvent({ event: this.props.event});
   };
 
-  // Set state
-  onChange(name, value) {
-<<<<<<< HEAD
-    console.log("name", name, "value", value)
+  // Set state of attending status
+  onChangeStatus(name, value) {
     this.setState({ [name] : value }, function () {
-      this.updateAttendees();
-  });
-}
-
-  updateAttendees() {
-    console.log("am i going???", this.state.badge)
-    console.log("current user", this.props.user.user.email)
-    if (this.state.badge == "GOING"){
-=======
-    console.log("name", name, "value", value);
-    this.setState({ [name]: value }, function() {
       this.updateAttendees();
     });
   }
 
+  // Updates the attendee list
   updateAttendees() {
-    this.setState({ [name]: value });
-    console.log("am i going???", this.state.badge);
-    console.log("current user", this.props.user.user.email);
-    if (this.state.badge == "GOING") {
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
+    if (this.state.badge == "GOING"){
       this.props.addAttendees(
-        this.state.eventId,
+        this.state.id,
         this.props.user.user.fullname,
         this.props.user.user.email
       );
-<<<<<<< HEAD
-      console.log("You joined!", this.props)
-    }else{
-=======
-      console.log("You joined!");
     } else {
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
       this.props.removeAttendees(
-        this.state.eventId,
+        this.state.id,
         this.props.user.user.email
       );
-      console.log("You left!");
     }
   }
 
-  render() {
-    //const attendingOptions = ["Not Going", "Going"];
-
-    const attendingOptions = [
-      { label: "Not Going", value: "" },
-      { label: "Going", value: "GOING" }
-    ];
-
-    //Conditional rendering for the buttons present on view event
-    //If going or not going, will display those buttons
-    //If hosting, will display edit and delete buttons
-    if (this.state.badge == "GOING" || this.state.badge == "") {
-      //check if user going or not
-      var going = 0;
-      if (this.state.badge == "GOING") {
-        going = 1;
-      }
-      console.log(going, "going");
-      buttons = (
+    // Conditional rendering for the buttons present on view event
+    // If going or not going, will display those buttons
+    // Otherwise, you're hosting the event and edit and delete buttons will be displayed
+  showOptions() {
+    if (this.state.badge == "GOING" || this.state.badge == null) {
+      //const attendingOptions = ["Not Going", "Going"];
+      const attendingStatuses = [
+        { label: "Not Going", value: null },
+        { label: "Going", value: "GOING" }
+      ];
+      let default_status = null;
+      attendingStatuses.map((option, index) => {
+        if (this.state.badge == option.value) {
+          default_status = index;
+        }
+      });
+      return (
         <View style={styles.segmentedControls}>
           <SwitchSelector
-            options={attendingOptions}
-            initial={going}
-            onPress={this.onChange.bind(this, "badge")}
+            options={attendingStatuses}
+            initial={default_status}
+            onPress={this.onChangeStatus.bind(this, "badge")}
             textColor={"#A680B8"} //'#7a44cf'
             selectedColor={"#ffffff"}
             buttonColor={"#A680B8"}
@@ -220,9 +113,8 @@ class ViewEventScreen extends Component {
           />
         </View>
       );
-    }
-    if (this.state.badge == "HOSTING") {
-      buttons = (
+  } else {
+    return (
         <View>
           <TouchableOpacity
             style={styles.editButton}
@@ -242,26 +134,9 @@ class ViewEventScreen extends Component {
         </View>
       );
     }
+  }
 
-    //conditional rendering for the description
-    if (this.state.badge == "GOING" || this.state.badge == "") {
-      description = (
-        <View style={ScreenStyleSheet.rowContainerEvent}>
-          <Text style={ScreenStyleSheet.eventDescription}>
-            {this.state.description}
-          </Text>
-        </View>
-      );
-    } else {
-      description = (
-        <View style={ScreenStyleSheet.rowContainerEvent}>
-          <Text style={ScreenStyleSheet.eventDescription1}>
-            {this.state.description}
-          </Text>
-        </View>
-      );
-    }
-
+  render() {
     return (
       <Container>
         {/* Header */}
@@ -287,7 +162,7 @@ class ViewEventScreen extends Component {
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {/* Card List View */}
+          {/* Date and Time*/}
           <View style={ScreenStyleSheet.rowContainerEvent}>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.EventSectionTitle}>
@@ -296,6 +171,7 @@ class ViewEventScreen extends Component {
             </View>
           </View>
 
+          {/* Title */}
           <View style={ScreenStyleSheet.rowContainerEvent}>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.TitleHeader}>
@@ -304,6 +180,7 @@ class ViewEventScreen extends Component {
             </View>
           </View>
 
+          {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainerEvent}>
             <View>
               <Image
@@ -318,6 +195,7 @@ class ViewEventScreen extends Component {
             </View>
           </View>
 
+          {/* Location */}
           <View style={ScreenStyleSheet.rowContainerEvent}>
             <View>
               <Image
@@ -327,11 +205,12 @@ class ViewEventScreen extends Component {
             </View>
             <View s>
               <Text style={ScreenStyleSheet.eventInfoInput}>
-                {this.state.location.streetName}
+                {this.state.location}
               </Text>
             </View>
           </View>
 
+          {/* Organizer */}
           <View style={ScreenStyleSheet.rowContainerEvent}>
             <View>
               <Image
@@ -346,6 +225,7 @@ class ViewEventScreen extends Component {
             </View>
           </View>
 
+        {/* Number or attendees */}
           <View style={ScreenStyleSheet.rowContainerEvent}>
             <View>
               <Image
@@ -366,6 +246,7 @@ class ViewEventScreen extends Component {
           {/* On screen separator */}
           <View style={ScreenStyleSheet.EventLineSeparator} />
 
+          {/* Description */}
           <View style={ScreenStyleSheet.rowContainerEvent}>
             <View>
               <Image
@@ -377,8 +258,14 @@ class ViewEventScreen extends Component {
               <Text style={ScreenStyleSheet.aboutInfo}>About this event</Text>
             </View>
           </View>
-          {description}
-          {buttons}
+          <View style={ScreenStyleSheet.rowContainerEvent}>
+            <Text style={ScreenStyleSheet.eventDescription}>
+              {this.state.description}
+            </Text>
+          </View>
+
+          {/* User options depending on their badge */}
+          {this.showOptions()}
         </Content>
       </Container>
     );
@@ -387,14 +274,13 @@ class ViewEventScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    events: state.event.events,
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchEvents, 
+  { fetchUserEvents, 
     deleteEvent, 
     addAttendees, 
     removeAttendees, 

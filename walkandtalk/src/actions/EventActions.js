@@ -14,10 +14,12 @@ export const fetchEvents = () => {
   return dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingevents";
+    console.log('fetching events.........')
     axios
       .get(url)
       .then(res => {
         dispatch({ type: SET_EVENTS, payload: res.data.events });
+        console.log('dispatch.........', res.data.events)
       })
       .catch(err => {
         console.log(err);

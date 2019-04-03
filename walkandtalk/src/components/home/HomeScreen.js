@@ -1,13 +1,9 @@
 // Create Event Screen View
 import React, { Component } from "react";
-<<<<<<< HEAD
-import { fetchEvents } from "../../actions/EventActions";
 import { getUnreadNotifications } from "../../actions/NotificationActions";
-=======
 import { fetchUserEvents } from "../../actions/EventActions";
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
 import { connect } from "react-redux";
-import { Image, View, StatusBar } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import {
   Container,
   Header,
@@ -25,73 +21,57 @@ import IconWithBadge from "../../constants/IconWithBadge";
 
 class HomeScreen extends Component {
   constructor(props) {
-<<<<<<< HEAD
     super(props);    
-    this.props.fetchEvents();
     this.props.getUnreadNotifications(this.props.user.user.email);
-=======
-    super(props);
     this.props.fetchUserEvents(this.props.user.user.email);
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
   }
 
   componentDidMount() {
-<<<<<<< HEAD
     this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
       console.log('HomeScreen did focus'); 
-      this.props.fetchEvents();
+      this.props.fetchUserEvents(this.props.user.user.email);
       this.props.getUnreadNotifications(this.props.user.user.email);
     })
   }
 
   componentWillUnmount() {
     this.didFocusListener.remove();
-=======
-    console.log("fetching events");
-    this.props.fetchUserEvents(this.props.user.user.email);
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
+  }
+
+  viewEvent(index, badge) {
+    Actions.viewEvent( {
+      event: this.props.events[index],
+      badge: badge
+    })
   }
 
 
   getEvents() {
     let events = [];
-    const fullname = this.props.user.user.fullname;
-    console.log(this.props.events);
-    this.props.events.map(event => {
+    console.log('userEvents', this.props.events);
+    this.props.events.map((event, index) => {
       let badge = null;
-      if (fullname == event.organizer) {
+      if ( this.props.user.user.email == event.email) {
         badge = "HOSTING";
-        events.unshift(
-          <BaseCard
-            key={event.id}
-            id={event.id}
-            date={event.date}
-            start_time={event.start_time}
-            title={event.title}
-            location={event.location.streetName}
-            badge={badge}
-          />
-        );
       } else {
-        for (let i = 0; i < event.attendees.length; i++) {
-          if (event.attendees[i].fullname == fullname) {
-            badge = "GOING";
-            events.unshift(
-              <BaseCard
-                key={event.id}
-                id={event.id}
-                date={event.date}
-                start_time={event.start_time}
-                title={event.title}
-                location={event.location.streetName}
-                badge={badge}
-              />
-            );
-            break;
-          }
-        }
+        badge = "GOING";
       }
-    });
+      events.unshift(
+        <TouchableOpacity
+        key={index}
+        onPress={this.viewEvent.bind(this, index, badge)}
+      >
+        <BaseCard
+          date={event.date}
+          start_time={event.start_time}
+          title={event.title}
+          location={event.location.streetName}
+          badge={badge}
+        />
+      </TouchableOpacity>
+          
+        );
+      }); 
     return events;
   }
 
@@ -139,21 +119,13 @@ class HomeScreen extends Component {
 const mapStateToProps = state => {
   console.log("homescreen");
   return {
-<<<<<<< HEAD
-    events: state.event.events,
     unread_notifications: state.notification.unread_notifications,
-=======
     events: state.event.userEvents,
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-<<<<<<< HEAD
-  { fetchEvents, getUnreadNotifications }
-=======
-  { fetchUserEvents }
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
+  { fetchUserEvents, getUnreadNotifications }
 )(HomeScreen);

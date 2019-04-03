@@ -40,17 +40,9 @@ export const removeAttendees = (
     id: id,
     email: email
   };
-<<<<<<< HEAD
-  console.log( attendee, 'in ACTIONS!!!');
   return dispatch => {
     var ip = getIP();
     var url = ip + "public/attendee/remove";
-    console.log( attendee, 'in ACTIONS!!!');
-=======
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/attendee/remove";
->>>>>>> 22372b998ac2a865abd99c18404874241ea9741e
     axios
       .put(url, attendee)
       .then(res => {
