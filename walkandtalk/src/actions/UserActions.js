@@ -129,6 +129,7 @@ export const getUser = email => {
     axios
       .get(url)
       .then(res => {
+        console.log(res.data.user, "getting single user")
         dispatch({ 
           type: SET_USER, 
           payload: res.data.user });
@@ -152,7 +153,7 @@ export const getAllUsers = () => {
         console.log(res.data.users, "payload")
         dispatch({ 
           type: SET_ALL_USERS, 
-          payload: res.data.users,
+          payload: res.data.user,
          });
       })
       .catch(err => {

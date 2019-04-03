@@ -20,7 +20,7 @@ import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
 import { getPicture } from "../../actions/PictureActions";
-import {getAllUsers} from "../../actions/UserActions";
+import {getAllUsers, getUser} from "../../actions/UserActions";
 
 // Profile tab
 class OtherProfileScreen extends Component {
@@ -28,16 +28,28 @@ class OtherProfileScreen extends Component {
   constructor(props) {
     super(props);
     console.log("we are viewing another profile")
-    //console.log("Props on profile", this.props);
-    //this.props.getUser(this.props.email);
+    
+    this.props.getUser = this.props.getUser(this.props.email);
+    this.props.getAllUsers();
+
+    console.log(this.props.getUser, "getUser")
+    console.log(this.props.getAll, "get All")
     
     
 }
 
-componentWillMount() {
-  this.props.users = this.props.getAllUsers();
-    console.log(this.props.users, "all users consoled")
+componentDidMount() {
+  this.props.getUser;
+    this.props.otherUser;
+    this.props.users;
+
+      console.log(this.props.getUser, "get user did")
+    console.log(this.props.user.users, "user.users props if exists")
+    console.log(this.props.user, "user props if exists")
+    //console.log(this.props.user.otherUser, "otherUSer props if exists")
     console.log(this.props.email, "email")
+    console.log(this.props, "all props")
+
   }
 
   onBack = () =>{
@@ -45,7 +57,8 @@ componentWillMount() {
   }
 
   render() {
-    //const otherUser = this.props.users;
+    //const otherUser = this.props.users.otherUser
+    //console.log(otherUser, "otherUser")
     return (
       <Container>
 
@@ -221,13 +234,14 @@ const mapStateToProps = state => {
     return {
       users: state.user.users,
       user: state.user,
-      picture: state.picture
+      picture: state.picture,
+      otherUser: state.user.otherUser
     };
   };
 
 export default connect(
   mapStateToProps,
-  {getAllUsers}
+  {getAllUsers, getUser}
 )(OtherProfileScreen);
 
 // Styles

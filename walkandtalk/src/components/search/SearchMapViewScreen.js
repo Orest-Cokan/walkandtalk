@@ -157,6 +157,8 @@ class SearchMapViewScreen extends Component {
     this.props.fetchEvents;
     console.log("all events in component did mount", this.props.events);
     console.log("marker state in component did mount", this.state.markers);
+
+    this.makeMarkers(this.props.events)
   }
 
   //Before leaving the component clear the watch of the device
@@ -633,7 +635,7 @@ class SearchMapViewScreen extends Component {
               this.mapRef = ref;
             }}
             onLayout={() => {
-              this.layoutMap;
+              this.mapRef.fitToCoordinates(this.state.markers, { edgePadding: { top: 10, right: 10, bottom: 10, left: 10 }, animated: false })
             }}
             provider={PROVIDER_GOOGLE}
             style={styles.map}

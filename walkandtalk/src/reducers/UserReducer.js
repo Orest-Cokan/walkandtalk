@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   errorCreating: "",
   loading: false,
   user: "",
+  otherUser:'',
   users:[]
 };
 
@@ -66,7 +67,7 @@ const user = (state = INITIAL_STATE, action) => {
         user: action.payload
       };
     case SET_USER:
-      return { ...state, user: action.payload };
+      return { ...state, otherUser: action.payload };
     case SET_ALL_USERS:
       return { ...state, users: action.payload };
     default:

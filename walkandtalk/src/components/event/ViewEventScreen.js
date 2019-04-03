@@ -217,7 +217,6 @@ class ViewEventScreen extends Component {
 
   getAttendees(){
     let attendee_list = [];
-    console.log(this.state.attendees, "attending list")
     this.state.attendees.map((a, index) => {
       attendee_list.unshift(
         <TouchableOpacity 
