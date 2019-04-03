@@ -9,6 +9,9 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { createEvent } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
 import RNGooglePlaces from "react-native-google-places";
+import { Platform } from "react-native";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
 import {
   StyledText as Text,
   StyledTextInput as TextInput
@@ -209,24 +212,101 @@ class AddEventScreen extends Component {
   onCancel = () => {
     Actions.home();
   };
+  displayLocation() {
+    if (Platform.OS === "ios") {
+        return (
+          <GooglePlacesAutocomplete
+          placeholder='Add a Location'
+          minLength={2} // minimum length of text to search
+          autoFocus={false}
+          returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+          keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
+          listViewDisplayed='auto'    // true/false/undefined
+          fetchDetails={true}
+          renderDescription={row => row.description} // custom description render
+          onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+            console.log(data, details);
+          }}
+    
+          getDefaultValue={() => ''}
+    
+          query={{
+            // available options: https://developers.google.com/places/web-service/autocomplete
+            key: 'AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0',
+            language: 'en', // language of the results
+            types: 'geocode' // default: 'geocode'
+          }}
+    
+          styles={{
+            textInputContainer: {
+              width: '100%'
+            },
+            description: {
+              fontWeight: 'bold'
+            }
+          }}
+    
+          currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+          currentLocationLabel="Current location"
+          nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+          GoogleReverseGeocodingQuery={{
+            // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+          }}
+          GooglePlacesSearchQuery={{
+            // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
 
+          }}
+          
+          GooglePlacesDetailsQuery={{
+            // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
+            fields: 'formatted_address',
+          }}
+    
+          filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+    
+          debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+        />
+      );
+    } else if(Platform.OS === "android") {
+        return (
+        <TouchableOpacity
+        style={styles.locationButton}
+        onPress={() => this.openSearchModal()}
+        accessibilityLabel="createEventLocation"
+      >
+        <Text
+          style={{ color: this.state.location ? "#333" : "#C9C9C9" }}
+        >
+          {this.state.location ? this.state.location : "Add a Location"}
+        </Text>
+      </TouchableOpacity>
+      );
+    }
+}
   // Google places search with autocomplete
-
   openSearchModal() {
-    RNGooglePlaces.openAutocompleteModal({
-      useOverlay: true
-      // limiting search results to coordinates and name
-    })
-      .then(place => {
-        this.setState({
-          location: place.address,
-          lat: place.location.latitude,
-          long: place.location.longitude
-        });
-        this.showError(this.state.location, this.location, "errorLocation");
-      })
-      .catch(error => console.log(error.message));
-  }
+      RNGooglePlaces.openAutocompleteModal({
+      // Restricting autofill results to alberta to limit requests
+      locationRestriction: {
+        latitudeSW: 48.9966667,
+        longitudeSW: -120.0013835,
+        latitudeNE: 60.0004216,
+        longitudeNE: -110.0047639
+      },
+        useOverlay: true,
+        country: "CA"
+        // limiting search results to coordinates and name
+      }, ["location", "address"])
+        .then(place => {
+          this.setState({
+            location: place.address,
+            lat: place.location.latitude,
+            long: place.location.longitude
+          });
+          this.showError(this.state.location, this.location, "errorLocation");
+        })
+        .catch(error => console.log(error.message));
+    }
 
   render() {
     // All the options displayed in radio buttons
@@ -445,17 +525,9 @@ class AddEventScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
-              <TouchableOpacity
-                style={styles.locationButton}
-                onPress={() => this.openSearchModal()}
-                accessibilityLabel="createEventLocation"
-              >
-                <Text
-                  style={{ color: this.state.location ? "#333" : "#C9C9C9" }}
-                >
-                  {this.state.location ? this.state.location : "Add a Location"}
-                </Text>
-              </TouchableOpacity>
+            <View> 
+              {this.displayLocation()} 
+            </View>
             </View>
           </View>
           {this.state.errorLocation}
