@@ -6,6 +6,8 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
   USER_EDIT,
+  SET_USER,
+  SET_ALL_USERS,
   USER_APPROVE,
   USER_DECLINE,
   GET_UNREGISTERED_USERS
@@ -120,6 +122,50 @@ const loginUserSuccess = (dispatch, user) => {
   });
   Actions.app();
 };
+
+// action to get a single user
+export const getUser = email => {
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/user/" + email;
+    console.log("inside get a single user", email)
+    axios
+      .get(url)
+      .then(res => {
+        console.log(res.data.user, "getting single user")
+        dispatch({ 
+          type: SET_USER, 
+          payload: res.data.user });
+      })
+      .catch(err => {
+        console.log(err);
+        console.log("ERROR in getUser")
+      });
+  };
+};
+
+// action to get all users
+export const getAllUsers = () => {
+  return dispatch => {
+    var ip = getIP();
+    var url = ip + "public/users";
+    console.log("inside get all users")
+    axios
+      .get(url)
+      .then(res => {
+        console.log(res.data.users, "payload")
+        dispatch({ 
+          type: SET_ALL_USERS, 
+          payload: res.data.user,
+         });
+      })
+      .catch(err => {
+        console.log(err);
+        console.log("ERROR in get all users")
+      });
+  };
+};
+
 
 // action to edit a user
 export const editUser = (

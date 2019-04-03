@@ -2,9 +2,7 @@ import React, { Component } from "react";
 import {
   StyleSheet,
   View,
-  Image,
-  TouchableOpacity,
-  TouchableHighlight,
+  Image
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
@@ -22,54 +20,64 @@ import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
 import { getPicture } from "../../actions/PictureActions";
-import Sidebar from './Sidebar'
+import {getAllUsers, getUser} from "../../actions/UserActions";
 
 // Profile tab
-class ProfileScreen extends Component {
+class OtherProfileScreen extends Component {
+
   constructor(props) {
     super(props);
-    console.log("Props on profile", this.props);
+    console.log("we are viewing another profile")
+    
+    this.props.getUser = this.props.getUser(this.props.email);
+    this.props.getAllUsers();
+
+    console.log(this.props.getUser, "getUser")
+    console.log(this.props.getAll, "get All")
+    
+    
+}
+
+componentDidMount() {
+  this.props.getUser;
+    this.props.otherUser;
+    this.props.users;
+
+      console.log(this.props.getUser, "get user did")
+    console.log(this.props.user.users, "user.users props if exists")
+    console.log(this.props.user, "user props if exists")
+    //console.log(this.props.user.otherUser, "otherUSer props if exists")
+    console.log(this.props.email, "email")
+    console.log(this.props, "all props")
+
   }
 
-  closeDrawer = () => {
-    this.drawer._root.close()
-  };
-
-  openDrawer = () => {
-    this.drawer._root.open()
-  };
-
-  // When edit profile icon is clicked
-  goToEditProfile = () => {
-    // Navigate to edit profile
-    Actions.editProfile();
-  };
-
-  componentWillMount(){
-    vars = this.props.user.user
+  onBack = () =>{
+      Actions.pop()
   }
 
   render() {
-    const vars = this.props.user.user;
+    //const otherUser = this.props.users.otherUser
+    //console.log(otherUser, "otherUser")
     return (
       <Container>
-        <Drawer
-          side="right"
-          ref={(ref) => { this.drawer = ref; }}
-          content={<Sidebar closeDrawer={this.closeDrawer.bind(this)}/>}
-          tapToClose={true}
-          openDrawerOffset={0.4}
-          panOpenMask={0.4}
-          onClose={() => this.closeDrawer()} >
+
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
           iosBarStyle={"dark-content"}
         >
-          <Left style={ScreenStyleSheet.headerSides}/>
+          <Left style={ScreenStyleSheet.headerSides}>
+            <Button transparent onPress={this.onBack}>
+              <Image
+                style={ScreenStyleSheet.headerIcon}
+                source={require("../../assets/icons/back-button.png")}
+              />
+            </Button>
+          </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Profile</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>fullname</Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={() => this.openDrawer()}>
@@ -84,26 +92,14 @@ class ProfileScreen extends Component {
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           {/* Profile header container */}
           <View style={ScreenStyleSheet.profileHeader}>
-            {/* Edit profile icon  */}
-            <View style={ScreenStyleSheet.editProfile}>
-              <TouchableHighlight
-                onPress={this.goToEditProfile}
-                activeOpacity={0}
-                underlayColor={'transparent'}
-              >
-                <Image
-                  style={ScreenStyleSheet.editIcon}
-                  source={require("../../assets/icons/edit.png")}
-                />
-              </TouchableHighlight>
-            </View>
+        
             {/* Profile picture */}
             <Image
               style={ScreenStyleSheet.avatar}
-              source={this.props.picture.picture.image ? {uri: this.props.picture.picture.image} : require("../../assets/icons/default-profile.png")}
+              source={require("../../assets/icons/default-profile.png")}
             />
             <Text style={ScreenStyleSheet.profileName}>
-              {vars.fullname}
+              fullname
             </Text>
           </View>
 
@@ -125,7 +121,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {vars.dob}
+                dob
               </Text>
             </View>
           </View>
@@ -139,7 +135,7 @@ class ProfileScreen extends Component {
                 {/* Automatically calculates the age when given date of birth */}
                 {Math.floor(
                   (new Date().getTime() -
-                    Date.parse(vars.dob)) /
+                    Date.parse("Mar 30, 2019")) /
                     31557600000
                 )}
               </Text>
@@ -152,7 +148,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {vars.menopausal_stage}
+                menopause
               </Text>
             </View>
           </View>
@@ -177,7 +173,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {vars.preference.distance} km
+                distance km
               </Text>
             </View>
           </View>
@@ -190,7 +186,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {vars.preference.duration} min
+                duration min
               </Text>
             </View>
           </View>
@@ -201,7 +197,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {vars.preference.intensity}
+                intensity
               </Text>
             </View>
           </View>
@@ -212,7 +208,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {vars.preference.venue}
+                venue
               </Text>
             </View>
           </View>
@@ -223,29 +219,30 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {vars.preference.location}
+                location
               </Text>
             </View>
           </View>
         </Content>
-        </Drawer>
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log("profilescreen");
-  return {
-    user: state.user,
-    picture: state.picture
+    console.log("otherprofilescreen");
+    return {
+      users: state.user.users,
+      user: state.user,
+      picture: state.picture,
+      otherUser: state.user.otherUser
+    };
   };
-};
 
 export default connect(
   mapStateToProps,
-  null
-)(ProfileScreen);
+  {getAllUsers, getUser}
+)(OtherProfileScreen);
 
 // Styles
 const styles = StyleSheet.create({

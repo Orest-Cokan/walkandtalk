@@ -30,11 +30,11 @@ class SearchTabScreen extends Component {
           <Title style={ScreenStyleSheet.headerTitle}>Search</Title>
         </Body>
       </Header>
-        <Tabs style={{ elevation: 3 }}>
+        <Tabs style={{ elevation: 3}} tabBarUnderlineStyle = {{backgroundColor: "#A680B8"}}>
           <Tab
             heading={
-              <TabHeading style={{backgroundColor: "#A680B8"}}>
-                <Text>List</Text>
+              <TabHeading style={{backgroundColor: "#FFFFFF"}}>
+                <Text style={{color:"#A680B8" }}>List</Text>
               </TabHeading>
             }
           >
@@ -42,8 +42,8 @@ class SearchTabScreen extends Component {
           </Tab>
           <Tab
             heading={
-              <TabHeading style={{backgroundColor: "#A680B8"}}>
-                <Text>Map</Text>
+              <TabHeading style={{backgroundColor: "#FFFFFF"}}>
+                <Text style={{color:"#A680B8" }}>Map</Text>
               </TabHeading>
             }
           >
