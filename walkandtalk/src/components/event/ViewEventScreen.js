@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, Text, Image, TouchableOpacity } from "react-native";
+import { View, ScrollView, Text, Image, TouchableOpacity, Alert } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -13,7 +13,7 @@ import {
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-
+import AwesomeAlert from 'react-native-awesome-alerts';
 import UserCard from "../../cardview/userCard";
 import Modal from "react-native-modal";
 import { Actions } from "react-native-router-flux";
@@ -38,12 +38,28 @@ class ViewEventScreen extends Component {
       intensity: this.props.event.intensity,
       attending: this.props.event.total_attendees,
       description: this.props.event.description,
-      badge: this.props.badge
+      attendees: this.props.event.attendees,
+      badge: this.props.badge,
+      goingAlert: false,
+      notGoingAlert: false
     }
   }
   // Navigate back to previous screen
   onBack = () => {
-    Actions.pop();
+    Actions.search();
+  };
+
+  hideAlert(name) {
+    this.setState( { [name] : false })
+  };
+
+  showAlert(value) {
+    if (value == "GOING") {
+      this.setState( { goingAlert : true })
+    } else {
+      this.setState( { notGoingAlert : true })
+    }
+    
   };
 
   // Deletes the event
@@ -67,11 +83,6 @@ class ViewEventScreen extends Component {
     this.setState({visibleModal:false})
    console.log("we are going to view other profile")
    Actions.otherProfile({email:email})
-  };
-
-  onBack = () => {
-    // Navigate back to profile page
-    Actions.pop();
   };
 
 
@@ -100,28 +111,46 @@ class ViewEventScreen extends Component {
     this.props.deleteEvent(this.state.eventId);
   };
 
+  confirm() {
+    Alert.alert(
+      'Alert Title',
+      'My Alert Msg',
+      [
+        {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      {cancelable: false},
+    );
+  }
   // Set state
-  onChange(name, value) {
-    console.log("name", name, "value", value);
-    this.setState({ [name]: value }, function() {
+  onChangeStatus(value) {
+    this.setState({ badge: value }, function() {
       this.updateAttendees();
     });
   }
 
-  // Updates the attendee list
-  updateAttendees() {
-    if (this.state.badge == "GOING"){
-      this.props.addAttendees(
-        this.state.id,
-        this.props.user.user.fullname,
-        this.props.user.user.email
-      );
-    } else {
-      this.props.removeAttendees(
-        this.state.id,
-        this.props.user.user.email
-      );
-    }
+  updateAttendees = async() => {
+    await new Promise((resolve, reject) => {
+      if (this.state.badge == "GOING"){
+        this.props.addAttendees(
+          this.state.id,
+          this.props.user.user.fullname,
+          this.props.user.user.email
+        );
+      } else {
+        this.props.removeAttendees(
+          this.state.id,
+          this.props.user.user.email
+        );
+      }
+      resolve();
+      Actions.homeTab();
+    });
   }
 
   getAttendees(){
@@ -164,7 +193,7 @@ class ViewEventScreen extends Component {
           <SwitchSelector
             options={attendingStatuses}
             initial={default_status}
-            onPress={this.onChangeStatus.bind(this, "badge")}
+            onPress={this.showAlert.bind(this)}
             textColor={"#A680B8"} //'#7a44cf'
             selectedColor={"#ffffff"}
             buttonColor={"#A680B8"}
@@ -354,6 +383,46 @@ class ViewEventScreen extends Component {
           {/* User options depending on their badge */}
           {this.showOptions()}
         </Content>
+        <AwesomeAlert
+          show={this.state.notGoingAlert}
+          showProgress={false}
+          message="Are you sure you don't want to go to this event?"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={true}
+          showConfirmButton={true}
+          confirmText="Yes"
+          confirmButtonColor= {"#A680B8"}
+          showCancelButton={true}
+          cancelText="No"
+          cancelButtonColor= {"grey"}
+          onConfirmPressed={() => {
+            this.onChangeStatus(null);
+            this.hideAlert('notGoingAlert');
+          }}
+          onCancelPressed={() => {
+            this.hideAlert('notGoingAlert');
+          }}
+        />
+        <AwesomeAlert
+          show={this.state.goingAlert}
+          showProgress={false}
+          message="Are you sure you want to go to this event?"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={true}
+          showConfirmButton={true}
+          confirmText="Yes"
+          confirmButtonColor= {"#A680B8"}
+          showCancelButton={true}
+          cancelText="No"
+          cancelButtonColor= {"grey"}
+          onConfirmPressed={() => {
+            this.onChangeStatus("GOING");
+            this.hideAlert('goingAlert');
+          }}
+          onCancelPressed={() => {
+            this.hideAlert('goingAlert');
+          }}
+        />
       </Container>
     );
   }

@@ -106,21 +106,19 @@ class SearchTabScreen extends Component {
     this.state = {
       confirmed: false,
       selectedItems: [],
-      text: "",
+      text: null,
       searchResults: [],
       mapRegion: null,
       lastLat: null,
       lastLong: null
     };
     this.props.fetchEvents();
-    console.log('events.....', this.props.events);
   }
 
   componentDidMount() {
     this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
       console.log('Search Screen did focus'); 
       this.props.fetchEvents();
-      console.log("all events in component did mount", this.props.events);
       const position = getCurrentLocation();
       if (position) {
         //Tracking location is still necessary for distance queries
@@ -134,6 +132,7 @@ class SearchTabScreen extends Component {
           this.onRegionChange(region, region.latitude, region.longitude);
         }, (error)=>console.log(error));
       }
+      this.keywordSearch();
     })
   }
 
@@ -171,7 +170,6 @@ class SearchTabScreen extends Component {
 
 //Function when the select button is selected in the multi picker, and it is closed
   onConfirm = () => {
-    console.log(this.state.selectedItems, "multi-select closed");
     filters = this.state.selectedItems;
 
     this.setState(
@@ -234,8 +232,6 @@ class SearchTabScreen extends Component {
         results = results.concat(v2);
       }
     });
-
-    console.log(results, "venue results")
     return results
   }
 
@@ -254,33 +250,26 @@ class SearchTabScreen extends Component {
         distance = geolib.getDistance(
           {latitude: this.state.lastLat, longitude: this.state.lastLong},
           {latitude: events[j].location.lat, longitude: events[j].location.long})
-        console.log(this.state.lastLat, "lat", this.state.lastLong, "long")
-        console.log("distance", distance)
         distance = distance /1000
-        console.log("distance km", distance)
 
           if(d_arr[i]==66){
             if (distance<=5){
               results.push(events[j])
-              console.log("5 km search")
             }
           }
           if(d_arr[i]==77){
             if(distance<=10){
               results.push(events[j])
-              console.log("10 km search")
             }
           }
           if(d_arr[i]==88){
             if(distance<=15){
               results.push(events[j])
-              console.log("15 km search")
             }
           }
 
       }
     }
-    console.log(results, "distance results")
     return results
   }
 
@@ -293,7 +282,6 @@ class SearchTabScreen extends Component {
 
     filters = this.state.selectedItems;
     events = this.props.events;
-    console.log(this.props.events, "events in search");
 
     if(filters.length ==0){
       return
@@ -317,9 +305,6 @@ class SearchTabScreen extends Component {
         d_arr.push(f)
       }
     });
-    console.log(i_arr.length, "int arr");
-    console.log(v_arr.length, "ven arr");
-    console.log(d_arr.length, "dis arr");
 
     var howmany = 3
 
@@ -426,35 +411,35 @@ setKeyword = text => {
 //Key word search
 // Searches through out the whole object
 keywordSearch = () => {
+  this.props.fetchEvents();
   events = this.props.events;
   keyword = this.state.text;
-
-  console.log("events in keyword", events);
+  console.log("KEYWORDDDDDDDDDDDDDDDD");
   console.log("keyword", keyword);
   //convert each item to a string and see if the key word exists as a subset
   // if so, push that event to the list of results to be displayed
   // Case insensitive
-  keyword = keyword.toUpperCase()
-  var results = [];
-  events.forEach(function(e) {
-    var stringItem = JSON.stringify(e);
-    console.log('stringifies', stringItem);
-    stringItem = stringItem.toUpperCase()
-    if (stringItem.includes(keyword)) {
-      console.log('stringItem include', keyword, stringItem)
-      if (results.indexOf(e) == -1) {
-        results.push(e);
+  if (keyword) {
+    keyword = keyword.toUpperCase()
+    var results = [];
+    events.forEach(function(e) {
+      var stringItem = JSON.stringify(e);
+      stringItem = stringItem.toUpperCase()
+      if (stringItem.includes(keyword)) {
+        if (results.indexOf(e) == -1) {
+          results.push(e);
+        }
       }
-    }
-  });
-  this.setState(
-    {
-      searchResults: results,
-    },
-    () => {
-      console.log(this.state.searchResults, "updated searchResults for display");
-    }
-  );
+    });
+    this.setState(
+      {
+        searchResults: results,
+      },
+      () => {
+        console.log(this.state.searchResults, "updated searchResults for display");
+      }
+    );
+  }
 };
 
 //Using the search results from state, convert them to coordinate objects that can be placed on the map
