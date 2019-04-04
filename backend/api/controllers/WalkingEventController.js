@@ -143,7 +143,8 @@ const WalkingEventController = () => {
       include: [Attendee, Location]
     })
       .then(rowDeleted => {
-        if (rowDeleted == 1) {
+        console.log("which row is this my dude", rowDeleted);
+        if (rowDeleted != 0) {
           return res.status(200).json({ msg: "Deleted!" });
         } else {
           return res.status(404).json({ msg: "Unable to delete!" });

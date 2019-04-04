@@ -40,3 +40,15 @@ test("Attendee is updated correctly", async () => {
 test("Attendee is destroyed correctly", async () => {
   attendee.destroy();
 });
+
+// test sending in null values
+test("create an attendee with null values", async () => {
+  await attendee.destroy();
+
+  attendee = await Attendee.create({
+    fullname: null,
+    email: null
+  }).catch(error => {
+    expect(error).toBeTruthy();
+  });
+});

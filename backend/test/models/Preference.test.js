@@ -53,3 +53,18 @@ test("Preference is updated correctly", async () => {
 test("Preference is destroyed correctly", async () => {
   await preference.destroy();
 });
+
+// test sending in null values
+test("create a preference model with null values", async () => {
+  await preference.destroy();
+
+  await Preference.create({
+    duration: null,
+    distance: null,
+    venue: null,
+    intensity: null,
+    location: null
+  }).catch(error => {
+    expect(error).toBeTruthy();
+  });
+});
