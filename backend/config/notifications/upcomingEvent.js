@@ -29,10 +29,7 @@ var upcomingEvent = cron.schedule("0 1 * * * ", () => {
           email: event.email,
           isRead: 0,
           type: 'upcomingEvent',
-          eventId: event.id,
-          eventTitle: event.title,
-          recordId: null,
-          recordTitle: null
+          subjectId: event.id
         });
         // Send notification to event attendees
         event.attendees.map(attendee => {
@@ -40,15 +37,12 @@ var upcomingEvent = cron.schedule("0 1 * * * ", () => {
             email: attendee.email,
             isRead: 0,
             type: 'upcomingEvent',
-            eventId: event.id,
-            eventTitle: event.title,
-            recordId: null,
-            recordTitle: null
+            subjectId: event.id,
           });
         });
       }
     });
   });
 });
-//module.exports = upcomingEvent;
+module.exports = upcomingEvent;
 

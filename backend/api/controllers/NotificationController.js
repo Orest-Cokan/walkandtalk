@@ -11,13 +11,9 @@ const NotificationController = () => {
       Notification.create({
         email: body.email,
         isRead: body.isRead,
-        type: body.type,        // types: upcomingEvent, updatedEvent, cancelledEvent, eventRecord, questionnaire
-        eventId: body.eventId,  // for types (updatedEvent, upcomingEvent), otherwise null
-        eventTitle: body.eventTitle, // for types (updatedEvent, upcomingEvent), otherwise null
-        recordId: body.recordId, // for type (eventRecord), otherwise null
-        recordTitle: body.recordTitle // for type (eventRecord), otherwise null
+        type: body.type,              // types: upcomingEvent, updatedEvent, cancelledEvent, eventRecord, questionnaire
+        subjectId: body.subjectId,    // the subject's id (event or record) depending on the notif type
       });
-
       return res
         .status(200)
         .json({ msg: "Successfully added a notification" });

@@ -67,7 +67,6 @@ class ViewEventScreen extends Component {
     this.props.deleteEvent(this.state.id);
     this.props.sendNotification(
       this.state.id,
-      this.state.title,
       'cancelledEvent'
       );
   };
@@ -104,11 +103,6 @@ class ViewEventScreen extends Component {
     if (this.scrollViewRef) {
       this.scrollViewRef.scrollTo(p);
     }
-  };
-
-  deleteEvent = () => {
-    console.log("we are deleting event with id", this.state.eventId);
-    this.props.deleteEvent(this.state.eventId);
   };
 
   confirm() {

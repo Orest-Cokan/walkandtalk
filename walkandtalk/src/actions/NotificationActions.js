@@ -10,13 +10,12 @@ import {
   
   // Action to send an "updatedEvent" or "cancelledEvent" notification to other users
   export const sendNotification = (
-      eventId,
-      eventTitle,
+      subjectId,
       type
   ) => {
     return dispatch => {
       var ip = getIP();
-      var getAttendeesUrl = ip + "public/walkingevent/" + eventId;
+      var getAttendeesUrl = ip + "public/walkingevent/" + subjectId;
       var sendNotifUrl = ip + "public/notification";
       var attendees = [];
       // Get all event attendees
@@ -31,10 +30,7 @@ import {
             email: attendee.email,
             isRead: 0,
             type: type,
-            eventId: eventId,
-            eventTitle: eventTitle,
-            recordId: null,
-            recordTitle: null
+            subjectId: subjectId,
           };
           axios
           .post(sendNotifUrl, notification)

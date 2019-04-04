@@ -68,7 +68,6 @@ class EditEventScreen extends Component {
           this.state.location);
         this.props.sendNotification(
           this.state.id,
-          this.state.title,
           this.state.notifType
         )  
         resolve();
