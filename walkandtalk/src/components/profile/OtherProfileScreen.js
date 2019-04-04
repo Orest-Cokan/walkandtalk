@@ -13,43 +13,31 @@ import {
   Title,
   Right,
   Content,
-  Button,
-  Drawer
+  Button
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
-import { getPicture } from "../../actions/PictureActions";
 import {getAllUsers, getUser} from "../../actions/UserActions";
+import Loader from "../../constants/loader";
 
 // Profile tab
 class OtherProfileScreen extends Component {
 
   constructor(props) {
     super(props);
-    console.log("we are viewing another profile")
-    
     this.props.getUser = this.props.getUser(this.props.email);
     this.props.getAllUsers();
-
-    console.log(this.props.getUser, "getUser")
-    console.log(this.props.getAll, "get All")
-    
-    
+    this.state = {
+      loading: true
+    }
 }
 
-componentDidMount() {
-  this.props.getUser;
-    this.props.otherUser;
-    this.props.users;
-
-      console.log(this.props.getUser, "get user did")
-    console.log(this.props.user.users, "user.users props if exists")
-    console.log(this.props.user, "user props if exists")
-    //console.log(this.props.user.otherUser, "otherUSer props if exists")
-    console.log(this.props.email, "email")
-    console.log(this.props, "all props")
-
+async componentDidMount() {
+    await this.props.getUser;
+    await this.props.otherUser;
+    await this.props.users;
+    this.setState({loading: false})
   }
 
   onBack = () =>{
@@ -57,11 +45,9 @@ componentDidMount() {
   }
 
   render() {
-    //const otherUser = this.props.users.otherUser
-    //console.log(otherUser, "otherUser")
     return (
       <Container>
-
+        <Loader loading={this.state.loading} />
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
@@ -89,6 +75,7 @@ componentDidMount() {
           </Right>
         </Header>
 
+        {!this.state.loading && (
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           {/* Profile header container */}
           <View style={ScreenStyleSheet.profileHeader}>
@@ -224,6 +211,7 @@ componentDidMount() {
             </View>
           </View>
         </Content>
+        )}
       </Container>
     );
   }
