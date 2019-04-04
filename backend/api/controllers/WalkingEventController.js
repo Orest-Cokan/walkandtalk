@@ -107,8 +107,7 @@ const WalkingEventController = () => {
         end_time: body.end_time,
         intensity: body.intensity,
         venue: body.venue,
-        location: body.location,
-        attendees: body.attendees
+        location: body.location
       },
       { returning: true, where: { id: body.id } }
     )

@@ -101,7 +101,7 @@ test("WalkingEvent | destroy", async () => {
 // test destroying mutliple walking events (this was buggy in the past)
 test("WalkingEvent | destroy multiple", async () => {
   let response = await request(api)
-    .del("/public/walkingevent/1")
+    .delete("/public/walkingevent/1")
     .set("Accept", /json/)
     .expect(200);
   expect(response.body.msg).toBe("Deleted!");
@@ -112,7 +112,7 @@ test("WalkingEvent | destroy multiple", async () => {
     .send({
       organizer: "orest cokan...",
       title: "walking with friends",
-      email: "skryt@gmail.com",
+      email: "skryt12@gmail.com",
       description: "i want to go",
       intensity: "slow",
       venue: "indoor",
@@ -120,7 +120,7 @@ test("WalkingEvent | destroy multiple", async () => {
       end_time: "10:00pm",
       date: "Fri, Mar 28",
       location: {
-        streetName: "riverbend",
+        streetName: "riverbend231",
         long: 12,
         lat: 13
       }
@@ -128,7 +128,7 @@ test("WalkingEvent | destroy multiple", async () => {
     .expect(200);
 
   await request(api)
-    .del("/public/walkingevent/2")
+    .delete("/public/walkingevent/2")
     .set("Accept", /json/)
     .expect(200);
 });
@@ -190,5 +190,5 @@ test("WalkingEvent | getUserEvents", async () => {
     .set("Accept", /json/)
     .expect(200);
   console.log(response.body, "what is this meme");
-  expect(response.body.walkingevents.length).toBe(1);
+  expect(response.body.events.length).toBe(1);
 });
