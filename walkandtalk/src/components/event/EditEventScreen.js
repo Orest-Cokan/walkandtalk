@@ -277,7 +277,7 @@ class EditEventScreen extends Component {
           <View style={ScreenStyleSheet.rowContainer}>
             <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
             <GooglePlacesAutocomplete
-            placeholder='Add a Location'
+            placeholder={this.state.location.streetName ? this.state.location.streetName : 'Add a Location'}
             minLength={2}
             autoFocus={false}
             returnKeyType={'search'}

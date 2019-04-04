@@ -15,6 +15,7 @@ export const SET_ALL_USERS = "SET_ALL_USERS";
 export const USER_APPROVE = "USER_APPROVE";
 export const USER_DECLINE = "USER_DECLINE";
 export const GET_UNREGISTERED_USERS = "GET_UNREGISTERED_USERS";
+export const CLEAR_USER = "CLEAR_USER"
 
 // EVENT TYPES
 export const SET_EVENTS = "SET_EVENTS";
