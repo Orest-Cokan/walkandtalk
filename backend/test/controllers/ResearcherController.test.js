@@ -57,7 +57,7 @@ test("Accepting a user | acceptUser", async () => {
 // test the denying of a user controller
 test("Denying a user | denyUser", async () => {
   request(api)
-    .post("/public/researcher/deny")
+    .put("/public/researcher/deny")
     .set("Accept", /json/)
     .send({
       email: "martin@gmail.com"

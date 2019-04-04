@@ -61,3 +61,28 @@ test("Walking event is updated correctly", async () => {
 test("Walking event is destroyed correctly", async () => {
   walkingEvent.destroy();
 });
+
+// test sending in null values
+test("create a walking event model with null values", async () => {
+  await walkingEvent.destroy();
+
+  await WalkingEvent.create({
+    title: null,
+    organizer: "orest cokan",
+    email: "skryt@gmail.com",
+    date: "Fri, Mar 28",
+    start_time: "10:00pm",
+    end_time: "11:00pm",
+    description: "i want to go",
+    intensity: "slow",
+    venue: "indoor",
+    location: {
+      streetName: null,
+      long: 10,
+      lat: 11
+    },
+    total_attendees: 1
+  }).catch(error => {
+    expect(error).toBeTruthy();
+  });
+});

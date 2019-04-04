@@ -18,24 +18,30 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import BaseCard from "../../cardview/baseCard";
 import { Actions } from "react-native-router-flux";
 import IconWithBadge from "../../constants/IconWithBadge";
+import Loader from "../../constants/loader";
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);    
     this.props.getUnreadNotifications(this.props.user.user.email);
     this.props.fetchUserEvents(this.props.user.user.email);
+    this.state = {
+      loading: false
+    }
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
-      console.log('HomeScreen did focus'); 
-      this.props.fetchUserEvents(this.props.user.user.email);
-      this.props.getUnreadNotifications(this.props.user.user.email);
+    this.willFocusListener = this.props.navigation.addListener('willFocus', 
+    async () => { 
+      this.setState({loading: true})
+      await this.props.fetchUserEvents(this.props.user.user.email);
+      await this.props.getUnreadNotifications(this.props.user.user.email);
+      this.setState({loading: false})
     })
   }
 
   componentWillUnmount() {
-    this.didFocusListener.remove();
+    this.willFocusListener.remove();
   }
 
   viewEvent(index, badge) {
@@ -48,7 +54,6 @@ class HomeScreen extends Component {
 
   getEvents() {
     let events = [];
-    console.log('userEvents', this.props.events);
     this.props.events.map((event, index) => {
       let badge = null;
       if ( this.props.user.user.email == event.email) {
@@ -83,6 +88,7 @@ class HomeScreen extends Component {
     return (
       <Container>
         {/* Header */}
+        <Loader loading={this.state.loading} />
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
@@ -108,9 +114,11 @@ class HomeScreen extends Component {
           </Right>
         </Header>
 
+        {!this.state.loading && (
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           {this.getEvents()}
         </Content>
+        )}
       </Container>
     );
   }

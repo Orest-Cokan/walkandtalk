@@ -15,6 +15,7 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { getUncompletedRecords } from "../../actions/RecordActions";
+import Loader from "../../constants/loader";
 
 /*
 This is the forms screen. Users will see the two static questionnaires and event records to be completed.
@@ -25,21 +26,24 @@ class FormScreen extends Component {
     this.numRenders = 0;
     this.state = {
       refreshing: false,
-      records: []
+      records: [],
+      loading: false
     }
     this.props.getUncompletedRecords(this.props.user.user.email);
 
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
-      console.log('Formscreen did focus'); 
-      this.props.getUncompletedRecords(this.props.user.user.email);
-    })
+    this.willFocusListener = this.props.navigation.addListener('willFocus', 
+    async () => { 
+      await this.setState({loading: true})
+      await this.props.getUncompletedRecords(this.props.user.user.email);
+      this.setState({loading: false})
+    });
   }
 
   componentWillUnmount() {
-    this.didFocusListener.remove();
+    this.willFocusListener.remove();
   }
 
   submitRecord(index) {
@@ -73,6 +77,7 @@ class FormScreen extends Component {
   render() {
     return (
       <Container>
+        <Loader loading={this.state.loading} />
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
@@ -82,7 +87,7 @@ class FormScreen extends Component {
             <Title style={ScreenStyleSheet.headerTitle}>Forms</Title>
           </Body>
         </Header>
-
+        {!this.state.loading && (
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           <Text style={ScreenStyleSheet.sectionTitle}>Questionnaires</Text>
           <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
@@ -90,6 +95,7 @@ class FormScreen extends Component {
           <Text style={ScreenStyleSheet.sectionTitle}>Records</Text>
           {this.getRecords()}
         </Content>
+        )}
       </Container>
     );
   }

@@ -22,7 +22,8 @@ class NotificationScreen extends Component{
     super(props);
 
     this.state = {
-      isRead: 1
+      isRead: 1,
+      loading: false
     }
 
     console.log('passed props', this.props)
@@ -31,15 +32,17 @@ class NotificationScreen extends Component{
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
-      console.log('Notification did focus'); 
-      this.props.getNotifications(this.props.user.user.email);
-      console.log('did focus...', this.props.notification);
+    this.willFocusListener = this.props.navigation.addListener('willFocus', 
+    async () => { 
+      this.setState({loading: true});
+      await this.props.getNotifications(this.props.user.user.email);
+      this.setState({loading: false});
     });
-    this.didBlurListener = this.props.navigation.addListener('willBlur', () => {
+    this.willBlurListener = this.props.navigation.addListener('willBlur', 
+    async () => {
       console.log('Notification did blur'); 
-      this.props.notifications.map((notification) => {
-        this.props.updateNotification(
+      await this.props.notifications.map( async (notification) => {
+        await this.props.updateNotification(
           notification.id,
           this.state.isRead
         );
@@ -48,8 +51,8 @@ class NotificationScreen extends Component{
   }
 
   componentWillUnmount() {
-    this.didFocusListener.remove();
-    this.didBlurListener.remove();
+    this.willFocusListener.remove();
+    this.willBlurListener.remove();
   }
 
   viewEvent(eventId) {
@@ -140,11 +143,13 @@ class NotificationScreen extends Component{
           </Body>
           <Right style={ScreenStyleSheet.headerSides}/>
         </Header>
-        
+
+        {!this.state.loading && (
         <Content>
           <View><Text> </Text></View>
           {this.getNotifications()}
         </Content>
+        )}
     </Container>
     );
   }

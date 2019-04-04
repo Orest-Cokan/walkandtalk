@@ -46,7 +46,7 @@ class ViewEventScreen extends Component {
   }
   // Navigate back to previous screen
   onBack = () => {
-    Actions.search();
+    Actions.pop();
   };
 
   hideAlert(name) {
@@ -153,7 +153,7 @@ class ViewEventScreen extends Component {
       attendee_list.unshift(
         <TouchableOpacity 
         key={index}
-        disabled={!this.state.researcher}
+        disabled={!this.props.user.user.researcher}
          onPress={this.viewOtherProfile.bind(this, a.email)}>
         <UserCard
           key={a.email}

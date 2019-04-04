@@ -13,26 +13,26 @@ import {
       subjectId,
       type
   ) => {
-    return dispatch => {
+    return async dispatch => {
       var ip = getIP();
       var getAttendeesUrl = ip + "public/walkingevent/" + subjectId;
       var sendNotifUrl = ip + "public/notification";
       var attendees = [];
       // Get all event attendees
-      axios
+      await axios
       .get(getAttendeesUrl)
       .then(res => {
         attendees = res.data.walkingevent.attendees;
         
         // Send notification to all attendees
-        attendees.forEach(function(attendee) {
+        attendees.forEach(async function(attendee) {
           const notification = {
             email: attendee.email,
             isRead: 0,
             type: type,
             subjectId: subjectId,
           };
-          axios
+          await axios
           .post(sendNotifUrl, notification)
           .then(res => {
             dispatch({ type: NOTIFICATION_CREATE });
@@ -50,14 +50,14 @@ import {
     id,
     isRead
   ) => {
-    return dispatch => {
+    return async dispatch => {
       var ip = getIP();
       var url = ip + "public/notification";
       const notification = {
         id: id,
         isRead: isRead
       };
-      axios
+      await axios
         .put(url, notification)
         .then(res => {
           dispatch({ type: NOTIFICATION_UPDATE });
@@ -70,11 +70,10 @@ import {
 
   // Action to get notifications by user
   export const getNotifications = email => {
-    console.log('in actions')
-    return dispatch => {
+    return async dispatch => {
       var ip = getIP();
       var url = ip + "public/notification/" + email;
-      axios
+      await axios
         .get(url)
         .then(res => {
           dispatch({
@@ -90,11 +89,10 @@ import {
 
   // Action to get unread notifications by user
   export const getUnreadNotifications = email => {
-    console.log('in actions')
-    return dispatch => {
+    return async dispatch => {
       var ip = getIP();
       var url = ip + "public/notification/unread/" + email;
-      axios
+      await axios
         .get(url)
         .then(res => {
           dispatch({

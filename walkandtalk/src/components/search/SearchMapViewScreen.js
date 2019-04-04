@@ -29,6 +29,7 @@ class SearchMapViewScreen extends Component {
   //
   constructor(props) {
     super(props);
+    console.log("map view" ,this.props)
     this.state = {
       defaultCoords: {
         latitude: this.props.region.latitude,

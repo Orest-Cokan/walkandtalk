@@ -16,6 +16,7 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
 import BaseCard from "../../cardview/baseCard";
 import { getRecords } from "../../actions/RecordActions";
+import Loader from "../../constants/loader";
 
 class PastEventListScreen extends Component {
   constructor(props) {
@@ -23,10 +24,14 @@ class PastEventListScreen extends Component {
     this.props.getRecords = this.props.getRecords(
       this.props.user.user.email
     );
+    this.state = {
+      loading: true
+    }
   }
 
-  componentDidMount() {
-    this.props.getRecords;
+  async componentDidMount() {
+    await this.props.getRecords;
+    this.setState({loading: false})
   }
 
   viewPastEvent(index) {
@@ -63,6 +68,7 @@ class PastEventListScreen extends Component {
   render() {
     return (
       <Container>
+        <Loader loading={this.state.loading} />
         {/* Header */}
         <Header
         style={ScreenStyleSheet.header}
@@ -82,10 +88,11 @@ class PastEventListScreen extends Component {
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
-
+        {!this.state.loading && (
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           {this.getPastEvents()}
         </Content>
+        )}
       </Container>
     );
   }
