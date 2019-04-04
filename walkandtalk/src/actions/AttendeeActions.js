@@ -1,6 +1,7 @@
 import { ATTENDEE_ADD, ATTENDEE_DELETE } from "./types";
 import axios from "axios";
 import getIP from "../constants/Ip";
+import { Alert } from "react-native";
 
 // action to add an attendee
 export const addAttendees = (
@@ -13,20 +14,19 @@ export const addAttendees = (
       fullname: fullname,
       email: email
     };
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/attendee/add";
-    axios
+    await axios
       .put(url, attendee)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.status, "is this logged???");
-          console.log(attendee, "attendee adding...");
           dispatch({ type: ATTENDEE_ADD , payload: attendee });
         }
       })
       .catch(err => {
-        console.log(err, "kek");
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
@@ -40,20 +40,19 @@ export const removeAttendees = (
     id: id,
     email: email
   };
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/attendee/remove";
-    axios
+    await axios
       .put(url, attendee)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.status, "is this logged???");
-          console.log(attendee, "attendee deleting...");
           dispatch({ type: ATTENDEE_DELETE , payload: attendee });
         }
       })
       .catch(err => {
-        console.log(err, "kek");
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };

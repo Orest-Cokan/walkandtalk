@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Image,
-  TouchableOpacity,
   TouchableHighlight,
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
