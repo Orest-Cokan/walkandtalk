@@ -22,7 +22,7 @@ import {
 import TabOne from "./SearchListViewScreen";
 import TabTwo from "./SearchMapViewScreen";
 import BaseCard from "../../cardview/baseCard";
-
+import geolib from "geolib";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
 import { fetchEvents } from "../../actions/EventActions";
