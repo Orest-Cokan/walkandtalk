@@ -17,7 +17,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import UserCard from "../../cardview/userCard";
 import Modal from "react-native-modal";
 import { Actions } from "react-native-router-flux";
-import { fetchUserEvents, deleteEvent } from "../../actions/EventActions";
+import { deleteEvent } from "../../actions/EventActions";
 import { sendNotification } from "../../actions/NotificationActions";
 import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 
@@ -436,8 +436,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchUserEvents, 
-    deleteEvent, 
+  { deleteEvent, 
     addAttendees, 
     removeAttendees, 
     sendNotification }

@@ -152,7 +152,6 @@ android {
 
 
 dependencies {
-    implementation project(':react-native-google-places')
     implementation project(':react-native-image-resizer')
     implementation project(':react-native-webview')
     implementation project(':react-native-image-picker')

@@ -3,7 +3,6 @@ package com.walkandtalk;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.imagepicker.ImagePickerPackage;

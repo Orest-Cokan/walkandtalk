@@ -27,6 +27,8 @@ PODS:
   - GoogleMaps/Base (2.5.0)
   - GoogleMaps/Maps (2.5.0):
     - GoogleMaps/Base
+  - GooglePlaces (2.5.0):
+    - GoogleMaps/Base (= 2.5.0)
   - React (0.58.6):
     - React/Core (= 0.58.6)
   - react-native-fetch-blob (0.10.6):
@@ -98,6 +100,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Google-Maps-iOS-Utils
   - GoogleMaps
+  - GooglePlaces
   - react-native-fetch-blob (from `../node_modules/react-native-fetch-blob`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -124,6 +127,7 @@ SPEC REPOS:
     - boost-for-react-native
     - Google-Maps-iOS-Utils
     - GoogleMaps
+    - GooglePlaces
 
 EXTERNAL SOURCES:
   DoubleConversion:
@@ -156,6 +160,7 @@ SPEC CHECKSUMS:
   glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
   Google-Maps-iOS-Utils: c32891ff472eaaa1fca032beedafa1a013af7875
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
+  GooglePlaces: dd70d9d71ea1c7944846afe67de3712c99b30a77
   React: 130b87b2d5e2baac646954282cab87be986d98fc
   react-native-fetch-blob: 2bef9be702de8726f4d7bf58d2345579aaaee60d
   react-native-google-maps: 544d2208b09a7e2ec2c6112c8a97c4e7f921f74d
@@ -165,6 +170,6 @@ SPEC CHECKSUMS:
   react-native-webview: efb10d19a3e8c2e899940678df405c10571c211b
   yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
 
-PODFILE CHECKSUM: 024d3e0691ee8ecc1db8169dbee1af67c2d25bcd
+PODFILE CHECKSUM: ddfecd218629a4b549a532405d894f3febde26b8
 
 COCOAPODS: 1.6.1
