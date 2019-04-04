@@ -8,7 +8,8 @@ import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { createEvent } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
-import RNGooglePlaces from "react-native-google-places";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
 import {
   StyledText as Text,
   StyledTextInput as TextInput
@@ -209,24 +210,6 @@ class AddEventScreen extends Component {
   onCancel = () => {
     Actions.home();
   };
-
-  // Google places search with autocomplete
-
-  openSearchModal() {
-    RNGooglePlaces.openAutocompleteModal({
-      useOverlay: true
-      // limiting search results to coordinates and name
-    })
-      .then(place => {
-        this.setState({
-          location: place.address,
-          lat: place.location.latitude,
-          long: place.location.longitude
-        });
-        this.showError(this.state.location, this.location, "errorLocation");
-      })
-      .catch(error => console.log(error.message));
-  }
 
   render() {
     // All the options displayed in radio buttons
@@ -445,17 +428,43 @@ class AddEventScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
-              <TouchableOpacity
-                style={styles.locationButton}
-                onPress={() => this.openSearchModal()}
-                accessibilityLabel="createEventLocation"
-              >
-                <Text
-                  style={{ color: this.state.location ? "#333" : "#C9C9C9" }}
-                >
-                  {this.state.location ? this.state.location : "Add a Location"}
-                </Text>
-              </TouchableOpacity>
+            <GooglePlacesAutocomplete
+            placeholder='Add a Location'
+            minLength={2}
+            autoFocus={false}
+            returnKeyType={'search'}
+            keyboardAppearance={'light'}
+            // Exit search dropdown results when result selected
+            listViewDisplayed={false}
+            fetchDetails={true}
+            renderDescription={row => row.description}
+            onPress={(data, details = null) => {
+              this.setState({
+                location: details.name,
+                lat: details.geometry.location.lat,
+                long: details.geometry.location.lng
+              });
+            }}
+      
+            getDefaultValue={() => ''}
+            query={{
+              key: 'AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0',
+              language: 'en',
+              types: 'geocode',
+              // Unique token for a session of searching
+              sessionToken: Math.random().toString(36).substr(2, 5)
+            }}
+            styles={{
+              textInputContainer: {
+                width: '100%'
+              },
+              description: {
+                fontWeight: 'bold'
+              }
+            }}
+            // Time in ms of when to issue a request after the user stops typing
+            debounce={800}
+            /> 
             </View>
           </View>
           {this.state.errorLocation}

@@ -21,7 +21,6 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
-import { getPicture } from "../../actions/PictureActions";
 import Sidebar from './Sidebar'
 
 // Profile tab

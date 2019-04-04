@@ -17,7 +17,7 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import UserCard from "../../cardview/userCard";
 import Modal from "react-native-modal";
 import { Actions } from "react-native-router-flux";
-import { fetchEvents, deleteEvent } from "../../actions/EventActions";
+import { fetchEvents, fetchUserEvents, deleteEvent } from "../../actions/EventActions";
 import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 
 class ViewEventScreen extends Component {
@@ -49,7 +49,7 @@ class ViewEventScreen extends Component {
   //
   // First will do for search events
   componentWillMount() {
-    this.props.fetchUserEvents;
+    this.props.fetchUserEvents(this.props.user.user.email);
     if (this.props.searchScreen == true) {
       searchEvent = this.props.markerSent;
       console.log(searchEvent, "markerSent");
@@ -467,7 +467,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchEvents, deleteEvent, addAttendees, removeAttendees }
+  { fetchEvents, deleteEvent, addAttendees, removeAttendees, fetchUserEvents }
 )(ViewEventScreen);
 
 const styles = {
