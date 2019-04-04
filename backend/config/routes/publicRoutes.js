@@ -39,7 +39,13 @@ const publicRoutes = {
   "PUT /user/picture": "PictureController.updateImage",
   "GET /user/picture/:email": "PictureController.getImage",
 
-  // Excel routes
+  // Notification routes
+  "POST /notification": "NotificationController.create",
+  "PUT /notification": "NotificationController.update",
+  "GET /notifications": "NotificationController.getAll", // for testing only
+  "GET /notification/:email": "NotificationController.getNotifications",
+  "GET /notification/unread/:email": "NotificationController.getUnreadNotifications",
+
   "GET /researcher/excel": "ExcelController.getData",
 
   // Redcap routes

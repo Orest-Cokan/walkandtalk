@@ -13,6 +13,7 @@
     "carthage": "^1.0.6",
     "dateformat": "^3.0.3",
     "geolib": "^2.0.24",
+    "moment": "^2.24.0",
     "native-base": "^2.12.0",
     "prop-types": "^15.7.2",
     "react": "16.6.3",
@@ -33,6 +34,8 @@
     "react-native-material-textfield": "^0.12.0",
     "react-native-modal": "^9.0.0",
     "react-native-numeric-input": "^1.6.5",
+    "react-native-popover-view": "^1.0.18",
+    "react-native-push-notification": "^3.1.2",
     "react-native-radio-buttons": "^1.0.0",
     "react-native-router-flux": "^4.0.6",
     "react-native-sectioned-multi-select": "^0.6.5",
@@ -41,7 +44,8 @@
     "react-native-webview": "^5.3.1",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "socket.io-client": "^2.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

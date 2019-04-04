@@ -22,77 +22,94 @@ import SwitchSelector from "react-native-switch-selector";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { editEvent, fetchEvents } from "../../actions/EventActions";
+import { sendNotification } from "../../actions/NotificationActions";
 import { Actions } from "react-native-router-flux";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 class EditEventScreen extends Component {
   constructor(props) {
     super(props);
-    // Find event data for clicked event
-    let event = this.props.events.find(e => e.id === this.props.data);
-    console.log('THE PASSED EVENT',event)
+
+    // Mapping the passed props to the component state
     this.state = {
-      title: event.title,
-      id: event.id,
-      description: event.description,
-      date: event.date,
-      startTime: event.start_time,
-      endTime: event.end_time,
-      intensity: event.intensity,
-      venue: event.venue,
-      location: event.location,
-    };
+      id: this.props.event.id,
+      email: this.props.event.email,
+      title: this.props.event.title,
+      date: this.props.event.date,
+      startTime: this.props.event.start_time,
+      endTime: this.props.event.end_time,
+      location: this.props.event.location,
+      organizer: this.props.event.organizer,
+      intensity: this.props.event.intensity,
+      venue: this.props.event.venue,
+      description: this.props.event.description,
+      notifType: 'updatedEvent'
+    }
   }
 
-  onChangeTitle = text => {
-    this.setState({
-      title: text
-    });
-  };
-
-  onChangeDescription = text => {
-    this.setState({
-      description: text
-    });
-  };
-
-  setIntensity(selectedOption) {
-    this.setState({
-      intensity: selectedOption
-    });
-  }
-
-  setVenue(selectedOption) {
-    this.setState({
-      venue: selectedOption
-    });
+  onChange(name, value) {
+    this.setState({ [name] : value } )
   }
   
   // Has to be asynchronous in case edit finishes before 
   // fetching which will cause state not to be updated
   onFinish = async () => {
     await new Promise((resolve, reject) => {
-          // Edit the event user clicks
-          console.log("EVENT TO BE EDITED", this.state.location)
-          this.props.editEvent(
-            this.state.title, 
-            this.state.id, 
-            this.state.date, 
-            this.state.startTime, 
-            this.state.endTime, 
-            this.state.description, 
-            this.state.intensity, 
-            this.state.venue, 
-            this.state.location);
-          resolve();
-      });
-      // fetch updated event(s) to pass to homescreen
-      this.props.fetchEvents();
-      Actions.home();
+        // Edit the event user clicks
+        this.props.editEvent(
+          this.state.title, 
+          this.state.id, 
+          this.state.date, 
+          this.state.startTime, 
+          this.state.endTime, 
+          this.state.description, 
+          this.state.intensity, 
+          this.state.venue, 
+          this.state.location);
+        this.props.sendNotification(
+          this.state.id,
+          this.state.title,
+          this.state.notifType
+        )  
+        resolve();
+        Actions.homeTab();
+    });
   }
   onCancel = () => {
-    Actions.home();
+    Actions.homeTab();
   };
+
+  // Google places search with autocomplete
+  openSearchModal() {
+    RNGooglePlaces.openAutocompleteModal(
+      {
+        // Restricting autofill results to alberta to limit requests
+        locationRestriction: {
+          latitudeSW: 48.9966667,
+          longitudeSW: -120.0013835,
+          latitudeNE: 60.0004216,
+          longitudeNE: -110.0047639
+        },
+        // Renders search on current page rather than new page
+        useOverlay: true,
+        country: "CA"
+        // limiting search results to coordinates and name
+      },
+      ["location", "address"]
+    )
+      .then(place => {
+        console.log('PLACE',place);
+        console.log(this.state.location);
+        const updatedLocation = {
+          streetName: place.address,
+          lat: place.location.latitude,
+          long: place.location.longitude
+        }
+        console.log(updatedLocation);
+        onChange('location', updatedLocation);
+      })
+      .catch(error => console.log(error.message));
+  }
 
   render() {
     // All the options displayed in radio buttons
@@ -110,14 +127,12 @@ class EditEventScreen extends Component {
     intensities.map((intensity, index) => {
       if (this.state.intensity == intensity.value) {
         default_intensity = index;
-        return default_intensity;
       }
     });
     let default_venue = null;
     venues.map((venue, index) => {
       if (this.state.venue == venue.value) {
         default_venue = index;
-        return default_venue;
       }
     });
     return (
@@ -144,7 +159,7 @@ class EditEventScreen extends Component {
             <View style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeTitle}
+                onChangeText={this.onChange.bind(this, 'title')}
               >
               {this.state.title}
               </TextInput>
@@ -167,9 +182,7 @@ class EditEventScreen extends Component {
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{}}
-                onDateChange={date => {
-                  this.setState({ date: date });
-                }}
+                onDateChange={this.onChange.bind(this, 'date')}
               />
             </View>
           </View>
@@ -193,9 +206,7 @@ class EditEventScreen extends Component {
                     alignItems: "center"
                   }
                 }}
-                onDateChange={date => {
-                  this.setState({ startTime: date });
-                }}
+                onDateChange={this.onChange.bind(this, 'startTime')}
               />
             </View>
           </View>
@@ -219,9 +230,7 @@ class EditEventScreen extends Component {
                     alignItems: "center"
                   }
                 }}
-                onDateChange={date => {
-                  this.setState({ endTime: date });
-                }}
+                onDateChange={this.onChange.bind(this, 'endTime')}
               />
             </View>
           </View>
@@ -239,7 +248,7 @@ class EditEventScreen extends Component {
                 multiline={true}
                 numberOfLines={4}
                 maxLength={140}
-                onChangeText={this.onChangeDescription}
+                onChangeText={this.onChange.bind(this, 'description')}
               >
               {this.state.description}
               </TextInput>
@@ -256,7 +265,7 @@ class EditEventScreen extends Component {
             <SwitchSelector
               options={intensities}
               initial={default_intensity}
-              onPress={value => this.setIntensity(value)}
+              onPress={this.onChange.bind(this, 'intensity')}
               textColor={"#A680B8"} //'#7a44cf'
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -276,7 +285,7 @@ class EditEventScreen extends Component {
             <SwitchSelector
               options={venues}
               initial={default_venue}
-              onPress={value => this.setVenue(value)}
+              onPress={this.onChange.bind(this, 'venue')}
               textColor={"#A680B8"} //'#7a44cf'
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -364,14 +373,13 @@ class EditEventScreen extends Component {
 
 const mapStateToProps = state => {
     return {
-      events: state.event.events,
       user: state.user
     };
   };
 
 export default connect(
     mapStateToProps,
-    { fetchEvents, editEvent }
+    { fetchEvents, editEvent, sendNotification }
 )(EditEventScreen);
 
 // Styles

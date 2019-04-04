@@ -27,30 +27,19 @@ class FormScreen extends Component {
       refreshing: false,
       records: []
     }
-  
+    this.props.getUncompletedRecords(this.props.user.user.email);
 
-    this.props.getUncompletedRecords = this.props.getUncompletedRecords(
-      this.props.user.user.email
-    );
-    
-    console.log('------PROPS-------', this.props)
-    console.log('------STATE-------', this.state)
   }
 
   componentDidMount() {
-    console.log('------B4 MOUNT-------', this.state)
-    this.props.getUncompletedRecords;
-    console.log('------AFTER MOUNT-------', this.state)
-
+    this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
+      console.log('Formscreen did focus'); 
+      this.props.getUncompletedRecords(this.props.user.user.email);
+    })
   }
 
-  _onRefresh = () => {
-    console.log('------refresh-------', this.state)
-    this.setState({ refreshing: true });
-    console.log('------while refresh-------', this.state)
-    this.forceUpdate();
-    this.setState({refreshing: false});
-    console.log('------refresh done-------', this.state)
+  componentWillUnmount() {
+    this.didFocusListener.remove();
   }
 
   submitRecord(index) {
@@ -81,13 +70,7 @@ class FormScreen extends Component {
     return records;
   }
 
-  isInitialRender() {
-    return this.numRenders == 2;
-  }
-
   render() {
-    this.numRenders++;
-    console.log("----------------------adding RENDERS!!!---------------------", this.numRenders, this.state)
     return (
       <Container>
         <Header
@@ -100,15 +83,7 @@ class FormScreen extends Component {
           </Body>
         </Header>
 
-        <Content 
-          contentContainerStyle={ScreenStyleSheet.content}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-        >
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
           <Text style={ScreenStyleSheet.sectionTitle}>Questionnaires</Text>
           <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
           <View style={ScreenStyleSheet.lineSeparator} />

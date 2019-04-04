@@ -39,7 +39,6 @@ class ViewPastEventRecord extends Component {
       walkRating: this.props.record.walk_rating,
       locationRating: this.props.record.location_rating
     }
-    console.log("----------constructor--------", this.state)
   }
 
   onBack = () => {
