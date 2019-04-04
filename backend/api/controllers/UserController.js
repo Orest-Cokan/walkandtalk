@@ -62,7 +62,10 @@ const UserController = () => {
           return res.status(400).json({ msg: "Bad Request: User not found" });
         }
 
-        if (bcryptService().comparePassword(password, user.password)) {
+        if (
+          bcryptService().comparePassword(password, user.password) &&
+          authPolicy(user.registered)
+        ) {
           const token = authService().issue({ email: user.email });
           return res.status(200).json({ user, token });
         }

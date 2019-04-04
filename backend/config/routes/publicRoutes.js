@@ -44,7 +44,8 @@ const publicRoutes = {
   "PUT /notification": "NotificationController.update",
   "GET /notifications": "NotificationController.getAll", // for testing only
   "GET /notification/:email": "NotificationController.getNotifications",
-  "GET /notification/unread/:email": "NotificationController.getUnreadNotifications",
+  "GET /notification/unread/:email":
+    "NotificationController.getUnreadNotifications",
 
   "GET /researcher/excel": "ExcelController.getData",
 
