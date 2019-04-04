@@ -6,6 +6,7 @@ import {
 } from "./types";
 import getIP from "../constants/Ip";
 import axios from "axios";
+import { Alert } from "react-native";
 
 // action to update event record
 export const updateRecord = (
@@ -21,8 +22,7 @@ export const updateRecord = (
   location_rating_comment,
   completed
 ) => {
-  console.log(completed, "this should be 1");
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingrecord";
     const walking_record = {
@@ -38,25 +38,25 @@ export const updateRecord = (
       location_rating_comment: location_rating_comment,
       completed: completed
     };
-    console.log(walking_record, "this is our updated record");
 
-    axios
+    await axios
       .put(url, walking_record)
       .then(res => {
         dispatch({ type: RECORD_UPDATE });
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
 
 // action to get event records by user
 export const getRecords = email => {
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingrecord/" + email;
-    axios
+    await axios
       .get(url)
       .then(res => {
         dispatch({
@@ -66,19 +66,19 @@ export const getRecords = email => {
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
 
 // action to get completed event records by user
 export const getCompletedRecords = email => {
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingrecord/completed/" + email;
-    axios
+    await axios
       .get(url)
       .then(res => {
-        console.log(res.data.records, "We are in completed records");
         dispatch({
           type: SET_COMPLETED_RECORDS,
           payload: res.data.records
@@ -86,20 +86,19 @@ export const getCompletedRecords = email => {
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
 
 // action to get completed event records by user
 export const getUncompletedRecords = email => {
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
-    console.log(email);
     var url = ip + "public/walkingrecord/uncompleted/" + email;
-    axios
+    await axios
       .get(url)
       .then(res => {
-        console.log(res.data.records, "we are in uncompleted records");
         dispatch({
           type: SET_UNCOMPLETED_RECORDS,
           payload: res.data.records
@@ -107,6 +106,7 @@ export const getUncompletedRecords = email => {
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };

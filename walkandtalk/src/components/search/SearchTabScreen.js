@@ -22,12 +22,13 @@ import {
 import TabOne from "./SearchListViewScreen";
 import TabTwo from "./SearchMapViewScreen";
 import BaseCard from "../../cardview/baseCard";
-
+import geolib from "geolib";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
 import { fetchEvents } from "../../actions/EventActions";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { Actions } from "react-native-router-flux";
+import Loader from "../../constants/loader";
 
 
 //Below are the items in the filters
@@ -110,17 +111,22 @@ class SearchTabScreen extends Component {
       searchResults: [],
       mapRegion: null,
       lastLat: null,
-      lastLong: null
+      lastLong: null,
+      loading: false
     };
     this.props.fetchEvents();
   }
 
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener('didFocus', () => { 
-      console.log('Search Screen did focus'); 
-      this.props.fetchEvents();
-      const position = getCurrentLocation();
+    this.willFocusListener = this.props.navigation.addListener('willFocus',
+    async () => { 
+      this.setState({loading: true});
+      await this.props.fetchEvents();
+      const position = await getCurrentLocation();
+      console.log("position", position);
+      this.setState({loading: false});
       if (position) {
+        console.log("in positionnnn")
         //Tracking location is still necessary for distance queries
         this.watchID = navigator.geolocation.watchPosition((position) => {
           let region = {
@@ -130,16 +136,17 @@ class SearchTabScreen extends Component {
             longitudeDelta: 0.00421*1.5
           }
           this.onRegionChange(region, region.latitude, region.longitude);
+          console.log("regionhereee",this.state.region);
         }, (error)=>console.log(error));
       }
       this.keywordSearch();
-    })
+    });
   }
 
 
   //Before leaving the component clear the watch of the device
   componentWillUnmount() {
-    this.didFocusListener.remove();
+    this.willFocusListener.remove();
     navigator.geolocation.clearWatch(this.watchID);
   }
 
@@ -154,6 +161,7 @@ class SearchTabScreen extends Component {
 
   //Function for setting the region and lat and lon when movement occurs
   onRegionChange(region, lastLat, lastLong) {
+    console.log("onregionchange", region);
     this.setState({
       mapRegion: region,
       // If there are no new values set the current ones
@@ -573,6 +581,7 @@ getSearchResults() {
     );
     return (
       <Container>
+      <Loader loading={this.state.loading} />
       <Header
         style={ScreenStyleSheet.header}
         androidStatusBarColor={"white"}
@@ -582,6 +591,8 @@ getSearchResults() {
           <Title style={ScreenStyleSheet.headerTitle}>Search</Title>
         </Body>
       </Header>
+
+      {!this.state.loading && (
       <Content
           contentContainerStyle={[ScreenStyleSheet.content, { flex: 1 }]}
         >
@@ -624,6 +635,7 @@ getSearchResults() {
           </Tab>
         </Tabs>  
       </Content>
+      )}
     </Container>
     );
   }

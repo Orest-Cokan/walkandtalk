@@ -16,7 +16,6 @@ class RequestsScreen extends Component {
   constructor(props) {
     super(props);
     this.props.unregisteredUsers = this.props.getUnregisteredUsers();
-    // Sample data
     this.state = {
       loading: false
     };
@@ -24,13 +23,19 @@ class RequestsScreen extends Component {
 
   /* Listener that updates the list view of the unregiesterd users  */
   componentDidMount() {
-    this.didFocusListener = this.props.navigation.addListener(
-      "didFocus",
-      () => {
-        this.props.getUnregisteredUsers();
-        console.log(this.props.unregisteredUsers);
+    this.willFocusListener = this.props.navigation.addListener(
+      "willFocus",
+      async () => {
+        await this.setState({loading: true})
+        await this.props.getUnregisteredUsers();
+        this.setState({loading: false})
+        console.log("willfocus");
       }
     );
+  }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove();
   }
 
   // Switch request view
@@ -68,10 +73,11 @@ class RequestsScreen extends Component {
             <Title style={ScreenStyleSheet.headerTitle}>Requests</Title>
           </Body>
         </Header>
-
+        {!this.state.loading && (
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           {this.getRequests()}
         </Content>
+        )}
       </Container>
     );
   }

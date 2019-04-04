@@ -46,7 +46,7 @@ class ViewEventScreen extends Component {
   }
   // Navigate back to previous screen
   onBack = () => {
-    Actions.search();
+    Actions.pop();
   };
 
   hideAlert(name) {
@@ -107,8 +107,8 @@ class ViewEventScreen extends Component {
   };
 
   deleteEvent = () => {
-    console.log("we are deleting event with id", this.state.eventId);
-    this.props.deleteEvent(this.state.eventId);
+    console.log("we are deleting event with id", this.state.id);
+    this.props.deleteEvent(this.state.id);
   };
 
   confirm() {

@@ -2,20 +2,16 @@
 
 import React, { Component } from "react";
 import {
-  StyleSheet,
   View,
   TouchableOpacity,
-  Alert,
   Image
 } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
   Header,
-  Left,
   Body,
   Title,
-  Right,
   Content,
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
