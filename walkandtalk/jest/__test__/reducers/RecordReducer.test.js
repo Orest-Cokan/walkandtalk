@@ -1,5 +1,5 @@
 import * as reducer from '../../../src/reducers/RecordReducer';
-import * as mockData from '../../__mock__/reducers/RecordReducerMockData';
+import * as mockData from '../../__mock__/RecordMockData';
 import {
     RECORD_UPDATE,
     SET_RECORDS,

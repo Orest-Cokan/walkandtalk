@@ -1,5 +1,5 @@
 import * as reducer from '../../../src/reducers/UserReducer';
-import * as mockData from '../../__mock__/reducers/UserReducerMockData';
+import * as mockData from '../../__mock__/UserMockData';
 import {
     USER_CREATE,
     USER_CREATE_FAIL,

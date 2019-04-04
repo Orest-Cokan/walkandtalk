@@ -1,5 +1,5 @@
 import * as reducer from '../../../src/reducers/PictureReducer';
-import * as mockData from '../../__mock__/reducers/PictureReducerMockData';
+import * as mockData from '../../__mock__/PictureMockData';
 import {
     PICTURE_EDIT,
     PICTURE_GET

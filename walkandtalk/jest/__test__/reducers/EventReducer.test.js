@@ -1,5 +1,5 @@
 import * as reducer from '../../../src/reducers/EventReducer';
-import * as mockData from '../../__mock__/reducers/EventReducerMockData';
+import * as mockData from '../../__mock__/EventMockData';
 import {
     SET_EVENTS,
     SET_USER_EVENTS,

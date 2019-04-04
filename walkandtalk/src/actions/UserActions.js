@@ -30,7 +30,7 @@ export const createUser = (
   intensity,
   duration,
   distance
-) => {
+) => (dispatch) => {
   const user = {
     email: email,
     password: password,
@@ -46,24 +46,21 @@ export const createUser = (
       distance: distance
     }
   };
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/user";
-    console.log(user);
-    dispatch({ type: USER_CREATE });
-    axios
-      .post(url, user)
-      .then(res => {
-        if (res.status === 200) {
-          console.log(res.data.user);
-          createUserSuccess(dispatch, res.data.user);
-        }
-      })
-      .catch(err => {
+  var ip = getIP();
+  var url = ip + "public/user";
+  dispatch({ type: USER_CREATE });
+  return axios
+    .post(url, user)
+    .then(res => {
+      if (res.status === 200) {
+        createUserSuccess(dispatch, res.data.user);
+      } else {
         createUserFail(dispatch);
-        console.log(err);
-      });
-  };
+      }
+    })
+    .catch(err => {
+      Alert.alert("Something went wrong. Please try again.")
+    });
 };
 
 // dispatch creating a user failed
@@ -82,37 +79,30 @@ const createUserSuccess = (dispatch, user) => {
 };
 
 // action to login a user
-export const loginUser = (email, password) => {
+export const loginUser = (email, password) => (dispatch) => {
   const user = {
     email: email,
     password: password
   };
-  console.log("login", USER_LOGIN);
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/login";
-    console.log(email, password);
-    dispatch({ type: USER_LOGIN });
-    axios
-      .post(url, user)
-      .then(res => {
-        if (res.status === 200) {
-          console.log(res, "hb now!");
-          if (res.data.user.registered){
-            loginUserSuccess(dispatch, res.data.user);
-          }
-          else{
-            loginUserFail(dispatch);
-            Alert.alert("Please wait for the researchers to review your profile.");
-          }
-          
+  var ip = getIP();
+  var url = ip + "public/login";
+  dispatch({ type: USER_LOGIN });
+  return axios
+    .post(url, user)
+    .then(res => {
+      if (res.status === 200) {
+        if (res.data.user.registered){
+          loginUserSuccess(dispatch, res.data.user);
         }
-      })
-      .catch(err => {
-        console.log(err);
-        Alert.alert("Something went wrong. Please check your username and password.")
-      });
-  };
+        else{
+          loginUserFail(dispatch);
+          Alert.alert("Please wait for the researchers to review your profile.");
+        }
+      }
+    })
+    .catch(err => {
+      Alert.alert("Something went wrong. Please check your username and password.")
+    });
 };
 
 // dispatch user login fail
@@ -123,25 +113,21 @@ const loginUserFail = dispatch => {
 
 // dispatch user login success
 const loginUserSuccess = (dispatch, user) => {
-  console.log(user, "wtfisgoingon");
   dispatch({
     type: USER_LOGIN_SUCCESS,
     payload: user
   });
-  console.log(user,'payload!!')
   Actions.app();
 };
 
 // action to get a single user
 export const getUser = email => {
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/user/" + email;
-    console.log("inside get a single user", email)
+  var ip = getIP();
+  var url = ip + "public/user/" + email;
+  return dispatch => 
     axios
       .get(url)
       .then(res => {
-        console.log(res.data.user, "getting single user")
         dispatch({ 
           type: SET_USER, 
           payload: res.data.user });
@@ -150,19 +136,16 @@ export const getUser = email => {
         console.log(err);
         console.log("ERROR in getUser")
       });
-  };
 };
 
 // action to get all users
 export const getAllUsers = () => {
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/users";
-    console.log("inside get all users")
+  var ip = getIP();
+  var url = ip + "public/users";
+  return dispatch => 
     axios
       .get(url)
       .then(res => {
-        console.log(res.data.users, "payload")
         dispatch({ 
           type: SET_ALL_USERS, 
           payload: res.data.users,
@@ -172,7 +155,6 @@ export const getAllUsers = () => {
         console.log(err);
         console.log("ERROR in get all users")
       });
-  };
 };
 
 
@@ -201,23 +183,19 @@ export const editUser = (
       location: location
     }
   };
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/user";
-    console.log("INSIDE EDIT USER", user);
+  var ip = getIP();
+  var url = ip + "public/user";
+  return dispatch => 
     axios
       .put(url, user)
       .then(res => {
         if (res.status === 200) {
-          if (res.data === 1) {
-            dispatch({ type: USER_EDIT, payload: user });
-          }
+          dispatch({ type: USER_EDIT, payload: res.data.user });
         }
       })
       .catch(err => {
         console.log("axios failure", err);
       });
-  };
 };
 
 //get unregistered users

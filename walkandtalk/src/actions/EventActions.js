@@ -11,9 +11,9 @@ import getIP from "../constants/Ip";
 
 // action to fetch all events
 export const fetchEvents = () => {
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/walkingevents";
+  var ip = getIP();
+  var url = ip + "public/walkingevents";
+  return dispatch => 
     axios
       .get(url)
       .then(res => {
@@ -22,24 +22,21 @@ export const fetchEvents = () => {
       .catch(err => {
         console.log(err);
       });
-  };
 };
 
 // action to fetch user events
 export const fetchUserEvents = email => {
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/walkingevents/" + email;
+  var ip = getIP();
+  var url = ip + "public/walkingevents/" + email;
+  return dispatch => 
     axios
       .get(url)
       .then(res => {
-        console.log(res.data.events, "is this anything?");
         dispatch({ type: SET_USER_EVENTS, payload: res.data.events });
       })
       .catch(err => {
         console.log(err);
       });
-  };
 };
 
 // action to create an event
@@ -57,31 +54,29 @@ export const createEvent = (
   lat,
   long
 ) => {
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/walkingevent";
-    const walking_event = {
-      organizer: organizer,
-      email: email,
-      title: title,
-      date: date,
-      start_time: start_time,
-      end_time: end_time,
-      description: description,
-      intensity: intensity,
-      venue: venue,
-      location: {
-        streetName: location,
-        lat: lat,
-        long: long
-      }
-    };
+  const walking_event = {
+    organizer: organizer,
+    email: email,
+    title: title,
+    date: date,
+    start_time: start_time,
+    end_time: end_time,
+    description: description,
+    intensity: intensity,
+    venue: venue,
+    location: {
+      streetName: location,
+      lat: lat,
+      long: long
+    }
+  };
+  var ip = getIP();
+  var url = ip + "public/walkingevent";
+  return dispatch => 
     axios
       .post(url, walking_event)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.status, "is this even logged???");
-          console.log(walking_event, "is this null?");
           dispatch({ type: EVENT_CREATE });
           Actions.reset("app");
         }
@@ -89,7 +84,6 @@ export const createEvent = (
       .catch(err => {
         console.log(err, "kek");
       });
-  };
 };
 
 // action to edit an event
@@ -115,37 +109,33 @@ export const editEvent = (
     venue: venue,
     location: location
   };
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/walkingevent";
+  var ip = getIP();
+  var url = ip + "public/walkingevent";
+  return dispatch => 
     axios
       .put(url, event)
       .then(res => {
         if (res.status === 200) {
-          console.log("event", event);
-          dispatch({ type: EVENT_EDIT, payload: event });
+          dispatch({ type: EVENT_EDIT, payload: res.data.event });
         }
       })
       .catch(err => {
         console.log("axios failure", err);
       });
-  };
 };
 
 // action to delete an event
 export const deleteEvent = id => {
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/walkingevent/";
+  var ip = getIP();
+  var url = ip + "public/walkingevent/";
+  return dispatch => 
     axios
       .delete(url + id)
       .then(res => {
-        console.log(res.data);
-        dispatch({ type: EVENT_DELETE, payload: res.data });
+        dispatch({ type: EVENT_DELETE, payload: res.data.event });
         Actions.reset("app");
       })
       .catch(err => {
         console.log(err);
       });
-  };
 };
