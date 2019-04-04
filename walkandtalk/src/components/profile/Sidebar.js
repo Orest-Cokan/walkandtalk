@@ -36,7 +36,7 @@ class SideBar extends Component{
 
   // Logs the user out of the app
   logout = () => {
-    Actions.login();
+    Actions.auth();
   };
 
   render(){

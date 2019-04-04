@@ -65,7 +65,9 @@ class EditEventScreen extends Component {
           this.state.description, 
           this.state.intensity, 
           this.state.venue, 
-          this.state.location);
+          this.state.location,
+          this.state.lat,
+          this.state.long);
         this.props.sendNotification(
           this.state.id,
           this.state.title,
@@ -78,38 +80,6 @@ class EditEventScreen extends Component {
   onCancel = () => {
     Actions.homeTab();
   };
-
-  // Google places search with autocomplete
-  openSearchModal() {
-    RNGooglePlaces.openAutocompleteModal(
-      {
-        // Restricting autofill results to alberta to limit requests
-        locationRestriction: {
-          latitudeSW: 48.9966667,
-          longitudeSW: -120.0013835,
-          latitudeNE: 60.0004216,
-          longitudeNE: -110.0047639
-        },
-        // Renders search on current page rather than new page
-        useOverlay: true,
-        country: "CA"
-        // limiting search results to coordinates and name
-      },
-      ["location", "address"]
-    )
-      .then(place => {
-        console.log('PLACE',place);
-        console.log(this.state.location);
-        const updatedLocation = {
-          streetName: place.address,
-          lat: place.location.latitude,
-          long: place.location.longitude
-        }
-        console.log(updatedLocation);
-        onChange('location', updatedLocation);
-      })
-      .catch(error => console.log(error.message));
-  }
 
   render() {
     // All the options displayed in radio buttons
