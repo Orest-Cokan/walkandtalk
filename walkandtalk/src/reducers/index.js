@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
 import { user } from "./UserReducer";
 import { event } from "./EventReducer";
-import record from "./RecordReducer";
-import picture from "./PictureReducer";
+import { record } from "./RecordReducer";
+import { picture } from "./PictureReducer";
 import notification from "./NotificationReducer";
 
 // combine all reducers into a single one

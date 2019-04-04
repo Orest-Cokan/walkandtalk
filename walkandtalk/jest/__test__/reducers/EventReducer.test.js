@@ -6,7 +6,7 @@ import {
     EVENT_CREATE,
     EVENT_DELETE,
     EVENT_EDIT
-  } from '../../../src/actions/types';
+} from '../../../src/actions/types';
 
 describe('Event reducer', () => {
 

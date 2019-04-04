@@ -3,7 +3,7 @@ import {
     PICTURE_GET
   } from "../actions/types";
   
-  const INITIAL_STATE = {
+export const INITIAL_STATE = {
     errorLoging: "",
     errorCreating: "",
     loading: false,
@@ -11,7 +11,7 @@ import {
   };
 
 // picture reducer
-const picture = (state = INITIAL_STATE, action) => {
+export const picture = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case PICTURE_EDIT:
             return {
@@ -30,4 +30,3 @@ const picture = (state = INITIAL_STATE, action) => {
             return state;
     }
 };
-export default picture;

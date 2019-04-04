@@ -13,7 +13,7 @@ import {
     USER_APPROVE,
     USER_DECLINE,
     GET_UNREGISTERED_USERS
-  } from '../../../src/actions/types';
+} from '../../../src/actions/types';
 
 
 describe('User reducer', () => {

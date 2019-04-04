@@ -5,7 +5,7 @@ import {
   SET_UNCOMPLETED_RECORDS
 } from "../actions/types";
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   records: [],
   updated_record: [],
   completed_records: [],
@@ -13,7 +13,7 @@ const INITIAL_STATE = {
 };
 
 // event record reducer
-const record = (state = INITIAL_STATE, action) => {
+export const record = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case RECORD_UPDATE:
       return { ...state, updated_record: action.payload };
@@ -27,5 +27,3 @@ const record = (state = INITIAL_STATE, action) => {
       return state;
   }
 };
-
-export default record;
