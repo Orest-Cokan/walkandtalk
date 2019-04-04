@@ -7,11 +7,10 @@ import { Button,
   Right, 
   Body, 
   Title, 
-  List, 
   ListItem 
 } from 'native-base';
 import moment from "moment";
-import { Image, View } from 'react-native';
+import { Image, View, FlatList } from 'react-native';
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { StyledText as Text } from "../../constants/StyledText";
 import { Actions}  from 'react-native-router-flux';
@@ -25,6 +24,8 @@ class NotificationScreen extends Component{
     this.state = {
       isRead: 1
     }
+
+    console.log('passed props', this.props)
 
     this.props.getNotifications(this.props.user.user.email);
   }
@@ -142,9 +143,7 @@ class NotificationScreen extends Component{
         
         <Content>
           <View><Text> </Text></View>
-          <List>
-            {this.getNotifications()}
-          </List>
+          {this.getNotifications()}
         </Content>
     </Container>
     );

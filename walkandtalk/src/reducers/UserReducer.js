@@ -13,8 +13,8 @@ import {
   USER_DECLINE
 } from "../actions/types";
 
-const INITIAL_STATE = {
-  errorLoging: "",
+export const INITIAL_STATE = {
+  errorLogging: "",
   errorCreating: "",
   loading: false,
   user: "",
@@ -24,7 +24,7 @@ const INITIAL_STATE = {
 };
 
 // user reducer
-const user = (state = INITIAL_STATE, action) => {
+export const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case USER_CREATE:
       return {
@@ -42,8 +42,6 @@ const user = (state = INITIAL_STATE, action) => {
     case USER_CREATE_SUCCESS:
       return { ...state, loading: false, error: "", user: action.payload };
     case USER_LOGIN:
-      console.log("reeee", action.payload);
-      console.log("reeee", action);
       return {
         ...state,
         ...INITIAL_STATE,
@@ -53,7 +51,7 @@ const user = (state = INITIAL_STATE, action) => {
     case USER_LOGIN_FAIL:
       return {
         ...state,
-        errorLoging: "Login failed! Please check the credentials!",
+        errorLogging: "Login failed! Please check the credentials!",
         loading: false
       };
     case USER_EDIT:
@@ -85,6 +83,3 @@ const user = (state = INITIAL_STATE, action) => {
     
   }
 };
-
-export default user;
-

@@ -97,7 +97,7 @@ export const loginUser = (email, password) => {
       .post(url, user)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data.user, "meh memes!");
+          console.log(res, "hb now!");
           if (res.data.user.registered){
             loginUserSuccess(dispatch, res.data.user);
           }
@@ -128,6 +128,7 @@ const loginUserSuccess = (dispatch, user) => {
     type: USER_LOGIN_SUCCESS,
     payload: user
   });
+  console.log(user,'payload!!')
   Actions.app();
 };
 
@@ -164,7 +165,7 @@ export const getAllUsers = () => {
         console.log(res.data.users, "payload")
         dispatch({ 
           type: SET_ALL_USERS, 
-          payload: res.data.user,
+          payload: res.data.users,
          });
       })
       .catch(err => {

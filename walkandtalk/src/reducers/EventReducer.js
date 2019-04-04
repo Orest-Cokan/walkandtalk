@@ -6,13 +6,13 @@ import {
   EVENT_EDIT
 } from "../actions/types";
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   events: [],
   userEvents: []
 };
 
 // event reducer
-const event = (state = INITIAL_STATE, action) => {
+export const event = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_EVENTS:
       return { ...state, events: action.payload };
@@ -28,5 +28,3 @@ const event = (state = INITIAL_STATE, action) => {
       return state;
   }
 };
-
-export default event;

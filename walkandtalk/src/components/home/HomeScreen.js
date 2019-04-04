@@ -76,7 +76,7 @@ class HomeScreen extends Component {
   }
 
   showNotifications() {
-    Actions.notifications();
+    Actions.notifications({});
   };
 
   render() {
