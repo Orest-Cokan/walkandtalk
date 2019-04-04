@@ -5,7 +5,7 @@ const Location = require("../../api/models/Location");
 const Attendee = require("../../api/models/Attendee");
 
 let api;
-
+let resp;
 beforeAll(async () => {
   api = await beforeAction();
 });
@@ -54,7 +54,7 @@ test("WalkingEvent | create", async () => {
   expect(walkingevent.intensity).toBe("slow");
 });
 
-// test getting all walking events
+// test getting all walking events - there should be 2
 test("WalkingEvent | getAll", async () => {
   await request(api)
     .post("/public/walkingevent")
@@ -96,6 +96,41 @@ test("WalkingEvent | destroy", async () => {
     .set("Accept", /json/)
     .expect(200);
   expect(response.body.msg).toBe("Deleted!");
+});
+
+// test destroying mutliple walking events (this was buggy in the past)
+test("WalkingEvent | destroy multiple", async () => {
+  let response = await request(api)
+    .del("/public/walkingevent/1")
+    .set("Accept", /json/)
+    .expect(200);
+  expect(response.body.msg).toBe("Deleted!");
+
+  await request(api)
+    .post("/public/walkingevent")
+    .set("Accept", /json/)
+    .send({
+      organizer: "orest cokan...",
+      title: "walking with friends",
+      email: "skryt@gmail.com",
+      description: "i want to go",
+      intensity: "slow",
+      venue: "indoor",
+      start_time: "08:00pm",
+      end_time: "10:00pm",
+      date: "Fri, Mar 28",
+      location: {
+        streetName: "riverbend",
+        long: 12,
+        lat: 13
+      }
+    })
+    .expect(200);
+
+  await request(api)
+    .del("/public/walkingevent/2")
+    .set("Accept", /json/)
+    .expect(200);
 });
 
 // test updating a walking event
