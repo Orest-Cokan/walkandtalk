@@ -17,7 +17,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
-import {getAllUsers, getUser} from "../../actions/UserActions";
+import {getAllUsers, getUser, clearUser} from "../../actions/UserActions";
 var x = 0;
 
 // Profile tab
@@ -29,7 +29,9 @@ class OtherProfileScreen extends Component {
   }
 
   onBack = () =>{
-      Actions.pop()
+    this.props.clearUser()
+    console.log('Props on back',this.props)
+    Actions.pop()
   }
 
   render() {
@@ -214,5 +216,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {getAllUsers, getUser}
+  {getAllUsers, getUser, clearUser}
 )(OtherProfileScreen);
