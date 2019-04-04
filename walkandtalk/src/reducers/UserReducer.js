@@ -31,7 +31,6 @@ const user = (state = INITIAL_STATE, action) => {
         ...state,
         ...INITIAL_STATE,
         loading: true,
-        user: action.payload
       };
     case USER_CREATE_FAIL:
       return {
@@ -40,7 +39,7 @@ const user = (state = INITIAL_STATE, action) => {
         loading: false
       };
     case USER_CREATE_SUCCESS:
-      return { ...state, loading: false, error: "", user: action.payload };
+      return { ...state, loading: false, error: ""};
     case USER_LOGIN:
       console.log("reeee", action.payload);
       console.log("reeee", action);

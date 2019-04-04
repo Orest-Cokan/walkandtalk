@@ -236,7 +236,6 @@ class SignupScreen extends Component {
         this.state.duration,
         this.state.distance
       );
-      Alert.alert("You have successfully signed up!");
     } else {
       this.showAlert('errorAlert');
     }

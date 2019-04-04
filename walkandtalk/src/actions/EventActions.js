@@ -8,36 +8,38 @@ import {
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 import getIP from "../constants/Ip";
+import { Alert } from "react-native";
 
 // action to fetch all events
 export const fetchEvents = () => {
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingevents";
-    axios
+    await axios
       .get(url)
       .then(res => {
         dispatch({ type: SET_EVENTS, payload: res.data.events });
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
 
 // action to fetch user events
 export const fetchUserEvents = email => {
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingevents/" + email;
-    axios
+    await axios
       .get(url)
       .then(res => {
-        console.log(res.data.events, "is this anything?");
         dispatch({ type: SET_USER_EVENTS, payload: res.data.events });
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
@@ -57,7 +59,7 @@ export const createEvent = (
   lat,
   long
 ) => {
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingevent";
     const walking_event = {
@@ -76,18 +78,18 @@ export const createEvent = (
         long: long
       }
     };
-    axios
+    await axios
       .post(url, walking_event)
-      .then(res => {
+      .then(async res => {
         if (res.status === 200) {
-          console.log(res.status, "is this even logged???");
-          console.log(walking_event, "is this null?");
-          dispatch({ type: EVENT_CREATE });
+          await dispatch({ type: EVENT_CREATE });
+          await Alert.alert("Your event has been successfully created.");
           Actions.reset("app");
         }
       })
       .catch(err => {
-        console.log(err, "kek");
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.")
       });
   };
 };
@@ -115,37 +117,37 @@ export const editEvent = (
     venue: venue,
     location: location
   };
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingevent";
-    axios
+    await axios
       .put(url, event)
       .then(res => {
         if (res.status === 200) {
-          console.log("event", event);
           dispatch({ type: EVENT_EDIT, payload: event });
         }
       })
       .catch(err => {
-        console.log("axios failure", err);
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
 
 // action to delete an event
 export const deleteEvent = id => {
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/walkingevent/";
-    axios
+    await axios
       .delete(url + id)
       .then(res => {
-        console.log(res.data);
         dispatch({ type: EVENT_DELETE, payload: res.data });
         Actions.reset("app");
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
