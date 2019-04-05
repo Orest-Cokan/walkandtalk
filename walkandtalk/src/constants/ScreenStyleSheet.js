@@ -39,6 +39,15 @@ export default StyleSheet.create({
     width: 20
   },
 
+  // Notifications
+  notificationIcon: {
+    height: 30,
+    width: 30
+  },
+   notificationTextItem: {
+    marginLeft: 20,
+  },
+
   // Content
   content: {
     marginHorizontal: "3%",

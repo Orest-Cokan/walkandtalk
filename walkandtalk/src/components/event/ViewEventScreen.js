@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, ScrollView, Text, Image, TouchableOpacity, Alert } from "react-native";
+import { View, ScrollView, Image, TouchableOpacity, Alert } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -13,6 +13,7 @@ import {
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import { StyledText as Text } from "../../constants/StyledText";
 import AwesomeAlert from 'react-native-awesome-alerts';
 import UserCard from "../../cardview/userCard";
 import Modal from "react-native-modal";
@@ -63,13 +64,16 @@ class ViewEventScreen extends Component {
   };
 
   // Deletes the event
-  deleteEvent = () => {
-    this.props.deleteEvent(this.state.id);
-    this.props.sendNotification(
-      this.state.id,
-      'cancelledEvent'
-      );
-  };
+  deleteEvent  = async () => {
+    await this.props.sendNotification(
+        this.state.id,
+        'cancelledEvent',
+        this.state.title
+        );
+    await this.props.deleteEvent(this.state.id);
+    Actions.homeTab();
+  }
+
 
   // When edit event button is clicked
   goToEditEvent = () => {
@@ -238,123 +242,86 @@ class ViewEventScreen extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>
-              {this.state.title}
-            </Title>
+            <Title style={ScreenStyleSheet.headerTitle}>{this.state.title}</Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {/* Date and Time*/}
-          <View style={ScreenStyleSheet.rowContainerEvent}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.EventSectionTitle}>
-                {this.state.date} {this.state.startTime}-{this.state.endTime}
+          {/* Event info */}
+
+          {/* Date and time */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.eventTimeInfo}>
+                {this.state.date.toUpperCase()} {" AT "}
+                {this.state.startTime.toUpperCase()} {" - "}
+                {this.state.endTime.toUpperCase()}
               </Text>
             </View>
           </View>
-
           {/* Title */}
-          <View style={ScreenStyleSheet.rowContainerEvent}>
-            <View style={ScreenStyleSheet.profileRowInfo}>
-              <Text style={ScreenStyleSheet.TitleHeader}>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.eventTitleInfo}>
                 {this.state.title}
               </Text>
             </View>
           </View>
-
           {/* Intensity */}
-          <View style={ScreenStyleSheet.rowContainerEvent}>
-            <View>
-              <Image
-                style={ScreenStyleSheet.eventIcons}
-                source={require("../../assets/icons/walk.png")}
-              />
-            </View>
-            <View s>
-              <Text style={ScreenStyleSheet.eventInfoInput}>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/walk.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.infoByIcon}>
                 {this.state.intensity}
               </Text>
             </View>
           </View>
-
           {/* Location */}
-          <View style={ScreenStyleSheet.rowContainerEvent}>
-            <View>
-              <Image
-                style={ScreenStyleSheet.eventIcons}
-                source={require("../../assets/icons/pin.png")}
-              />
-            </View>
-            <View s>
-              <Text style={ScreenStyleSheet.eventInfoInput}>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/pin.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.infoByIcon}>
                 {this.state.location}
               </Text>
             </View>
           </View>
-
           {/* Organizer */}
-          <View style={ScreenStyleSheet.rowContainerEvent}>
-            <View>
-              <Image
-                style={ScreenStyleSheet.eventIcons}
-                source={require("../../assets/icons/event-host.png")}
-              />
-            </View>
-            <View s>
-              <Text style={ScreenStyleSheet.eventInfoInput}>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/default-profile.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.infoByIcon}>
                 {this.state.organizer}
               </Text>
             </View>
           </View>
-
-        {/* Number or attendees */}
-          <View style={ScreenStyleSheet.rowContainerEvent}>
-            <View>
-              <Image
-                style={ScreenStyleSheet.eventIcons}
-                source={require("../../assets/icons/user-group.png")}
-              />
-            </View>
-
-            <View style={ScreenStyleSheet.rowContainerEvent2}>
-            <TouchableOpacity onPress={this.openModal}>
-              <Text style={ScreenStyleSheet.attending}>
-                {this.state.attending} people
-              </Text>
+          {/* Number of attendees */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/user-group.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <TouchableOpacity onPress={this.openModal}>
+                <Text style={ScreenStyleSheet.numAttendees}>
+                  {this.state.attending} people
+                <Text> are attending this event.</Text>
+                </Text>
               </TouchableOpacity>
-              <Text style={ScreenStyleSheet.attendingText}>
-                are attending this event
-              </Text>
             </View>
           </View>
-
-          {/*Pop up modal that displays the users attending*/}
-          <Modal
-          isVisible={this.state.visibleModal == true}
-          onBackdropPress={() => this.setState({ visibleModal: false })}
-          swipeDirection="down"
-          scrollTo={this.handleScrollTo}
-          scrollOffset={this.state.scrollOffset}
-          scrollOffsetMax={400 - 300} 
-          style={styles.bottomModal}>
-          <View style={styles.scrollableModal}>
-            <View style={styles.modalTextView}>
-            <Text style={styles.modalText}>Going </Text>
-            </View>
-            <ScrollView
-              ref={ref => (this.scrollViewRef = ref)}
-              onScroll={this.handleOnScroll}
-              scrollEventThrottle={16}>
-              {this.getAttendees()}
-                    
-            </ScrollView>
-          </View>
-        </Modal>
 
           {/* On screen separator */}
-          <View style={ScreenStyleSheet.EventLineSeparator} />
+          <View style={ScreenStyleSheet.lineSeparator} />
 
           {/* Description */}
           <View style={ScreenStyleSheet.rowContainerEvent}>
@@ -377,6 +344,31 @@ class ViewEventScreen extends Component {
           {/* User options depending on their badge */}
           {this.showOptions()}
         </Content>
+
+        {/*Pop up modal that displays the users attending*/}
+        <Modal
+          isVisible={this.state.visibleModal == true}
+          onBackdropPress={() => this.setState({ visibleModal: false })}
+          swipeDirection="down"
+          scrollTo={this.handleScrollTo}
+          scrollOffset={this.state.scrollOffset}
+          scrollOffsetMax={400 - 300} 
+          style={styles.bottomModal}>
+          <View style={styles.scrollableModal}>
+            <View style={styles.modalTextView}>
+            <Text style={styles.modalText}>Going </Text>
+            </View>
+            <ScrollView
+              ref={ref => (this.scrollViewRef = ref)}
+              onScroll={this.handleOnScroll}
+              scrollEventThrottle={16}>
+              {this.getAttendees()}
+                    
+            </ScrollView>
+          </View>
+        </Modal>
+
+        {/* Alerts */}
         <AwesomeAlert
           show={this.state.notGoingAlert}
           showProgress={false}
@@ -472,7 +464,6 @@ const styles = {
     color: "white",
     textAlign: "center",
     fontSize: 15,
-    fontWeight: "bold"
   },
   scrollableModal: {
     height: 300,

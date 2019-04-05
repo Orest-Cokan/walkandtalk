@@ -27,6 +27,8 @@ const mappedOpenRoutes = mapRoutes(config.publicRoutes, "api/controllers/");
 const mappedAuthRoutes = mapRoutes(config.privateRoutes, "api/controllers/");
 const DB = dbService(environment, config.migrate).start();
 const redcapTask = require("../config/cron/redcap");
+const recordTask = require("../config/cron/records");
+const upcomingEventTask = require("../config/cron/upcomingEvent");
 
 // allow cross origin requests
 // configure to only allow requests from certain origins
@@ -41,6 +43,9 @@ app.use(
     ieNoOpen: false
   })
 );
+
+//recordTask.start();
+//upcomingEventTask.start();
 
 // parsing the request bodys
 app.use(bodyParser.urlencoded({ extended: false }));

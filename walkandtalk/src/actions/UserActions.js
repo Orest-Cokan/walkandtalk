@@ -10,7 +10,8 @@ import {
   SET_ALL_USERS,
   USER_APPROVE,
   USER_DECLINE,
-  GET_UNREGISTERED_USERS
+  GET_UNREGISTERED_USERS,
+  CLEAR_USER
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -30,7 +31,7 @@ export const createUser = (
   intensity,
   duration,
   distance
-) => (dispatch) => {
+) => {
   const user = {
     email: email,
     password: password,
@@ -80,7 +81,7 @@ const createUserSuccess = (dispatch) => {
 };
 
 // action to login a user
-export const loginUser = (email, password) => (dispatch) => {
+export const loginUser = (email, password) => {
   const user = {
     email: email,
     password: password
@@ -152,7 +153,7 @@ export const getAllUsers = () => {
       .then(res => {
         dispatch({ 
           type: SET_ALL_USERS, 
-          payload: res.data.users,
+          payload: res.data.user,
          });
       })
       .catch(err => {
@@ -195,7 +196,9 @@ export const editUser = (
       .put(url, user)
       .then(res => {
         if (res.status === 200) {
-          dispatch({ type: USER_EDIT, payload: res.data.user });
+          if (res.data === 1) {
+            dispatch({ type: USER_EDIT, payload: user });
+          }
         }
       })
       .catch(err => {
@@ -221,6 +224,13 @@ export const getUnregisteredUsers = () => {
       });
   };
 };
+
+// Clear other user state
+export const clearUser = () => {
+  return async dispatch => {
+    dispatch({type: CLEAR_USER})
+  }
+}
 
 //approve request of a user
 export const approveUser = (email, redcapID) => {

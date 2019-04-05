@@ -38,7 +38,6 @@ class SubmitRecordScreen extends Component {
       email: this.props.record.email,
       date: this.props.record.date,
       startTime: this.props.record.start_time,
-      initialIntensity: this.props.record.intensity,
       endTime: this.props.record.end_time,
       location: this.props.record.location,
       numAttendees: this.props.record.total_attendees,
@@ -76,12 +75,12 @@ class SubmitRecordScreen extends Component {
       this.state.locationRatingComment,
       this.state.completed,
     );
-    Actions.mainFormPage();
+    Actions.reset("mainFormPage");
   };
 
   // When cancel button is tapped
   onCancel = () => {
-    Actions.mainFormPage();
+    Actions.pop();
   };
 
   render() {
@@ -139,18 +138,6 @@ class SubmitRecordScreen extends Component {
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.eventTitleInfo}>
                 {this.state.title}
-              </Text>
-            </View>
-          </View>
-          {/* Intensity */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <Image
-              style={ScreenStyleSheet.iconByInfo}
-              source={require("../../assets/icons/walk.png")}
-            />
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.infoByIcon}>
-                {this.state.initialIntensity}
               </Text>
             </View>
           </View>

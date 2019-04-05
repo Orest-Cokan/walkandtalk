@@ -9,6 +9,7 @@ import {
   SET_USER,
   SET_ALL_USERS,
   GET_UNREGISTERED_USERS,
+  CLEAR_USER,
   USER_APPROVE,
   USER_DECLINE
 } from "../actions/types";
@@ -73,6 +74,8 @@ export const user = (state = INITIAL_STATE, action) => {
       return { ...state, users: action.payload };
     case GET_UNREGISTERED_USERS:
       return { ...state, unregisteredUsers: action.payload };
+    case CLEAR_USER:
+      return {...state, otherUser: ''}
     case USER_APPROVE:
       return { ...state};
     case USER_DECLINE:

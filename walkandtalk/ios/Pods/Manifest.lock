@@ -31,19 +31,17 @@ PODS:
     - GoogleMaps/Base (= 2.5.0)
   - React (0.58.6):
     - React/Core (= 0.58.6)
-  - react-native-fetch-blob (0.10.6):
-    - React/Core
   - react-native-google-maps (0.23.0):
     - Google-Maps-iOS-Utils (= 2.1.0)
     - GoogleMaps (= 2.5.0)
     - React
-  - react-native-image-picker (0.28.0):
+  - react-native-image-picker (0.28.1):
     - React
   - react-native-image-resizer (1.0.1):
     - React
   - react-native-maps (0.23.0):
     - React
-  - react-native-webview (5.4.4):
+  - react-native-webview (5.5.0):
     - React
   - React/Core (0.58.6):
     - yoga (= 0.58.6.React)
@@ -101,7 +99,6 @@ DEPENDENCIES:
   - Google-Maps-iOS-Utils
   - GoogleMaps
   - GooglePlaces
-  - react-native-fetch-blob (from `../node_modules/react-native-fetch-blob`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
@@ -138,8 +135,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
-  react-native-fetch-blob:
-    :path: "../node_modules/react-native-fetch-blob"
   react-native-google-maps:
     :path: "../node_modules/react-native-maps"
   react-native-image-picker:
@@ -162,14 +157,13 @@ SPEC CHECKSUMS:
   GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
   GooglePlaces: dd70d9d71ea1c7944846afe67de3712c99b30a77
   React: 130b87b2d5e2baac646954282cab87be986d98fc
-  react-native-fetch-blob: 2bef9be702de8726f4d7bf58d2345579aaaee60d
   react-native-google-maps: 544d2208b09a7e2ec2c6112c8a97c4e7f921f74d
-  react-native-image-picker: e6e06d4315e3c85bad17e4b2002cd29f11d202c8
+  react-native-image-picker: fd93361c666f397bdf72f9c6c23f13d2685b9173
   react-native-image-resizer: ecae22b577b0425cd7803eb8145243038dd4b6bd
   react-native-maps: 9469741f77f270c605cafec603ce47327dc5b5f8
-  react-native-webview: efb10d19a3e8c2e899940678df405c10571c211b
+  react-native-webview: 964a008a311579f56d26cdb956d1860ad3d5ccfe
   yoga: 32d7ef1081951e9a35a4c72a7be797598b138a48
 
-PODFILE CHECKSUM: ddfecd218629a4b549a532405d894f3febde26b8
+PODFILE CHECKSUM: adf88af3fe7436d04fec6ec41cd67357d965a865
 
 COCOAPODS: 1.6.1

@@ -104,7 +104,9 @@ export const editEvent = (
   description,
   intensity,
   venue,
-  location
+  location,
+  lat,
+  long
 ) => {
   const event = {
     title: title,
@@ -115,7 +117,11 @@ export const editEvent = (
     description: description,
     intensity: intensity,
     venue: venue,
-    location: location
+    location: {
+      streetName: location,
+      lat: lat,
+      long: long
+    }
   };
   return async dispatch => {
     var ip = getIP();
@@ -123,12 +129,13 @@ export const editEvent = (
     await axios
       .put(url, event)
       .then(res => {
+        console.log('RESPONSE', res)
         if (res.status === 200) {
           dispatch({ type: EVENT_EDIT, payload: event });
         }
       })
       .catch(err => {
-        console.log(err);
+        console.log('THIS IS THE ERROR', err);
         Alert.alert("Something went wrong. Please try again later.");
       });
   };

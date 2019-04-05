@@ -1,6 +1,6 @@
 // View Past Event Record Screen
 import React, { Component } from "react";
-import { View, Image, TouchableOpacity} from "react-native";
+import { View, Image } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -92,18 +92,6 @@ class ViewPastEventRecord extends Component {
               </Text>
             </View>
           </View>
-          {/* Intensity */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <Image
-              style={ScreenStyleSheet.iconByInfo}
-              source={require("../../assets/icons/walk.png")}
-            />
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.infoByIcon}>
-                {this.state.intensity}
-              </Text>
-            </View>
-          </View>
           {/* Location */}
           <View style={ScreenStyleSheet.rowContainer}>
             <Image
@@ -146,13 +134,7 @@ class ViewPastEventRecord extends Component {
           <View style={ScreenStyleSheet.lineSeparator} />
 
           <Record 
-            isComplete={this.state.completed}
-            venue={this.state.venue}
-            distance={this.state.distance}
-            duration={this.state.duration}
-            intensity={this.state.intensity}
-            walkRating={this.state.walkRating}
-            locationRating={this.state.locationRating}  
+            record={this.props.record} 
           />
 
         </Content>

@@ -1,17 +1,26 @@
 import React from "react";
-import { View } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { StyledText as Text } from "../../constants/StyledText";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { width } from "react-native-dimension";
 import NumericInput from "react-native-numeric-input";
 import SwitchSelector from "react-native-switch-selector";
+import { Actions } from "react-native-router-flux";
 
 
 class RecordInfo extends React.Component {
 
+  constructor(props) {
+    super(props);
+  }
+  
   // For numeric input fields
   requiredFunc() {
     console.log();
+  }
+
+  onFill(){
+    Actions.submitRecord({ record: this.props.record });
   }
 
   render() {
@@ -40,89 +49,53 @@ class RecordInfo extends React.Component {
     // Setting default values for slide bars
     let default_intensity = null;
     intensities.map((intensity, index) => {
-      if (this.props.intensity == intensity.value) {
+      if (this.props.record.intensity == intensity.value) {
         default_intensity = index;
       }
     });
     let default_venue = null;
     venues.map((venue, index) => {
-      if (this.props.venue == venue.value) {
+      if (this.props.record.venue == venue.value) {
         default_venue = index;
       }
     });
     let default_walkRating = null;
     walkRatings.map((walkRating, index) => {
-      if (this.props.walkRating == walkRating.value) {
+      if (this.props.record.walkRating == walkRating.value) {
         default_walkRating = index;
       }
     });
     let default_locationRating = null;
     locationRatings.map((locationRating, index) => {
-      if (this.props.locationRating == locationRating.value) {
+      if (this.props.record.locationRating == locationRating.value) {
         default_locationRating = index;
       }
     });
 
     
-    if (this.props.isComplete == 1) {
+    if (this.props.record.completed == 1) {
       return ( 
         <View>
-          {/* Distance */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Length of walk (in kilometres)
+           {/* Distance */}
+           <View style={[ScreenStyleSheet.rowContainer, { marginBottom: 10 }]}>
+              <Text style={ScreenStyleSheet.profileInfo}>
+                Length of Walk (by distance)
                 <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
-            </View>
+              <Text>
+                {this.props.record.distance} km
+              </Text>
           </View>
-          <View style={ScreenStyleSheet.slideBar}>
-            <NumericInput
-              initValue={this.props.distance}
-              value={this.props.distance}
-              onChange={this.requiredFunc.bind(this)}
-              editable={false}
-              totalWidth={width(94)}
-              totalHeight={40}
-              valueType="real"
-              rounded
-              borderColor="#A680B8"
-              textColor="#A680B8"
-              inputStyle={{ borderRadius: 3, borderColor: "transparent" }}
-              iconStyle={{ color: "#A680B8" }}
-              rightButtonBackgroundColor="white"
-              leftButtonBackgroundColor="white"
-            />
-          </View>
-
           {/* Duration */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Length of walk (in minutes)
+          <View style={[ScreenStyleSheet.rowContainer, { marginBottom: 10 }]}>
+              <Text style={ScreenStyleSheet.profileInfo}>
+                Length of Walk (by duration)
                 <Text style={ScreenStyleSheet.asterisk}> *</Text>
               </Text>
-            </View>
+              <Text>
+                {this.props.record.duration} min
+              </Text>
           </View>
-          <View style={ScreenStyleSheet.slideBar}>
-            <NumericInput
-              initValue={this.props.duration}
-              value={this.props.duration}
-              onChange={this.requiredFunc.bind(this)}
-              editable={false}
-              totalWidth={width(94)}
-              totalHeight={40}
-              valueType="real"
-              rounded
-              borderColor="#A680B8"
-              textColor="#A680B8"
-              inputStyle={{ borderRadius: 3, borderColor: "transparent" }}
-              iconStyle={{ color: "#A680B8" }}
-              rightButtonBackgroundColor="white"
-              leftButtonBackgroundColor="white"
-            />
-          </View>
-
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -137,10 +110,10 @@ class RecordInfo extends React.Component {
               options={intensities}
               disabled={true}
               initial={default_intensity}
-              textColor={"#A680B8"}
+              textColor={"#CDCDCD"}
               selectedColor={"#ffffff"}
-              buttonColor={"#A680B8"}
-              borderColor={"#A680B8"}
+              buttonColor={"#CDCDCD"}
+              borderColor={"#CDCDCD"}
               borderRadius={8}
               hasPadding
             />
@@ -160,10 +133,10 @@ class RecordInfo extends React.Component {
               options={venues}
               disabled={true}
               initial={default_venue}
-              textColor={"#A680B8"} //'#7a44cf'
+              textColor={"#CDCDCD"} //'#7a44cf'
               selectedColor={"#ffffff"}
-              buttonColor={"#A680B8"}
-              borderColor={"#A680B8"}
+              buttonColor={"#CDCDCD"}
+              borderColor={"#CDCDCD"}
               borderRadius={8}
               hasPadding
             />
@@ -183,8 +156,8 @@ class RecordInfo extends React.Component {
               options={walkRatings}
               disabled={true}
               initial={default_walkRating}
-              buttonColor={"#A680B8"}
-              borderColor={"#A680B8"}
+              buttonColor={"#CDCDCD"}
+              borderColor={"#CDCDCD"}
               borderRadius={8}
               height={70}
               imageStyle={{ tintColor: null, height: 40, width: 40 }}
@@ -206,8 +179,8 @@ class RecordInfo extends React.Component {
               options={locationRatings}
               disabled={true}
               initial={default_locationRating}
-              buttonColor={"#A680B8"}
-              borderColor={"#A680B8"}
+              buttonColor={"#CDCDCD"}
+              borderColor={"#CDCDCD"}
               borderRadius={8}
               height={70}
               imageStyle={{ tintColor: null, height: 40, width: 40 }}
@@ -217,7 +190,16 @@ class RecordInfo extends React.Component {
         </View>
       );
     } else {
-      return null;
+      return(
+        <View style={ScreenStyleSheet.formRowInfo}>
+          <TouchableOpacity
+            style={[ScreenStyleSheet.button, { backgroundColor: "#A680B8", width: "100%" }]}
+            onPress={this.onFill.bind(this)}
+          >
+            <Text style={{ color: "white" }}>FILL IN RECORD</Text>
+          </TouchableOpacity>
+        </View>
+      )
     }
   }
 }

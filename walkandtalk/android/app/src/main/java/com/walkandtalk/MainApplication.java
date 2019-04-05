@@ -8,7 +8,6 @@ import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.henninghall.date_picker.DatePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -35,7 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
           new ImagePickerPackage(),
           new DatePickerPackage(),
           new VectorIconsPackage(),
-          new RNFetchBlobPackage(),
           new MapsPackage()
       );
     }

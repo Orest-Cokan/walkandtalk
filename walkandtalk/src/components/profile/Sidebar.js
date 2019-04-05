@@ -6,7 +6,6 @@ import { Button,
   Right, 
   Body, 
   Title, 
-  List, 
   ListItem 
 } from 'native-base';
 import { Image} from 'react-native';
@@ -18,10 +17,6 @@ import { Actions}  from 'react-native-router-flux';
 class SideBar extends Component{
   constructor(props) {
     super(props);
-  }
-
-  goHome() {
-    Actions.home();
   }
 
   // Navigate to Past Events
@@ -36,8 +31,7 @@ class SideBar extends Component{
 
   // Logs the user out of the app
   logout = () => {
-    Actions.home();
-    //Actions.reset("auth");
+    Actions.reset("auth");
   };
 
   render(){
@@ -61,52 +55,38 @@ class SideBar extends Component{
           </Right>
         </Header>
         <Content>
-          <List>
-            {/* Past Events */}
-            <ListItem
-              button={true}
-              onPress={() => this.goToPastEvents()}>
-              <Image
-                style={ScreenStyleSheet.headerIcon}
-                source={require("../../assets/icons/past-events.png")}
-              />
-              <Text style={ScreenStyleSheet.sideBarTextItem}>Past Events</Text>
-            </ListItem>
+          {/* Past Events */}
+          <ListItem
+            button={true}
+            onPress={() => this.goToPastEvents()}>
+            <Image
+              style={ScreenStyleSheet.headerIcon}
+              source={require("../../assets/icons/past-events.png")}
+            />
+            <Text style={ScreenStyleSheet.sideBarTextItem}>Past Events</Text>
+          </ListItem>
 
-            {/* Helpline Links */}
-            <ListItem
-              button={true}
-              onPress={() => this.goToHelplineLinks()}>
-              <Image
-                style={ScreenStyleSheet.headerIcon}
-                source={require("../../assets/icons/helpline-links.png")}
-              />
-              <Text style={ScreenStyleSheet.sideBarTextItem}>Helpline Links</Text>
-            </ListItem>
+          {/* Helpline Links */}
+          <ListItem
+            button={true}
+            onPress={() => this.goToHelplineLinks()}>
+            <Image
+              style={ScreenStyleSheet.headerIcon}
+              source={require("../../assets/icons/helpline-links.png")}
+            />
+            <Text style={ScreenStyleSheet.sideBarTextItem}>Helpline Links</Text>
+          </ListItem>
 
-            {/* Change password */}
-            {/* Leads to home page for now */}
-            <ListItem
-              button={true}
-              onPress={() => this.goHome()}>
-              <Image
-                style={ScreenStyleSheet.headerIcon}
-                source={require("../../assets/icons/password.png")}
-              />
-              <Text style={ScreenStyleSheet.sideBarTextItem}>Change Password</Text>
-            </ListItem>
-
-            {/* Logout */}
-            <ListItem
-              button={true}
-              onPress={() => this.logout()}>
-              <Image
-                style={ScreenStyleSheet.headerIcon}
-                source={require("../../assets/icons/logout.png")}
-              />
-              <Text style={ScreenStyleSheet.sideBarTextItem}>Logout</Text>
-            </ListItem>
-          </List>
+          {/* Logout */}
+          <ListItem
+            button={true}
+            onPress={() => this.logout()}>
+            <Image
+              style={ScreenStyleSheet.headerIcon}
+              source={require("../../assets/icons/logout.png")}
+            />
+            <Text style={ScreenStyleSheet.sideBarTextItem}>Logout</Text>
+          </ListItem>
         </Content>
     </Container>
     );

@@ -13,6 +13,7 @@ const NotificationController = () => {
         isRead: body.isRead,
         type: body.type,              // types: upcomingEvent, updatedEvent, cancelledEvent, eventRecord, questionnaire
         subjectId: body.subjectId,    // the subject's id (event or record) depending on the notif type
+        title: body.title
       });
       return res
         .status(200)

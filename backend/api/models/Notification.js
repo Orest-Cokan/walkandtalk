@@ -14,10 +14,8 @@ const Notification = sequelize.define(tableName, {
   email: Sequelize.STRING,
   isRead: Sequelize.INTEGER,
   type: Sequelize.STRING,
-  eventId: Sequelize.INTEGER,
-  eventTitle: Sequelize.STRING,
-  recordId: Sequelize.INTEGER,
-  recordTitle: Sequelize.STRING
+  subjectId: Sequelize.INTEGER,
+  title: Sequelize.STRING
 });
 
 // export notification

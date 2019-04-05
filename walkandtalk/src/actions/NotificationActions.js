@@ -11,7 +11,8 @@ import {
   // Action to send an "updatedEvent" or "cancelledEvent" notification to other users
   export const sendNotification = (
       subjectId,
-      type
+      type,
+      title
   ) => {
     return async dispatch => {
       var ip = getIP();
@@ -25,12 +26,14 @@ import {
         attendees = res.data.walkingevent.attendees;
         
         // Send notification to all attendees
+        console.log("sending notifications...")
         attendees.forEach(async function(attendee) {
           const notification = {
             email: attendee.email,
             isRead: 0,
             type: type,
             subjectId: subjectId,
+            title, title
           };
           await axios
           .post(sendNotifUrl, notification)
