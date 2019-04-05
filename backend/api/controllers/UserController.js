@@ -3,7 +3,7 @@ const Preference = require("../models/Preference");
 const Picture = require("../models/Picture");
 const Redcap = require("../models/Redcap");
 const authService = require("../services/auth.service");
-const authPolicy = require("../policies/auth.policy");
+const userPolicy = require("../policies/user.policy");
 const bcryptService = require("../services/bcrypt.service");
 const Transporter = require("../utils/email/email");
 const newUserEmail = require("../utils/email/msgs/newUser");
@@ -33,9 +33,9 @@ const UserController = () => {
             include: [Preference, Picture, Redcap]
           }
         );
-        //const token = authService().issue({ email: user.email });
+        const token = authService().issue({ email: user.email });
         Transporter.sendMail(newUserEmail);
-        return res.status(200).json({ user });
+        return res.status(200).json({ user, token });
       } catch (err) {
         console.log(err);
         return res.status(500).json({ msg: "Internal server error" });
@@ -64,7 +64,7 @@ const UserController = () => {
 
         if (
           bcryptService().comparePassword(password, user.password) &&
-          authPolicy(user.registered)
+          userPolicy(user.registered)
         ) {
           const token = authService().issue({ email: user.email });
           return res.status(200).json({ user, token });
@@ -163,47 +163,6 @@ const UserController = () => {
         return res.status(500).json({ msg: "Internal server error" });
       });
   };
-  // update a user
-  const updateUser = async (req, res) => {
-    const { body } = req;
-
-    await User.update(
-      {
-        fullname: body.fullname,
-        menopausal_stage: body.menopausal_stage,
-        dob: body.dob
-      },
-      {
-        returning: true,
-        where: { email: body.email }
-      }
-    )
-      .then(() => {
-        Preference.update(
-          {
-            distance: body.preference.distance,
-            duration: body.preference.duration,
-            intensity: body.preference.intensity,
-            venue: body.preference.venue,
-            location: body.preference.location
-          },
-          {
-            plain: true,
-            returning: true,
-            where: { userEmail: body.email }
-          }
-        )
-          .then(self => {
-            return res.status(200).json(self[1]);
-          })
-          .catch(err => {
-            return res.status(500).json({ msg: "Internal server error" });
-          });
-      })
-      .catch(err => {
-        return res.status(500).json({ msg: "Internal server error" });
-      });
-  };
 
   return {
     register,
@@ -211,8 +170,7 @@ const UserController = () => {
     validate,
     getAll,
     getUser,
-    updateUser,
-    changePassword
+    updateUser
   };
 };
 

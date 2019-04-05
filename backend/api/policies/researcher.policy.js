@@ -1,14 +1,25 @@
-const User = require("../models/User");
+const User = require("../../api/models/User");
 
-module.exports = (req, res, next) => {
-    if(req.body.email != null) {
-      // do some verification stuff
-      const user = await User.findByPk(email);
-      if(user.researcher === true){
-          return next();
+module.exports = async (req, res, next) => {
+  const email = req.body.email;
+  if (email != null) {
+    // do some verification stuff
+    console.log(email, "hmm??");
+    try {
+      const user = await User.findOne({
+        where: {
+          email
+        }
+      });
+      console.log(user, "is this a user????");
+      console.log(user.researcher, "is this anything");
+      if (user.researcher == true) {
+        return next();
       }
-      return res.status(401).json({ msg: 'Unauthorized' });
+    } catch (err) {
+      return res.status(401).json({ msg: "Unauthorized" });
     }
-  
-    return res.status(401).json({ msg: 'Unauthorized' });
-  };
+  }
+
+  return res.status(401).json({ msg: "Unauthorized" });
+};

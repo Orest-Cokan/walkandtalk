@@ -14,6 +14,7 @@ const cors = require("cors");
 const config = require("../config/");
 const dbService = require("./services/db.service");
 const auth = require("./policies/auth.policy");
+const researcher = require("./policies/researcher.policy");
 
 // environment: development, staging, testing, production
 const environment = process.env.NODE_ENV;
@@ -23,10 +24,9 @@ const environment = process.env.NODE_ENV;
  */
 const app = express();
 const server = http.Server(app);
-const researcherPolicy = require("./policies/researcher.policy");
 const mappedOpenRoutes = mapRoutes(config.publicRoutes, "api/controllers/");
 const mappedAuthRoutes = mapRoutes(config.privateRoutes, "api/controllers/");
-const mappedResearchRoutes = mapRoutes(
+const mappedResearcherRoutes = mapRoutes(
   config.researcherRoutes,
   "api/controllers/"
 );
@@ -51,12 +51,12 @@ app.use(bodyParser.json());
 
 // secure your private routes with jwt authentication middleware
 app.all("/private/*", (req, res, next) => auth(req, res, next));
-app.all("/researcher/*", (req, res, next) => researcherPolicy(req, res, next));
+app.all("/researcher/*", (req, res, next) => researcher(req, res, next));
 
 // fill routes for express application
 app.use("/public", mappedOpenRoutes);
 app.use("/private", mappedAuthRoutes);
-app.use("/researcher/", mappedResearchRoutes);
+app.use("/researcher", mappedResearcherRoutes);
 
 server.listen(config.port, () => {
   if (
