@@ -2,8 +2,8 @@ const User = require("../models/User");
 const Preference = require("../models/Preference");
 const Redcap = require("../models/Redcap");
 const transporter = require("../utils/email/email");
-const acceptEmail = require("../Utils/email/msgs/acceptUser");
-const declineEmail = require("../Utils/email/msgs/declineUser");
+const acceptEmail = require("../utils/email/msgs/acceptUser");
+const declineEmail = require("../utils/email/msgs/declineUser");
 
 // Researcher controller
 const ResearcherController = () => {
