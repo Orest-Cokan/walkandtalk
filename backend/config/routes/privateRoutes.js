@@ -26,6 +26,14 @@ const privateRoutes = {
   "PUT /attendee/add": "AttendeeController.addAttendees",
   "PUT /attendee/remove": "AttendeeController.removeAttendees",
 
+  // Notification routes
+  "POST /notification": "NotificationController.create",
+  "PUT /notification": "NotificationController.update",
+  "GET /notifications": "NotificationController.getAll", // for testing only
+  "GET /notification/:email": "NotificationController.getNotifications",
+  "GET /notification/unread/:email":
+    "NotificationController.getUnreadNotifications",
+
   // Picture routes
   "PUT /user/picture": "PictureController.updateImage",
   "GET /user/picture/:email": "PictureController.getImage"
