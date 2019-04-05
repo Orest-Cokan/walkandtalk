@@ -198,19 +198,19 @@ class SearchTabScreen extends Component {
     i_arr.forEach(function(i) {
       if (i == 11) {
         var i1 = events.filter(event => {
-          return event.intensity === "Slow";
+          return event.intensity == "Slow";
         });
         results = results.concat(i1);
       }
       if (i == 22) {
         var i2 = events.filter(event => {
-          return event.intensity === "Intermediate";
+          return event.intensity == "Intermediate";
         });
         results = results.concat(i2);
       }
       if (i == 33) {
         var i3 = events.filter(event => {
-          return event.intensity === "Brisk";
+          return event.intensity == "Brisk";
         });
         results = results.concat(i3);
       }
@@ -229,13 +229,13 @@ class SearchTabScreen extends Component {
     v_arr.forEach(function(v) {
       if (v == 44) {
         var v1 = events.filter(event => {
-          return event.venue === "Indoor";
+          return event.venue == "Indoor";
         });
         results = results.concat(v1);
       }
       if (v == 44) {
         var v2 = events.filter(event => {
-          return event.venue === "Outdoor";
+          return event.venue == "Outdoor";
         });
         results = results.concat(v2);
       }

@@ -5,7 +5,8 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -42,17 +43,185 @@ class EditEventScreen extends Component {
       intensity: this.props.event.intensity,
       venue: this.props.event.venue,
       description: this.props.event.description,
-      notifType: 'updatedEvent'
+      notifType: 'updatedEvent',
+
+       // Error messages
+       errorTitle: null,
+       errorDate: null,
+       errorStartTime: null,
+       errorEndTime: null,
+       errorLocation: null
     }
+
+    // Component refs
+    this.title = React.createRef();
+    this.date = React.createRef();
+    this.startTime = React.createRef();
+    this.endTime = React.createRef();
+    this.location = React.createRef();
+
+
   }
 
   onChange(name, value) {
     this.setState({ [name] : value } )
+    // For datetime pickers
+    if (name == "date") {
+      this.showError(this.state.date, this.date, "errorDate");
+    }
+    if (name == "startTime") {
+      this.showError(this.state.startTime, this.startTime, "errorStartTime");
+    }
+    if (name == "endTime") {
+      this.showError(this.state.endTime, this.endTime, "errorEndTime");
+    }
   }
+
+  // Checks if start and end times work
+  isValidTime = () => {
+    if (this.state.startTime > this.state.endTime) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  // Checks if input is null or empty
+  isValid(input) {
+    if (input == null || input == "") {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  //Check end date
+  checkEndDate(err, input){
+    console.log(input)
+    console.log(err)
+    this.setState({endTime: input})
+    console.log("endTime", this.state.endTime)
+    console.log("startTime", this.state.startTime)
+    if (this.state.startTime > this.state.endTime) {
+      this.startTime.current.setNativeProps(
+        ScreenStyleSheet.formInputValid
+      );
+      this.endTime.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ errorStartTime: null });
+      this.setState({
+        errorEndTime: this.errorMessageDate(
+          "The end time must be later than the start time."
+        )
+      }, console.log("set error text for end TIME"))
+    } else {
+        this.startTime.current.setNativeProps(
+          ScreenStyleSheet.formInputValid
+        );
+        this.endTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
+        this.setState({ errorStartTime: null });
+        this.setState({ errorEndTime: null });
+    }
+  }
+
+  // Shows error message
+  showError(input, ref, error) {
+    // If input is valid
+    if (this.isValid(input)) {
+      // Checks if startTime < endTime
+      if (this.startTime == ref || this.endTime == ref) {
+        if (this.isValidTime()) {
+          this.startTime.current.setNativeProps(
+            ScreenStyleSheet.formInputValid
+          );
+          this.endTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
+          this.setState({ errorStartTime: null });
+          this.setState({ errorEndTime: null });
+        } else {
+          this.startTime.current.setNativeProps(
+            ScreenStyleSheet.formInputValid
+          );
+          this.endTime.current.setNativeProps(ScreenStyleSheet.formInputError);
+          this.setState({ errorStartTime: null });
+          this.setState({
+            errorEndTime: this.errorMessageDate(
+              "The end time must be later than the start time."
+            )
+          }, console.log("set error text for end TIME"));
+        }
+      }
+      // Otherwise, keep or set back to default
+      else {
+        ref.current.setNativeProps(ScreenStyleSheet.formInputValid);
+        this.setState({ [error]: null });
+      }
+    }
+    // If input is invalid, show errors
+    else {
+      console.log(input, error);
+      ref.current.setNativeProps(ScreenStyleSheet.formInputError);
+      if (this.date == ref || this.startTime == ref || this.endTime == ref) {
+        this.setState({
+          [error]: this.errorMessageDate("This is a required field.")
+        });
+      } else {
+        this.setState({
+          [error]: this.errorMessage("This is a required field.")
+        });
+      }
+    }
+  }
+
+  // Error message for text input fields
+  errorMessage(message) {
+    return (
+      <View style={ScreenStyleSheet.rowContainer}>
+        <View style={ScreenStyleSheet.formRowInfo}>
+          <Text style={ScreenStyleSheet.formErrorMessage}>{message}</Text>
+        </View>
+      </View>
+    );
+  }
+
+  // Error message for datetime pickers
+  errorMessageDate(message) {
+    return (
+      <View style={ScreenStyleSheet.rowContainer}>
+        <View style={ScreenStyleSheet.formRowInfo}>
+          <Text
+            style={[ScreenStyleSheet.formErrorMessage, { textAlign: "right" }]}
+          >
+            {message}
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  // Checks if all input fields are valid
+  inputCheck = () => {
+    if (
+      this.isValid(this.state.title) &&
+      this.isValid(this.state.date) &&
+      this.isValid(this.state.startTime) &&
+      this.isValid(this.state.endTime) &&
+      this.isValidTime() &&
+      this.isValid(this.state.location)
+    ) {
+      return true;
+    } else {
+      this.showError(this.state.title, this.title, "errorTitle");
+      this.showError(this.state.date, this.date, "errorDate");
+      this.showError(this.state.startTime, this.startTime, "errorStartTime");
+      this.showError(this.state.endTime, this.endTime, "errorEndTime");
+      this.showError(this.state.location, this.location, "errorLocation");
+      return false;
+    }
+  };
   
   // Has to be asynchronous in case edit finishes before 
   // fetching which will cause state not to be updated
   onFinish = async () => {
+    if (this.inputCheck()){
     await new Promise((resolve, reject) => {
         // Edit the event user clicks
         this.props.editEvent(
@@ -72,11 +241,15 @@ class EditEventScreen extends Component {
           this.state.id,
           this.state.title,
           this.state.notifType
-        )  
+        )
         resolve();
         Actions.homeTab();
     });
+  }else {
+    Alert.alert("You must fill in all required fields.");
   }
+  }
+  
   onCancel = () => {
     Actions.homeTab();
   };
@@ -126,27 +299,35 @@ class EditEventScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.title} style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
                 onChangeText={this.onChange.bind(this, 'title')}
+                onEndEditing={this.showError.bind(
+                  this,
+                  this.state.title,
+                  this.title,
+                  "errorTitle"
+                )}
               >
               {this.state.title}
               </TextInput>
             </View>
           </View>
+          {this.state.errorTitle}
+
           {/* Date */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>Date *</Text>
             </View>
-            <View style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.date} style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
                 style={{ width: "100%" }}
-                date={this.state.date}
                 mode="date"
                 showIcon={false}
-                placeholder="Select date"
+                date={this.state.date}
+                
                 format="ddd, MMM D"
                 minDate={new Date()} // why was this commented out????? @eivenlour
                 confirmBtnText="Confirm"
@@ -156,12 +337,14 @@ class EditEventScreen extends Component {
               />
             </View>
           </View>
+          {this.state.errorDate}
+
           {/* Start time */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>Start time *</Text>
             </View>
-            <View style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.startTime} style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
                 style={{ width: "100%" }}
                 date={this.state.startTime}
@@ -180,12 +363,14 @@ class EditEventScreen extends Component {
               />
             </View>
           </View>
+          {this.state.errorStartTime}
+
           {/* End time */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
               <Text style={ScreenStyleSheet.formInfo}>End time *</Text>
             </View>
-            <View style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.endTime} style={ScreenStyleSheet.formRowInfo}>
               <DatePicker
                 style={{ width: "100%" }}
                 date={this.state.endTime}
@@ -200,10 +385,12 @@ class EditEventScreen extends Component {
                     alignItems: "center"
                   }
                 }}
-                onDateChange={this.onChange.bind(this, 'endTime')}
+                onDateChange={this.checkEndDate.bind(this, 'endTime')}
               />
             </View>
           </View>
+          {this.state.errorEndTime}
+
 
           {/* Description */}
           <View style={ScreenStyleSheet.rowContainer}>
@@ -316,6 +503,8 @@ class EditEventScreen extends Component {
             /> 
             </View>
           </View>
+          {this.state.errorLocation}
+
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}

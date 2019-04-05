@@ -41,8 +41,15 @@ class ViewEventScreen extends Component {
       attendees: this.props.event.attendees,
       badge: this.props.badge,
       goingAlert: false,
-      notGoingAlert: false
+      notGoingAlert: false,
+      alreadyGoingAlert: false,
+      alreadyGoingText: "",
+      refresh: false
     }
+  }
+
+  shouldComponentUpdate(){
+    this.resetButton()
   }
   // Navigate back to previous screen
   onBack = () => {
@@ -53,13 +60,38 @@ class ViewEventScreen extends Component {
     this.setState( { [name] : false })
   };
 
+  //Used to update the Going/Not going buttons after cancel is pressed
+  hideAlertNoChange(name) {
+
+    this.setState( { [name] : false  })
+  };
+
+  resetButton(){
+    let currRef = this.state.refresh;
+    this.setState( { refresh: !currRef})
+    console.log("reset here")
+  }
+
   showAlert(value) {
+    if(this.state.badge == value){
+      if(this.state.badge == "GOING"){
+        this.setState({
+          alreadyGoingAlert: true,
+          alreadyGoingText : "You are already going to this event!"
+        })
+      }else{
+        this.setState({
+          alreadyGoingAlert: true,
+          alreadyGoingText : "You are not going to this event!"
+        })
+      }
+    }else{
     if (value == "GOING") {
       this.setState( { goingAlert : true })
     } else {
       this.setState( { notGoingAlert : true })
     }
-    
+  }
   };
 
   // Deletes the event
@@ -190,7 +222,9 @@ class ViewEventScreen extends Component {
         if (this.state.badge == option.value) {
           default_status = index;
         }
+      console.log(default_status, "default")
       });
+
       return (
         <View style={styles.segmentedControls}>
           <SwitchSelector
@@ -403,7 +437,7 @@ class ViewEventScreen extends Component {
             this.hideAlert('notGoingAlert');
           }}
           onCancelPressed={() => {
-            this.hideAlert('notGoingAlert');
+            this.hideAlertNoChange('notGoingAlert');
           }}
         />
         <AwesomeAlert
@@ -423,8 +457,22 @@ class ViewEventScreen extends Component {
             this.hideAlert('goingAlert');
           }}
           onCancelPressed={() => {
-            this.hideAlert('goingAlert');
+            this.hideAlertNoChange('goingAlert');
           }}
+        />
+         <AwesomeAlert
+          show={this.state.alreadyGoingAlert}
+          showProgress={false}
+          message={this.state.alreadyGoingText}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={true}
+          showConfirmButton={true}
+          confirmText="OK"
+          confirmButtonColor= {"#A680B8"}
+          onConfirmPressed={() => {
+            this.hideAlert('alreadyGoingAlert');
+          }}
+          
         />
       </Container>
     );

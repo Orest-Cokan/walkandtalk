@@ -37,6 +37,7 @@ class SignupScreen extends Component {
       confirmPassword: null,
       email: null,
       confirmEmail: null,
+      confirmEmailCount: 1,
       dob: null,
       menopausal_stage: "Pre",
       intensity: "Slow",
@@ -130,23 +131,117 @@ class SignupScreen extends Component {
 
   }
 
+  //Checks if password field is empty
+  isPasswordEmpty(input){
+    if (input == null || input == '' ) {
+      this.password.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ errorPassword : this.errorMessage("This is a required field.") });
+      console.log("empty")
+    }else{
+      this.isPasswordMatch()
+    }     
+  }
+
+  //Checks if both passwords match
+  isPasswordMatch(){
+    if (this.state.password != this.state.confirmPassword) {
+      this.password.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ errorPassword : this.errorMessage("These passwords do not match.") });
+      console.log("we dont match")
+    } else {
+      console.log("we match")
+      this.password.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.confirmPassword.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.setState({ errorPassword : null });
+      this.setState({ errorConfirmPassword : null });
+    }
+  }
+
+
+
+  //Checks if email field is empty
+  isEmailEmpty(input){
+    if (input == null || input == '' ) {
+      this.email.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ errorEmail : this.errorMessage("This is a required field.") });
+      console.log("empty")
+    }else{
+      this.isEmailValid(input)
+    }     
+  }
+
+  //Checks if email field contains a valid email format
+  isEmailValid(input){
+    var re = /\S+@\S+\.\S+/
+    isEmailValid = re.test(input)
+    console.log(isEmailValid, "is email valid")
+    if(!isEmailValid){
+      this.email.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ errorEmail : this.errorMessage("This email address is not valid.") });
+      console.log("valid not")
+    }else{
+      this.isEmailMatch()
+    }
+  }
+
+  //Checks if email field contains a valid email format - used for Showerror function
+  isEmailValidAll(input, error){
+    var re = /\S+@\S+\.\S+/
+    isEmailValid = re.test(input)
+    console.log(isEmailValid, "is email valid")
+    if(!isEmailValid){
+      if(error === "errorEmail"){
+        this.email.current.setNativeProps(ScreenStyleSheet.formInputError);
+        this.setState({ errorEmail : this.errorMessage("This email address is not valid.") });
+        console.log("valid not")
+      }else{
+        this.confirmEmail.current.setNativeProps(ScreenStyleSheet.formInputError);
+        this.setState({ errorConfirmEmail : this.errorMessage("This email address is not valid.") });
+        console.log("valid not")
+      }
+    }else{
+      return true;
+    }
+  }
+
+  //Checks if both emails match
+  isEmailMatch(){
+    if (this.state.email != this.state.confirmEmail) {
+      this.email.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ errorEmail : this.errorMessage("These email addresses do not match.") });
+      console.log("we dont match")
+    } else {
+      console.log("we match")
+      this.email.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.confirmEmail.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.setState({ errorEmail : null });
+      this.setState({ errorConfirmEmail : null });
+    }
+  }
+
+
 
   // Shows error message
   showError(input, ref, error) {
+    console.log("in show error", input, error);
+
     // If input is valid 
     if (this.isValid(input)) {
       // Checks if email addresses match
       if (this.email == ref || this.confirmEmail == ref) {
-        if (this.emailMatch()) {
-          this.email.current.setNativeProps(ScreenStyleSheet.formInputValid);
-          this.confirmEmail.current.setNativeProps(ScreenStyleSheet.formInputValid);
-          this.setState({ errorEmail : null });
-          this.setState({ errorConfirmEmail : null });
-        } else {
-          this.email.current.setNativeProps(ScreenStyleSheet.formInputValid);
-          this.confirmEmail.current.setNativeProps(ScreenStyleSheet.formInputError);
-          this.setState({ errorEmail : null });
-          this.setState({ errorConfirmEmail : this.errorMessage("These email addresses do not match.") });
+        if(this.isEmailValidAll(input, error)){
+          if (this.emailMatch()) {
+            this.email.current.setNativeProps(ScreenStyleSheet.formInputValid);
+            this.confirmEmail.current.setNativeProps(ScreenStyleSheet.formInputValid);
+            this.setState({ errorEmail : null });
+            this.setState({ errorConfirmEmail : null });
+          } else {
+            this.email.current.setNativeProps(ScreenStyleSheet.formInputValid);
+            this.confirmEmail.current.setNativeProps(ScreenStyleSheet.formInputError);
+            this.setState({ errorEmail : null });
+
+            this.setState({ errorConfirmEmail : this.errorMessage("These email addresses do not match.") }); 
+            }
         }
       }
       // Checks if password match
@@ -171,6 +266,7 @@ class SignupScreen extends Component {
     } 
     // If input is invalid, show errors
     else {
+      console.log("HEEEREEEEEE")
       ref.current.setNativeProps(ScreenStyleSheet.formInputError);
       if (this.dob == ref) {
         this.setState({ [error] : this.errorMessageDate("This is a required field.") });
@@ -337,7 +433,7 @@ class SignupScreen extends Component {
               <TextInput
                 style={ScreenStyleSheet.formInput}
                 onChangeText={this.onChange.bind(this, 'email')}
-                onEndEditing={this.showError.bind(this, this.state.email, this.email, 'errorEmail')}
+                onEndEditing={this.isEmailValid.bind(this, this.state.email)}
               />
             </View>
           </View>
@@ -380,8 +476,9 @@ class SignupScreen extends Component {
               style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
+                secureTextEntry={true}
                 onChangeText={this.onChange.bind(this, 'password')}
-                onEndEditing={this.showError.bind(this, this.state.password, this.password, 'errorPassword')}
+                onEndEditing={this.isPasswordEmpty.bind(this, this.state.password, this.password, 'errorPassword')}
               />
             </View>
           </View>
@@ -402,6 +499,7 @@ class SignupScreen extends Component {
               style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
+                secureTextEntry={true}
                 onChangeText={this.onChange.bind(this, 'confirmPassword')}
                 onEndEditing={this.showError.bind(this, this.state.confirmPassword, this.confirmPassword, 'errorConfirmPassword')}
               />
