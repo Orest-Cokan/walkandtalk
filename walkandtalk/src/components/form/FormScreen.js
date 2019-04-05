@@ -70,7 +70,6 @@ class FormScreen extends Component {
         </TouchableOpacity>
       );
     });
-    console.log(this.props);
     return records;
   }
 
@@ -102,7 +101,6 @@ class FormScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("formscreen");
   return {
     uncompleted_records: state.record.uncompleted_records,
     user: state.user

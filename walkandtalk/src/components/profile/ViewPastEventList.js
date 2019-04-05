@@ -59,7 +59,6 @@ class PastEventListScreen extends Component {
         </TouchableOpacity>
       );
     });
-    console.log(this.props);
     return past_events;
   }
 
@@ -100,7 +99,6 @@ class PastEventListScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("pastrecordlistscreen");
   return {
     records: state.record.records,
     user: state.user

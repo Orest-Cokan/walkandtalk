@@ -1,6 +1,6 @@
 // View Past Event Record Screen
 import React, { Component } from "react";
-import { View, Image, TouchableOpacity} from "react-native";
+import { View, Image } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -163,7 +163,6 @@ class ViewPastEventRecord extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("viewpasteventrecord");
   return {
     user: state.user
   };

@@ -17,7 +17,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
-import {getAllUsers, getUser} from "../../actions/UserActions";
+import { getUser } from "../../actions/UserActions";
 var x = 0;
 
 // Profile tab
@@ -217,5 +217,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {getAllUsers, getUser}
+  { getUser }
 )(OtherProfileScreen);

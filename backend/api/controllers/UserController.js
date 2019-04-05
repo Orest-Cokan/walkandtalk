@@ -111,7 +111,6 @@ const UserController = () => {
   // get a single user
   const getUser = async (req, res) => {
     const { email } = req.params;
-    console.log(email);
     try {
       const user = await User.findByPk(email, {
         include: [Preference, Picture, Redcap]

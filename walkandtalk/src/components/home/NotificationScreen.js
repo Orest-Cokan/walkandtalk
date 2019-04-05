@@ -38,7 +38,6 @@ class NotificationScreen extends Component{
     });
     this.willBlurListener = this.props.navigation.addListener('willBlur', 
     async () => {
-      console.log('Notification did blur'); 
       await this.props.notifications.map( async (notification) => {
         await this.props.updateNotification(
           this.props.user.token,
@@ -157,7 +156,6 @@ class NotificationScreen extends Component{
 }
 
 const mapStateToProps = state => {
-  console.log("notification playground");
   return {
     notifications: state.notification.notifications,
     user: state.user

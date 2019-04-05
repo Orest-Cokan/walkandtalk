@@ -63,9 +63,9 @@ class ViewEventScreen extends Component {
   };
 
   // Deletes the event
-  deleteEvent = () => {
-    this.props.deleteEvent(this.props.user.token, this.state.id);
-    this.props.sendNotification(
+  deleteEvent = async () => {
+    await this.props.deleteEvent(this.props.user.token, this.state.id);
+    await this.props.sendNotification(
       this.props.user.token,
       this.state.id,
       this.state.title,
@@ -82,8 +82,7 @@ class ViewEventScreen extends Component {
   viewOtherProfile = email => {
     // Navigate to view this event
     this.setState({visibleModal:false})
-   console.log("we are going to view other profile")
-   Actions.otherProfile({email:email})
+    Actions.otherProfile({email:email})
   };
 
 
@@ -108,7 +107,6 @@ class ViewEventScreen extends Component {
   };
 
   deleteEvent = () => {
-    console.log("we are deleting event with id", this.state.id);
     this.props.deleteEvent(this.props.user.token, this.state.id);
   };
 

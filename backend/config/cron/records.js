@@ -9,7 +9,6 @@ const WalkingRecord = require("../../api/models/WalkingRecord");
 // cron job check for events to delete every hour
 const task = () =>
   cron.schedule("0 * * * *", () => {
-    console.log("maybe im an idiot");
     let nukedTotal = 0;
     let recordsMade = 0;
     const today = dateFormat(new Date(), "ddd, mmm d");

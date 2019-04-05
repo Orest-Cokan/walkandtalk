@@ -122,7 +122,6 @@ class EditProfileScreen extends Component {
     // Shows options for selecting a photo and returns image data once image selected
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
@@ -499,7 +498,6 @@ class EditProfileScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("EditProfilescreen");
   return {
     user: state.user,
     picture: state.picture

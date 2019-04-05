@@ -6,7 +6,6 @@ const NotificationController = () => {
   // Create a notification
   const create = async (req, res) => {
     const { body } = req;
-    console.log(body.email);
     try {
       Notification.create({
         email: body.email,

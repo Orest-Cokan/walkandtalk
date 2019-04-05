@@ -223,8 +223,6 @@ const ExcelController = () => {
             fs.unlink("./Walk-and-Talk-DATA.xlsx");
             return res.status(500).json({ msg: "Failed to send Excel Data!" });
           }
-          console.log("Email sent succesfully!");
-          console.log(info);
           fs.unlink("./Walk-and-Talk-DATA.xlsx");
           return res
             .status(200)
