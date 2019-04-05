@@ -11,8 +11,6 @@ module.exports = async (req, res, next) => {
           email
         }
       });
-      console.log(user, "is this a user????");
-      console.log(user.researcher, "is this anything");
       if (user.researcher == true) {
         return next();
       }
