@@ -69,4 +69,5 @@ class StyledTextInput extends React.Component {
   }
 }
 
+
 export { StyledText, StyledTextInput };
