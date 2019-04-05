@@ -8,11 +8,9 @@ const privateRoutes = {
   "POST /walkingevent": "WalkingEventController.create",
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
   "GET /walkingevent/:id": "WalkingEventController.getEvent",
+  "GET /walkingevents/:email": "WalkingEventController.getUserEvents",
   "PUT /walkingevent": "WalkingEventController.updateEvent",
   "DELETE /walkingevent/:id": "WalkingEventController.destroy",
-
-  // Redcap routes
-  "PUT /redcap/:email": "RedcapController.updateUser",
 
   // Walkingrecord routes
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
