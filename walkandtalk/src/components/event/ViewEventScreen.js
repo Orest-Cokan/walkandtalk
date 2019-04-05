@@ -48,9 +48,7 @@ class ViewEventScreen extends Component {
     }
   }
 
-  shouldComponentUpdate(){
-    this.resetButton()
-  }
+
   // Navigate back to previous screen
   onBack = () => {
     Actions.pop();
@@ -66,11 +64,6 @@ class ViewEventScreen extends Component {
     this.setState( { [name] : false  })
   };
 
-  resetButton(){
-    let currRef = this.state.refresh;
-    this.setState( { refresh: !currRef})
-    console.log("reset here")
-  }
 
   showAlert(value) {
     if(this.state.badge == value){
