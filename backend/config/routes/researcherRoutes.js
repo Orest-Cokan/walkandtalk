@@ -9,6 +9,8 @@ const researcherRoutes = {
   // Researcher routes
   "PUT /accept": "ResearcherController.acceptUser",
   "POST /deny": "ResearcherController.denyUser",
+  "GET /researcher/registered": "ResearcherController.getRegisteredUsers",
+  "GET /researcher/unregistered": "ResearcherController.getUnregisteredUsers",
 
   // Excel route
   "GET /excel": "ExcelController.getData"
