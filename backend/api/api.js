@@ -14,6 +14,7 @@ const cors = require("cors");
 const config = require("../config/");
 const dbService = require("./services/db.service");
 const auth = require("./policies/auth.policy");
+const researcher = require("./policies/researcher.policy");
 
 // environment: development, staging, testing, production
 const environment = process.env.NODE_ENV;
@@ -25,8 +26,11 @@ const app = express();
 const server = http.Server(app);
 const mappedOpenRoutes = mapRoutes(config.publicRoutes, "api/controllers/");
 const mappedAuthRoutes = mapRoutes(config.privateRoutes, "api/controllers/");
+const mappedResearcherRoutes = mapRoutes(
+  config.researcherRoutes,
+  "api/controllers/"
+);
 const DB = dbService(environment, config.migrate).start();
-const redcapTask = require("../config/cron/redcap");
 
 // allow cross origin requests
 // configure to only allow requests from certain origins
@@ -34,7 +38,6 @@ app.use(cors());
 
 // secure express app
 app.use(
-  redcapTask.start(),
   helmet({
     dnsPrefetchControl: false,
     frameguard: false,
@@ -48,10 +51,12 @@ app.use(bodyParser.json());
 
 // secure your private routes with jwt authentication middleware
 app.all("/private/*", (req, res, next) => auth(req, res, next));
+app.all("/researcher/*", (req, res, next) => researcher(req, res, next));
 
 // fill routes for express application
 app.use("/public", mappedOpenRoutes);
 app.use("/private", mappedAuthRoutes);
+app.use("/researcher", mappedResearcherRoutes);
 
 server.listen(config.port, () => {
   if (

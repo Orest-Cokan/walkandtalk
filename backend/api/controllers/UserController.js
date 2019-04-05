@@ -3,7 +3,7 @@ const Preference = require("../models/Preference");
 const Picture = require("../models/Picture");
 const Redcap = require("../models/Redcap");
 const authService = require("../services/auth.service");
-const authPolicy = require("../policies/auth.policy");
+const userPolicy = require("../policies/user.policy");
 const bcryptService = require("../services/bcrypt.service");
 const Transporter = require("../utils/email/email");
 const newUserEmail = require("../utils/email/msgs/newUser");
@@ -64,7 +64,7 @@ const UserController = () => {
 
         if (
           bcryptService().comparePassword(password, user.password) &&
-          authPolicy(user.registered)
+          userPolicy(user.registered)
         ) {
           const token = authService().issue({ email: user.email });
           return res.status(200).json({ user, token });

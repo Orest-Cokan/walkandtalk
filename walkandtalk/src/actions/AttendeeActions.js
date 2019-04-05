@@ -5,6 +5,7 @@ import { Alert } from "react-native";
 
 // action to add an attendee
 export const addAttendees = (
+    token,
     id, 
     fullname, 
     email
@@ -16,9 +17,9 @@ export const addAttendees = (
     };
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/attendee/add";
+    var url = ip + "private/attendee/add";
     await axios
-      .put(url, attendee)
+      .put(url, attendee, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         if (res.status === 200) {
           dispatch({ type: ATTENDEE_ADD , payload: attendee });
@@ -33,6 +34,7 @@ export const addAttendees = (
 
 // action to remove an attendee
 export const removeAttendees = (
+  token,
   id, 
   email
 ) => {
@@ -42,9 +44,9 @@ export const removeAttendees = (
   };
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/attendee/remove";
+    var url = ip + "private/attendee/remove";
     await axios
-      .put(url, attendee)
+      .put(url, attendee, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         if (res.status === 200) {
           dispatch({ type: ATTENDEE_DELETE , payload: attendee });

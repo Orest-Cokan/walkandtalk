@@ -10,6 +10,7 @@ import { Alert } from "react-native";
 
 // action to update event record
 export const updateRecord = (
+  token,
   id,
   email,
   venue,
@@ -24,7 +25,7 @@ export const updateRecord = (
 ) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingrecord";
+    var url = ip + "private/walkingrecord";
     const walking_record = {
       id: id,
       email: email,
@@ -40,7 +41,7 @@ export const updateRecord = (
     };
 
     await axios
-      .put(url, walking_record)
+      .put(url, walking_record, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         dispatch({ type: RECORD_UPDATE });
       })
@@ -52,12 +53,12 @@ export const updateRecord = (
 };
 
 // action to get event records by user
-export const getRecords = email => {
+export const getRecords = (token, email) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingrecord/" + email;
+    var url = ip + "private/walkingrecord/" + email;
     await axios
-      .get(url)
+      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         dispatch({
           type: SET_RECORDS,
@@ -72,12 +73,12 @@ export const getRecords = email => {
 };
 
 // action to get completed event records by user
-export const getCompletedRecords = email => {
+export const getCompletedRecords = (token, email) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingrecord/completed/" + email;
+    var url = ip + "private/walkingrecord/completed/" + email;
     await axios
-      .get(url)
+      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         dispatch({
           type: SET_COMPLETED_RECORDS,
@@ -92,12 +93,12 @@ export const getCompletedRecords = email => {
 };
 
 // action to get completed event records by user
-export const getUncompletedRecords = email => {
+export const getUncompletedRecords = (token, email) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingrecord/uncompleted/" + email;
+    var url = ip + "private/walkingrecord/uncompleted/" + email;
     await axios
-      .get(url)
+      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         dispatch({
           type: SET_UNCOMPLETED_RECORDS,

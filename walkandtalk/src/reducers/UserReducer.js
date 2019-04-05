@@ -41,8 +41,6 @@ const user = (state = INITIAL_STATE, action) => {
     case USER_CREATE_SUCCESS:
       return { ...state, loading: false, error: ""};
     case USER_LOGIN:
-      console.log("reeee", action.payload);
-      console.log("reeee", action);
       return {
         ...state,
         ...INITIAL_STATE,
@@ -67,7 +65,8 @@ const user = (state = INITIAL_STATE, action) => {
         ...state,
         ...INITIAL_STATE,
         loading: true,
-        user: action.payload
+        user: action.payload.user,
+        token: action.payload.token
       };
     case SET_USER:
       return { ...state, otherUser: action.payload };

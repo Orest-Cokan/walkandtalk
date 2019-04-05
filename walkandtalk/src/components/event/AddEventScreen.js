@@ -18,7 +18,6 @@ import {
 class AddEventScreen extends Component {
   constructor(props) {
     super(props);
-
     // State
     this.state = {
       organizer: this.props.user.user.fullname,
@@ -214,6 +213,7 @@ checkEndDate(err, input){
   onFinish = () => {
     if (this.inputCheck()) {
       this.props.createEvent(
+        this.props.user.token,
         this.state.organizer,
         this.state.email,
         this.state.title,

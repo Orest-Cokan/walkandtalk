@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { fetchEvents } from "../../actions/EventActions";
 import {
   View,
   Text,
@@ -201,5 +200,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchEvents }
+  null  
 )(SearchMapViewScreen);

@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { getUnreadNotifications } from "../../actions/NotificationActions";
 import { fetchUserEvents } from "../../actions/EventActions";
+import { getPicture } from "../../actions/PictureActions";
 import { connect } from "react-redux";
 import { Image, TouchableOpacity } from "react-native";
 import {
@@ -22,9 +23,10 @@ import Loader from "../../constants/loader";
 
 class HomeScreen extends Component {
   constructor(props) {
-    super(props);    
-    this.props.getUnreadNotifications(this.props.user.user.email);
-    this.props.fetchUserEvents(this.props.user.user.email);
+    super(props);
+    this.props.getPicture(this.props.user.token, this.props.user.user.email);
+    this.props.getUnreadNotifications(this.props.user.token, this.props.user.user.email);
+    this.props.fetchUserEvents(this.props.user.token, this.props.user.user.email);
     this.state = {
       loading: false
     }
@@ -34,8 +36,8 @@ class HomeScreen extends Component {
     this.willFocusListener = this.props.navigation.addListener('willFocus', 
     async () => { 
       this.setState({loading: true})
-      await this.props.fetchUserEvents(this.props.user.user.email);
-      await this.props.getUnreadNotifications(this.props.user.user.email);
+      await this.props.fetchUserEvents(this.props.user.token, this.props.user.user.email);
+      await this.props.getUnreadNotifications(this.props.user.token, this.props.user.user.email);
       this.setState({loading: false})
     })
   }
@@ -125,15 +127,14 @@ class HomeScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("homescreen");
   return {
     unread_notifications: state.notification.unread_notifications,
     events: state.event.userEvents,
-    user: state.user
+    user: state.user,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchUserEvents, getUnreadNotifications }
+  { fetchUserEvents, getUnreadNotifications, getPicture }
 )(HomeScreen);

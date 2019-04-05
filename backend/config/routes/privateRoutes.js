@@ -1,21 +1,20 @@
 const privateRoutes = {
-  /*
-  // SOOON TM
   // User routes
-  "POST /validate": "UserController.validate",
-  "GET /users": "UserController.getAll",
   "GET /user/:email": "UserController.getUser",
   "PUT /user": "UserController.updateUser",
 
   // Walkingevent routes
   "GET /walkingevents": "WalkingEventController.getAll",
   "POST /walkingevent": "WalkingEventController.create",
+  "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
   "GET /walkingevent/:id": "WalkingEventController.getEvent",
   "PUT /walkingevent": "WalkingEventController.updateEvent",
   "DELETE /walkingevent/:id": "WalkingEventController.destroy",
 
+  // Redcap routes
+  "PUT /redcap/:email": "RedcapController.updateUser",
+
   // Walkingrecord routes
-  "GET /walkingrecords": "WalkingRecordController.getAll",
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
   "GET /walkingrecord/completed/:email":
     "WalkingRecordController.completedRecords",
@@ -23,21 +22,21 @@ const privateRoutes = {
     "WalkingRecordController.uncompletedRecords",
   "PUT /walkingrecord": "WalkingRecordController.update",
 
-  // Researcher routes
-  "PUT /researcher/accept": "ResearcherController.acceptUser",
-  "POST /researcher/deny": "ResearcherController.denyUser",
-
   // Attendee routes
   "PUT /attendee/add": "AttendeeController.addAttendees",
-  "GET /attendee/remove": "AttendeeController.removeAttendees",
+  "PUT /attendee/remove": "AttendeeController.removeAttendees",
+
+  // Notification routes
+  "POST /notification": "NotificationController.create",
+  "PUT /notification": "NotificationController.update",
+  "GET /notifications": "NotificationController.getAll", // for testing only
+  "GET /notification/:email": "NotificationController.getNotifications",
+  "GET /notification/unread/:email":
+    "NotificationController.getUnreadNotifications",
 
   // Picture routes
   "PUT /user/picture": "PictureController.updateImage",
-  "GET /user/picture/:email": "PictureController.getImage",
-
-  // Excel route
-  "GET /researcher/excel": "ExcelController.getData"
-  */
+  "GET /user/picture/:email": "PictureController.getImage"
 };
 
 module.exports = privateRoutes;

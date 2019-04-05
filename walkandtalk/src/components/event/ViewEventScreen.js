@@ -96,8 +96,9 @@ class ViewEventScreen extends Component {
 
   // Deletes the event
   deleteEvent = () => {
-    this.props.deleteEvent(this.state.id);
+    this.props.deleteEvent(this.props.user.token, this.state.id);
     this.props.sendNotification(
+      this.props.user.token,
       this.state.id,
       this.state.title,
       'cancelledEvent'
@@ -140,7 +141,7 @@ class ViewEventScreen extends Component {
 
   deleteEvent = () => {
     console.log("we are deleting event with id", this.state.id);
-    this.props.deleteEvent(this.state.id);
+    this.props.deleteEvent(this.props.user.token, this.state.id);
   };
 
   confirm() {
@@ -170,12 +171,14 @@ class ViewEventScreen extends Component {
     await new Promise((resolve, reject) => {
       if (this.state.badge == "GOING"){
         this.props.addAttendees(
+          this.props.user.token,
           this.state.id,
           this.props.user.user.fullname,
           this.props.user.user.email
         );
       } else {
         this.props.removeAttendees(
+          this.props.user.token,
           this.state.id,
           this.props.user.user.email
         );
