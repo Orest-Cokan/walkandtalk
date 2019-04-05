@@ -3,6 +3,7 @@ import { Image } from "react-native";
 import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
 
 import AuthScreen from "./components/login/AuthScreen";
+import ConsentScreen from "./components/login/ConsentScreen";
 import SignupScreen from "./components/login/SignupScreen";
 import AddEventScreen from "./components/event/AddEventScreen";
 import HomeScreen from "./components/home/HomeScreen";
@@ -33,6 +34,7 @@ const RouterComponent = () => (
       <Stack key="auth" hideNavBar>
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
+        <Scene key="consent" component={ConsentScreen} />
       </Stack>
       <Stack key="app" hideNavBar panHandlers={null} type="reset">
         <Tabs

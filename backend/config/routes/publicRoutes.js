@@ -9,6 +9,7 @@ const publicRoutes = {
 
   // Redcap routes
   "PUT /redcap/:email": "RedcapController.updateUser"
+
 };
 
 module.exports = publicRoutes;

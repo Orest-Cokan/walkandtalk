@@ -6,9 +6,13 @@ const privateRoutes = {
   // Walkingevent routes
   "GET /walkingevents": "WalkingEventController.getAll",
   "POST /walkingevent": "WalkingEventController.create",
+  "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
   "GET /walkingevent/:id": "WalkingEventController.getEvent",
   "PUT /walkingevent": "WalkingEventController.updateEvent",
   "DELETE /walkingevent/:id": "WalkingEventController.destroy",
+
+  // Redcap routes
+  "PUT /redcap/:email": "RedcapController.updateUser",
 
   // Walkingrecord routes
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
@@ -20,7 +24,15 @@ const privateRoutes = {
 
   // Attendee routes
   "PUT /attendee/add": "AttendeeController.addAttendees",
-  "GET /attendee/remove": "AttendeeController.removeAttendees",
+  "PUT /attendee/remove": "AttendeeController.removeAttendees",
+
+  // Notification routes
+  "POST /notification": "NotificationController.create",
+  "PUT /notification": "NotificationController.update",
+  "GET /notifications": "NotificationController.getAll", // for testing only
+  "GET /notification/:email": "NotificationController.getNotifications",
+  "GET /notification/unread/:email":
+    "NotificationController.getUnreadNotifications",
 
   // Picture routes
   "PUT /user/picture": "PictureController.updateImage",
