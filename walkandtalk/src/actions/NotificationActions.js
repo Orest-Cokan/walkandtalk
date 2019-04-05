@@ -17,7 +17,7 @@ import {
   ) => {
     return async dispatch => {
       var ip = getIP();
-      var getAttendeesUrl = ip + "private/walkingevent/" + eventId;
+      var getAttendeesUrl = ip + "private/walkingevent/" + subjectId;
       var sendNotifUrl = ip + "private/notification";
       var attendees = [];
       // Get all event attendees
