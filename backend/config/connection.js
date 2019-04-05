@@ -15,10 +15,10 @@ const testing = {
 };
 
 const production = {
-  database: "CMPUT401",
-  username: "CMPUT401",
-  password: "cmput401",
-  host: "localhost",
+  database: process.env.DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  host: process.env.DB_HOST || "localhost",
   dialect: "sqlite" || "mysql" || "postgres"
 };
 

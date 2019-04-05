@@ -4,7 +4,6 @@ module.exports = async (req, res, next) => {
   const email = req.body.email;
   if (email != null) {
     // do some verification stuff
-    console.log(email, "hmm??");
     try {
       const user = await User.findOne({
         where: {
