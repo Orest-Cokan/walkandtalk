@@ -54,6 +54,7 @@ class ViewRequestScreen extends Component {
       //flag for loading screen
       loading: false
     };
+    console.log(this.props.user.user.email);
   }
 
   /* Get the next available record ID from REDCap */
@@ -129,7 +130,7 @@ class ViewRequestScreen extends Component {
     if (this.state.responseStatus) {
       //import New user into REDCap
       await this.importToRedcap();
-      this.props.approveUser(this.state.email, this.state.redcapID);
+      this.props.approveUser(this.state.email, this.state.redcapID, this.props.user.user.email);
       if (this.state.responseStatus) {
         this.setState({ showButtons: false });
         this.setState({ loading: false });
@@ -146,7 +147,7 @@ class ViewRequestScreen extends Component {
 
   // Declines request to be a user
   declineRequest = () => {
-    this.props.declineUser(this.state.email);
+    this.props.declineUser(this.state.email, this.props.user.user.email);
     this.setState({ showButtons: false });
     Alert.alert(
       "The request from " + this.state.fullname + " has been declined."
@@ -350,7 +351,9 @@ class ViewRequestScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    user: state.user
+  };
 };
 
 export default connect(

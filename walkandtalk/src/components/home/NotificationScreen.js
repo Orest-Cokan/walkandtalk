@@ -31,18 +31,18 @@ class NotificationScreen extends Component{
     }
 
     // Grabs all needed data for this screen
-    this.props.getNotifications(this.props.user.user.email);
-    this.props.fetchEvents();
-    this.props.getUncompletedRecords(this.props.user.user.email);
+    this.props.getNotifications( this.props.user.token, this.props.user.user.email);
+    this.props.fetchEvents(this.props.user.token);
+    this.props.getUncompletedRecords( this.props.user.token, this.props.user.user.email);
   }
 
   componentDidMount() {
     this.willFocusListener = this.props.navigation.addListener('willFocus', 
     async () => { 
       this.setState({loading: true});
-      await this.props.getNotifications(this.props.user.user.email);
-      await this.props.fetchEvents();
-      await this.props.getUncompletedRecords(this.props.user.user.email);
+      await this.props.getNotifications( this.props.user.token, this.props.user.user.email);
+      await this.props.fetchEvents(this.props.user.token);
+      await this.props.getUncompletedRecords(this.props.user.token, this.props.user.user.email);
       this.setState({loading: false});
     });
     this.willBlurListener = this.props.navigation.addListener('willBlur', 

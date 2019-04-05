@@ -15,7 +15,7 @@ This is the requests screen. Researchers will see the users that have signed up 
 class RequestsScreen extends Component {
   constructor(props) {
     super(props);
-    this.props.unregisteredUsers = this.props.getUnregisteredUsers();
+    this.props.unregisteredUsers = this.props.getUnregisteredUsers(this.props.user.user.email);
     this.state = {
       loading: false
     };
@@ -27,7 +27,7 @@ class RequestsScreen extends Component {
       "willFocus",
       async () => {
         await this.setState({loading: true})
-        await this.props.getUnregisteredUsers();
+        await this.props.getUnregisteredUsers(this.props.user.user.email);
         this.setState({loading: false})
       }
     );
@@ -82,7 +82,8 @@ class RequestsScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    unregisteredUsers: state.user.unregisteredUsers
+    unregisteredUsers: state.user.unregisteredUsers,
+    user: state.user
   };
 };
 

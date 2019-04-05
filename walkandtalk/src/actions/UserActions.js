@@ -210,13 +210,14 @@ export const editUser = (
 };
 
 //get unregistered users
-export const getUnregisteredUsers = () => {
+export const getUnregisteredUsers = (researcherEmail) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/researcher/unregistered";
+    var url = ip + "researcher/unregistered";
+    console.log("url", url)
     await axios
-      .get(url)
-      .then(res => {
+      .get(url, {params: {email: researcherEmail}})
+      .then((res) => {
         dispatch({ type: GET_UNREGISTERED_USERS, payload: res.data.users });
       })
       .catch(err => {
@@ -227,16 +228,16 @@ export const getUnregisteredUsers = () => {
 };
 
 //approve request of a user
-export const approveUser = (email, redcapID) => {
+export const approveUser = (email, redcapID, researcherEmail) => {
   const user = {
-    email: email,
+    userEmail: email,
     redcapID: redcapID
   };
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/researcher/accept";
+    var url = ip + "researcher/accept";
     await axios
-      .put(url, user)
+      .put(url, user, {params: {email: researcherEmail}})
       .then(res => {
         dispatch({ type: USER_APPROVE });
       })
@@ -248,15 +249,15 @@ export const approveUser = (email, redcapID) => {
 };
 
 //decline request of a user
-export const declineUser = email => {
+export const declineUser = (email, researcherEmail) => {
   const user = {
-    email: email
+    userEmail: email
   };
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/researcher/deny";
+    var url = ip + "researcher/deny";
     await axios
-      .put(url, user)
+      .put(url, user, {params: {email: researcherEmail}})
       .then(res => {
         dispatch({ type: USER_DECLINE });
       })
