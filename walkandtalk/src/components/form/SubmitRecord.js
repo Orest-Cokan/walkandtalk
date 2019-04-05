@@ -2,32 +2,24 @@
 
 import React, { Component } from "react";
 import {
-  StyleSheet,
   View,
   TouchableOpacity,
-  Button,
-  Alert,
-  Image,
-  Dimensions
+  Image
 } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
   Header,
-  Left,
   Body,
   Title,
-  Right,
   Content,
-  StatusBar
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
-import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { updateRecord } from "../../actions/RecordActions";
 import NumericInput from "react-native-numeric-input";
 import { Actions } from "react-native-router-flux";
-import { width, height, totalSize } from "react-native-dimension";
+import { width } from "react-native-dimension";
 import {
   StyledText as Text,
   StyledTextInput as TextInput
@@ -36,13 +28,8 @@ import {
 class SubmitRecordScreen extends Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
-    console.log(this.props.record);
 
     this.state = {
-      // Event default details
-      numAttendees: 3,
-
       // Event record uneditable details
       id: this.props.record.id,
       organizer: this.props.record.organizer,
@@ -54,73 +41,29 @@ class SubmitRecordScreen extends Component {
       endTime: this.props.record.end_time,
       location: this.props.record.location,
       numAttendees: this.props.record.total_attendees,
-      completed: this.props.record.completed,
+      completed: 1,
 
-      // User input needed
+      // Editable fields
       duration: 0,
       distance: 0,
       intensity: "Slow",
       venue: "Indoor",
       walkRating: "1",
       locationRating: "1",
-      walkRatingComment: null,
-      locationRatingComment: null
+      walkRatingComment: '',
+      locationRatingComment: ''
     };
   }
-  onChangeDistance(value) {
-    this.setState({
-      distance: value
-    });
-  }
 
-  onChangeDuration(value) {
-    this.setState({
-      duration: value
-    });
-  }
-
-  setIntensity(selectedOption) {
-    this.setState({
-      intensity: selectedOption
-    });
-  }
-
-  setVenue(selectedOption) {
-    this.setState({
-      venue: selectedOption
-    });
-  }
-
-  setWalkRating(selectedOption) {
-    this.setState({
-      walkRating: selectedOption
-    });
-  }
-
-  setLocationRating(selectedOption) {
-    this.setState({
-      locationRating: selectedOption
-    });
-  }
-
-  onChangeWalkRatingComment = text => {
-    this.setState({
-      walkRatingComment: text
-    });
+  // Set state
+  onChange(name, value) {
+    this.setState({ [name] : value });
   };
 
-  onChangeLocationRatingComment = text => {
-    this.setState({
-      locationRatingComment: text
-    });
-  };
-
-  hasCompleted() {
-    this.state.completed = 1;
-  }
-
+  // When submit button is tapped
   onSubmit = () => {
     this.props.updateRecord(
+      this.props.user.token,
       this.state.id,
       this.state.email,
       this.state.venue,
@@ -131,11 +74,12 @@ class SubmitRecordScreen extends Component {
       this.state.walkRatingComment,
       this.state.locationRating,
       this.state.locationRatingComment,
-      this.state.completed
+      this.state.completed,
     );
-    console.log(this.props);
+    Actions.reset("mainFormPage");
   };
 
+  // When cancel button is tapped
   onCancel = () => {
     Actions.pop();
   };
@@ -179,15 +123,64 @@ class SubmitRecordScreen extends Component {
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           {/* Event info */}
-          <Text>
-            {this.state.date.toUpperCase()} AT{" "}
-            {this.state.startTime.toUpperCase()}
-          </Text>
-          <Text>{this.state.title}</Text>
-          <Text>{this.state.location}</Text>
-          <Text>{this.state.organizer}</Text>
-          <Text>{this.state.numAttendees} people attended this event.</Text>
 
+          {/* Date and time */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.eventTimeInfo}>
+                {this.state.date.toUpperCase()} {" AT "}
+                {this.state.startTime.toUpperCase()} {" - "}
+                {this.state.endTime.toUpperCase()}
+              </Text>
+            </View>
+          </View>
+          {/* Title */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.eventTitleInfo}>
+                {this.state.title}
+              </Text>
+            </View>
+          </View>
+          {/* Location */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/pin.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.infoByIcon}>
+                {this.state.location}
+              </Text>
+            </View>
+          </View>
+          {/* Organizer */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/default-profile.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.infoByIcon}>
+                {this.state.organizer}
+              </Text>
+            </View>
+          </View>
+          {/* Number of attendees */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/user-group.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.numAttendees}>
+                {this.state.numAttendees} people
+                <Text> attended this event.</Text>
+              </Text>
+            </View>
+          </View>
+          
+          
           {/* On screen separator */}
           <View style={ScreenStyleSheet.lineSeparator} />
 
@@ -200,12 +193,12 @@ class SubmitRecordScreen extends Component {
               </Text>
             </View>
           </View>
-          <View style={styles.controls}>
+          <View style={ScreenStyleSheet.slideBar}>
             <NumericInput
               initValue={this.state.distance}
               value={this.state.distance}
               minValue={0}
-              onChange={value => this.onChangeDistance(value)}
+              onChange={this.onChange.bind(this, 'distance')}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -228,12 +221,12 @@ class SubmitRecordScreen extends Component {
               </Text>
             </View>
           </View>
-          <View style={styles.controls}>
+          <View style={ScreenStyleSheet.slideBar}>
             <NumericInput
               initValue={this.state.duration}
               value={this.state.duration}
               minValue={0}
-              onChange={value => this.onChangeDuration(value)}
+              onChange={this.onChange.bind(this, 'duration')}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -256,11 +249,11 @@ class SubmitRecordScreen extends Component {
               </Text>
             </View>
           </View>
-          <View style={styles.controls}>
+          <View style={ScreenStyleSheet.slideBar}>
             <SwitchSelector
               options={intensities}
               initial={0}
-              onPress={value => this.setIntensity(value)}
+              onPress={this.onChange.bind(this, 'intensity')}
               textColor={"#A680B8"} //'#7a44cf'
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -279,11 +272,11 @@ class SubmitRecordScreen extends Component {
               </Text>
             </View>
           </View>
-          <View style={styles.controls}>
+          <View style={ScreenStyleSheet.slideBar}>
             <SwitchSelector
               options={venues}
               initial={0}
-              onPress={value => this.setVenue(value)}
+              onPress={this.onChange.bind(this, 'venue')}
               textColor={"#A680B8"} //'#7a44cf'
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -302,11 +295,11 @@ class SubmitRecordScreen extends Component {
               </Text>
             </View>
           </View>
-          <View style={styles.controls}>
+          <View style={ScreenStyleSheet.slideBar}>
             <SwitchSelector
               options={walkRatings}
               initial={0}
-              onPress={value => this.setWalkRating(value)}
+              onPress={this.onChange.bind(this, 'walkRating')}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
               borderRadius={8}
@@ -331,7 +324,7 @@ class SubmitRecordScreen extends Component {
                 multiline={true}
                 numberOfLines={4}
                 maxLength={140}
-                onChangeText={this.onChangeWalkRatingComment}
+                onChangeText={this.onChange.bind(this, 'walkRatingComment')}
               />
             </View>
           </View>
@@ -345,11 +338,11 @@ class SubmitRecordScreen extends Component {
               </Text>
             </View>
           </View>
-          <View style={styles.controls}>
+          <View style={ScreenStyleSheet.slideBar}>
             <SwitchSelector
               options={locationRatings}
               initial={0}
-              onPress={value => this.setLocationRating(value)}
+              onPress={this.onChange.bind(this, 'locationRating')}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
               borderRadius={8}
@@ -374,7 +367,7 @@ class SubmitRecordScreen extends Component {
                 multiline={true}
                 numberOfLines={4}
                 maxLength={140}
-                onChangeText={this.onChangeLocationRatingComment}
+                onChangeText={this.onChange.bind(this, 'locationRatingComment')}
               />
             </View>
           </View>
@@ -384,7 +377,7 @@ class SubmitRecordScreen extends Component {
             {/* Cancel button */}
             <TouchableOpacity
               style={[
-                styles.buttonContainer,
+                ScreenStyleSheet.button,
                 { borderWidth: 1, borderColor: "#A680B8" }
               ]}
               onPress={this.onCancel}
@@ -394,8 +387,8 @@ class SubmitRecordScreen extends Component {
 
             {/* Finish button */}
             <TouchableOpacity
-              style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
-              onPress={(this.hasCompleted, this.onSubmit)}
+              style={[ScreenStyleSheet.button, { backgroundColor: "#A680B8" }]}
+              onPress={(this.onSubmit)}
             >
               <Text style={{ color: "white" }}>Submit</Text>
             </TouchableOpacity>
@@ -405,30 +398,6 @@ class SubmitRecordScreen extends Component {
     );
   }
 }
-// Styles
-const styles = StyleSheet.create({
-  controls: {
-    marginBottom: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  buttonContainer: {
-    marginVertical: 10,
-    marginBottom: 10,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "48%",
-    borderRadius: 10
-  },
-
-  nestedButtonView: {
-    flexDirection: "row",
-    alignItems: "stretch",
-    marginBottom: 5
-  }
-});
 
 const mapStateToProps = state => {
   return {

@@ -25,21 +25,28 @@ beforeEach(async () => {
       organizer: "skryt",
       description: "i want to go",
       intensity: "slow",
-      venue: "indoor"
+      venue: "indoor",
+      start_time: "08:00pm",
+      end_time: "10:00pm",
+      date: "Fri, Mar 28",
+      location: {
+        streetName: "riverbend",
+        long: 12,
+        lat: 13
+      }
     })
     .expect(200);
 });
 
 // test adding an attendee
 test("Attendee | addAttendees", async () => {
-  console.log();
   // add an attendee to it
   await request(api)
     .put("/public/attendee/add")
     .set("Accept", /json/)
     .send({
       id: 1,
-      name: "national womans day",
+      fullname: "national womans day",
       email: "skryt@gmail.com"
     })
     .expect(200);
@@ -47,7 +54,6 @@ test("Attendee | addAttendees", async () => {
   const walkingEvent = await request(api)
     .get("/public/walkingevent/1")
     .expect(200);
-  //console.log(walkingEvent.text, "we are here!!!!!!");
   const ev = JSON.parse(walkingEvent.text);
   const event = ev.walkingevent;
   expect(event.total_attendees).toBe(2);
@@ -65,31 +71,30 @@ test("Attendee | removeAttendees", async () => {
     .set("Accept", /json/)
     .send({
       id: 2,
-      name: "national womans day",
+      fullname: "national womans day",
       email: "skryt@gmail.com"
     })
     .expect(200);
 
   // request to remove the attendee
   await request(api)
-    .get("/public/attendee/remove")
+    .put("/public/attendee/remove")
     .set("Accept", /json/)
     .send({
       id: 2,
-      name: "national womans day",
       email: "skryt@gmail.com"
     })
     .expect(200);
 
   const walkingEvent = await request(api)
     .get("/public/walkingevent/2")
+    .send()
     .expect(200);
   const ev = JSON.parse(walkingEvent.text);
-  console.log(ev, "remove ????");
   const event = ev.walkingevent;
   expect(event.total_attendees).toBe(1);
 
   await request(api)
-    .delete("/public/walkingevent/1")
+    .delete("/public/walkingevent/2")
     .expect(200);
 });

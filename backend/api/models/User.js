@@ -3,6 +3,7 @@ const bcryptService = require("../services/bcrypt.service");
 const sequelize = require("../../config/database");
 const Preference = require("./Preference");
 const Picture = require("./Picture");
+const Redcap = require("./Redcap");
 
 // hook for a user to encrypt their password
 const hooks = {
@@ -18,37 +19,55 @@ const tableName = "users";
 const User = sequelize.define(
   tableName,
   {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true
-    },
     email: {
       type: Sequelize.STRING,
       unique: true,
       primaryKey: true
     },
-    password: Sequelize.STRING,
-    fullname: Sequelize.STRING,
-    dob: Sequelize.STRING,
-    menopausal_stage: Sequelize.STRING,
-    registered: Sequelize.INTEGER,
-    redcapID: Sequelize.INTEGER
+    password: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    fullname: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    dob: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    menopausal_stage: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    registered: {
+      type: Sequelize.BOOLEAN,
+      allowNull: true
+    },
+    researcher: {
+      type: Sequelize.BOOLEAN,
+      allowNull: true
+    }
   },
 
   { hooks, tableName }
 );
 
-// set hasOne association
+// set hasOne association Prefernece
 User.hasOne(Preference, {
   onDelete: "CASCADE",
   hooks: true
 });
-// set hasOne association
+// set hasOne association Picture
 User.hasOne(Picture);
+
+//set hasOne association with Redcap
+User.hasOne(Redcap);
 
 // set belongsTo association
 Preference.belongsTo(User);
 Picture.belongsTo(User);
+Redcap.belongsTo(User);
 
 // eslint-disable-next-line
 User.prototype.toJSON = function() {

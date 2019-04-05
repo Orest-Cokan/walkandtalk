@@ -1,56 +1,60 @@
 import { ATTENDEE_ADD, ATTENDEE_DELETE } from "./types";
-import { Actions } from "react-native-router-flux";
 import axios from "axios";
-import { Platform } from "react-native";
+import getIP from "../constants/Ip";
+import { Alert } from "react-native";
 
 // action to add an attendee
-export const addAttendees = (id, name, email) => {
-  return dispatch => {
-    var ip = getIP();
-    var url = ip + "public/walkingevent";
+export const addAttendees = (
+    token,
+    id, 
+    fullname, 
+    email
+  ) => {
     const attendee = {
       id: id,
-      name: name,
+      fullname: fullname,
       email: email
     };
-    axios
-      .post(url, attendee)
+  return async dispatch => {
+    var ip = getIP();
+    var url = ip + "private/attendee/add";
+    await axios
+      .put(url, attendee, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         if (res.status === 200) {
-          console.log(res.status, "is this logged???");
-          console.log(attendee, "attendee adding...");
-          dispatch({ type: ATTENDEE_ADD });
-          Actions.reset("app");
+          dispatch({ type: ATTENDEE_ADD , payload: attendee });
         }
       })
       .catch(err => {
-        console.log(err, "kek");
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
 
 // action to remove an attendee
-export const removeAttendees = (id, email) => {
-  return dispatch => {
+export const removeAttendees = (
+  token,
+  id, 
+  email
+) => {
+  const attendee = {
+    id: id,
+    email: email
+  };
+  return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevent/";
-    axios
-      .delete(url + id)
+    var url = ip + "private/attendee/remove";
+    await axios
+      .put(url, attendee, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
-        console.log(res.data);
-        dispatch({ type: ATTENDEE_DELETE, payload: res.data });
-        Actions.reset("app");
+        if (res.status === 200) {
+          dispatch({ type: ATTENDEE_DELETE , payload: attendee });
+        }
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
-};
-
-var getIP = () => {
-  if (Platform.OS === "android") {
-    return "http://10.0.2.2:2017/";
-  } else if (Platform.OS === "ios") {
-    return "http://127.0.0.1:2017/";
-  }
 };

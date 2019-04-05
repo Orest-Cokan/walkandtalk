@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import {
-  StyleSheet,
   View,
   Image,
-  TouchableOpacity,
   TouchableHighlight,
-  ScrollView
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
@@ -15,21 +12,30 @@ import {
   Body,
   Title,
   Right,
-  Content
+  Content,
+  Button,
+  Drawer
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
-import {
-  StyledText as Text,
-  StyledTextInput as TextInput
-} from "../../constants/StyledText";
+import { StyledText as Text } from "../../constants/StyledText";
+import Sidebar from './Sidebar'
 
 // Profile tab
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("Props on profile", this.props);
   }
+
+  // Sidebar close
+  closeDrawer = () => {
+    this.drawer._root.close()
+  };
+
+  // Sidebar open
+  openDrawer = () => {
+    this.drawer._root.open()
+  };
 
   // When edit profile icon is clicked
   goToEditProfile = () => {
@@ -37,30 +43,40 @@ class ProfileScreen extends Component {
     Actions.editProfile();
   };
 
-  goToPastEvents = () => {
-    // Navigate to Past Events
-    Actions.pastEvents();
-  };
-
-  goToHelplineLinks = () => {
-    // Navigate to Past Events
-    Actions.helplines();
-  };
+  componentWillMount(){
+    vars = this.props.user.user
+  }
 
   render() {
-    console.log(this.props.user.user);
     const vars = this.props.user.user;
     return (
       <Container>
+        <Drawer
+          side="right"
+          ref={(ref) => { this.drawer = ref; }}
+          content={<Sidebar closeDrawer={this.closeDrawer.bind(this)}/>}
+          tapToClose={true}
+          openDrawerOffset={0.4}
+          panOpenMask={0.4}
+          onClose={() => this.closeDrawer()} >
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
           iosBarStyle={"dark-content"}
         >
+          <Left style={ScreenStyleSheet.headerSides}/>
           <Body style={ScreenStyleSheet.headerBody}>
             <Title style={ScreenStyleSheet.headerTitle}>Profile</Title>
           </Body>
+          <Right style={ScreenStyleSheet.headerSides}>
+            <Button transparent onPress={() => this.openDrawer()}>
+              <Image
+                style={ScreenStyleSheet.headerIcon}
+                source={require("../../assets/icons/sidebar.png")}
+              />
+            </Button>
+          </Right>
         </Header>
 
         <Content contentContainerStyle={ScreenStyleSheet.content}>
@@ -71,6 +87,7 @@ class ProfileScreen extends Component {
               <TouchableHighlight
                 onPress={this.goToEditProfile}
                 activeOpacity={0}
+                underlayColor={'transparent'}
               >
                 <Image
                   style={ScreenStyleSheet.editIcon}
@@ -81,10 +98,10 @@ class ProfileScreen extends Component {
             {/* Profile picture */}
             <Image
               style={ScreenStyleSheet.avatar}
-              source={require("../../assets/icons/default-profile.png")}
+              source={this.props.picture.picture.image ? {uri: this.props.picture.picture.image} : require("../../assets/icons/default-profile.png")}
             />
             <Text style={ScreenStyleSheet.profileName}>
-              {this.props.user.user.fullname}
+              {vars.fullname}
             </Text>
           </View>
 
@@ -106,7 +123,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.dob}
+                {vars.dob}
               </Text>
             </View>
           </View>
@@ -120,7 +137,7 @@ class ProfileScreen extends Component {
                 {/* Automatically calculates the age when given date of birth */}
                 {Math.floor(
                   (new Date().getTime() -
-                    Date.parse(this.props.user.user.dob)) /
+                    Date.parse(vars.dob)) /
                     31557600000
                 )}
               </Text>
@@ -133,7 +150,7 @@ class ProfileScreen extends Component {
             </View>
             <View style={ScreenStyleSheet.profileRowInfo}>
               <Text style={ScreenStyleSheet.profileInfoInput}>
-                {this.props.user.user.menopausal_stage}
+                {vars.menopausal_stage}
               </Text>
             </View>
           </View>
@@ -208,34 +225,17 @@ class ProfileScreen extends Component {
               </Text>
             </View>
           </View>
-
-          {/* Options */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            {/* Button to help links */}
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.goToHelplineLinks}
-            >
-              <Text>Helpline Links</Text>
-            </TouchableOpacity>
-            {/* Button to past events */}
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.goToPastEvents}
-            >
-              <Text>Past Events</Text>
-            </TouchableOpacity>
-          </View>
         </Content>
+        </Drawer>
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log("profilescreen");
   return {
-    user: state.user
+    user: state.user,
+    picture: state.picture
   };
 };
 
@@ -243,17 +243,3 @@ export default connect(
   mapStateToProps,
   null
 )(ProfileScreen);
-
-// Styles
-const styles = StyleSheet.create({
-  buttonContainer: {
-    marginVertical: 10,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "48%",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "black"
-  }
-});

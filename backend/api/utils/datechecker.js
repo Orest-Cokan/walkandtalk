@@ -1,7 +1,5 @@
+// time to check time because no easy way to parse date text
 const time = (now, event_time) => {
-  console.log(now, event_time, "THESE ARE OUR TIMES");
-  console.log(typeof now);
-  console.log(typeof event_time);
   if (
     now.slice(-2).toLowerCase() == "am" &&
     event_time.slice(-2).toLowerCase() == "am"
@@ -28,17 +26,16 @@ const time = (now, event_time) => {
     if (
       now.slice(-2).toLowerCase() == "pm" &&
       event_time.slice(-7, -5) == "12" &&
-      event_time.slice(-2).toLowerCase() == "pm"
+      event_time.slice(-2).toLowerCase() == "pm" &&
+      now.slice(-7, -5) == "12"
     ) {
       return true;
+    } else if (now.slice(-7, -5) == "12" && event_time != "12") {
+      return false;
     }
     if (now.slice(-7) >= event_time.slice(-7)) {
-      console.log(now.slice(-7), event_time.slice(-7));
       return true;
     } else {
-      console.log(now.slice(-7), event_time.slice(-7));
-      console.log(now.slice(-7, -5));
-
       return false;
     }
   }

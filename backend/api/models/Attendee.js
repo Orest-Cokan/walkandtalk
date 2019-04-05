@@ -7,10 +7,12 @@ const tableName = "attendees";
 // Attendee model
 const Attendee = sequelize.define(tableName, {
   email: {
-    type: Sequelize.STRING,
-    primaryKey: true
+    type: Sequelize.STRING
   },
-  name: Sequelize.STRING
+  fullname: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
 });
 
 // export attendee model

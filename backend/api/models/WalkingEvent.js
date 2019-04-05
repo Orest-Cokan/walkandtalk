@@ -13,16 +13,46 @@ const WalkingEvent = sequelize.define(tableName, {
     autoIncrement: true,
     primaryKey: true
   },
-  organizer: Sequelize.STRING,
-  title: Sequelize.STRING,
-  email: Sequelize.STRING,
-  description: Sequelize.STRING,
-  date: Sequelize.STRING,
-  start_time: Sequelize.STRING,
-  end_time: Sequelize.STRING,
-  intensity: Sequelize.STRING,
-  venue: Sequelize.STRING,
-  total_attendees: Sequelize.INTEGER
+  organizer: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  description: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  date: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  start_time: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  end_time: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  intensity: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  venue: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  total_attendees: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  }
 });
 
 // set the associations

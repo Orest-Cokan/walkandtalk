@@ -5,10 +5,11 @@ import {
   View,
   Image,
   TouchableOpacity,
-  TouchableHighlight,
-  ScrollView
+  Alert,
+  Platform
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import Loader from "../../constants/loader";
 import {
   Container,
   Header,
@@ -21,32 +22,144 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
+import axios from "axios";
+import { approveUser, declineUser } from "../../actions/UserActions";
 
 // View Request screen
 class ViewRequestScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("Props on view request", this.props);
-
-    // Sample data
+    // Setting infomation of the user to state
     this.state = {
       fullname: this.props.request.fullname,
       email: this.props.request.email,
       dob: this.props.request.dob,
       menopausal_stage: this.props.request.menopausal_stage,
-      intensity: this.props.request.intensity,
-      distance: this.props.request.distance,
-      duration: this.props.request.duration,
-      venue: this.props.request.venue,
-      location: this.props.request.location
+      intensity: this.props.request.preference.intensity,
+      distance: this.props.request.preference.distance,
+      duration: this.props.request.preference.duration,
+      venue: this.props.request.preference.venue,
+      location: this.props.request.preference.location,
+      redcapID: null,
+      //HTTP header to REDCap calls
+      header: {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      },
+      //responseStatus is the flag for HTTP request status code
+      responseStatus: false,
+      //show approve or decline button, hide after approving or declining
+      showButtons: true,
+      //flag for loading screen
+      loading: false
     };
+    console.log(this.props.user.user.email);
   }
 
-  // Approves request to be a user
-  approveRequest = () => {};
+  /* Get the next available record ID from REDCap */
+  getNextRecordID = () => {
+    const data =
+      "token=8038CE0F65642ECC477913BE85991380" +
+      "&content=generateNextRecordName";
+    return axios
+      .post("https://med-rcdev.med.ualberta.ca/api/", data, this.state.header)
+      .then(res => {
+        this.setState({ responseStatus: true });
+        return res.data;
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({ responseStatus: false });
+      });
+  };
+
+  //Register user on REDCap with basic fields: fullname, email, dob, meno_stage
+  importToRedcap = () => {
+    var userData =
+      "token=8038CE0F65642ECC477913BE85991380" +
+      "&content=record" +
+      "&format=json" +
+      "&type=flat;" +
+      "&overwriteBehavior=normal" +
+      "&forceAutoNumber=false" +
+      '&data=[{"record_id":' +
+      this.state.redcapID +
+      ', "full_name": "' +
+      this.state.fullname +
+      '"' +
+      ', "email": "' +
+      this.state.email +
+      '"' +
+      ', "dob": "' +
+      this.state.dob +
+      '"' +
+      ', "meno_stage": "' +
+      this.state.menopausal_stage +
+      '"' +
+      ', "profile_complete": ' +
+      2 +
+      "}]" +
+      "&returnContent=count" +
+      "&returnFormat=json";
+    return axios
+      .post(
+        "https://med-rcdev.med.ualberta.ca/api/",
+        userData,
+        this.state.header
+      )
+      .then(res => {
+        //returning so await works
+        return res.data;
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({ responseStatus: false });
+      });
+  };
+
+  showErroMessage = () => {
+    Alert.alert("Something went wrong, please try again later.");
+  };
+
+  //Thhis function assigns redcap ID to state and upload user information onto REDCap
+  approveRequest = async () => {
+    if (Platform.OS === "android") {
+      this.setState({ loading: true });
+    }
+    //await for getNextRecordID to return
+    this.setState({ redcapID: await this.getNextRecordID() });
+    if (this.state.responseStatus) {
+      //import New user into REDCap
+      await this.importToRedcap();
+      this.props.approveUser(this.state.email, this.state.redcapID, this.props.user.user.email);
+      if (this.state.responseStatus) {
+        this.setState({ showButtons: false });
+        this.setState({ loading: false });
+        Alert.alert(
+          "The request from " + this.state.fullname + " has been approved."
+        );
+        return;
+      }
+    }
+    //if there's an error and breaks out of the if statments
+    this.setState({ loading: false });
+    this.showErroMessage();
+  };
 
   // Declines request to be a user
-  declineRequest = () => {};
+  declineRequest = () => {
+    if (Platform.OS === "android") {
+      this.setState({ loading: true });
+    }
+    this.props.declineUser(this.state.email, this.props.user.user.email);
+    this.setState({ showButtons: false });
+    this.setState({ loading: false });
+    Alert.alert(
+      "The request from " + this.state.fullname + " has been declined."
+    );
+  };
 
   // Navigate back to Requests page
   onBack = () => {
@@ -56,6 +169,7 @@ class ViewRequestScreen extends Component {
   render() {
     return (
       <Container>
+        <Loader loading={this.state.loading} />
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
@@ -65,7 +179,7 @@ class ViewRequestScreen extends Component {
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>
               <Image
-                style={ScreenStyleSheet.backIcon}
+                style={ScreenStyleSheet.headerIcon}
                 source={require("../../assets/icons/back-button.png")}
               />
             </Button>
@@ -216,26 +330,27 @@ class ViewRequestScreen extends Component {
             </View>
           </View>
 
-          {/* Options */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            {/* Decline button */}
-            <TouchableOpacity
-              style={[styles.buttonContainer, { borderWidth: 1 }]}
-              onPress={this.declineRequest}
-            >
-              <Text>Decline</Text>
-            </TouchableOpacity>
-            {/* Approve button */}
-            <TouchableOpacity
-              style={[
-                styles.buttonContainer,
-                { backgroundColor: "#A680B8", borderColor: "#A680B8" }
-              ]}
-              onPress={this.approveRequest}
-            >
-              <Text style={{ color: "white" }}>Approve</Text>
-            </TouchableOpacity>
-          </View>
+          {this.state.showButtons && (
+            <View style={ScreenStyleSheet.rowContainer}>
+              {/* Decline button */}
+              <TouchableOpacity
+                style={[styles.buttonContainer, { borderWidth: 1 }]}
+                onPress={this.declineRequest}
+              >
+                <Text>Decline</Text>
+              </TouchableOpacity>
+              {/* Approve button */}
+              <TouchableOpacity
+                style={[
+                  styles.buttonContainer,
+                  { backgroundColor: "#A680B8", borderColor: "#A680B8" }
+                ]}
+                onPress={this.approveRequest}
+              >
+                <Text style={{ color: "white" }}>Approve</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </Content>
       </Container>
     );
@@ -243,13 +358,14 @@ class ViewRequestScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("viewrequestscreen");
-  return {};
+  return {
+    user: state.user
+  };
 };
 
 export default connect(
   mapStateToProps,
-  null
+  { approveUser, declineUser }
 )(ViewRequestScreen);
 
 // Styles

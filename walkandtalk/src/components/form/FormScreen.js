@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, RefreshControl } from "react-native";
 import BaseCard from "../../cardview/baseCard";
 import QuestionnaireCard from "../../cardview/questionnaireCard";
 import { connect } from "react-redux";
@@ -15,6 +15,7 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { getUncompletedRecords } from "../../actions/RecordActions";
+import Loader from "../../constants/loader";
 
 /*
 This is the forms screen. Users will see the two static questionnaires and event records to be completed.
@@ -22,14 +23,27 @@ This is the forms screen. Users will see the two static questionnaires and event
 class FormScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("inside constructor");
-    this.props.getUncompletedRecords = this.props.getUncompletedRecords(
-      this.props.user.user.email
-    );
+    this.numRenders = 0;
+    this.state = {
+      refreshing: false,
+      records: [],
+      loading: false
+    }
+    this.props.getUncompletedRecords(this.props.user.token, this.props.user.user.email);
+
   }
 
   componentDidMount() {
-    this.props.getUncompletedRecords;
+    this.willFocusListener = this.props.navigation.addListener('willFocus', 
+    async () => { 
+      await this.setState({loading: true})
+      await this.props.getUncompletedRecords(this.props.user.token, this.props.user.user.email);
+      this.setState({loading: false})
+    });
+  }
+
+  componentWillUnmount() {
+    this.willFocusListener.remove();
   }
 
   submitRecord(index) {
@@ -40,7 +54,6 @@ class FormScreen extends Component {
 
   getRecords() {
     let records = [];
-    console.log(this.props);
     this.props.uncompleted_records.map((record, index) => {
       records.unshift(
         <TouchableOpacity
@@ -57,13 +70,13 @@ class FormScreen extends Component {
         </TouchableOpacity>
       );
     });
-    console.log(this.props);
     return records;
   }
 
   render() {
     return (
       <Container>
+        <Loader loading={this.state.loading} />
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
@@ -73,7 +86,7 @@ class FormScreen extends Component {
             <Title style={ScreenStyleSheet.headerTitle}>Forms</Title>
           </Body>
         </Header>
-
+        {!this.state.loading && (
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           <Text style={ScreenStyleSheet.sectionTitle}>Questionnaires</Text>
           <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
@@ -81,13 +94,13 @@ class FormScreen extends Component {
           <Text style={ScreenStyleSheet.sectionTitle}>Records</Text>
           {this.getRecords()}
         </Content>
+        )}
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log("formscreen");
   return {
     uncompleted_records: state.record.uncompleted_records,
     user: state.user

@@ -1,22 +1,31 @@
 import React from "react";
-import { View, Image, StatusBar } from "react-native";
+import { Image } from "react-native";
 import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
 
 import AuthScreen from "./components/login/AuthScreen";
+import ConsentScreen from "./components/login/ConsentScreen";
 import SignupScreen from "./components/login/SignupScreen";
 import AddEventScreen from "./components/event/AddEventScreen";
 import HomeScreen from "./components/home/HomeScreen";
-import SearchScreen from "./components/search/SearchScreen";
+import NotificationScreen from "./components/home/NotificationScreen";
+import SearchTabScreen from "./components/search/SearchTabScreen";
+import SearchMapViewScreen from "./components/search/SearchMapViewScreen";
+import SearchListViewScreen from "./components/search/SearchListViewScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
+import OtherProfileScreen from "./components/profile/OtherProfileScreen";
 import RequestsScreen from "./components/form/RequestsScreen";
 import ViewRequestScreen from "./components/form/ViewRequestScreen";
 import FormScreen from "./components/form/FormScreen";
 import SubmitRecordScreen from "./components/form/SubmitRecord";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
 import PastEventListScreen from "./components/profile/ViewPastEventList";
+import ViewPastEventRecord from "./components/profile/ViewPastEventRecord";
 import HelplineScreen from "./components/profile/HelplineScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
+import Dispatch from "./components/form/FormDispatch";
+import EditEventSceen from "./components/event/EditEventScreen"
+import IconWithBadge from './constants/IconWithBadge';
 
 // Navigation logic for the entire app
 const RouterComponent = () => (
@@ -25,32 +34,37 @@ const RouterComponent = () => (
       <Stack key="auth" hideNavBar>
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
+        <Scene key="consent" component={ConsentScreen} />
       </Stack>
-      <Stack key="app" hideNavBar panHandlers={null}>
+      <Stack key="app" hideNavBar panHandlers={null} type="reset">
         <Tabs
           showLabel={false}
           activeBackgroundColor="#A680B8"
           inactiveBackgroundColor="#A680B8"
         >
-          <Scene
-            key="home"
-            component={HomeScreen}
+          <Scene 
+            key="homeTab"
             icon={({ focused }) => (
-              <Image
-                source={
-                  focused
-                    ? require("./assets/icons/home-full.png")
-                    : require("./assets/icons/home.png")
+              <IconWithBadge icon={
+                <Image
+                  source={
+                    focused
+                      ? require("./assets/icons/home-full.png")
+                      : require("./assets/icons/home.png")
+                  }
+                  style={{ width: 28, height: 28 }}
+                />
                 }
-                style={{ width: 28, height: 28 }}
               />
             )}
-            title="Home"
             hideNavBar
-          />
+          >
+            <Scene key="home" component={HomeScreen}/>
+            <Scene key="notifications" component={NotificationScreen}/>
+          </Scene>
           <Scene
             key="search"
-            component={SearchScreen}
+            component={SearchTabScreen}
             icon={({ focused }) => (
               <Image
                 source={
@@ -92,11 +106,14 @@ const RouterComponent = () => (
             )}
             hideNavBar
           >
+            <Scene key="formDispatch" component={Dispatch} />
             <Scene key="mainFormPage" component={FormScreen} />
             <Scene key="submitRecord" component={SubmitRecordScreen} />
+            <Scene key="mainRequestPage" component={RequestsScreen} />
+            <Scene key="viewRequest" component={ViewRequestScreen} />
           </Scene>
           {/*If the user is a researcher, this tab will show instead of forms tab*/}
-          {/*<Scene
+          {/* <Scene
             key="request"
             icon={({ focused }) => (
               <Image
@@ -112,7 +129,7 @@ const RouterComponent = () => (
           >
             <Scene key="mainRequestPage" component={RequestsScreen} />
             <Scene key="viewRequest" component={ViewRequestScreen} />
-          </Scene>*/}
+          </Scene> */}
           <Scene
             key="profile"
             icon={({ focused }) => (
@@ -126,15 +143,20 @@ const RouterComponent = () => (
               />
             )}
             hideNavBar
-          >
+          > 
             <Scene key="mainProfile" component={ProfileScreen} />
             <Scene key="editProfile" component={EditProfileScreen} />
             <Scene key="pastEvents" component={PastEventListScreen} />
+            <Scene key="viewPastEvent" component={ViewPastEventRecord} />
             <Scene key="helplines" component={HelplineScreen} />
           </Scene>
         </Tabs>
         <Scene key="questionnaire" component={QuestionnaireScreen} />
         <Scene key="viewEvent" component={ViewEventScreen} />
+        <Scene key="editEvent" component={EditEventSceen} />
+        <Scene key="searchList" component={SearchListViewScreen} />
+        <Scene key="searchMap" component={SearchMapViewScreen} />
+        <Scene key="otherProfile" component={OtherProfileScreen} />
       </Stack>
     </Stack>
   </Router>

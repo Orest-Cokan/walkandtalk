@@ -16,7 +16,13 @@ beforeEach(async () => {
   user = await User.build({
     fullname: "skryt cokan",
     email: "martin@mail.com",
-    password: "securepassword"
+    password: "securepassword",
+    password2: "securepassword",
+    dob: "2020-10-10",
+    menopausal_stage: "peri",
+    redcapID: 10,
+    registered: 0,
+    researcher: 0
   }).save();
 });
 
@@ -45,4 +51,23 @@ test("User is updated correctly", async () => {
 // test destroying a user
 test("User is destroyed correctly", async () => {
   await user.destroy();
+});
+
+// test sending in null values
+test("create a user model with null values", async () => {
+  await user.destroy();
+
+  await User.create({
+    fullname: null,
+    email: null,
+    password: null,
+    password2: null,
+    dob: null,
+    menopausal_stage: null,
+    redcapID: null,
+    registered: null,
+    researcher: null
+  }).catch(error => {
+    expect(error).toBeTruthy();
+  });
 });

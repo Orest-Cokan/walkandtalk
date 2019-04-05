@@ -14,7 +14,7 @@ afterAll(() => {
 // mock
 beforeEach(async () => {
   attendee = await Attendee.build({
-    name: "skryt",
+    fullname: "skryt cokan",
     email: "skryt@gmail.com"
   }).save();
 });
@@ -22,21 +22,33 @@ beforeEach(async () => {
 // test if creating an attendee worked
 test("Attendee is created correctly", async () => {
   // check if attendee is created
-  expect(attendee.name).toBe("skryt");
+  expect(attendee.fullname).toBe("skryt cokan");
   await attendee.destroy();
 });
 
 // test updating an attendee
 test("Attendee is updated correctly", async () => {
   await attendee.update({
-    name: "orest cokan",
+    fullname: "orest cokan",
     email: "orest@gmail.com"
   });
-  expect(attendee.name).toBe("orest cokan");
+  expect(attendee.fullname).toBe("orest cokan");
   await attendee.destroy();
 });
 
 // test deleting an attendee
 test("Attendee is destroyed correctly", async () => {
   attendee.destroy();
+});
+
+// test sending in null values
+test("create an attendee with null values", async () => {
+  await attendee.destroy();
+
+  attendee = await Attendee.create({
+    fullname: null,
+    email: null
+  }).catch(error => {
+    expect(error).toBeTruthy();
+  });
 });

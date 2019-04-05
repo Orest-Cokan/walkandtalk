@@ -4,26 +4,27 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView
+  TouchableHighlight,
+  Alert,
 } from "react-native";
-import { SegmentedControls } from "react-native-radio-buttons";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
   Container,
   Header,
-  Left,
   Body,
   Title,
-  Right,
   Content
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { editUser } from "../../actions/UserActions";
+import { editPicture } from "../../actions/PictureActions";
 import DatePicker from "react-native-datepicker";
 import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
-import { width, height, totalSize } from "react-native-dimension";
+import ImagePicker from 'react-native-image-picker';
+import ImageResizer from 'react-native-image-resizer';
+import { width } from "react-native-dimension";
 import {
   StyledText as Text,
   StyledTextInput as TextInput
@@ -33,81 +34,146 @@ class EditProfileScreen extends Component {
   // Constructor
   constructor(props) {
     super(props);
-
-    console.log(this.props);
     this.state = {
+
+      // Fields
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
+      picture: this.props.picture.picture.image,
       dob: this.props.user.user.dob,
       menopausal_stage: this.props.user.user.menopausal_stage,
       intensity: this.props.user.user.preference.intensity,
       distance: this.props.user.user.preference.distance,
       duration: this.props.user.user.preference.duration,
       venue: this.props.user.user.preference.venue,
-      location: this.props.user.user.preference.location
+      location: this.props.user.user.preference.location,
+
+      // Error messages
+      errorFullname: null,
+      errorLocation: null
     };
+
+    // Component refs 
+    this.fullname = React.createRef();
+    this.location = React.createRef();
+
   }
-  onChangeFullName = text => {
-    this.setState({
-      fullname: text
+
+  // Set state
+  onChange(name, value) {
+    this.setState({ [name]: value });
+  };
+
+  // Checks if input is null or empty
+  isValid(input) {
+    if (input == null || input == '' ) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  // Shows error message
+  showError(input, ref, error) {
+    // If input is valid 
+    if (this.isValid(input)) {
+      // Keep or set back to default 
+      ref.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.setState({ [error] : null });
+    }
+    // Otherwise, show errors
+    else {
+      ref.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ [error] : this.errorMessage("This is a required field.") });
+    }
+  }
+
+  // Error message for text input fields
+  errorMessage(message) {
+    return (
+      <View style={ScreenStyleSheet.rowContainer}>
+        <View style={ScreenStyleSheet.formRowInfo}>
+          <Text style={ScreenStyleSheet.formErrorMessage}>
+            {message}
+          </Text>
+        </View>
+      </View>);
+  }
+
+  // Checks if all input fields are valid
+  inputCheck = () => {
+    if (this.isValid(this.state.fullname) 
+      && this.isValid(this.state.location)) {
+      return true;
+    } else {
+      this.showError(this.state.fullname, this.fullname, 'errorFullname');
+      this.showError(this.state.location, this.location, 'errorLocation');
+      return false;
+    }
+  }
+
+  addPicture = () => {
+    const options = {
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    // Shows options for selecting a photo and returns image data once image selected
+    ImagePicker.showImagePicker(options, (response) => {
+      if (response.didCancel) {
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+        const base64 = 'data:image/jpeg;base64,' + response.data;
+        // Reduce image size and store as compressed JPEG
+        ImageResizer.createResizedImage(base64, 180, 240, 'JPEG', 80)
+        .then((response) => {
+          this.setState({
+            picture: response.uri,
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      }
     });
   };
 
-  onChangeDuration(value) {
-    this.setState({
-      duration: value
+  // When save changes button is clicked
+  onSaveChanges = async () => {
+    if (this.inputCheck()) {
+      await new Promise((resolve, reject) => {
+        this.props.editUser(
+          this.props.user.token,
+          this.state.fullname,
+          this.state.email,
+          this.state.dob,
+          this.state.menopausal_stage,
+          this.state.intensity,
+          this.state.distance,
+          this.state.duration,
+          this.state.venue,
+          this.state.location
+        )
+      resolve();
     });
+    this.props.editPicture(
+      this.props.user.token,
+      this.state.email,
+      this.state.picture
+    )
+    Alert.alert("Your changes have been saved.");
+    Actions.mainProfile();
+    } else {
+    Alert.alert("You must fill in all required fields.");
+    }
   }
 
-  onChangeDistance(value) {
-    this.setState({
-      distance: value
-    });
-  }
-
-  setIntensity(value) {
-    this.setState({
-      intensity: value
-    });
-  }
-  setMenopauseStage(value) {
-    this.setState({
-      menopausal_stage: value
-    });
-  }
-
-  setVenue(value) {
-    this.setState({
-      venue: value
-    });
-  }
-
-  onChangeLocation = text => {
-    this.setState({
-      location: text
-    });
-  };
-
+  // When cancel button is clicked
   onCancel() {
     Actions.pop();
   }
-
-  saveProfile = () => {
-    console.log("state on save", this.state);
-    this.props.editUser(
-      this.state.fullname,
-      this.state.email,
-      this.state.dob,
-      this.state.menopausal_stage,
-      this.state.intensity,
-      this.state.distance,
-      this.state.duration,
-      this.state.venue,
-      this.state.location
-    );
-    console.log("props on save", this.props);
-    Actions.mainProfile();
-  };
 
   render() {
     // All the options displayed in radio buttons
@@ -166,11 +232,19 @@ class EditProfileScreen extends Component {
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           <View style={ScreenStyleSheet.profileHeader}>
             {/* Profile picture */}
-            <Image
-              style={ScreenStyleSheet.avatar}
-              source={require("../../assets/icons/default-profile.png")}
-            />
-            {/* Add + for changing profile picture */}
+            <TouchableHighlight onPress={this.addPicture} activeOpacity={0} underlayColor={'transparent'}>
+              <Image
+                style={ScreenStyleSheet.avatar}
+                source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
+              />
+            </TouchableHighlight>
+          </View>
+
+          {/* Info Header */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={styles.subHeader}>Basic Info</Text>
+            </View>
           </View>
 
           {/* Full Name */}
@@ -183,15 +257,19 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
+            <View 
+              ref={this.fullname}
+              style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeFullName}
+                onChangeText={this.onChange.bind(this, 'fullname')}
+                onEndEditing={this.showError.bind(this, this.state.fullname, this.fullname, 'errorFullname')}
               >
                 {this.state.fullname}
               </TextInput>
             </View>
           </View>
+          {this.state.errorFullname}
 
           {/* Email Address */}
           <View style={ScreenStyleSheet.rowContainer}>
@@ -207,16 +285,6 @@ class EditProfileScreen extends Component {
               >
                 {this.state.email}
               </TextInput>
-            </View>
-          </View>
-
-          {/* On screen separator */}
-          <View style={ScreenStyleSheet.lineSeparator} />
-
-          {/* Info Header */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={styles.subHeader}>Basic Info</Text>
             </View>
           </View>
 
@@ -259,8 +327,8 @@ class EditProfileScreen extends Component {
             <SwitchSelector
               options={menopausal_stage}
               initial={default_menopausal_stage}
-              onPress={value => this.setMenopauseStage(value)}
-              textColor={"#A680B8"} //'#7a44cf'
+              onPress={this.onChange.bind(this, 'menopausal_stage')}
+              textColor={"#A680B8"} 
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
@@ -293,7 +361,7 @@ class EditProfileScreen extends Component {
               initValue={this.state.distance}
               value={this.state.distance}
               minValue={0}
-              onChange={value => this.onChangeDistance(value)}
+              onChange={this.onChange.bind(this, 'distance')}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -321,7 +389,7 @@ class EditProfileScreen extends Component {
               initValue={this.state.duration}
               value={this.state.duration}
               minValue={0}
-              onChange={value => this.onChangeDuration(value)}
+              onChange={this.onChange.bind(this, 'duration')}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -348,8 +416,8 @@ class EditProfileScreen extends Component {
             <SwitchSelector
               options={intensities}
               initial={default_intensity}
-              onPress={value => this.setIntensity(value)}
-              textColor={"#A680B8"} //'#7a44cf'
+              onPress={this.onChange.bind(this, 'intensity')}
+              textColor={"#A680B8"}
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
@@ -368,8 +436,8 @@ class EditProfileScreen extends Component {
             <SwitchSelector
               options={venues}
               initial={default_venue}
-              onPress={value => this.setVenue(value)}
-              textColor={"#A680B8"} //'#7a44cf'
+              onPress={this.onChange.bind(this, 'venue')}
+              textColor={"#A680B8"}
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
@@ -388,15 +456,19 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
+            <View
+              ref={this.location} 
+              style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChangeLocation}
+                onChangeText={this.onChange.bind(this, 'location')}
+                onEndEditing={this.showError.bind(this, this.state.location, this.location, 'errorLocation')}
               >
                 {this.state.location}
               </TextInput>
             </View>
           </View>
+          {this.state.errorLocation}
 
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
@@ -414,7 +486,7 @@ class EditProfileScreen extends Component {
             {/* Save button */}
             <TouchableOpacity
               style={[styles.buttonContainer, { backgroundColor: "#A680B8" }]}
-              onPress={this.saveProfile}
+              onPress={this.onSaveChanges}
             >
               <Text style={{ color: "white" }}>Save changes</Text>
             </TouchableOpacity>
@@ -426,15 +498,15 @@ class EditProfileScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("EditProfilescreen");
   return {
-    user: state.user
+    user: state.user,
+    picture: state.picture
   };
 };
 
 export default connect(
   mapStateToProps,
-  { editUser }
+  { editUser, editPicture }
 )(EditProfileScreen);
 
 // Styles

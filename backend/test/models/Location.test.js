@@ -43,5 +43,18 @@ test("Location is updated correctly", async () => {
 
 // test destroying a location
 test("Location is destroyed correctly", async () => {
-  location.destroy();
+  await location.destroy();
+});
+
+// test sending in null values
+test("create an location with null values", async () => {
+  await location.destroy();
+
+  location = await Location.create({
+    streetName: null,
+    lat: null,
+    long: null
+  }).catch(error => {
+    expect(error).toBeTruthy();
+  });
 });

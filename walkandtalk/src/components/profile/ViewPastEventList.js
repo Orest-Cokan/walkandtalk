@@ -11,44 +11,55 @@ import {
   Right,
   Content,
   Button,
-  StatusBar
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
 import BaseCard from "../../cardview/baseCard";
-import { getCompletedRecords } from "../../actions/RecordActions";
+import { getRecords } from "../../actions/RecordActions";
+import Loader from "../../constants/loader";
 
 class PastEventListScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("inside constructor");
-    console.log("before", this.props);
-    this.props.getCompletedRecords = this.props.getCompletedRecords(
+    this.props.getRecords = this.props.getRecords(
+      this.props.user.token,
       this.props.user.user.email
     );
-    console.log("after", this.props);
+    this.state = {
+      loading: true
+    }
   }
 
-  componentDidMount() {
-    this.props.getCompletedRecords;
-    console.log("componentmount", this.props);
+  async componentDidMount() {
+    await this.props.getRecords;
+    this.setState({loading: false})
   }
 
-  getEvents() {
-    let records = [];
-    this.props.records.map(record => {
-      records.unshift(
-        <BaseCard
-          key={record.id}
-          date={record.date}
-          start_time={record.start_time}
-          title={record.title}
-          location={record.location}
-        />
+  viewPastEvent(index) {
+    Actions.viewPastEvent({
+      record: this.props.records[index]
+    });
+  }
+
+  getPastEvents() {
+    let past_events = [];
+    this.props.records.map((past_event, index) => {
+      past_events.unshift(
+        <TouchableOpacity
+          key={index}
+          onPress={this.viewPastEvent.bind(this, index)}
+        >
+          <BaseCard
+            key={past_event.id}
+            date={past_event.date}
+            start_time={past_event.start_time}
+            title={past_event.title}
+            location={past_event.location}
+          />
+        </TouchableOpacity>
       );
     });
-    console.log("end", this.props);
-    return records;
+    return past_events;
   }
 
   onBack = () => {
@@ -57,16 +68,17 @@ class PastEventListScreen extends Component {
   render() {
     return (
       <Container>
+        <Loader loading={this.state.loading} />
         {/* Header */}
         <Header
-          style={ScreenStyleSheet.header}
-          androidStatusBarColor="white"
-          androidStatusBarStyle="dark-content"
-        >
+        style={ScreenStyleSheet.header}
+        androidStatusBarColor={"white"}
+        iosBarStyle={"dark-content"}
+      >
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>
               <Image
-                style={ScreenStyleSheet.backIcon}
+                style={ScreenStyleSheet.headerIcon}
                 source={require("../../assets/icons/back-button.png")}
               />
             </Button>
@@ -76,24 +88,24 @@ class PastEventListScreen extends Component {
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
-
+        {!this.state.loading && (
         <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {this.getEvents()}
+          {this.getPastEvents()}
         </Content>
+        )}
       </Container>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log("pastrecordlistscreen");
   return {
-    records: state.record.completed_records,
+    records: state.record.records,
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  { getCompletedRecords }
+  { getRecords }
 )(PastEventListScreen);

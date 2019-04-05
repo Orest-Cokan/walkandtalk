@@ -2,10 +2,9 @@ const WalkingRecord = require("../models/WalkingRecord");
 
 // walking record controller
 const WalkingRecordController = () => {
-  // create a new walkingrecord
+  // create a new walkingrecord, this should never be called by frontend!!!
   const create = async (req, res) => {
     const { body } = req;
-    console.log(body.email);
     try {
       WalkingRecord.create({
         organizer: body.organizer,
@@ -19,7 +18,7 @@ const WalkingRecordController = () => {
         end_time: body.end_time,
         distance: body.distance,
         duration: body.duration,
-        intensity: body.intesity,
+        intensity: body.intensity,
         walk_rating: body.walk_rating,
         walk_rating_comment: body.walk_rating_comment,
         location_rating: body.location_rating,
@@ -103,7 +102,7 @@ const WalkingRecordController = () => {
         walk_rating_comment: body.walk_rating_comment,
         location_rating: body.location_rating,
         location_rating_comment: body.location_rating_comment,
-        completed: body.completeds
+        completed: body.completed
       },
       { returning: true, where: { email: body.email, id: body.id } }
     )

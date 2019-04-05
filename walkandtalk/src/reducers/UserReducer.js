@@ -5,25 +5,33 @@ import {
   USER_CREATE_SUCCESS,
   USER_CREATE,
   USER_EDIT,
-  USER_LOGIN_SUCCESS
+  USER_LOGIN_SUCCESS,
+  SET_USER,
+  SET_ALL_USERS,
+  GET_UNREGISTERED_USERS,
+  USER_APPROVE,
+  USER_DECLINE
 } from "../actions/types";
 
-const INITIAL_STATE = {
-  errorLoging: "",
+export const INITIAL_STATE = {
+  errorLogging: "",
   errorCreating: "",
   loading: false,
-  user: ""
+  user: "",
+  otherUser:'',
+  users:[],
+  unregisteredUsers: [],
+  token: ""
 };
 
 // user reducer
-const user = (state = INITIAL_STATE, action) => {
+export const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case USER_CREATE:
       return {
         ...state,
         ...INITIAL_STATE,
         loading: true,
-        user: action.payload
       };
     case USER_CREATE_FAIL:
       return {
@@ -32,10 +40,8 @@ const user = (state = INITIAL_STATE, action) => {
         loading: false
       };
     case USER_CREATE_SUCCESS:
-      return { ...state, loading: false, error: "", user: action.payload };
+      return { ...state, loading: false, error: ""};
     case USER_LOGIN:
-      console.log("reeee", action.payload);
-      console.log("reeee", action);
       return {
         ...state,
         ...INITIAL_STATE,
@@ -45,7 +51,7 @@ const user = (state = INITIAL_STATE, action) => {
     case USER_LOGIN_FAIL:
       return {
         ...state,
-        errorLoging: "Login failed! Please check the credentials!",
+        errorLogging: "Login failed! Please check the credentials!",
         loading: false
       };
     case USER_EDIT:
@@ -60,12 +66,21 @@ const user = (state = INITIAL_STATE, action) => {
         ...state,
         ...INITIAL_STATE,
         loading: true,
-        user: action.payload
+        user: action.payload.user,
+        token: action.payload.token
       };
+    case SET_USER:
+      return { ...state, otherUser: action.payload };
+    case SET_ALL_USERS:
+      return { ...state, users: action.payload };
+    case GET_UNREGISTERED_USERS:
+      return { ...state, unregisteredUsers: action.payload };
+    case USER_APPROVE:
+      return { ...state};
+    case USER_DECLINE:
+      return { ...state};
     default:
       return state;
+    
   }
 };
-
-export default user;
-

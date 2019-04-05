@@ -6,16 +6,26 @@ const tableName = "preferences";
 
 // Preference model
 const Preference = sequelize.define(tableName, {
-  id: {
+  distance: {
     type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
+    allowNull: false
   },
-  distance: Sequelize.INTEGER,
-  duration: Sequelize.INTEGER,
-  intensity: Sequelize.STRING,
-  venue: Sequelize.STRING,
-  location: Sequelize.STRING
+  duration: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  intensity: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  venue: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  location: {
+    type: Sequelize.STRING,
+    allowNull: true
+  }
 });
 
 // export preference model

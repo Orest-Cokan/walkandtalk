@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Colors } from "../constants/Colors";
+import { Right } from "native-base";
 
 export default StyleSheet.create({
   // Screen
@@ -16,7 +17,7 @@ export default StyleSheet.create({
     fontFamily: "proxima_nova_reg"
   },
   headerBody: {
-    flex: 2,
+    flex: 1,
     alignItems: "center"
   },
   headerTitle: {
@@ -25,10 +26,26 @@ export default StyleSheet.create({
   headerSides: {
     flex: 1
   },
+  sideBarHeaderBody: {
+    marginLeft: 5
+  },
+  sideBarTextItem: {
+    marginLeft: 10
+  }, 
 
-  // Back icon
-  backIcon: {
-    size: 10
+  // Header icons
+  headerIcon: {
+    height: 20,
+    width: 20
+  },
+
+  // Notifications
+  notificationIcon: {
+    height: 30,
+    width: 30
+  },
+   notificationTextItem: {
+    marginLeft: 20,
   },
 
   // Content
@@ -40,7 +57,7 @@ export default StyleSheet.create({
   // Side-by-side buttons
   rowContainer: {
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   leftRightButton: {
     width: "45%",
@@ -66,13 +83,94 @@ export default StyleSheet.create({
   },
 
   // Asterisk
-
   asterisk: {
     color: "#DD5581"
   },
 
-  // Search tab
+  // Slidebar
+  slideBar: {
+    marginBottom: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
+  },
 
+  // Submit, Finish, Save Changes, Cancel button
+  button: {
+    marginVertical: 10,
+    marginBottom: 10,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "48%",
+    borderRadius: 10
+  },
+
+  
+  // Basecard
+  baseCard: {
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: "grey",
+    paddingHorizontal: "5%",
+    marginBottom: 10,
+    height: 85,
+    justifyContent: "center"
+  },
+  cardEventTime: {
+    color: "#A680B8"
+  },
+  cardEventTitle: {
+    fontWeight: "bold"
+  },
+  timeWithBadge: {
+    width: "100%",
+    margin: 0,
+    padding: 0,
+    flexDirection: "row"
+  },
+  goingBadge: {
+    backgroundColor: "#6dbf1a",
+    marginLeft: "auto",
+    width: "25%",
+    color: "white",
+    fontWeight: "bold",
+    borderRadius: 4,
+    textAlign: "center"
+  },
+  hostingBadge: {
+    backgroundColor: "#3399FF",
+    marginLeft: "auto",
+    width: "25%",
+    color: "white",
+    fontWeight: "bold",
+    borderRadius: 4,
+    textAlign: "center"
+  },
+
+  // Rendering info
+  eventTimeInfo: {
+    color: "#A680B8",
+    fontSize: 20,
+  }, 
+  eventTitleInfo: {
+    fontWeight: "bold"
+  }, 
+  infoByIcon: {
+    marginLeft: 10
+  },
+  iconByInfo: {
+    marginBottom: 10,
+    height: 20,
+    width: 20
+  },
+  numAttendees: {
+    color: "#A680B8",
+    marginLeft: 10,
+    fontWeight: "bold"
+  },
+
+  // Search tab
   searchIcon: {
     height: 20,
     width: 20
@@ -83,11 +181,11 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   avatar: {
-    width: 75,
-    height: 75,
-    borderRadius: 60,
+    width: 90,
+    height: 90,
     borderWidth: 3,
-    borderColor: "black",
+    borderRadius: 45,
+    borderColor: "grey",
     marginBottom: 10
   },
   editProfile: {
@@ -152,6 +250,20 @@ export default StyleSheet.create({
     fontSize: 15
   },
 
+  formInputAuth: {
+    textAlign: "left",
+    borderBottomWidth: 0.5,
+    borderBottomColor: "gray",
+    borderTopWidth: 0.5,
+    borderTopColor: "transparent",
+    color: "black",
+    padding: 0,
+    fontSize: 18,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 30
+  },
+
   formInputUneditable: {
     textAlign: "left",
     borderBottomWidth: 0.5,
@@ -165,6 +277,19 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: "500",
     marginTop: 15
+  },
+
+  // Validation
+  formInputError: {
+    borderBottomWidth: 2,
+    borderBottomColor: "red",
+  },
+  formInputValid: {
+    borderBottomWidth: 0,
+    borderBottomColor: "transparent",
+  },
+  formErrorMessage: {
+    color: "red",
   },
 
   //Events
@@ -211,6 +336,7 @@ export default StyleSheet.create({
     fontSize: 16,
     marginLeft: 4
   },
+
   // Line separator
   EventLineSeparator: {
     borderBottomColor: "grey",
@@ -249,11 +375,4 @@ export default StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start"
   },
-
-  backIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 100,
-    position: "relative"
-  }
 });
