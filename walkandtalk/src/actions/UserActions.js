@@ -11,7 +11,6 @@ import {
   USER_APPROVE,
   USER_DECLINE,
   GET_UNREGISTERED_USERS,
-  CLEAR_USER
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -76,7 +75,7 @@ const createUserSuccess = (dispatch) => {
   dispatch({
     type: USER_CREATE_SUCCESS,
   });
-  Alert.alert("You have successfully signed up! Your information has been forwarded to our researchers. Expect to receive an email within 7 days.");
+  Alert.alert('','You have successfully signed up! Your information has been forwarded to our researchers. Expect to receive an email within 7 days.');
   Actions.login();
 };
 
@@ -94,13 +93,13 @@ export const loginUser = (email, password) => {
       .post(url, user)
       .then(res => {
         if (res.status === 200) {
-          if (res.data.user.registered){
-            loginUserSuccess(dispatch, res.data.user);
-          }
-          else{
-            loginUserFail(dispatch);
-            Alert.alert("Please wait for the researchers to review your profile.");
-          }
+          // if (res.data.user.registered){
+            loginUserSuccess(dispatch, res.data);
+          // }
+          // else{
+            // loginUserFail(dispatch);
+            // Alert.alert("Please wait for the researchers to review your profile.");
+          // }
         }
       })
       .catch(err => {
@@ -125,12 +124,13 @@ const loginUserSuccess = (dispatch, user) => {
 };
 
 // action to get a single user
-export const getUser = email => {
+export const getUser = (token, email) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/user/" + email;
+    var url = ip + "private/user/" + email;
     await axios
-      .get(url)
+      .get(url, { headers: { Authorization: 'Bearer ' + token }
+      })
       .then(res => {
         dispatch({ 
           type: SET_USER, 
@@ -166,6 +166,7 @@ export const getAllUsers = () => {
 
 // action to edit a user
 export const editUser = (
+  token,
   fullname,
   email,
   dob,
@@ -191,9 +192,9 @@ export const editUser = (
   };
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/user";
+    var url = ip + "private/user";
     await axios
-      .put(url, user)
+      .put(url, user, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         if (res.status === 200) {
           if (res.data === 1) {
@@ -224,13 +225,6 @@ export const getUnregisteredUsers = () => {
       });
   };
 };
-
-// Clear other user state
-export const clearUser = () => {
-  return async dispatch => {
-    dispatch({type: CLEAR_USER})
-  }
-}
 
 //approve request of a user
 export const approveUser = (email, redcapID) => {

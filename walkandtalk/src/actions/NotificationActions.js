@@ -10,18 +10,19 @@ import {
   
   // Action to send an "updatedEvent" or "cancelledEvent" notification to other users
   export const sendNotification = (
+      token,
       subjectId,
       type,
       title
   ) => {
     return async dispatch => {
       var ip = getIP();
-      var getAttendeesUrl = ip + "public/walkingevent/" + subjectId;
-      var sendNotifUrl = ip + "public/notification";
+      var getAttendeesUrl = ip + "private/walkingevent/" + eventId;
+      var sendNotifUrl = ip + "private/notification";
       var attendees = [];
       // Get all event attendees
       await axios
-      .get(getAttendeesUrl)
+      .get(getAttendeesUrl, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         attendees = res.data.walkingevent.attendees;
         
@@ -36,7 +37,7 @@ import {
             title, title
           };
           await axios
-          .post(sendNotifUrl, notification)
+          .post(sendNotifUrl, notification, { headers: { Authorization: 'Bearer ' + token } })
           .then(res => {
             dispatch({ type: NOTIFICATION_CREATE });
           })
@@ -55,13 +56,13 @@ import {
   ) => {
     return async dispatch => {
       var ip = getIP();
-      var url = ip + "public/notification";
+      var url = ip + "private/notification";
       const notification = {
         id: id,
         isRead: isRead
       };
       await axios
-        .put(url, notification)
+        .put(url, notification, { headers: { Authorization: 'Bearer ' + token } })
         .then(res => {
           dispatch({ type: NOTIFICATION_UPDATE });
         })
@@ -72,12 +73,12 @@ import {
   };
 
   // Action to get notifications by user
-  export const getNotifications = email => {
+  export const getNotifications = (token, email) => {
     return async dispatch => {
       var ip = getIP();
-      var url = ip + "public/notification/" + email;
+      var url = ip + "private/notification/" + email;
       await axios
-        .get(url)
+        .get(url, { headers: { Authorization: 'Bearer ' + token } } )
         .then(res => {
           dispatch({
             type: SET_NOTIFICATIONS,
@@ -91,12 +92,12 @@ import {
   };
 
   // Action to get unread notifications by user
-  export const getUnreadNotifications = email => {
+  export const getUnreadNotifications = (token, email) => {
     return async dispatch => {
       var ip = getIP();
-      var url = ip + "public/notification/unread/" + email;
+      var url = ip + "private/notification/unread/" + email;
       await axios
-        .get(url)
+        .get(url, { headers: { Authorization: 'Bearer ' + token } })
         .then(res => {
           dispatch({
             type: SET_UNREAD_NOTIFICATIONS,

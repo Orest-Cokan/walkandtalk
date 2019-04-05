@@ -17,7 +17,8 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from "react-native";
 import TabOne from "./SearchListViewScreen";
 import TabTwo from "./SearchMapViewScreen";
@@ -103,7 +104,6 @@ export const getCurrentLocation = () => {
 class SearchTabScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("inside constructor");
     this.state = {
       confirmed: false,
       selectedItems: [],
@@ -114,19 +114,17 @@ class SearchTabScreen extends Component {
       lastLong: null,
       loading: false
     };
-    this.props.fetchEvents();
+    this.props.fetchEvents(this.props.user.token);
   }
 
   componentDidMount() {
     this.willFocusListener = this.props.navigation.addListener('willFocus',
     async () => { 
       this.setState({loading: true});
-      await this.props.fetchEvents();
+      await this.props.fetchEvents(this.props.user.token);
       const position = await getCurrentLocation();
-      console.log("position", position);
       this.setState({loading: false});
       if (position) {
-        console.log("in positionnnn")
         //Tracking location is still necessary for distance queries
         this.watchID = navigator.geolocation.watchPosition((position) => {
           let region = {
@@ -136,7 +134,6 @@ class SearchTabScreen extends Component {
             longitudeDelta: 0.00421*1.5
           }
           this.onRegionChange(region, region.latitude, region.longitude);
-          console.log("regionhereee",this.state.region);
         }, (error)=>console.log(error));
       }
       this.keywordSearch();
@@ -161,7 +158,6 @@ class SearchTabScreen extends Component {
 
   //Function for setting the region and lat and lon when movement occurs
   onRegionChange(region, lastLat, lastLong) {
-    console.log("onregionchange", region);
     this.setState({
       mapRegion: region,
       // If there are no new values set the current ones
@@ -198,25 +194,24 @@ class SearchTabScreen extends Component {
     i_arr.forEach(function(i) {
       if (i == 11) {
         var i1 = events.filter(event => {
-          return event.intensity === "Slow";
+          return event.intensity == "Slow";
         });
         results = results.concat(i1);
       }
       if (i == 22) {
         var i2 = events.filter(event => {
-          return event.intensity === "Intermediate";
+          return event.intensity == "Intermediate";
         });
         results = results.concat(i2);
       }
       if (i == 33) {
         var i3 = events.filter(event => {
-          return event.intensity === "Brisk";
+          return event.intensity == "Brisk";
         });
         results = results.concat(i3);
       }
     });
 
-    console.log(results, "intensity results")
     return results
   }
 
@@ -229,13 +224,13 @@ class SearchTabScreen extends Component {
     v_arr.forEach(function(v) {
       if (v == 44) {
         var v1 = events.filter(event => {
-          return event.venue === "Indoor";
+          return event.venue == "Indoor";
         });
         results = results.concat(v1);
       }
       if (v == 44) {
         var v2 = events.filter(event => {
-          return event.venue === "Outdoor";
+          return event.venue == "Outdoor";
         });
         results = results.concat(v2);
       }
@@ -337,13 +332,7 @@ class SearchTabScreen extends Component {
       howmany = howmany -1
     }
 
-  console.log("results before combine", results)
   total_results = this.combineResults(results, howmany)
-
-  //Convert to string then to object
-  //results = JSON.stringify(total_results);
-  //results = JSON.parse(total_results);
-  console.log(total_results, "results after combine");
 
   //SubmitSearch function to save to state
   this.submitSearch(total_results);
@@ -358,21 +347,15 @@ class SearchTabScreen extends Component {
   combineResults = (results , total_arr) => {
     var combine_res =[]
     if (total_arr == 1){
-      console.log("return me 1", results)
       return results[0]
     }
     //Two arrays results [0] and results [1]
     if(total_arr == 2){
-      console.log(results[0], "res 0")
-      console.log(results[1], "res 1")
       results[0].forEach( function (res) {
-        console.log(results[1].indexOf(res), "index value")
       if(results[1].indexOf(res) > -1) {
         combine_res.push(res);
-        console.log("pushed", res)
         }
       });
-        console.log("return me 2", combine_res)
       return combine_res
     }
 
@@ -389,7 +372,6 @@ class SearchTabScreen extends Component {
         final_res.push(res);
         }
       });
-      console.log("return me 3", final_res)
       return final_res
     }
   }
@@ -419,11 +401,9 @@ setKeyword = text => {
 //Key word search
 // Searches through out the whole object
 keywordSearch = () => {
-  this.props.fetchEvents();
+  this.props.fetchEvents(this.props.user.token);
   events = this.props.events;
   keyword = this.state.text;
-  console.log("KEYWORDDDDDDDDDDDDDDDD");
-  console.log("keyword", keyword);
   //convert each item to a string and see if the key word exists as a subset
   // if so, push that event to the list of results to be displayed
   // Case insensitive
@@ -507,6 +487,13 @@ getSearchResults() {
 
 }
 
+returnMargin(){
+  if(Platform.OS === 'ios'){
+    return 15
+  }else{
+    return 10
+  }
+}
   render() {
     filterHeader = (
       <Header
@@ -556,17 +543,19 @@ getSearchResults() {
               backgroundColor: "red"
             },
             container: {
+              marginTop: Dimensions.get("screen").height * 0.1,
               marginBottom: 200
             },
             selectToggle: {
               width: 40,
               height: 40,
               marginBottom: 15,
-              marginTop: 10,
+              marginTop: this.returnMargin(),
               borderWidth: 1,
               borderColor: "grey",
               borderTopRightRadius: 3,
               borderBottomRightRadius: 3,
+              marginLeft: Dimensions.get("screen").width - Dimensions.get("screen").width * 0.4,
               marginRight: 5,
               paddingTop: 5,
               backgroundColor: "#A680B8",
@@ -597,7 +586,7 @@ getSearchResults() {
           contentContainerStyle={[ScreenStyleSheet.content, { flex: 1 }]}
         >
           {/* Search bar */}
-          <View style={styles.box}>
+          <View style={Platform.OS === 'ios' ? styles.boxIos : styles.boxAndroid}>
             <TouchableOpacity onPress={this.search} activeOpacity={0}>
               <Image
                 style={ScreenStyleSheet.searchIcon}
@@ -611,8 +600,9 @@ getSearchResults() {
               onChangeText={this.setKeyword}
               onEndEditing={this.keywordSearch}
             />
+            {Platform.OS === 'ios' ? filterPopup : null}
           </View>
-          {filterPopup}
+          {Platform.OS === 'android' ? filterPopup : null}
           <Tabs tabBarUnderlineStyle={{borderBottomWidth:2, borderColor: '#A680B8'}}>
             <Tab heading={
                 <TabHeading style={{backgroundColor: "#FFFFFF"}}>
@@ -642,7 +632,7 @@ getSearchResults() {
 }
 
 const styles = StyleSheet.create({
-  box: {
+  boxAndroid: {
     height: 40,
     width: Dimensions.get("screen").width - 70,
     borderWidth: 1,
@@ -656,6 +646,20 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignSelf: "flex-start",
     position: "absolute"
+  },
+  boxIos: {
+    height: 40,
+    width: Dimensions.get("screen").width - 70,
+    borderWidth: 1,
+    borderTopLeftRadius: 3,
+    borderBottomLeftRadius: 3,
+    borderColor: "grey",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    marginBottom: 10,
+    marginTop: 10,
+    alignSelf: "flex-start",
   },
   boxWithFilter: {
     height: 40,
@@ -687,7 +691,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  console.log("search tab screen");
   return {
     events: state.event.events,
     user: state.user

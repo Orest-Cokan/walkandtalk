@@ -189,6 +189,5 @@ test("WalkingEvent | getUserEvents", async () => {
     .get("/public/walkingevents/skryt@gmail.com")
     .set("Accept", /json/)
     .expect(200);
-  console.log(response.body, "what is this meme");
   expect(response.body.events.length).toBe(1);
 });

@@ -29,7 +29,7 @@ class FormScreen extends Component {
       records: [],
       loading: false
     }
-    this.props.getUncompletedRecords(this.props.user.user.email);
+    this.props.getUncompletedRecords(this.props.user.token, this.props.user.user.email);
 
   }
 
@@ -37,7 +37,7 @@ class FormScreen extends Component {
     this.willFocusListener = this.props.navigation.addListener('willFocus', 
     async () => { 
       await this.setState({loading: true})
-      await this.props.getUncompletedRecords(this.props.user.user.email);
+      await this.props.getUncompletedRecords(this.props.user.token, this.props.user.user.email);
       this.setState({loading: false})
     });
   }
@@ -70,7 +70,6 @@ class FormScreen extends Component {
         </TouchableOpacity>
       );
     });
-    console.log(this.props);
     return records;
   }
 
@@ -102,7 +101,6 @@ class FormScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("formscreen");
   return {
     uncompleted_records: state.record.uncompleted_records,
     user: state.user

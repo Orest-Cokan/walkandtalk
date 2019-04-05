@@ -5,16 +5,14 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight,
-  Alert
+  Alert,
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
   Container,
   Header,
-  Left,
   Body,
   Title,
-  Right,
   Content
 } from "native-base";
 import { Actions } from "react-native-router-flux";
@@ -26,7 +24,7 @@ import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
-import { width, height, totalSize } from "react-native-dimension";
+import { width } from "react-native-dimension";
 import {
   StyledText as Text,
   StyledTextInput as TextInput
@@ -124,7 +122,6 @@ class EditProfileScreen extends Component {
     // Shows options for selecting a photo and returns image data once image selected
     ImagePicker.showImagePicker(options, (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
       } else {
@@ -142,31 +139,13 @@ class EditProfileScreen extends Component {
       }
     });
   };
-  onFinish = async () => {
-    await new Promise((resolve, reject) => {
-          // Edit the event user clicks
-          console.log("EVENT TO BE EDITED", this.state.location)
-          this.props.editEvent(
-            this.state.title, 
-            this.state.id, 
-            this.state.date, 
-            this.state.startTime, 
-            this.state.endTime, 
-            this.state.description, 
-            this.state.intensity, 
-            this.state.venue, 
-            this.state.location);
-          resolve();
-      });
-      // fetch updated event(s) to pass to homescreen
-      this.props.fetchEvents();
-      Actions.home();
-  }
+
   // When save changes button is clicked
   onSaveChanges = async () => {
     if (this.inputCheck()) {
       await new Promise((resolve, reject) => {
         this.props.editUser(
+          this.props.user.token,
           this.state.fullname,
           this.state.email,
           this.state.dob,
@@ -180,6 +159,7 @@ class EditProfileScreen extends Component {
       resolve();
     });
     this.props.editPicture(
+      this.props.user.token,
       this.state.email,
       this.state.picture
     )
@@ -518,7 +498,6 @@ class EditProfileScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("EditProfilescreen");
   return {
     user: state.user,
     picture: state.picture

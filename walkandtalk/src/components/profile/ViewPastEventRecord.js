@@ -145,7 +145,6 @@ class ViewPastEventRecord extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("viewpasteventrecord");
   return {
     user: state.user
   };

@@ -29,7 +29,6 @@ class RequestsScreen extends Component {
         await this.setState({loading: true})
         await this.props.getUnregisteredUsers();
         this.setState({loading: false})
-        console.log("willfocus");
       }
     );
   }
@@ -45,7 +44,6 @@ class RequestsScreen extends Component {
   //
   getRequests() {
     let requests = [];
-    //console.log("THIS IS IN GETREQUEST" , this.state.users);
     this.props.unregisteredUsers.map((request, index) => {
       requests.unshift(
         <TouchableOpacity
@@ -56,7 +54,6 @@ class RequestsScreen extends Component {
         </TouchableOpacity>
       );
     });
-    //console.log(this.props);
     return requests;
   }
 

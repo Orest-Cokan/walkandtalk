@@ -4,16 +4,16 @@ import getIP from "../constants/Ip";
 import { Alert } from "react-native";
 
 // Action to edit picture by user
-export const editPicture = (email, image) => {
+export const editPicture = (token, email, image) => {
   const userPicture = {
     email,
     image
   };
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/user/picture";
+    var url = ip + "private/user/picture";
     await axios
-      .put(url, userPicture)
+      .put(url, userPicture, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         if (res.status === 200) {
           dispatch({ type: PICTURE_EDIT, payload: userPicture });
@@ -27,12 +27,12 @@ export const editPicture = (email, image) => {
 };
 
 // Action to get picture by user
-export const getPicture = email => {
+export const getPicture = (token, email) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/user/picture/" + email;
+    var url = ip + "private/user/picture/" + email;
     await axios
-      .get(url)
+      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         dispatch({
           type: PICTURE_GET,

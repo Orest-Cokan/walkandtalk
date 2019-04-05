@@ -16,6 +16,7 @@ afterAll(() => {
   afterAction();
 });
 
+// test sending an email
 test("Sending an email of user confirmation | email", async () => {
   transporter.sendMail(testEmail).then(info => {
     expect(info).anything();

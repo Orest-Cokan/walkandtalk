@@ -1,14 +1,8 @@
 import React, { Component } from "react";
-import { fetchEvents } from "../../actions/EventActions";
 import {
-  View,
   Text,
-  TextInput,
   StyleSheet,
-  TouchableOpacity,
   TouchableHighlight,
-  Alert,
-  Image,
   Dimensions
 } from "react-native";
 import { connect } from "react-redux";
@@ -29,7 +23,6 @@ class SearchMapViewScreen extends Component {
   //
   constructor(props) {
     super(props);
-    console.log("map view" ,this.props)
     this.state = {
       defaultCoords: {
         latitude: this.props.region.latitude,
@@ -73,11 +66,11 @@ class SearchMapViewScreen extends Component {
           }}
           pinColor={
             event.intensity == "Slow"
-              ? "blue"
+              ? "green"
               : event.intensity == "Intermediate"
-              ? "turquoise"
+              ? "yellow"
               : event.intensity == "Brisk"
-              ? "lime"
+              ? "red"
               : "purple"
           }
         >
@@ -135,7 +128,7 @@ class SearchMapViewScreen extends Component {
             style={styles.map}
             showsUserLocation={true}
             region={this.props.region}
-            onRegionChange={this.props.onRegionChange}
+            onRegionChangeComplete={this.props.onRegionChange}
           >
             {this.showMarkers()}
           </MapView>
@@ -192,7 +185,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  console.log("search map view screen");
   return {
     events: state.event.events,
     user: state.user
@@ -201,5 +193,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { fetchEvents }
+  null  
 )(SearchMapViewScreen);

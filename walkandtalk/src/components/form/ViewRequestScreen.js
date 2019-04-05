@@ -350,7 +350,6 @@ class ViewRequestScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("viewrequestscreen");
   return {};
 };
 

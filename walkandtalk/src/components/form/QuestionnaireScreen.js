@@ -60,7 +60,6 @@ class QuestionnaireScreen extends Component {
       "&forms[0]=" +
       this.props.questionnaire +
       "&returnFormat=json";
-    console.log(instanceData);
     await axios
       .post(
         "https://med-rcdev.med.ualberta.ca/api/",
@@ -68,7 +67,6 @@ class QuestionnaireScreen extends Component {
         this.state.header
       )
       .then(res => {
-        console.log(res.data);
         return res.data;
       })
       .then(body => {

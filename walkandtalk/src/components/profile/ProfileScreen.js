@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  StyleSheet,
   View,
   Image,
   TouchableHighlight,
@@ -26,13 +25,14 @@ import Sidebar from './Sidebar'
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("Props on profile", this.props);
   }
 
+  // Sidebar close
   closeDrawer = () => {
     this.drawer._root.close()
   };
 
+  // Sidebar open
   openDrawer = () => {
     this.drawer._root.open()
   };
@@ -233,7 +233,6 @@ class ProfileScreen extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("profilescreen");
   return {
     user: state.user,
     picture: state.picture
@@ -244,17 +243,3 @@ export default connect(
   mapStateToProps,
   null
 )(ProfileScreen);
-
-// Styles
-const styles = StyleSheet.create({
-  buttonContainer: {
-    marginVertical: 10,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "48%",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "black"
-  }
-});

@@ -18,7 +18,6 @@ import {
 class AddEventScreen extends Component {
   constructor(props) {
     super(props);
-
     // State
     this.state = {
       organizer: this.props.user.user.fullname,
@@ -70,6 +69,33 @@ class AddEventScreen extends Component {
     }
   }
 
+//Check end date
+checkEndDate(err, input){
+  console.log(input)
+  console.log(err)
+  this.setState({endTime: input})
+  console.log("endTime", this.state.endTime)
+  console.log("startTime", this.state.startTime)
+  if (this.state.startTime > this.state.endTime) {
+    this.startTime.current.setNativeProps(
+      ScreenStyleSheet.formInputValid
+    );
+    this.endTime.current.setNativeProps(ScreenStyleSheet.formInputError);
+    this.setState({ errorStartTime: null });
+    this.setState({
+      errorEndTime: this.errorMessageDate(
+        "The end time must be later than the start time."
+      )
+    }, console.log("set error text for end TIME"))
+  } else {
+      this.startTime.current.setNativeProps(
+        ScreenStyleSheet.formInputValid
+      );
+      this.endTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.setState({ errorStartTime: null });
+      this.setState({ errorEndTime: null });
+  }
+}
   // Checks if start and end times work
   isValidTime = () => {
     if (this.state.startTime > this.state.endTime) {
@@ -184,9 +210,10 @@ class AddEventScreen extends Component {
   };
 
   // When finish button is clicked
-  onFinish = () => {
+  onFinish = async () => {
     if (this.inputCheck()) {
-      this.props.createEvent(
+      await this.props.createEvent(
+        this.props.user.token,
         this.state.organizer,
         this.state.email,
         this.state.title,
@@ -342,7 +369,7 @@ class AddEventScreen extends Component {
                     alignItems: "center"
                   }
                 }}
-                onDateChange={this.onChange.bind(this, "endTime")}
+                onDateChange={this.checkEndDate.bind(this, "endTime")}
                 accessibilityLabel="createEventEndTimePicker"
               />
             </View>
@@ -352,7 +379,7 @@ class AddEventScreen extends Component {
           {/* Description */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Description</Text>
+              <Text style={ScreenStyleSheet.formInfo}>Description *</Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>

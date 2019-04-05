@@ -11,12 +11,12 @@ import getIP from "../constants/Ip";
 import { Alert } from "react-native";
 
 // action to fetch all events
-export const fetchEvents = () => {
+export const fetchEvents = (token) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevents";
+    var url = ip + "private/walkingevents";
     await axios
-      .get(url)
+      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         dispatch({ type: SET_EVENTS, payload: res.data.events });
       })
@@ -27,13 +27,13 @@ export const fetchEvents = () => {
   };
 };
 
-// action to fetch user events
-export const fetchUserEvents = email => {
+// action to fetch only the user's events
+export const fetchUserEvents = (token, email) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevents/" + email;
+    var url = ip + "private/walkingevents/" + email;
     await axios
-      .get(url)
+      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         dispatch({ type: SET_USER_EVENTS, payload: res.data.events });
       })
@@ -46,6 +46,7 @@ export const fetchUserEvents = email => {
 
 // action to create an event
 export const createEvent = (
+  token,
   organizer,
   email,
   title,
@@ -61,7 +62,7 @@ export const createEvent = (
 ) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevent";
+    var url = ip + "private/walkingevent";
     const walking_event = {
       organizer: organizer,
       email: email,
@@ -79,7 +80,7 @@ export const createEvent = (
       }
     };
     await axios
-      .post(url, walking_event)
+      .post(url, walking_event, { headers: { Authorization: 'Bearer ' + token } } )
       .then(async res => {
         if (res.status === 200) {
           await dispatch({ type: EVENT_CREATE });
@@ -96,6 +97,7 @@ export const createEvent = (
 
 // action to edit an event
 export const editEvent = (
+  token,
   title,
   id,
   date,
@@ -104,9 +106,7 @@ export const editEvent = (
   description,
   intensity,
   venue,
-  location,
-  lat,
-  long
+  location
 ) => {
   const event = {
     title: title,
@@ -117,17 +117,13 @@ export const editEvent = (
     description: description,
     intensity: intensity,
     venue: venue,
-    location: {
-      streetName: location,
-      lat: lat,
-      long: long
-    }
+    location: location
   };
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevent";
+    var url = ip + "private/walkingevent";
     await axios
-      .put(url, event)
+      .put(url, event, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         console.log('RESPONSE', res)
         if (res.status === 200) {
@@ -142,12 +138,12 @@ export const editEvent = (
 };
 
 // action to delete an event
-export const deleteEvent = id => {
+export const deleteEvent = (token, id) => {
   return async dispatch => {
     var ip = getIP();
-    var url = ip + "public/walkingevent/";
+    var url = ip + "private/walkingevent/";
     await axios
-      .delete(url + id)
+      .delete(url + id, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         dispatch({ type: EVENT_DELETE, payload: res.data });
         Actions.reset("app");

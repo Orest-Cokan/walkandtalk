@@ -42,9 +42,14 @@ class ViewEventScreen extends Component {
       attendees: this.props.event.attendees,
       badge: this.props.badge,
       goingAlert: false,
-      notGoingAlert: false
+      notGoingAlert: false,
+      alreadyGoingAlert: false,
+      alreadyGoingText: "",
+      refresh: false
     }
   }
+
+
   // Navigate back to previous screen
   onBack = () => {
     Actions.pop();
@@ -54,27 +59,45 @@ class ViewEventScreen extends Component {
     this.setState( { [name] : false })
   };
 
+  //Used to update the Going/Not going buttons after cancel is pressed
+  hideAlertNoChange(name) {
+
+    this.setState( { [name] : false  })
+  };
+
+
   showAlert(value) {
+    if(this.state.badge == value){
+      if(this.state.badge == "GOING"){
+        this.setState({
+          alreadyGoingAlert: true,
+          alreadyGoingText : "You are already going to this event!"
+        })
+      }else{
+        this.setState({
+          alreadyGoingAlert: true,
+          alreadyGoingText : "You are not going to this event!"
+        })
+      }
+    }else{
     if (value == "GOING") {
       this.setState( { goingAlert : true })
     } else {
       this.setState( { notGoingAlert : true })
     }
-    
+  }
   };
 
   // Deletes the event
-  deleteEvent  = async () => {
+  deleteEvent = async () => {
+    await this.props.deleteEvent(this.props.user.token, this.state.id);
     await this.props.sendNotification(
-        this.state.id,
-        'cancelledEvent',
-        this.state.title
-        );
-    await this.props.deleteEvent(this.state.id);
-    Actions.homeTab();
-  }
-
-
+      this.props.user.token,
+      this.state.id,
+      'cancelledEvent',
+      this.state.title,
+      );
+  };
   // When edit event button is clicked
   goToEditEvent = () => {
     // Navigate to edit event
@@ -84,8 +107,7 @@ class ViewEventScreen extends Component {
   viewOtherProfile = email => {
     // Navigate to view this event
     this.setState({visibleModal:false})
-   console.log("we are going to view other profile")
-   Actions.otherProfile({email:email})
+    Actions.otherProfile({email:email})
   };
 
 
@@ -136,12 +158,14 @@ class ViewEventScreen extends Component {
     await new Promise((resolve, reject) => {
       if (this.state.badge == "GOING"){
         this.props.addAttendees(
+          this.props.user.token,
           this.state.id,
           this.props.user.user.fullname,
           this.props.user.user.email
         );
       } else {
         this.props.removeAttendees(
+          this.props.user.token,
           this.state.id,
           this.props.user.user.email
         );
@@ -185,7 +209,9 @@ class ViewEventScreen extends Component {
         if (this.state.badge == option.value) {
           default_status = index;
         }
+      console.log(default_status, "default")
       });
+
       return (
         <View style={styles.segmentedControls}>
           <SwitchSelector
@@ -386,7 +412,7 @@ class ViewEventScreen extends Component {
             this.hideAlert('notGoingAlert');
           }}
           onCancelPressed={() => {
-            this.hideAlert('notGoingAlert');
+            this.hideAlertNoChange('notGoingAlert');
           }}
         />
         <AwesomeAlert
@@ -406,8 +432,22 @@ class ViewEventScreen extends Component {
             this.hideAlert('goingAlert');
           }}
           onCancelPressed={() => {
-            this.hideAlert('goingAlert');
+            this.hideAlertNoChange('goingAlert');
           }}
+        />
+         <AwesomeAlert
+          show={this.state.alreadyGoingAlert}
+          showProgress={false}
+          message={this.state.alreadyGoingText}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={true}
+          showConfirmButton={true}
+          confirmText="OK"
+          confirmButtonColor= {"#A680B8"}
+          onConfirmPressed={() => {
+            this.hideAlert('alreadyGoingAlert');
+          }}
+          
         />
       </Container>
     );
