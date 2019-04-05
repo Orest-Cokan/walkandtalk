@@ -30,7 +30,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 class EditEventScreen extends Component {
   constructor(props) {
     super(props);
-
     // Mapping the passed props to the component state
     this.state = {
       id: this.props.event.id,
@@ -209,7 +208,8 @@ class EditEventScreen extends Component {
           this.state.description, 
           this.state.intensity, 
           this.state.venue, 
-          this.state.location);
+          this.state.location
+        );
         this.props.sendNotification(
           this.state.id,
           this.state.title,
@@ -226,38 +226,6 @@ class EditEventScreen extends Component {
   onCancel = () => {
     Actions.homeTab();
   };
-
-  // Google places search with autocomplete
-  openSearchModal() {
-    RNGooglePlaces.openAutocompleteModal(
-      {
-        // Restricting autofill results to alberta to limit requests
-        locationRestriction: {
-          latitudeSW: 48.9966667,
-          longitudeSW: -120.0013835,
-          latitudeNE: 60.0004216,
-          longitudeNE: -110.0047639
-        },
-        // Renders search on current page rather than new page
-        useOverlay: true,
-        country: "CA"
-        // limiting search results to coordinates and name
-      },
-      ["location", "address"]
-    )
-      .then(place => {
-        console.log('PLACE',place);
-        console.log(this.state.location);
-        const updatedLocation = {
-          streetName: place.address,
-          lat: place.location.latitude,
-          long: place.location.longitude
-        }
-        console.log(updatedLocation);
-        onChange('location', updatedLocation);
-      })
-      .catch(error => console.log(error.message));
-  }
 
   render() {
     // All the options displayed in radio buttons
@@ -419,7 +387,7 @@ class EditEventScreen extends Component {
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Intensity</Text>
+              <Text style={ScreenStyleSheet.formInfo}>Intensity *</Text>
             </View>
           </View>
           <View style={styles.controls}>
@@ -439,7 +407,7 @@ class EditEventScreen extends Component {
           {/* Venue */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Type of venue</Text>
+              <Text style={ScreenStyleSheet.formInfo}>Type of venue *</Text>
             </View>
           </View>
           <View style={styles.controls}>
@@ -468,7 +436,7 @@ class EditEventScreen extends Component {
           <View style={ScreenStyleSheet.rowContainer}>
             <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
             <GooglePlacesAutocomplete
-            placeholder={this.state.location.streetName}
+            placeholder={this.state.location.streetName ? this.state.location.streetName : 'Add a Location'}
             minLength={2}
             autoFocus={false}
             returnKeyType={'search'}
@@ -479,12 +447,13 @@ class EditEventScreen extends Component {
             renderDescription={row => row.description}
             onPress={(data, details = null) => {
               this.setState({
-                location: details.name,
-                lat: details.geometry.location.lat,
-                long: details.geometry.location.lng
+                location: {
+                  streetName: details.name,
+                  lat: details.geometry.location.lat,
+                  long: details.geometry.location.lng
+                }
               });
             }}
-      
             getDefaultValue={() => ''}
             query={{
               key: 'AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0',

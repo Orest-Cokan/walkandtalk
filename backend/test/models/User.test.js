@@ -52,3 +52,22 @@ test("User is updated correctly", async () => {
 test("User is destroyed correctly", async () => {
   await user.destroy();
 });
+
+// test sending in null values
+test("create a user model with null values", async () => {
+  await user.destroy();
+
+  await User.create({
+    fullname: null,
+    email: null,
+    password: null,
+    password2: null,
+    dob: null,
+    menopausal_stage: null,
+    redcapID: null,
+    registered: null,
+    researcher: null
+  }).catch(error => {
+    expect(error).toBeTruthy();
+  });
+});

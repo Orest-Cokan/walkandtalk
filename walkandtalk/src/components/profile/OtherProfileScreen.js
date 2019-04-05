@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
   View,
-  Image
+  Image,
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
@@ -29,7 +29,7 @@ class OtherProfileScreen extends Component {
   }
 
   onBack = () =>{
-      Actions.pop()
+    Actions.pop()
   }
 
   render() {
@@ -198,7 +198,10 @@ class OtherProfileScreen extends Component {
         </Container>
       );
     } else{
-      return null
+        if(x > 2){
+          x = 0;
+        }
+        return null
     }
   }
 }

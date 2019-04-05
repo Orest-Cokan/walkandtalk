@@ -172,11 +172,11 @@ export default StyleSheet.create({
     alignItems: "center"
   },
   avatar: {
-    width: 75,
-    height: 75,
-    borderRadius: 60,
+    width: 90,
+    height: 90,
     borderWidth: 3,
-    borderColor: "black",
+    borderRadius: 45,
+    borderColor: "grey",
     marginBottom: 10
   },
   editProfile: {
