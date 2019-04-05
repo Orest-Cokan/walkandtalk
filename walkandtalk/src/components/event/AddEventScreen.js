@@ -71,11 +71,7 @@ class AddEventScreen extends Component {
 
 //Check end date
 checkEndDate(err, input){
-  console.log(input)
-  console.log(err)
   this.setState({endTime: input})
-  console.log("endTime", this.state.endTime)
-  console.log("startTime", this.state.startTime)
   if (this.state.startTime > this.state.endTime) {
     this.startTime.current.setNativeProps(
       ScreenStyleSheet.formInputValid

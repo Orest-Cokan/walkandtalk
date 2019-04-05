@@ -3,14 +3,16 @@ import { connect } from "react-redux";
 import { loginUser } from "../../actions/UserActions";
 import { Actions } from "react-native-router-flux";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
-import GenerateForm from "react-native-form-builder";
-import { StyledText as Text } from "../../constants/StyledText";
 import {
   Container,
   Header,
   Content,
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import {
+  StyledText as Text,
+  StyledTextInput as TextInput
+} from "../../constants/StyledText";
 //import Socket from "../../constants/Socket";
 
 class AuthScreen extends Component {
@@ -20,6 +22,7 @@ class AuthScreen extends Component {
   };
 
   onChangeUser = text => {
+    //lowerText = text.toLowerCase()
     this.setState({
       email: text
     });
@@ -35,8 +38,8 @@ class AuthScreen extends Component {
     await new Promise((resolve, reject) => {
       // Edit the event user clicks
     this.props.loginUser(
-      this.refs.formGenerator.getValues().email,
-      this.refs.formGenerator.getValues().password
+      this.state.email,
+      this.state.password
     );
       resolve();
     });
@@ -65,9 +68,25 @@ class AuthScreen extends Component {
         />
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           <Text style={styles.logo}>WALK AND TALK</Text>
-          <View accessibilityLabel="form">
-            <GenerateForm ref="formGenerator" fields={fields} />
-          </View>
+        <View>
+            <TextInput
+            style={ScreenStyleSheet.formInputAuth}
+            onChangeText={(text) => this.onChangeUser(text)}
+            value={this.state.text}
+            placeholder={"Email"}
+            placeholderColor ={"grey"}
+            >
+            </TextInput>
+            <TextInput
+            style={ScreenStyleSheet.formInputAuth}
+            onChangeText={(text) => this.onChangePassword(text)}
+            value={this.state.text}
+            secureTextEntry={true}
+            placeholder={"Password"}
+            placeholderColor ={"grey"}
+            >
+            </TextInput>
+        </View>
           <TouchableOpacity
             style={styles.loginButton}
             onPress={this.onPressLogin}
@@ -103,22 +122,6 @@ export default connect(
   { loginUser }
 )(AuthScreen);
 
-//Fields the form builder takes in
-const fields = [
-  {
-    type: "text",
-    name: "email",
-    required: true,
-    label: "Email"
-  },
-  {
-    type: "password",
-    name: "password",
-    required: true,
-    label: "Password"
-  }
-];
-
 //Style Sheet
 const styles = StyleSheet.create({
   wrapper: {
@@ -130,7 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: "#A680B8",
     textAlign: "center",
-    marginBottom: 60,
+    marginBottom: 125,
     marginTop: 80
   },
   inputBox: {

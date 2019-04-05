@@ -136,7 +136,6 @@ class SignupScreen extends Component {
     if (input == null || input == '' ) {
       this.password.current.setNativeProps(ScreenStyleSheet.formInputError);
       this.setState({ errorPassword : this.errorMessage("This is a required field.") });
-      console.log("empty")
     }else{
       this.isPasswordMatch()
     }     
@@ -147,9 +146,7 @@ class SignupScreen extends Component {
     if (this.state.password != this.state.confirmPassword) {
       this.password.current.setNativeProps(ScreenStyleSheet.formInputError);
       this.setState({ errorPassword : this.errorMessage("These passwords do not match.") });
-      console.log("we dont match")
     } else {
-      console.log("we match")
       this.password.current.setNativeProps(ScreenStyleSheet.formInputValid);
       this.confirmPassword.current.setNativeProps(ScreenStyleSheet.formInputValid);
       this.setState({ errorPassword : null });
@@ -164,7 +161,6 @@ class SignupScreen extends Component {
     if (input == null || input == '' ) {
       this.email.current.setNativeProps(ScreenStyleSheet.formInputError);
       this.setState({ errorEmail : this.errorMessage("This is a required field.") });
-      console.log("empty")
     }else{
       this.isEmailValid(input)
     }     
@@ -174,11 +170,9 @@ class SignupScreen extends Component {
   isEmailValid(input){
     var re = /\S+@\S+\.\S+/
     isEmailValid = re.test(input)
-    console.log(isEmailValid, "is email valid")
     if(!isEmailValid){
       this.email.current.setNativeProps(ScreenStyleSheet.formInputError);
       this.setState({ errorEmail : this.errorMessage("This email address is not valid.") });
-      console.log("valid not")
     }else{
       this.isEmailMatch()
     }
@@ -188,16 +182,13 @@ class SignupScreen extends Component {
   isEmailValidAll(input, error){
     var re = /\S+@\S+\.\S+/
     isEmailValid = re.test(input)
-    console.log(isEmailValid, "is email valid")
     if(!isEmailValid){
       if(error === "errorEmail"){
         this.email.current.setNativeProps(ScreenStyleSheet.formInputError);
         this.setState({ errorEmail : this.errorMessage("This email address is not valid.") });
-        console.log("valid not")
       }else{
         this.confirmEmail.current.setNativeProps(ScreenStyleSheet.formInputError);
         this.setState({ errorConfirmEmail : this.errorMessage("This email address is not valid.") });
-        console.log("valid not")
       }
     }else{
       return true;
@@ -209,9 +200,7 @@ class SignupScreen extends Component {
     if (this.state.email != this.state.confirmEmail) {
       this.email.current.setNativeProps(ScreenStyleSheet.formInputError);
       this.setState({ errorEmail : this.errorMessage("These email addresses do not match.") });
-      console.log("we dont match")
     } else {
-      console.log("we match")
       this.email.current.setNativeProps(ScreenStyleSheet.formInputValid);
       this.confirmEmail.current.setNativeProps(ScreenStyleSheet.formInputValid);
       this.setState({ errorEmail : null });
@@ -223,7 +212,6 @@ class SignupScreen extends Component {
 
   // Shows error message
   showError(input, ref, error) {
-    console.log("in show error", input, error);
 
     // If input is valid 
     if (this.isValid(input)) {
@@ -266,7 +254,6 @@ class SignupScreen extends Component {
     } 
     // If input is invalid, show errors
     else {
-      console.log("HEEEREEEEEE")
       ref.current.setNativeProps(ScreenStyleSheet.formInputError);
       if (this.dob == ref) {
         this.setState({ [error] : this.errorMessageDate("This is a required field.") });

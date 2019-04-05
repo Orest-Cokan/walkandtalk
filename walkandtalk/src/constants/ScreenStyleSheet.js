@@ -250,6 +250,20 @@ export default StyleSheet.create({
     fontSize: 15
   },
 
+  formInputAuth: {
+    textAlign: "left",
+    borderBottomWidth: 0.5,
+    borderBottomColor: "gray",
+    borderTopWidth: 0.5,
+    borderTopColor: "transparent",
+    color: "black",
+    padding: 0,
+    fontSize: 18,
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 30
+  },
+
   formInputUneditable: {
     textAlign: "left",
     borderBottomWidth: 0.5,
