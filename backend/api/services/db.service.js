@@ -1,6 +1,7 @@
 const database = require("../../config/database");
 const initialize = require("./research.service");
 const recordsTask = require("../../config/cron/records");
+const upcomingEventTask = require("../../config/cron/upcomingEvent");
 
 const dbService = (environment, migrate) => {
   const authenticateDB = () => database.authenticate();
@@ -95,24 +96,28 @@ const dbService = (environment, migrate) => {
         await startDev();
         await initialize();
         await recordsTask();
+        await upcomingEventTask();
         break;
 
       case "staging":
         await startStage();
         await initialize();
         await recordsTask();
+        await upcomingEventTask();
         break;
 
       case "testing":
         await startTest();
         await initialize();
         await recordsTask();
+        await upcomingEventTask();
         break;
 
       case "production":
         await startProd();
         await initialize();
         await recordsTask();
+        await upcomingEventTask();
         break;
 
       default:

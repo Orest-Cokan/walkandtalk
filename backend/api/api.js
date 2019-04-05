@@ -48,9 +48,6 @@ app.use(
   })
 );
 
-//recordTask.start();
-//upcomingEventTask.start();
-
 // parsing the request bodys
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

@@ -76,6 +76,7 @@ const createUserSuccess = (dispatch) => {
     type: USER_CREATE_SUCCESS,
   });
   Alert.alert('','You have successfully signed up! Your information has been forwarded to our researchers. Expect to receive an email within 7 days.');
+  Actions.reset("auth");
 };
 
 // action to login a user
