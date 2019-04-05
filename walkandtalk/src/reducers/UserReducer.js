@@ -20,7 +20,8 @@ export const INITIAL_STATE = {
   user: "",
   otherUser:'',
   users:[],
-  unregisteredUsers: []
+  unregisteredUsers: [],
+  token: ""
 };
 
 // user reducer

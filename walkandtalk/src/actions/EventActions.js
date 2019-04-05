@@ -89,7 +89,6 @@ export const createEvent = (
         }
       })
       .catch(err => {
-        console.log(err);
         Alert.alert("Something went wrong. Please try again later.")
       });
   };
@@ -125,9 +124,8 @@ export const editEvent = (
     await axios
       .put(url, event, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
-        console.log('RESPONSE', res)
         if (res.status === 200) {
-          dispatch({ type: EVENT_EDIT, payload: event });
+          dispatch({ type: EVENT_EDIT, payload: res.data.event });
         }
       })
       .catch(err => {
@@ -145,11 +143,10 @@ export const deleteEvent = (token, id) => {
     await axios
       .delete(url + id, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
-        dispatch({ type: EVENT_DELETE, payload: res.data });
+        dispatch({ type: EVENT_DELETE, payload: res.data.event });
         Actions.reset("app");
       })
       .catch(err => {
-        console.log(err);
         Alert.alert("Something went wrong. Please try again later.");
       });
   };

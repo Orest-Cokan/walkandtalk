@@ -1,9 +1,8 @@
 import { shallow, mount, render, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
-import AuthScreen from '../src/components/login/AuthScreen';
+import AuthScreen from '../../../src/components/login/AuthScreen';
 import React from 'react';
-import GenerateForm from "react-native-form-builder";
 import {
   Container,
   Header,

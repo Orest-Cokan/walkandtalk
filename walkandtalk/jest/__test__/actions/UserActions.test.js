@@ -44,7 +44,6 @@ describe('User actions', () => {
         type: USER_CREATE, 
       }, {
         type: USER_CREATE_SUCCESS,
-        payload: mockData.user
       }
     ];
 
@@ -71,7 +70,7 @@ describe('User actions', () => {
         type: USER_LOGIN, 
       }, {
         type: USER_LOGIN_SUCCESS,
-        payload: mockData.user
+        payload: { user: mockData.user }
       }
     ];
 

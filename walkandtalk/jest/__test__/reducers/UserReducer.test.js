@@ -33,7 +33,6 @@ describe('User reducer', () => {
         const expectedState = {
             ...reducer.INITIAL_STATE,
             loading: true,
-            user: mockData.user
         }
 
         expect(reducer.user({}, createUser)).toEqual(expectedState);
@@ -63,7 +62,6 @@ describe('User reducer', () => {
         const expectedState = {
             error: "",
             loading: false,
-            user: mockData.user
         }
 
         expect(reducer.user({}, createUserSuccess)).toEqual(expectedState);
@@ -110,7 +108,8 @@ describe('User reducer', () => {
         const expectedState = {
             ...reducer.INITIAL_STATE,
             loading: true,
-            user: mockData.user,
+            user: mockData.user.user,
+            token: mockData.user.token
         }
 
         expect(reducer.user({}, loginUserSuccess)).toEqual(expectedState);

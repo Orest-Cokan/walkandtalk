@@ -76,7 +76,6 @@ const createUserSuccess = (dispatch) => {
     type: USER_CREATE_SUCCESS,
   });
   Alert.alert('','You have successfully signed up! Your information has been forwarded to our researchers. Expect to receive an email within 7 days.');
-  Actions.login();
 };
 
 // action to login a user
@@ -103,7 +102,6 @@ export const loginUser = (email, password) => {
         }
       })
       .catch(err => {
-        console.log(err);
         Alert.alert("Something went wrong. Please try again.");
       });
   };
@@ -153,7 +151,7 @@ export const getAllUsers = () => {
       .then(res => {
         dispatch({ 
           type: SET_ALL_USERS, 
-          payload: res.data.user,
+          payload: res.data.users,
          });
       })
       .catch(err => {
@@ -190,23 +188,20 @@ export const editUser = (
       location: location
     }
   };
-  return async dispatch => {
-    var ip = getIP();
-    var url = ip + "private/user";
+  var ip = getIP();
+  var url = ip + "private/user";
+  return async dispatch => 
     await axios
       .put(url, user, { headers: { Authorization: 'Bearer ' + token } } )
       .then(res => {
         if (res.status === 200) {
-          if (res.data === 1) {
-            dispatch({ type: USER_EDIT, payload: user });
-          }
+          dispatch({ type: USER_EDIT, payload: res.data.user });
         }
       })
       .catch(err => {
         console.log("axios failure", err);
         Alert.alert("Something went wrong. Please try again later.");
       });
-  };
 };
 
 //get unregistered users
@@ -214,7 +209,6 @@ export const getUnregisteredUsers = (researcherEmail) => {
   return async dispatch => {
     var ip = getIP();
     var url = ip + "researcher/unregistered";
-    console.log("url", url)
     await axios
       .get(url, {params: {email: researcherEmail}})
       .then((res) => {

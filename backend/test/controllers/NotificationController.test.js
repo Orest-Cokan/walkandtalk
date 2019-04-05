@@ -14,6 +14,59 @@ afterAll(() => {
 
 // test creating a notification
 test("Notification | create", async () => {
+  // Create a user
+  const user = await request(api)
+    .post("/public/user")
+    .set("Accept", /json/)
+    .send({
+      fullname: "User 1",
+      email: "u1@mail.com",
+      password: "password",
+      password2: "password",
+      dob: "Mar 04, 1965",
+      menopausal_stage: "Post",
+      preference: {
+        duration: 10,
+        distance: 10,
+        intensity: "Slow",
+        venue: "Outdoor",
+        location: "Summerside area"
+      },
+    registered: 0,
+    researcher: 0
+    })
+  .expect(200);
+  // Accept user
+  await request(api)
+    .put("/researcher/accept", {params: {email: "Beate@gmail.com"}})
+    .set("Accept", /json/)
+    .send({
+      userEmail: "u1@gmail.com",
+      redcapID: "100"
+    })
+  .expect(200);
+  // Make an event for the user
+  await request(api)
+    .put("/private/walkingevent", { headers: { Authorization: 'Bearer ' + user.token }})
+    .set("Accept", /json/)
+    .send({
+      organizer: "User 1",
+      title: "Test 1",
+      email: "u1@gmail.com",
+      description: "Test",
+      intensity: "Slow",
+      venue: "Indoor",
+      start_time: "08:00am",
+      end_time: "9:00pm",
+      date: "Sat, Apr 6",
+      location: {
+        streetName: "Summerside",
+        long: -113,
+        lat: 54
+      }
+    })
+    .expect(200);
+  // Send notification
   await request(api)
     .post("/public/notification")
     .set("Accept", /json/)
