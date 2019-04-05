@@ -175,7 +175,8 @@ export default StyleSheet.create({
     width: 90,
     height: 90,
     borderWidth: 3,
-    borderColor: "transparent",
+    borderRadius: 45,
+    borderColor: "grey",
     marginBottom: 10
   },
   editProfile: {
