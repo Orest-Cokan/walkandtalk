@@ -53,7 +53,7 @@ class AuthScreen extends Component {
   };
 
   onPressSignUp = () => {
-    Actions.signup();
+    Actions.consent();
   };
 
   onPressCancel = () => {};

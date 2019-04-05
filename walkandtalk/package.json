@@ -19,6 +19,7 @@
     "react": "16.6.3",
     "react-native": "^0.58.6",
     "react-native-awesome-alerts": "^1.2.0",
+    "react-native-check-box": "^2.1.7",
     "react-native-date-picker": "^2.2.1",
     "react-native-datepicker": "^1.7.2",
     "react-native-dimension": "^1.0.6",
