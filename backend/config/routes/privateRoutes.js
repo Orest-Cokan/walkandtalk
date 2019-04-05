@@ -34,7 +34,10 @@ const privateRoutes = {
 
   // Picture routes
   "PUT /user/picture": "PictureController.updateImage",
-  "GET /user/picture/:email": "PictureController.getImage"
+  "GET /user/picture/:email": "PictureController.getImage",
+
+  // Redcap routes
+  "PUT /redcap/:email": "RedcapController.updateUser"
 };
 
 module.exports = privateRoutes;

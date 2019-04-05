@@ -2,6 +2,7 @@ const User = require("../../api/models/User");
 
 module.exports = async (req, res, next) => {
   const email = req.query.email;
+  console.log(email, "what is this email");
   if (email != null) {
     // do some verification stuff
     try {

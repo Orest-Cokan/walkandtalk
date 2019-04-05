@@ -10,7 +10,7 @@ import {
   SET_ALL_USERS,
   USER_APPROVE,
   USER_DECLINE,
-  GET_UNREGISTERED_USERS,
+  GET_UNREGISTERED_USERS
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -71,11 +71,14 @@ const createUserFail = dispatch => {
 };
 
 // dispatch creating a user succesful
-const createUserSuccess = (dispatch) => {
+const createUserSuccess = dispatch => {
   dispatch({
-    type: USER_CREATE_SUCCESS,
+    type: USER_CREATE_SUCCESS
   });
-  Alert.alert('','You have successfully signed up! Your information has been forwarded to our researchers. Expect to receive an email within 7 days.');
+  Alert.alert(
+    "",
+    "You have successfully signed up! Your information has been forwarded to our researchers. Expect to receive an email within 7 days."
+  );
   Actions.reset("auth");
 };
 
@@ -93,13 +96,15 @@ export const loginUser = (email, password) => {
       .post(url, user)
       .then(res => {
         if (res.status === 200) {
-          if (res.data.user.registered){
+          if (res.data.user.registered) {
             loginUserSuccess(dispatch, res.data);
-           }
-          else{
+          } else {
             loginUserFail(dispatch);
-            Alert.alert("Please wait for the researchers to review your profile.");
-          s}
+            Alert.alert(
+              "Please wait for the researchers to review your profile."
+            );
+            s;
+          }
         }
       })
       .catch(err => {
@@ -128,12 +133,12 @@ export const getUser = (token, email) => {
     var ip = getIP();
     var url = ip + "private/user/" + email;
     await axios
-      .get(url, { headers: { Authorization: 'Bearer ' + token }
-      })
+      .get(url, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
-        dispatch({ 
-          type: SET_USER, 
-          payload: res.data.user });
+        dispatch({
+          type: SET_USER,
+          payload: res.data.user
+        });
       })
       .catch(err => {
         console.log(err);
@@ -150,10 +155,10 @@ export const getAllUsers = () => {
     await axios
       .get(url)
       .then(res => {
-        dispatch({ 
-          type: SET_ALL_USERS, 
-          payload: res.data.users,
-         });
+        dispatch({
+          type: SET_ALL_USERS,
+          payload: res.data.users
+        });
       })
       .catch(err => {
         console.log(err);
@@ -161,7 +166,6 @@ export const getAllUsers = () => {
       });
   };
 };
-
 
 // action to edit a user
 export const editUser = (
@@ -191,9 +195,9 @@ export const editUser = (
   };
   var ip = getIP();
   var url = ip + "private/user";
-  return async dispatch => 
+  return async dispatch =>
     await axios
-      .put(url, user, { headers: { Authorization: 'Bearer ' + token } } )
+      .put(url, user, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         if (res.status === 200) {
           dispatch({ type: USER_EDIT, payload: res.data.user });
@@ -206,13 +210,13 @@ export const editUser = (
 };
 
 //get unregistered users
-export const getUnregisteredUsers = (researcherEmail) => {
+export const getUnregisteredUsers = researcherEmail => {
   return async dispatch => {
     var ip = getIP();
     var url = ip + "researcher/unregistered";
     await axios
-      .get(url, {params: {email: researcherEmail}})
-      .then((res) => {
+      .get(url, { params: { email: researcherEmail } })
+      .then(res => {
         dispatch({ type: GET_UNREGISTERED_USERS, payload: res.data.users });
       })
       .catch(err => {
@@ -232,7 +236,7 @@ export const approveUser = (email, redcapID, researcherEmail) => {
     var ip = getIP();
     var url = ip + "researcher/accept";
     await axios
-      .put(url, user, {params: {email: researcherEmail}})
+      .put(url, user, { params: { email: researcherEmail } })
       .then(res => {
         dispatch({ type: USER_APPROVE });
       })
@@ -252,7 +256,7 @@ export const declineUser = (email, researcherEmail) => {
     var ip = getIP();
     var url = ip + "researcher/deny";
     await axios
-      .put(url, user, {params: {email: researcherEmail}})
+      .put(url, user, { params: { email: researcherEmail } })
       .then(res => {
         dispatch({ type: USER_DECLINE });
       })

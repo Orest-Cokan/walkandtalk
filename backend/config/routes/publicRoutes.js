@@ -5,11 +5,7 @@ const publicRoutes = {
   "POST /user": "UserController.register",
   "POST /register": "UserController.register", // alias for POST /user
   "POST /login": "UserController.login",
-  "POST /validate": "UserController.validate",
-
-  // Redcap routes
-  "PUT /redcap/:email": "RedcapController.updateUser"
-
+  "POST /validate": "UserController.validate"
 };
 
 module.exports = publicRoutes;
