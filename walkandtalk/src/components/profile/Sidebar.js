@@ -36,7 +36,7 @@ class SideBar extends Component{
 
   // Logs the user out of the app
   logout = () => {
-    Actions.login();
+    Actions.auth();
   };
 
   render(){
@@ -81,18 +81,6 @@ class SideBar extends Component{
                 source={require("../../assets/icons/helpline-links.png")}
               />
               <Text style={ScreenStyleSheet.sideBarTextItem}>Helpline Links</Text>
-            </ListItem>
-
-            {/* Change password */}
-            {/* Leads to home page for now */}
-            <ListItem
-              button={true}
-              onPress={() => this.goHome()}>
-              <Image
-                style={ScreenStyleSheet.headerIcon}
-                source={require("../../assets/icons/password.png")}
-              />
-              <Text style={ScreenStyleSheet.sideBarTextItem}>Change Password</Text>
             </ListItem>
 
             {/* Logout */}

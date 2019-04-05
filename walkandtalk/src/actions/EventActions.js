@@ -104,7 +104,9 @@ export const editEvent = (
   description,
   intensity,
   venue,
-  location
+  location,
+  lat,
+  long
 ) => {
   const event = {
     title: title,
@@ -115,7 +117,11 @@ export const editEvent = (
     description: description,
     intensity: intensity,
     venue: venue,
-    location: location
+    location: {
+      streetName: location,
+      lat: lat,
+      long: long
+    }
   };
   return async dispatch => {
     var ip = getIP();

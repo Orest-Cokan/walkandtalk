@@ -10,7 +10,8 @@ import {
   SET_ALL_USERS,
   USER_APPROVE,
   USER_DECLINE,
-  GET_UNREGISTERED_USERS
+  GET_UNREGISTERED_USERS,
+  CLEAR_USER
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -223,6 +224,13 @@ export const getUnregisteredUsers = () => {
       });
   };
 };
+
+// Clear other user state
+export const clearUser = () => {
+  return async dispatch => {
+    dispatch({type: CLEAR_USER})
+  }
+}
 
 //approve request of a user
 export const approveUser = (email, redcapID) => {
