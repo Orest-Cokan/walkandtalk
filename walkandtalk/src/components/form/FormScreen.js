@@ -15,6 +15,7 @@ import {
 } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { getUncompletedRecords } from "../../actions/RecordActions";
+import Loader from "../../constants/loader";
 
 /*
 This is the forms screen. Users will see the two static questionnaires and event records to be completed.
@@ -25,32 +26,24 @@ class FormScreen extends Component {
     this.numRenders = 0;
     this.state = {
       refreshing: false,
-      records: []
+      records: [],
+      loading: false
     }
-  
+    this.props.getUncompletedRecords(this.props.user.user.email);
 
-    this.props.getUncompletedRecords = this.props.getUncompletedRecords(
-      this.props.user.user.email
-    );
-    
-    console.log('------PROPS-------', this.props)
-    console.log('------STATE-------', this.state)
   }
 
   componentDidMount() {
-    console.log('------B4 MOUNT-------', this.state)
-    this.props.getUncompletedRecords;
-    console.log('------AFTER MOUNT-------', this.state)
-
+    this.willFocusListener = this.props.navigation.addListener('willFocus', 
+    async () => { 
+      await this.setState({loading: true})
+      await this.props.getUncompletedRecords(this.props.user.user.email);
+      this.setState({loading: false})
+    });
   }
 
-  _onRefresh = () => {
-    console.log('------refresh-------', this.state)
-    this.setState({ refreshing: true });
-    console.log('------while refresh-------', this.state)
-    this.forceUpdate();
-    this.setState({refreshing: false});
-    console.log('------refresh done-------', this.state)
+  componentWillUnmount() {
+    this.willFocusListener.remove();
   }
 
   submitRecord(index) {
@@ -81,15 +74,10 @@ class FormScreen extends Component {
     return records;
   }
 
-  isInitialRender() {
-    return this.numRenders == 2;
-  }
-
   render() {
-    this.numRenders++;
-    console.log("----------------------adding RENDERS!!!---------------------", this.numRenders, this.state)
     return (
       <Container>
+        <Loader loading={this.state.loading} />
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
@@ -99,22 +87,15 @@ class FormScreen extends Component {
             <Title style={ScreenStyleSheet.headerTitle}>Forms</Title>
           </Body>
         </Header>
-
-        <Content 
-          contentContainerStyle={ScreenStyleSheet.content}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-            />
-          }
-        >
+        {!this.state.loading && (
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
           <Text style={ScreenStyleSheet.sectionTitle}>Questionnaires</Text>
           <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
           <View style={ScreenStyleSheet.lineSeparator} />
           <Text style={ScreenStyleSheet.sectionTitle}>Records</Text>
           {this.getRecords()}
         </Content>
+        )}
       </Container>
     );
   }

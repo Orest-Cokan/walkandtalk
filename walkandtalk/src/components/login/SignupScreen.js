@@ -16,8 +16,9 @@ import {
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
-import { width, height, totalSize } from "react-native-dimension";
+import { width } from "react-native-dimension";
 import DatePicker from "react-native-datepicker";
+import AwesomeAlert from 'react-native-awesome-alerts';
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
   StyledText as Text,
@@ -48,7 +49,10 @@ class SignupScreen extends Component {
       errorPassword: null,
       errorConfirmPassword: null,
       errorDOB: null,
-      errorLocation: null
+      errorLocation: null,
+
+      confirmationAlert: false,
+      errorAlert: false,
     };
 
     // Component refs 
@@ -60,6 +64,18 @@ class SignupScreen extends Component {
     this.dob = React.createRef();
     this.location = React.createRef();
   }
+ 
+  showAlert(alert) {
+    this.setState({
+      [alert] : true
+    });
+  };
+ 
+  hideAlert(alert) {
+    this.setState({
+      [alert]: false
+    });
+  };
 
   // Set state
   onChange(name, value) {
@@ -95,6 +111,15 @@ class SignupScreen extends Component {
     } else {
       return true;
     }
+  }
+
+  confirmInfo(name) {
+    return (
+      <View>
+        
+      </View>
+    );
+
   }
 
 
@@ -211,9 +236,8 @@ class SignupScreen extends Component {
         this.state.duration,
         this.state.distance
       );
-      Alert.alert("You have successfully signed up!");
     } else {
-      Alert.alert("You must fill in all required fields.");
+      this.showAlert('errorAlert');
     }
   };
 
@@ -578,6 +602,19 @@ class SignupScreen extends Component {
             </TouchableOpacity>
           </View>
         </Content>
+        <AwesomeAlert
+          show={this.state.errorAlert}
+          showProgress={false}
+          message="You must fill in all required fields."
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={true}
+          showConfirmButton={true}
+          confirmText="OK"
+          confirmButtonColor= {"#A680B8"}
+          onConfirmPressed={() => {
+            this.hideAlert('errorAlert');
+          }}
+        />
       </Container>
     );
   }

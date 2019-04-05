@@ -52,3 +52,17 @@ test("WalkingRecord is updated correctly", async () => {
 test("Test destroying a walking record", async () => {
   walkingRecord.destroy();
 });
+
+// test sending in null values
+test("create a walking record model with null values", async () => {
+  await walkingRecord.destroy();
+
+  await WalkingRecord.create({
+    location_rating: "this is a string lol",
+    location_rating_comment: null,
+    walk_rating: null,
+    walk_rating_comment: "this is a comment string"
+  }).catch(error => {
+    expect(error).toBeTruthy();
+  });
+});

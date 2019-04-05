@@ -5,17 +5,14 @@ import { getPicture } from "../../actions/PictureActions"
 import { Actions } from "react-native-router-flux";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
-import {
-  StyledText as Text,
-  StyledTextInput as TextInput
-} from "../../constants/StyledText";
+import { StyledText as Text } from "../../constants/StyledText";
 import {
   Container,
   Header,
   Content,
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-
+//import Socket from "../../constants/Socket";
 
 class AuthScreen extends Component {
   state = {
@@ -48,6 +45,11 @@ class AuthScreen extends Component {
       this.refs.formGenerator.getValues().email
     );
 
+    /* Socket.emit('login', {
+      email: this.refs.formGenerator.getValues().email,
+      password: this.refs.formGenerator.getValues().password
+    }); */
+    
   };
 
   onPressSignUp = () => {

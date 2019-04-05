@@ -6,6 +6,8 @@ import {
   USER_CREATE,
   USER_EDIT,
   USER_LOGIN_SUCCESS,
+  SET_USER,
+  SET_ALL_USERS,
   GET_UNREGISTERED_USERS,
   USER_APPROVE,
   USER_DECLINE
@@ -16,6 +18,8 @@ const INITIAL_STATE = {
   errorCreating: "",
   loading: false,
   user: "",
+  otherUser:'',
+  users:[],
   unregisteredUsers: []
 };
 
@@ -27,7 +31,6 @@ const user = (state = INITIAL_STATE, action) => {
         ...state,
         ...INITIAL_STATE,
         loading: true,
-        user: action.payload
       };
     case USER_CREATE_FAIL:
       return {
@@ -36,7 +39,7 @@ const user = (state = INITIAL_STATE, action) => {
         loading: false
       };
     case USER_CREATE_SUCCESS:
-      return { ...state, loading: false, error: "", user: action.payload };
+      return { ...state, loading: false, error: ""};
     case USER_LOGIN:
       console.log("reeee", action.payload);
       console.log("reeee", action);
@@ -66,6 +69,10 @@ const user = (state = INITIAL_STATE, action) => {
         loading: true,
         user: action.payload
       };
+    case SET_USER:
+      return { ...state, otherUser: action.payload };
+    case SET_ALL_USERS:
+      return { ...state, users: action.payload };
     case GET_UNREGISTERED_USERS:
       return { ...state, unregisteredUsers: action.payload };
     case USER_APPROVE:
@@ -74,6 +81,7 @@ const user = (state = INITIAL_STATE, action) => {
       return { ...state};
     default:
       return state;
+    
   }
 };
 

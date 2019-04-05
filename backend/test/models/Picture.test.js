@@ -35,3 +35,14 @@ test("Picture is updated correctly", async () => {
 
   await picture.destroy();
 });
+
+// test sending in null values
+test("create a picture with null values", async () => {
+  await picture.destroy();
+
+  await Picture.create({
+    image: null
+  }).catch(error => {
+    expect(error).toBeTruthy();
+  });
+});

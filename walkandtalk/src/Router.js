@@ -1,15 +1,17 @@
 import React from "react";
-import { Image} from "react-native";
+import { Image } from "react-native";
 import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
 
 import AuthScreen from "./components/login/AuthScreen";
 import SignupScreen from "./components/login/SignupScreen";
 import AddEventScreen from "./components/event/AddEventScreen";
 import HomeScreen from "./components/home/HomeScreen";
+import NotificationScreen from "./components/home/NotificationScreen";
 import SearchTabScreen from "./components/search/SearchTabScreen";
 import SearchMapViewScreen from "./components/search/SearchMapViewScreen";
 import SearchListViewScreen from "./components/search/SearchListViewScreen";
 import ProfileScreen from "./components/profile/ProfileScreen";
+import OtherProfileScreen from "./components/profile/OtherProfileScreen";
 import RequestsScreen from "./components/form/RequestsScreen";
 import ViewRequestScreen from "./components/form/ViewRequestScreen";
 import FormScreen from "./components/form/FormScreen";
@@ -22,6 +24,7 @@ import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
 import Dispatch from "./components/form/FormDispatch";
 import EditEventSceen from "./components/event/EditEventScreen"
+import IconWithBadge from './constants/IconWithBadge';
 
 // Navigation logic for the entire app
 const RouterComponent = () => (
@@ -37,22 +40,26 @@ const RouterComponent = () => (
           activeBackgroundColor="#A680B8"
           inactiveBackgroundColor="#A680B8"
         >
-          <Scene
-            key="home"
-            component={HomeScreen}
+          <Scene 
+            key="homeTab"
             icon={({ focused }) => (
-              <Image
-                source={
-                  focused
-                    ? require("./assets/icons/home-full.png")
-                    : require("./assets/icons/home.png")
+              <IconWithBadge icon={
+                <Image
+                  source={
+                    focused
+                      ? require("./assets/icons/home-full.png")
+                      : require("./assets/icons/home.png")
+                  }
+                  style={{ width: 28, height: 28 }}
+                />
                 }
-                style={{ width: 28, height: 28 }}
               />
             )}
-            title="Home"
             hideNavBar
-          />
+          >
+            <Scene key="home" component={HomeScreen}/>
+            <Scene key="notifications" component={NotificationScreen}/>
+          </Scene>
           <Scene
             key="search"
             component={SearchTabScreen}
@@ -147,6 +154,7 @@ const RouterComponent = () => (
         <Scene key="editEvent" component={EditEventSceen} />
         <Scene key="searchList" component={SearchListViewScreen} />
         <Scene key="searchMap" component={SearchMapViewScreen} />
+        <Scene key="otherProfile" component={OtherProfileScreen} />
       </Stack>
     </Stack>
   </Router>

@@ -3,7 +3,6 @@ package com.walkandtalk;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.arttitude360.reactnative.rngoogleplaces.RNGooglePlacesPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -31,10 +30,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNGooglePlacesPackage(),
-            new ImageResizerPackage(),
-            new RNCWebViewPackage(),
-            new ImagePickerPackage(),
+          new ImageResizerPackage(),
+          new RNCWebViewPackage(),
+          new ImagePickerPackage(),
           new DatePickerPackage(),
           new VectorIconsPackage(),
           new RNFetchBlobPackage(),

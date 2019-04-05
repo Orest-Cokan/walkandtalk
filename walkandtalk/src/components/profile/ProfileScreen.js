@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Image,
-  TouchableOpacity,
   TouchableHighlight,
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
@@ -21,7 +20,6 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
-import { getPicture } from "../../actions/PictureActions";
 import Sidebar from './Sidebar'
 
 // Profile tab
@@ -44,6 +42,10 @@ class ProfileScreen extends Component {
     // Navigate to edit profile
     Actions.editProfile();
   };
+
+  componentWillMount(){
+    vars = this.props.user.user
+  }
 
   render() {
     const vars = this.props.user.user;

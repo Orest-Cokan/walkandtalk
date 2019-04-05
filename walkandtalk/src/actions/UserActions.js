@@ -6,6 +6,8 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
   USER_EDIT,
+  SET_USER,
+  SET_ALL_USERS,
   USER_APPROVE,
   USER_DECLINE,
   GET_UNREGISTERED_USERS
@@ -13,6 +15,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
 import getIP from "../constants/Ip";
+import { Alert } from "react-native";
 
 // action to create a user
 export const createUser = (
@@ -43,22 +46,21 @@ export const createUser = (
       distance: distance
     }
   };
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/user";
-    console.log(user);
     dispatch({ type: USER_CREATE });
-    axios
+    await axios
       .post(url, user)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data.user);
-          createUserSuccess(dispatch, res.data.user);
+          createUserSuccess(dispatch);
         }
       })
       .catch(err => {
         createUserFail(dispatch);
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
@@ -69,13 +71,12 @@ const createUserFail = dispatch => {
 };
 
 // dispatch creating a user succesful
-const createUserSuccess = (dispatch, user) => {
+const createUserSuccess = (dispatch) => {
   dispatch({
     type: USER_CREATE_SUCCESS,
-    payload: user
   });
-
-  Actions.app();
+  Alert.alert("You have successfully signed up! Your information has been forwarded to our researchers. Expect to receive an email within 7 days.");
+  Actions.login();
 };
 
 // action to login a user
@@ -84,42 +85,83 @@ export const loginUser = (email, password) => {
     email: email,
     password: password
   };
-  console.log("login", USER_LOGIN);
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/login";
-    console.log(email, password);
     dispatch({ type: USER_LOGIN });
-    axios
+    await axios
       .post(url, user)
       .then(res => {
         if (res.status === 200) {
-          console.log(res.data.user, "meh memes!");
-          loginUserSuccess(dispatch, res.data.user);
+          if (res.data.user.registered){
+            loginUserSuccess(dispatch, res.data.user);
+          }
+          else{
+            loginUserFail(dispatch);
+            Alert.alert("Please wait for the researchers to review your profile.");
+          }
         }
       })
       .catch(err => {
-        loginUserFail(dispatch);
         console.log(err);
+        Alert.alert("Something went wrong. Please try again.");
       });
   };
 };
 
 // dispatch user login fail
 const loginUserFail = dispatch => {
-  console.log("fail", USER_LOGIN_FAIL);
   dispatch({ type: USER_LOGIN_FAIL });
 };
 
 // dispatch user login success
 const loginUserSuccess = (dispatch, user) => {
-  console.log(user, "wtfisgoingon");
   dispatch({
     type: USER_LOGIN_SUCCESS,
     payload: user
   });
   Actions.app();
 };
+
+// action to get a single user
+export const getUser = email => {
+  return async dispatch => {
+    var ip = getIP();
+    var url = ip + "public/user/" + email;
+    await axios
+      .get(url)
+      .then(res => {
+        dispatch({ 
+          type: SET_USER, 
+          payload: res.data.user });
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
+      });
+  };
+};
+
+// action to get all users
+export const getAllUsers = () => {
+  return async dispatch => {
+    var ip = getIP();
+    var url = ip + "public/users";
+    await axios
+      .get(url)
+      .then(res => {
+        dispatch({ 
+          type: SET_ALL_USERS, 
+          payload: res.data.user,
+         });
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
+      });
+  };
+};
+
 
 // action to edit a user
 export const editUser = (
@@ -146,11 +188,10 @@ export const editUser = (
       location: location
     }
   };
-  return dispatch => {
+  return async dispatch => {
     var ip = getIP();
     var url = ip + "public/user";
-    console.log("INSIDE EDIT USER", user);
-    axios
+    await axios
       .put(url, user)
       .then(res => {
         if (res.status === 200) {
@@ -161,6 +202,7 @@ export const editUser = (
       })
       .catch(err => {
         console.log("axios failure", err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
@@ -177,6 +219,7 @@ export const getUnregisteredUsers = () => {
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
@@ -197,6 +240,7 @@ export const approveUser = (email, redcapID) => {
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
@@ -216,6 +260,7 @@ export const declineUser = email => {
       })
       .catch(err => {
         console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
