@@ -163,6 +163,47 @@ const UserController = () => {
         return res.status(500).json({ msg: "Internal server error" });
       });
   };
+  // update a user
+  const updateUser = async (req, res) => {
+    const { body } = req;
+
+    await User.update(
+      {
+        fullname: body.fullname,
+        menopausal_stage: body.menopausal_stage,
+        dob: body.dob
+      },
+      {
+        returning: true,
+        where: { email: body.email }
+      }
+    )
+      .then(() => {
+        Preference.update(
+          {
+            distance: body.preference.distance,
+            duration: body.preference.duration,
+            intensity: body.preference.intensity,
+            venue: body.preference.venue,
+            location: body.preference.location
+          },
+          {
+            plain: true,
+            returning: true,
+            where: { userEmail: body.email }
+          }
+        )
+          .then(self => {
+            return res.status(200).json(self[1]);
+          })
+          .catch(err => {
+            return res.status(500).json({ msg: "Internal server error" });
+          });
+      })
+      .catch(err => {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
+  };
 
   return {
     register,
@@ -170,7 +211,8 @@ const UserController = () => {
     validate,
     getAll,
     getUser,
-    updateUser
+    updateUser,
+    changePassword
   };
 };
 

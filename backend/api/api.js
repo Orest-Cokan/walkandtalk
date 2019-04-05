@@ -23,8 +23,13 @@ const environment = process.env.NODE_ENV;
  */
 const app = express();
 const server = http.Server(app);
+const researcherPolicy = require("./policies/researcher.policy");
 const mappedOpenRoutes = mapRoutes(config.publicRoutes, "api/controllers/");
 const mappedAuthRoutes = mapRoutes(config.privateRoutes, "api/controllers/");
+const mappedResearchRoutes = mapRoutes(
+  config.researcherRoutes,
+  "api/controllers/"
+);
 const DB = dbService(environment, config.migrate).start();
 
 // allow cross origin requests
@@ -46,10 +51,12 @@ app.use(bodyParser.json());
 
 // secure your private routes with jwt authentication middleware
 app.all("/private/*", (req, res, next) => auth(req, res, next));
+app.all("/researcher/*", (req, res, next) => researcherPolicy(req, res, next));
 
 // fill routes for express application
 app.use("/public", mappedOpenRoutes);
 app.use("/private", mappedAuthRoutes);
+app.use("/researcher/", mappedResearchRoutes);
 
 server.listen(config.port, () => {
   if (

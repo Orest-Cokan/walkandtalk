@@ -1,6 +1,4 @@
 const privateRoutes = {
-  /*
-  // SOOON TM
   // User routes
   "POST /validate": "UserController.validate",
   "GET /users": "UserController.getAll",
@@ -37,7 +35,6 @@ const privateRoutes = {
 
   // Excel route
   "GET /researcher/excel": "ExcelController.getData"
-  */
 };
 
 module.exports = privateRoutes;
