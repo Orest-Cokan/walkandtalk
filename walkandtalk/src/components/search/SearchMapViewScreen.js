@@ -128,7 +128,7 @@ class SearchMapViewScreen extends Component {
             style={styles.map}
             showsUserLocation={true}
             region={this.props.region}
-            onRegionChangeComplete={this.props.onRegionChange}
+            onRegionChange={this.props.onRegionChange}
           >
             {this.showMarkers()}
           </MapView>
