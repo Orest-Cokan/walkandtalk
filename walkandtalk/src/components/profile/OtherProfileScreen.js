@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {
   View,
-  Image
+  Image,
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
@@ -17,7 +17,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
-import {getAllUsers, getUser, clearUser} from "../../actions/UserActions";
+import {getAllUsers, getUser} from "../../actions/UserActions";
 var x = 0;
 
 // Profile tab
@@ -29,8 +29,6 @@ class OtherProfileScreen extends Component {
   }
 
   onBack = () =>{
-    this.props.clearUser()
-    console.log('Props on back',this.props)
     Actions.pop()
   }
 
@@ -200,7 +198,10 @@ class OtherProfileScreen extends Component {
         </Container>
       );
     } else{
-      return null
+        if(x > 2){
+          x = 0;
+        }
+        return null
     }
   }
 }
@@ -216,5 +217,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {getAllUsers, getUser, clearUser}
+  {getAllUsers, getUser}
 )(OtherProfileScreen);
