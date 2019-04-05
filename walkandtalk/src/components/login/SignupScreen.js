@@ -431,6 +431,7 @@ class SignupScreen extends Component {
               ref={this.email}
               style={ScreenStyleSheet.formRowInfo}>
               <TextInput
+                autoCapitalize = 'none'
                 style={ScreenStyleSheet.formInput}
                 onChangeText={this.onChange.bind(this, 'email')}
                 onEndEditing={this.isEmailValid.bind(this, this.state.email)}
@@ -453,6 +454,7 @@ class SignupScreen extends Component {
               ref={this.confirmEmail} 
               style={ScreenStyleSheet.formRowInfo}>
               <TextInput
+                autoCapitalize = 'none'
                 style={ScreenStyleSheet.formInput}
                 onChangeText={this.onChange.bind(this, 'confirmEmail')}
                 onEndEditing={this.showError.bind(this, this.state.confirmEmail, this.confirmEmail, 'errorConfirmEmail')}

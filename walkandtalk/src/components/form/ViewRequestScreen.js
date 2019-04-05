@@ -5,7 +5,8 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Alert
+  Alert,
+  Platform
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import Loader from "../../constants/loader";
@@ -124,7 +125,9 @@ class ViewRequestScreen extends Component {
 
   //Thhis function assigns redcap ID to state and upload user information onto REDCap
   approveRequest = async () => {
-    this.setState({ loading: true });
+    if (Platform.OS === "android") {
+      this.setState({ loading: true });
+    }
     //await for getNextRecordID to return
     this.setState({ redcapID: await this.getNextRecordID() });
     if (this.state.responseStatus) {
@@ -147,8 +150,12 @@ class ViewRequestScreen extends Component {
 
   // Declines request to be a user
   declineRequest = () => {
+    if (Platform.OS === "android") {
+      this.setState({ loading: true });
+    }
     this.props.declineUser(this.state.email, this.props.user.user.email);
     this.setState({ showButtons: false });
+    this.setState({ loading: false });
     Alert.alert(
       "The request from " + this.state.fullname + " has been declined."
     );
