@@ -25,7 +25,7 @@ class OtherProfileScreen extends Component {
 
   constructor(props) {
     super(props);
-    this.props.getUser(this.props.email);
+    this.props.getUser(this.props.user.token, this.props.email);
   }
 
   onBack = () =>{

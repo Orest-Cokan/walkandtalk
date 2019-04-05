@@ -64,6 +64,7 @@ class SubmitRecordScreen extends Component {
   // When submit button is tapped
   onSubmit = () => {
     this.props.updateRecord(
+      this.props.user.token,
       this.state.id,
       this.state.email,
       this.state.venue,
