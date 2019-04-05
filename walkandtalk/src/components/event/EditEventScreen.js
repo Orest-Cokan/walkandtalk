@@ -299,7 +299,8 @@ class EditEventScreen extends Component {
                 style={{ width: "100%" }}
                 mode="date"
                 showIcon={false}
-                placeholder={this.state.date}
+                date={this.state.date}
+                
                 format="ddd, MMM D"
                 minDate={new Date()} // why was this commented out????? @eivenlour
                 confirmBtnText="Confirm"

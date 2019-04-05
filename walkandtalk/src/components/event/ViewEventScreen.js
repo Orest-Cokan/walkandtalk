@@ -41,7 +41,9 @@ class ViewEventScreen extends Component {
       attendees: this.props.event.attendees,
       badge: this.props.badge,
       goingAlert: false,
-      notGoingAlert: false
+      notGoingAlert: false,
+      alreadyGoingAlert: false,
+      alreadyGoingText: ""
     }
   }
   // Navigate back to previous screen
@@ -54,12 +56,25 @@ class ViewEventScreen extends Component {
   };
 
   showAlert(value) {
+    if(this.state.badge == value){
+      if(this.state.badge == "GOING"){
+        this.setState({
+          alreadyGoingAlert: true,
+          alreadyGoingText : "You are already going to this event!"
+        })
+      }else{
+        this.setState({
+          alreadyGoingAlert: true,
+          alreadyGoingText : "You are not going to this event!"
+        })
+      }
+    }else{
     if (value == "GOING") {
       this.setState( { goingAlert : true })
     } else {
       this.setState( { notGoingAlert : true })
     }
-    
+  }
   };
 
   // Deletes the event
@@ -422,6 +437,20 @@ class ViewEventScreen extends Component {
           onCancelPressed={() => {
             this.hideAlert('goingAlert');
           }}
+        />
+         <AwesomeAlert
+          show={this.state.alreadyGoingAlert}
+          showProgress={false}
+          message={this.state.alreadyGoingText}
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={true}
+          showConfirmButton={true}
+          confirmText="OK"
+          confirmButtonColor= {"#A680B8"}
+          onConfirmPressed={() => {
+            this.hideAlert('alreadyGoingAlert');
+          }}
+          
         />
       </Container>
     );
