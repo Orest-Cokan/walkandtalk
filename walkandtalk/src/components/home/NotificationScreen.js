@@ -21,20 +21,19 @@ import { getNotifications, updateNotification } from "../../actions/Notification
 class NotificationScreen extends Component{
   constructor(props) {
     super(props);
-
     this.state = {
       isRead: 1,
       loading: false
     }
 
-    this.props.getNotifications(this.props.user.user.email);
+    this.props.getNotifications(this.props.user.token, this.props.user.user.email);
   }
 
   componentDidMount() {
     this.willFocusListener = this.props.navigation.addListener('willFocus', 
     async () => { 
       this.setState({loading: true});
-      await this.props.getNotifications(this.props.user.user.email);
+      await this.props.getNotifications(this.props.user.token, this.props.user.user.email);
       this.setState({loading: false});
     });
     this.willBlurListener = this.props.navigation.addListener('willBlur', 
@@ -42,6 +41,7 @@ class NotificationScreen extends Component{
       console.log('Notification did blur'); 
       await this.props.notifications.map( async (notification) => {
         await this.props.updateNotification(
+          this.props.user.token,
           notification.id,
           this.state.isRead
         );

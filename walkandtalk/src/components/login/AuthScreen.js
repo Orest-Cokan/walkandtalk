@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { loginUser } from "../../actions/UserActions";
-import { getPicture } from "../../actions/PictureActions"
 import { Actions } from "react-native-router-flux";
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import GenerateForm from "react-native-form-builder";
@@ -41,9 +40,6 @@ class AuthScreen extends Component {
     );
       resolve();
     });
-    this.props.getPicture(
-      this.refs.formGenerator.getValues().email
-    );
 
     /* Socket.emit('login', {
       email: this.refs.formGenerator.getValues().email,
@@ -104,7 +100,7 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser, getPicture }
+  { loginUser }
 )(AuthScreen);
 
 //Fields the form builder takes in

@@ -104,7 +104,6 @@ export const getCurrentLocation = () => {
 class SearchTabScreen extends Component {
   constructor(props) {
     super(props);
-    console.log("inside constructor");
     this.state = {
       confirmed: false,
       selectedItems: [],
@@ -115,14 +114,14 @@ class SearchTabScreen extends Component {
       lastLong: null,
       loading: false
     };
-    this.props.fetchEvents();
+    this.props.fetchEvents(this.props.user.token);
   }
 
   componentDidMount() {
     this.willFocusListener = this.props.navigation.addListener('willFocus',
     async () => { 
       this.setState({loading: true});
-      await this.props.fetchEvents();
+      await this.props.fetchEvents(this.props.user.token);
       const position = await getCurrentLocation();
       console.log("position", position);
       this.setState({loading: false});
@@ -420,7 +419,7 @@ setKeyword = text => {
 //Key word search
 // Searches through out the whole object
 keywordSearch = () => {
-  this.props.fetchEvents();
+  this.props.fetchEvents(this.props.user.token);
   events = this.props.events;
   keyword = this.state.text;
   console.log("KEYWORDDDDDDDDDDDDDDDD");

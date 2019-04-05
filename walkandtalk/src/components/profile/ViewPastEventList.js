@@ -22,6 +22,7 @@ class PastEventListScreen extends Component {
   constructor(props) {
     super(props);
     this.props.getRecords = this.props.getRecords(
+      this.props.user.token,
       this.props.user.user.email
     );
     this.state = {

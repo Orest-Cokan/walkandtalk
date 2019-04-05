@@ -140,31 +140,13 @@ class EditProfileScreen extends Component {
       }
     });
   };
-  onFinish = async () => {
-    await new Promise((resolve, reject) => {
-          // Edit the event user clicks
-          console.log("EVENT TO BE EDITED", this.state.location)
-          this.props.editEvent(
-            this.state.title, 
-            this.state.id, 
-            this.state.date, 
-            this.state.startTime, 
-            this.state.endTime, 
-            this.state.description, 
-            this.state.intensity, 
-            this.state.venue, 
-            this.state.location);
-          resolve();
-      });
-      // fetch updated event(s) to pass to homescreen
-      this.props.fetchEvents();
-      Actions.home();
-  }
+
   // When save changes button is clicked
   onSaveChanges = async () => {
     if (this.inputCheck()) {
       await new Promise((resolve, reject) => {
         this.props.editUser(
+          this.props.user.token,
           this.state.fullname,
           this.state.email,
           this.state.dob,
@@ -178,6 +160,7 @@ class EditProfileScreen extends Component {
       resolve();
     });
     this.props.editPicture(
+      this.props.user.token,
       this.state.email,
       this.state.picture
     )

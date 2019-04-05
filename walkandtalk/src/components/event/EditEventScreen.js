@@ -21,7 +21,7 @@ import {
 import SwitchSelector from "react-native-switch-selector";
 import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { editEvent, fetchEvents } from "../../actions/EventActions";
+import { editEvent } from "../../actions/EventActions";
 import { sendNotification } from "../../actions/NotificationActions";
 import { Actions } from "react-native-router-flux";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
@@ -56,6 +56,7 @@ class EditEventScreen extends Component {
     await new Promise((resolve, reject) => {
         // Edit the event user clicks
         this.props.editEvent(
+          this.props.user.token,
           this.state.title, 
           this.state.id, 
           this.state.date, 
@@ -67,6 +68,7 @@ class EditEventScreen extends Component {
           this.state.location
         );
         this.props.sendNotification(
+          this.props.user.token,
           this.state.id,
           this.state.title,
           this.state.notifType
@@ -348,7 +350,7 @@ const mapStateToProps = state => {
 
 export default connect(
     mapStateToProps,
-    { fetchEvents, editEvent, sendNotification }
+    { editEvent, sendNotification }
 )(EditEventScreen);
 
 // Styles
