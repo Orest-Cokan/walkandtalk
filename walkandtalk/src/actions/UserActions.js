@@ -93,13 +93,13 @@ export const loginUser = (email, password) => {
       .post(url, user)
       .then(res => {
         if (res.status === 200) {
-          // if (res.data.user.registered){
+          if (res.data.user.registered){
             loginUserSuccess(dispatch, res.data);
-          // }
-          // else{
-            // loginUserFail(dispatch);
-            // Alert.alert("Please wait for the researchers to review your profile.");
-          // }
+           }
+          else{
+            loginUserFail(dispatch);
+            Alert.alert("Please wait for the researchers to review your profile.");
+          s}
         }
       })
       .catch(err => {
@@ -119,7 +119,7 @@ const loginUserSuccess = (dispatch, user) => {
     type: USER_LOGIN_SUCCESS,
     payload: user
   });
-  Actions.app();
+  Actions.reset("app");
 };
 
 // action to get a single user
