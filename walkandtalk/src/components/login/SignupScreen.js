@@ -325,9 +325,9 @@ class SignupScreen extends Component {
   }
 
   // When signup button is tapped
-  onSignUp = () => {
+  onSignUp = async () => {
     if (this.inputCheck()) {
-      this.props.createUser(
+      await this.props.createUser(
         this.state.email,
         this.state.password,
         this.state.confirmPassword,

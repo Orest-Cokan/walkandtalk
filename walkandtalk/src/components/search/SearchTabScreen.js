@@ -123,10 +123,8 @@ class SearchTabScreen extends Component {
       this.setState({loading: true});
       await this.props.fetchEvents(this.props.user.token);
       const position = await getCurrentLocation();
-      console.log("position", position);
       this.setState({loading: false});
       if (position) {
-        console.log("in positionnnn")
         //Tracking location is still necessary for distance queries
         this.watchID = navigator.geolocation.watchPosition((position) => {
           let region = {
@@ -136,7 +134,6 @@ class SearchTabScreen extends Component {
             longitudeDelta: 0.00421*1.5
           }
           this.onRegionChange(region, region.latitude, region.longitude);
-          console.log("regionhereee",this.state.region);
         }, (error)=>console.log(error));
       }
       this.keywordSearch();
@@ -161,7 +158,6 @@ class SearchTabScreen extends Component {
 
   //Function for setting the region and lat and lon when movement occurs
   onRegionChange(region, lastLat, lastLong) {
-    console.log("onregionchange", region);
     this.setState({
       mapRegion: region,
       // If there are no new values set the current ones
@@ -216,7 +212,6 @@ class SearchTabScreen extends Component {
       }
     });
 
-    console.log(results, "intensity results")
     return results
   }
 
@@ -337,13 +332,7 @@ class SearchTabScreen extends Component {
       howmany = howmany -1
     }
 
-  console.log("results before combine", results)
   total_results = this.combineResults(results, howmany)
-
-  //Convert to string then to object
-  //results = JSON.stringify(total_results);
-  //results = JSON.parse(total_results);
-  console.log(total_results, "results after combine");
 
   //SubmitSearch function to save to state
   this.submitSearch(total_results);
@@ -358,21 +347,15 @@ class SearchTabScreen extends Component {
   combineResults = (results , total_arr) => {
     var combine_res =[]
     if (total_arr == 1){
-      console.log("return me 1", results)
       return results[0]
     }
     //Two arrays results [0] and results [1]
     if(total_arr == 2){
-      console.log(results[0], "res 0")
-      console.log(results[1], "res 1")
       results[0].forEach( function (res) {
-        console.log(results[1].indexOf(res), "index value")
       if(results[1].indexOf(res) > -1) {
         combine_res.push(res);
-        console.log("pushed", res)
         }
       });
-        console.log("return me 2", combine_res)
       return combine_res
     }
 
@@ -389,7 +372,6 @@ class SearchTabScreen extends Component {
         final_res.push(res);
         }
       });
-      console.log("return me 3", final_res)
       return final_res
     }
   }
@@ -422,8 +404,6 @@ keywordSearch = () => {
   this.props.fetchEvents(this.props.user.token);
   events = this.props.events;
   keyword = this.state.text;
-  console.log("KEYWORDDDDDDDDDDDDDDDD");
-  console.log("keyword", keyword);
   //convert each item to a string and see if the key word exists as a subset
   // if so, push that event to the list of results to be displayed
   // Case insensitive
@@ -711,7 +691,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  console.log("search tab screen");
   return {
     events: state.event.events,
     user: state.user

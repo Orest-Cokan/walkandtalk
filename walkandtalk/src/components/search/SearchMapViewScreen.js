@@ -1,13 +1,8 @@
 import React, { Component } from "react";
 import {
-  View,
   Text,
-  TextInput,
   StyleSheet,
-  TouchableOpacity,
   TouchableHighlight,
-  Alert,
-  Image,
   Dimensions
 } from "react-native";
 import { connect } from "react-redux";
@@ -28,7 +23,6 @@ class SearchMapViewScreen extends Component {
   //
   constructor(props) {
     super(props);
-    console.log("map view" ,this.props)
     this.state = {
       defaultCoords: {
         latitude: this.props.region.latitude,
@@ -72,11 +66,11 @@ class SearchMapViewScreen extends Component {
           }}
           pinColor={
             event.intensity == "Slow"
-              ? "blue"
+              ? "green"
               : event.intensity == "Intermediate"
-              ? "turquoise"
+              ? "yellow"
               : event.intensity == "Brisk"
-              ? "lime"
+              ? "red"
               : "purple"
           }
         >
@@ -191,7 +185,6 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  console.log("search map view screen");
   return {
     events: state.event.events,
     user: state.user

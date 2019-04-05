@@ -5,7 +5,6 @@ const WalkingRecordController = () => {
   // create a new walkingrecord, this should never be called by frontend!!!
   const create = async (req, res) => {
     const { body } = req;
-    console.log(body.email);
     try {
       WalkingRecord.create({
         organizer: body.organizer,

@@ -210,9 +210,9 @@ checkEndDate(err, input){
   };
 
   // When finish button is clicked
-  onFinish = () => {
+  onFinish = async () => {
     if (this.inputCheck()) {
-      this.props.createEvent(
+      await this.props.createEvent(
         this.props.user.token,
         this.state.organizer,
         this.state.email,

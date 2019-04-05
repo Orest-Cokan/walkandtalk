@@ -16,10 +16,6 @@ class IconWithBadge extends Component{
 
   }
 
-  componentDidMount() {
-    console.log('IconWithBadge did mount'); 
-  }
-
   showBadge() {
       if (this.props.total_unread > 0) {
           return (

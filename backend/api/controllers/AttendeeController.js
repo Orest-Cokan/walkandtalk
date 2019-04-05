@@ -5,7 +5,6 @@ const AttendeeController = () => {
   // add an attendee to a walking event
   const addAttendees = async (req, res) => {
     const { body } = req;
-    console.log(body.id, body.name);
     const walkingevent = await WalkingEvent.findByPk(body.id, {
       include: [Attendee]
     });
