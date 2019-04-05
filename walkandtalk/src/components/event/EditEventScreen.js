@@ -29,7 +29,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 class EditEventScreen extends Component {
   constructor(props) {
     super(props);
-
     // Mapping the passed props to the component state
     this.state = {
       id: this.props.event.id,
@@ -65,9 +64,8 @@ class EditEventScreen extends Component {
           this.state.description, 
           this.state.intensity, 
           this.state.venue, 
-          this.state.location,
-          this.state.lat,
-          this.state.long);
+          this.state.location
+        );
         this.props.sendNotification(
           this.state.id,
           this.state.title,
@@ -228,7 +226,7 @@ class EditEventScreen extends Component {
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Intensity</Text>
+              <Text style={ScreenStyleSheet.formInfo}>Intensity *</Text>
             </View>
           </View>
           <View style={styles.controls}>
@@ -248,7 +246,7 @@ class EditEventScreen extends Component {
           {/* Venue */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Type of venue</Text>
+              <Text style={ScreenStyleSheet.formInfo}>Type of venue *</Text>
             </View>
           </View>
           <View style={styles.controls}>
@@ -288,12 +286,13 @@ class EditEventScreen extends Component {
             renderDescription={row => row.description}
             onPress={(data, details = null) => {
               this.setState({
-                location: details.name,
-                lat: details.geometry.location.lat,
-                long: details.geometry.location.lng
+                location: {
+                  streetName: details.name,
+                  lat: details.geometry.location.lat,
+                  long: details.geometry.location.lng
+                }
               });
             }}
-      
             getDefaultValue={() => ''}
             query={{
               key: 'AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0',

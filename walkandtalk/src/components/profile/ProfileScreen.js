@@ -244,17 +244,3 @@ export default connect(
   mapStateToProps,
   null
 )(ProfileScreen);
-
-// Styles
-const styles = StyleSheet.create({
-  buttonContainer: {
-    marginVertical: 10,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "48%",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "black"
-  }
-});

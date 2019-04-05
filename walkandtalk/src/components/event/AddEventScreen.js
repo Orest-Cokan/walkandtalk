@@ -352,7 +352,7 @@ class AddEventScreen extends Component {
           {/* Description */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Description</Text>
+              <Text style={ScreenStyleSheet.formInfo}>Description *</Text>
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
