@@ -94,13 +94,13 @@ export const loginUser = (email, password) => {
       .post(url, user)
       .then(res => {
         if (res.status === 200) {
-          if (res.data.user.registered){
+          // if (res.data.user.registered){
             loginUserSuccess(dispatch, res.data.user);
-          }
-          else{
-            loginUserFail(dispatch);
-            Alert.alert("Please wait for the researchers to review your profile.");
-          }
+          // }
+          // else{
+            // loginUserFail(dispatch);
+            // Alert.alert("Please wait for the researchers to review your profile.");
+          // }
         }
       })
       .catch(err => {
