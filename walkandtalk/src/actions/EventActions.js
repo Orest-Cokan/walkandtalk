@@ -27,7 +27,7 @@ export const fetchEvents = () => {
   };
 };
 
-// action to fetch user events
+// action to fetch only the user's events
 export const fetchUserEvents = email => {
   return async dispatch => {
     var ip = getIP();

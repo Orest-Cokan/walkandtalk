@@ -2,8 +2,8 @@ const User = require("../models/User");
 const Preference = require("../models/Preference");
 const Redcap = require("../models/Redcap");
 const transporter = require("../utils/email/email");
-const acceptEmail = require("../Utils/email/msgs/acceptUser");
-const declineEmail = require("../Utils/email/msgs/declineUser");
+const acceptEmail = require("../utils/email/msgs/acceptUser");
+const declineEmail = require("../utils/email/msgs/declineUser");
 
 // Researcher controller
 const ResearcherController = () => {
@@ -14,7 +14,7 @@ const ResearcherController = () => {
       {
         registered: 1
       },
-      { returning: true, where: { email: body.email } }
+      { returning: true, where: { email: body.userEmail } }
     )
       .then(
         Redcap.update(
@@ -23,11 +23,11 @@ const ResearcherController = () => {
             notify: true,
             date: new Date().toISOString().split("T")[0]
           },
-          { returning: true, where: { userEmail: body.email } }
+          { returning: true, where: { userEmail: body.userEmail } }
         )
       )
       .then(self => {
-        transporter.sendMail(acceptEmail(body.email));
+        transporter.sendMail(acceptEmail(body.userEmail));
         return res.status(200).json(self[1]);
       })
       .catch(err => {
@@ -38,12 +38,13 @@ const ResearcherController = () => {
   // Deny a user -> destroy the user and remove from db (returns 1 if successful or 0 if didn't denyUser)
   const denyUser = async (req, res) => {
     const { body } = req;
-    await User.destroy({ where: { email: body.email } })
+    await User.destroy({ where: { email: body.userEmail } })
       .then(rowsRemoved => {
         if (rowsRemoved == 1) {
-          transporter.sendMail(declineEmail(body.email));
+          transporter.sendMail(declineEmail(body.userEmail));
           return res.status(200).json({
-            msg: "Succesfully removed the user by the email of " + body.email,
+            msg:
+              "Succesfully removed the user by the email of " + body.userEmail,
             removed: rowsRemoved
           });
         } else {
