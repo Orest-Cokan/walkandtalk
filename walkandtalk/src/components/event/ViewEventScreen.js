@@ -43,8 +43,13 @@ class ViewEventScreen extends Component {
       goingAlert: false,
       notGoingAlert: false,
       alreadyGoingAlert: false,
-      alreadyGoingText: ""
+      alreadyGoingText: "",
+      refresh: false
     }
+  }
+
+  shouldComponentUpdate(){
+    this.resetButton()
   }
   // Navigate back to previous screen
   onBack = () => {
@@ -54,6 +59,18 @@ class ViewEventScreen extends Component {
   hideAlert(name) {
     this.setState( { [name] : false })
   };
+
+  //Used to update the Going/Not going buttons after cancel is pressed
+  hideAlertNoChange(name) {
+
+    this.setState( { [name] : false  })
+  };
+
+  resetButton(){
+    let currRef = this.state.refresh;
+    this.setState( { refresh: !currRef})
+    console.log("reset here")
+  }
 
   showAlert(value) {
     if(this.state.badge == value){
@@ -202,7 +219,9 @@ class ViewEventScreen extends Component {
         if (this.state.badge == option.value) {
           default_status = index;
         }
+      console.log(default_status, "default")
       });
+
       return (
         <View style={styles.segmentedControls}>
           <SwitchSelector
@@ -415,7 +434,7 @@ class ViewEventScreen extends Component {
             this.hideAlert('notGoingAlert');
           }}
           onCancelPressed={() => {
-            this.hideAlert('notGoingAlert');
+            this.hideAlertNoChange('notGoingAlert');
           }}
         />
         <AwesomeAlert
@@ -435,7 +454,7 @@ class ViewEventScreen extends Component {
             this.hideAlert('goingAlert');
           }}
           onCancelPressed={() => {
-            this.hideAlert('goingAlert');
+            this.hideAlertNoChange('goingAlert');
           }}
         />
          <AwesomeAlert

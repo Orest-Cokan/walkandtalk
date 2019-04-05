@@ -72,9 +72,6 @@ class EditEventScreen extends Component {
     if (name == "startTime") {
       this.showError(this.state.startTime, this.startTime, "errorStartTime");
     }
-    if (name == "startTime") {
-      this.showError(this.state.startTime, this.startTime, "errorStartTime");
-    }
     if (name == "endTime") {
       this.showError(this.state.endTime, this.endTime, "errorEndTime");
     }
@@ -95,6 +92,34 @@ class EditEventScreen extends Component {
       return false;
     } else {
       return true;
+    }
+  }
+
+  //Check end date
+  checkEndDate(err, input){
+    console.log(input)
+    console.log(err)
+    this.setState({endTime: input})
+    console.log("endTime", this.state.endTime)
+    console.log("startTime", this.state.startTime)
+    if (this.state.startTime > this.state.endTime) {
+      this.startTime.current.setNativeProps(
+        ScreenStyleSheet.formInputValid
+      );
+      this.endTime.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ errorStartTime: null });
+      this.setState({
+        errorEndTime: this.errorMessageDate(
+          "The end time must be later than the start time."
+        )
+      }, console.log("set error text for end TIME"))
+    } else {
+        this.startTime.current.setNativeProps(
+          ScreenStyleSheet.formInputValid
+        );
+        this.endTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
+        this.setState({ errorStartTime: null });
+        this.setState({ errorEndTime: null });
     }
   }
 
@@ -121,7 +146,7 @@ class EditEventScreen extends Component {
             errorEndTime: this.errorMessageDate(
               "The end time must be later than the start time."
             )
-          });
+          }, console.log("set error text for end TIME"));
         }
       }
       // Otherwise, keep or set back to default
@@ -358,7 +383,7 @@ class EditEventScreen extends Component {
                     alignItems: "center"
                   }
                 }}
-                onDateChange={this.onChange.bind(this, 'endTime')}
+                onDateChange={this.checkEndDate.bind(this, 'endTime')}
               />
             </View>
           </View>
