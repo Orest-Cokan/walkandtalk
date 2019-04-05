@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
   View,
   TouchableOpacity,
-  Alert
+  Image
 } from "react-native";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
@@ -10,9 +10,12 @@ import { createUser } from "../../actions/UserActions";
 import {
   Container,
   Header,
+  Left,
   Body,
   Title,
+  Right,
   Content,
+  Button,
 } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
@@ -64,6 +67,11 @@ class SignupScreen extends Component {
     this.dob = React.createRef();
     this.location = React.createRef();
   }
+
+  onBack = () => {
+    // go back to last page
+    Actions.pop();
+  };
  
   showAlert(alert) {
     this.setState({
@@ -271,9 +279,18 @@ class SignupScreen extends Component {
           androidStatusBarColor={"white"}
           iosBarStyle={"dark-content"}
         >
+          <Left style={ScreenStyleSheet.headerSides}>
+            <Button transparent onPress={this.onBack}>
+              <Image
+                style={ScreenStyleSheet.headerIcon}
+                source={require("../../assets/icons/back-button.png")}
+              />
+            </Button>
+          </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Sign Up</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Sign up</Title>
           </Body>
+          <Right style={ScreenStyleSheet.headerSides} />
         </Header>
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           <View style={ScreenStyleSheet.rowContainer}>

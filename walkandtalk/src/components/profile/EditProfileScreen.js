@@ -5,16 +5,14 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight,
-  Alert
+  Alert,
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import {
   Container,
   Header,
-  Left,
   Body,
   Title,
-  Right,
   Content
 } from "native-base";
 import { Actions } from "react-native-router-flux";
@@ -26,7 +24,7 @@ import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
-import { width, height, totalSize } from "react-native-dimension";
+import { width } from "react-native-dimension";
 import {
   StyledText as Text,
   StyledTextInput as TextInput

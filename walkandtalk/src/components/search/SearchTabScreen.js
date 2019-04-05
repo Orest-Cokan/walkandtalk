@@ -17,7 +17,8 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from "react-native";
 import TabOne from "./SearchListViewScreen";
 import TabTwo from "./SearchMapViewScreen";
@@ -507,6 +508,13 @@ getSearchResults() {
 
 }
 
+returnMargin(){
+  if(Platform.OS === 'ios'){
+    return 15
+  }else{
+    return 10
+  }
+}
   render() {
     filterHeader = (
       <Header
@@ -556,17 +564,19 @@ getSearchResults() {
               backgroundColor: "red"
             },
             container: {
+              marginTop: Dimensions.get("screen").height * 0.1,
               marginBottom: 200
             },
             selectToggle: {
               width: 40,
               height: 40,
               marginBottom: 15,
-              marginTop: 10,
+              marginTop: this.returnMargin(),
               borderWidth: 1,
               borderColor: "grey",
               borderTopRightRadius: 3,
               borderBottomRightRadius: 3,
+              marginLeft: Dimensions.get("screen").width - Dimensions.get("screen").width * 0.4,
               marginRight: 5,
               paddingTop: 5,
               backgroundColor: "#A680B8",
@@ -597,7 +607,7 @@ getSearchResults() {
           contentContainerStyle={[ScreenStyleSheet.content, { flex: 1 }]}
         >
           {/* Search bar */}
-          <View style={styles.box}>
+          <View style={Platform.OS === 'ios' ? styles.boxIos : styles.boxAndroid}>
             <TouchableOpacity onPress={this.search} activeOpacity={0}>
               <Image
                 style={ScreenStyleSheet.searchIcon}
@@ -611,8 +621,9 @@ getSearchResults() {
               onChangeText={this.setKeyword}
               onEndEditing={this.keywordSearch}
             />
+            {Platform.OS === 'ios' ? filterPopup : null}
           </View>
-          {filterPopup}
+          {Platform.OS === 'android' ? filterPopup : null}
           <Tabs tabBarUnderlineStyle={{borderBottomWidth:2, borderColor: '#A680B8'}}>
             <Tab heading={
                 <TabHeading style={{backgroundColor: "#FFFFFF"}}>
@@ -642,7 +653,7 @@ getSearchResults() {
 }
 
 const styles = StyleSheet.create({
-  box: {
+  boxAndroid: {
     height: 40,
     width: Dimensions.get("screen").width - 70,
     borderWidth: 1,
@@ -656,6 +667,20 @@ const styles = StyleSheet.create({
     marginTop: 10,
     alignSelf: "flex-start",
     position: "absolute"
+  },
+  boxIos: {
+    height: 40,
+    width: Dimensions.get("screen").width - 70,
+    borderWidth: 1,
+    borderTopLeftRadius: 3,
+    borderBottomLeftRadius: 3,
+    borderColor: "grey",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    marginBottom: 10,
+    marginTop: 10,
+    alignSelf: "flex-start",
   },
   boxWithFilter: {
     height: 40,
