@@ -111,7 +111,7 @@ class SearchMapViewScreen extends Component {
                   right: 40, 
                   bottom: 40, 
                   left: 40 }, 
-                  animated: false 
+                  animated: true 
                 })
             }}
             onLayout={() => {
@@ -121,7 +121,7 @@ class SearchMapViewScreen extends Component {
                   right: 40, 
                   bottom: 200, 
                   left: 40 }, 
-                  animated: false 
+                  animated: true 
                 })
             }}
             provider={PROVIDER_GOOGLE}
