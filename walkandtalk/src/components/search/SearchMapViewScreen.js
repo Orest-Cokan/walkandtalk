@@ -119,7 +119,7 @@ class SearchMapViewScreen extends Component {
                 edgePadding: { 
                   top: 200, 
                   right: 40, 
-                  bottom: 40, 
+                  bottom: 200, 
                   left: 40 }, 
                   animated: false 
                 })
@@ -127,7 +127,7 @@ class SearchMapViewScreen extends Component {
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             showsUserLocation={true}
-            region={this.props.region}
+            initialRegion={this.props.region}
             onRegionChange={this.props.onRegionChange}
           >
             {this.showMarkers()}
