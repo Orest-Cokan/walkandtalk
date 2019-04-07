@@ -14,6 +14,11 @@ npm - version > 6
 
 # Frontend
 
+## 📂 Folder Structure
+This frontend has 2 main directories:
+
+- src - for actions, reducers, components, router, and constants
+- jest - contains all tests, uses [Jest](https://github.com/facebook/jest)
 
 ## Clone the pp
 
@@ -39,6 +44,17 @@ react-native run-android
 react-native run-ios
 
 ```
+
+## Run frontend tests
+
+Ensure you are in the ```walk-and-talk\walkandtalk``` directory
+
+```
+npm install
+npm test
+```
+
+
 # 🎱Backend 
 The backend has 3 different states: testing, development and production. JWT auth is used for securing the API endpoints. Sqlite is used for the database, with various policies/services to be used as hooks. The design style is one of MVC, with the Models and Controllers existing in the backend with various cron jobs.
 
