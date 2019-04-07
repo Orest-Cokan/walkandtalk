@@ -130,8 +130,8 @@ class SearchTabScreen extends Component {
           let region = {
             latitude:       position.coords.latitude,
             longitude:      position.coords.longitude,
-            latitudeDelta:  0.00922*1.5,
-            longitudeDelta: 0.00421*1.5
+            latitudeDelta:  0.001*1.5,
+            longitudeDelta: 0.0421*1.5
           }
           this.onRegionChange(region, region.latitude, region.longitude);
         }, (error)=>console.log(error));
@@ -436,7 +436,9 @@ makeCoords = (results) => {
   results.forEach(function(e) {
     coords.push({
       latitude: e.location.lat,
-      longitude: e.location.long
+      longitude: e.location.long,
+      latitudeDelta: 0.001 * 1.5,
+      longitudeDelta: 0.04 * 1.5
     });
   });
   return coords
@@ -488,7 +490,7 @@ getSearchResults() {
 }
 
 returnMargin(){
-  if(Platform.OS === 'ios'){
+  if(Platform.OS == 'ios'){
     return 15
   }else{
     return 10
@@ -586,7 +588,7 @@ returnMargin(){
           contentContainerStyle={[ScreenStyleSheet.content, { flex: 1 }]}
         >
           {/* Search bar */}
-          <View style={Platform.OS === 'ios' ? styles.boxIos : styles.boxAndroid}>
+          <View style={Platform.OS == 'ios' ? styles.boxIos : styles.boxAndroid}>
             <TouchableOpacity onPress={this.search} activeOpacity={0}>
               <Image
                 style={ScreenStyleSheet.searchIcon}
@@ -600,9 +602,9 @@ returnMargin(){
               onChangeText={this.setKeyword}
               onEndEditing={this.keywordSearch}
             />
-            {Platform.OS === 'ios' ? filterPopup : null}
+            {Platform.OS == 'ios' ? filterPopup : null}
           </View>
-          {Platform.OS === 'android' ? filterPopup : null}
+          {Platform.OS == 'android' ? filterPopup : null}
           <Tabs tabBarUnderlineStyle={{borderBottomWidth:2, borderColor: '#A680B8'}}>
             <Tab heading={
                 <TabHeading style={{backgroundColor: "#FFFFFF"}}>
