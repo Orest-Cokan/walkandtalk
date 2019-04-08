@@ -1,5 +1,5 @@
 const database = require("../../config/database");
-const initialize = require("./research.service");
+const makeResearchers = require("./research.service");
 const recordsTask = require("../../config/cron/records");
 const upcomingEventTask = require("../../config/cron/upcomingEvent");
 
@@ -23,6 +23,16 @@ const dbService = (environment, migrate) => {
       `only development, staging, test and production are valid NODE_ENV variables but ${environment} is specified`
     );
     return process.exit(1);
+  };
+
+  const initTasks = async () => {
+    try {
+      await makeResearchers();
+      await recordsTask();
+      await upcomingEventTask();
+    } catch (err) {
+      errorDBStart(err);
+    }
   };
 
   const startMigrateTrue = async () => {
@@ -94,30 +104,25 @@ const dbService = (environment, migrate) => {
     switch (environment) {
       case "development":
         await startDev();
-        await initialize();
-        await recordsTask();
-        await upcomingEventTask();
+        await initTasks();
         break;
 
       case "staging":
         await startStage();
-        await initialize();
-        await recordsTask();
-        await upcomingEventTask();
+        await initTasks();
+
         break;
 
       case "testing":
         await startTest();
-        await initialize();
-        await recordsTask();
-        await upcomingEventTask();
+        await initTasks();
+
         break;
 
       case "production":
         await startProd();
-        await initialize();
-        await recordsTask();
-        await upcomingEventTask();
+        await initTasks();
+
         break;
 
       default:
