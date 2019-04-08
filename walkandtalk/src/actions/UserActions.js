@@ -103,7 +103,6 @@ export const loginUser = (email, password) => {
             Alert.alert(
               "Please wait for the researchers to review your profile."
             );
-            s;
           }
         }
       })
@@ -200,7 +199,7 @@ export const editUser = (
       .put(url, user, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         if (res.status === 200) {
-          dispatch({ type: USER_EDIT, payload: res.data.user });
+          dispatch({ type: USER_EDIT, payload: user });
         }
       })
       .catch(err => {
