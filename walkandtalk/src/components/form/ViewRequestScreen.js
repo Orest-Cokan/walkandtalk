@@ -133,7 +133,12 @@ class ViewRequestScreen extends Component {
     if (this.state.responseStatus) {
       //import New user into REDCap
       await this.importToRedcap();
-      this.props.approveUser(this.state.email, this.state.redcapID, this.props.user.user.email);
+      this.props.approveUser(
+        this.props.user.token, 
+        this.state.email, 
+        this.state.redcapID, 
+        this.props.user.user.email
+      );
       if (this.state.responseStatus) {
         this.setState({ showButtons: false });
         this.setState({ loading: false });
@@ -153,7 +158,11 @@ class ViewRequestScreen extends Component {
     if (Platform.OS === "android") {
       this.setState({ loading: true });
     }
-    this.props.declineUser(this.state.email, this.props.user.user.email);
+    this.props.declineUser(
+      this.props.user.token, 
+      this.state.email, 
+      this.props.user.user.email
+    );
     this.setState({ showButtons: false });
     this.setState({ loading: false });
     Alert.alert(

@@ -210,12 +210,20 @@ export const editUser = (
 };
 
 //get unregistered users
-export const getUnregisteredUsers = researcherEmail => {
+export const getUnregisteredUsers = (
+  token,
+  researcherEmail
+  ) => {
   return async dispatch => {
     var ip = getIP();
     var url = ip + "researcher/unregistered";
     await axios
-      .get(url, { params: { email: researcherEmail } })
+      .get(
+        url, { 
+          headers: { Authorization: "Bearer " + token },
+          params: { email: researcherEmail } 
+        }
+      )
       .then(res => {
         dispatch({ type: GET_UNREGISTERED_USERS, payload: res.data.users });
       })
@@ -227,7 +235,12 @@ export const getUnregisteredUsers = researcherEmail => {
 };
 
 //approve request of a user
-export const approveUser = (email, redcapID, researcherEmail) => {
+export const approveUser = (
+  token,
+  email, 
+  redcapID, 
+  researcherEmail
+  ) => {
   const user = {
     userEmail: email,
     redcapID: redcapID
@@ -236,7 +249,13 @@ export const approveUser = (email, redcapID, researcherEmail) => {
     var ip = getIP();
     var url = ip + "researcher/accept";
     await axios
-      .put(url, user, { params: { email: researcherEmail } })
+      .put(
+        url, 
+        user, { 
+          headers: { Authorization: "Bearer " + token },
+          params: { email: researcherEmail } 
+        }
+      )
       .then(res => {
         dispatch({ type: USER_APPROVE });
       })
@@ -248,7 +267,11 @@ export const approveUser = (email, redcapID, researcherEmail) => {
 };
 
 //decline request of a user
-export const declineUser = (email, researcherEmail) => {
+export const declineUser = (
+  token,
+  email, 
+  researcherEmail
+  ) => {
   const user = {
     userEmail: email
   };
@@ -256,7 +279,13 @@ export const declineUser = (email, researcherEmail) => {
     var ip = getIP();
     var url = ip + "researcher/deny";
     await axios
-      .put(url, user, { params: { email: researcherEmail } })
+      .post(
+        url, 
+        user, { 
+          headers: { Authorization: "Bearer " + token },
+          params: { email: researcherEmail } 
+        }
+      )
       .then(res => {
         dispatch({ type: USER_DECLINE });
       })
