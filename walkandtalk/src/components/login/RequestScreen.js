@@ -1,54 +1,46 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { loginUser } from "../../actions/UserActions";
-import { Actions } from "react-native-router-flux";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import { Container, Header, Content } from "native-base";
+import { passwordRequest } from "../../actions/UserActions";
+import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import {
+  Container,
+  Header,
+  Left,
+  Body,
+  Title,
+  Right,
+  Content,
+  Button
+} from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import { Actions } from "react-native-router-flux";
 import {
   StyledText as Text,
   StyledTextInput as TextInput
 } from "../../constants/StyledText";
-//import Socket from "../../constants/Socket";
 
-class AuthScreen extends Component {
+class RequestScreen extends Component {
   state = {
-    email: "",
-    password: ""
+    email: ""
   };
 
-  onChangeUser = text => {
-    //lowerText = text.toLowerCase()
+  onChangeEmail = text => {
     this.setState({
       email: text
     });
   };
 
-  onChangePassword = text => {
-    this.setState({
-      password: text
-    });
-  };
-
-  onPressLogin = async () => {
+  onPressSend = async () => {
     await new Promise((resolve, reject) => {
       // Edit the event user clicks
-      this.props.loginUser(this.state.email, this.state.password);
+      this.props.passwordRequest(this.state.email);
       resolve();
     });
-
-    /* Socket.emit('login', {
-      email: this.refs.formGenerator.getValues().email,
-      password: this.refs.formGenerator.getValues().password
-    }); */
   };
 
-  onPressSignUp = () => {
-    Actions.consent();
-  };
-
-  onPressPassword = () => {
-    Actions.password();
+  onBack = () => {
+    // Navigate back to auth screen
+    Actions.pop();
   };
 
   onPressCancel = () => {};
@@ -58,57 +50,42 @@ class AuthScreen extends Component {
       <Container>
         {/* Header */}
         <Header
-          style={{ height: 0 }}
+          style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
           iosBarStyle={"dark-content"}
-        />
+        >
+          <Left style={ScreenStyleSheet.headerSides}>
+            <Button transparent onPress={this.onBack}>
+              <Image
+                style={ScreenStyleSheet.headerIcon}
+                source={require("../../assets/icons/back-button.png")}
+              />
+            </Button>
+          </Left>
+          <Body style={ScreenStyleSheet.headerBody}>
+            <Title style={ScreenStyleSheet.headerTitle}>Send Password</Title>
+          </Body>
+          <Right style={ScreenStyleSheet.headerSides} />
+        </Header>
+
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           <Text style={styles.logo}>WALK AND TALK</Text>
           <View>
             <TextInput
               style={ScreenStyleSheet.formInputAuth}
-              onChangeText={text => this.onChangeUser(text)}
+              onChangeText={text => this.onChangeEmail(text)}
               value={this.state.text}
               placeholder={"Email"}
               placeholderColor={"grey"}
             />
-            <TextInput
-              style={ScreenStyleSheet.formInputAuth}
-              onChangeText={text => this.onChangePassword(text)}
-              value={this.state.text}
-              secureTextEntry={true}
-              placeholder={"Password"}
-              placeholderColor={"grey"}
-            />
-          </View>
-          <View style={styles.nestedButtonView}>
-            {/* Forgot Password Button - redirect user to forgot password screen if successfull */}
-            <TouchableOpacity
-              style={styles.signupButton}
-              onPress={this.onPressPassword}
-            >
-              <Text style={styles.forgot}>Forgot your password?</Text>
-            </TouchableOpacity>
           </View>
           <TouchableOpacity
-            style={styles.loginButton}
-            onPress={this.onPressLogin}
+            style={styles.sendButton}
+            onPress={this.onPressSend}
           >
             {/* Login Button - redirect user to home screen if successfull */}
-            <Text style={styles.buttonText}> LOGIN </Text>
+            <Text style={styles.buttonText}> Send </Text>
           </TouchableOpacity>
-          <Text style={styles.signUp}>New to Walk and Talk?</Text>
-          <View style={styles.nestedButtonView}>
-            {/* Signup Button - redirect user to signup screen if successfull */}
-            <Text style={styles.signUp}>Sign up </Text>
-            <TouchableOpacity
-              style={styles.signupButton}
-              onPress={this.onPressSignUp}
-            >
-              <Text style={styles.here}>here</Text>
-            </TouchableOpacity>
-            <Text style={styles.signUp}>.</Text>
-          </View>
         </Content>
       </Container>
     );
@@ -116,14 +93,13 @@ class AuthScreen extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
-  picture: state.picture
+  user: state.user
 });
 
 export default connect(
   mapStateToProps,
-  { loginUser }
-)(AuthScreen);
+  { passwordRequest }
+)(RequestScreen);
 
 //Style Sheet
 const styles = StyleSheet.create({
@@ -153,7 +129,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 18
   },
-  loginButton: {
+  sendButton: {
     marginTop: 30,
     marginBottom: 80,
     marginRight: 50,

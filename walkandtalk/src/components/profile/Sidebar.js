@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import { Button, 
-  Container, 
-  Content, 
+import React, { Component } from "react";
+import {
+  Button,
+  Container,
+  Content,
   Header,
-  Right, 
-  Body, 
-  Title, 
-  ListItem 
-} from 'native-base';
-import { Image} from 'react-native';
+  Right,
+  Body,
+  Title,
+  ListItem
+} from "native-base";
+import { Image } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { StyledText as Text } from "../../constants/StyledText";
-import { Actions}  from 'react-native-router-flux';
+import { Actions } from "react-native-router-flux";
 
-
-class SideBar extends Component{
+class SideBar extends Component {
   constructor(props) {
     super(props);
   }
@@ -29,19 +29,25 @@ class SideBar extends Component{
     Actions.helplines();
   };
 
+  // Navigate to changing the password
+  goToChangePassword = () => {
+    Actions.changePassword();
+  };
+
   // Logs the user out of the app
   logout = () => {
     Actions.reset("auth");
   };
 
-  render(){
+  render() {
     return (
       <Container>
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
-          iosBarStyle={"dark-content"}>
+          iosBarStyle={"dark-content"}
+        >
           <Body style={ScreenStyleSheet.sideBarHeaderBody}>
             <Title style={ScreenStyleSheet.headerTitle}>Profile</Title>
           </Body>
@@ -56,9 +62,7 @@ class SideBar extends Component{
         </Header>
         <Content>
           {/* Past Events */}
-          <ListItem
-            button={true}
-            onPress={() => this.goToPastEvents()}>
+          <ListItem button={true} onPress={() => this.goToPastEvents()}>
             <Image
               style={ScreenStyleSheet.headerIcon}
               source={require("../../assets/icons/past-events.png")}
@@ -67,9 +71,7 @@ class SideBar extends Component{
           </ListItem>
 
           {/* Helpline Links */}
-          <ListItem
-            button={true}
-            onPress={() => this.goToHelplineLinks()}>
+          <ListItem button={true} onPress={() => this.goToHelplineLinks()}>
             <Image
               style={ScreenStyleSheet.headerIcon}
               source={require("../../assets/icons/helpline-links.png")}
@@ -77,10 +79,19 @@ class SideBar extends Component{
             <Text style={ScreenStyleSheet.sideBarTextItem}>Helpline Links</Text>
           </ListItem>
 
+          {/* Change Password */}
+          <ListItem button={true} onPress={() => this.goToHelplineLinks()}>
+            <Image
+              style={ScreenStyleSheet.headerIcon}
+              source={require("../../assets/icons/icons8-password-reset.png")}
+            />
+            <Text style={ScreenStyleSheet.sideBarTextItem}>
+              Change Password
+            </Text>
+          </ListItem>
+
           {/* Logout */}
-          <ListItem
-            button={true}
-            onPress={() => this.logout()}>
+          <ListItem button={true} onPress={() => this.logout()}>
             <Image
               style={ScreenStyleSheet.headerIcon}
               source={require("../../assets/icons/logout.png")}
@@ -88,10 +99,9 @@ class SideBar extends Component{
             <Text style={ScreenStyleSheet.sideBarTextItem}>Logout</Text>
           </ListItem>
         </Content>
-    </Container>
+      </Container>
     );
   }
 }
-
 
 export default SideBar;

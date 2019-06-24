@@ -209,20 +209,15 @@ export const editUser = (
 };
 
 //get unregistered users
-export const getUnregisteredUsers = (
-  token,
-  researcherEmail
-  ) => {
+export const getUnregisteredUsers = (token, researcherEmail) => {
   return async dispatch => {
     var ip = getIP();
     var url = ip + "researcher/unregistered";
     await axios
-      .get(
-        url, { 
-          headers: { Authorization: "Bearer " + token },
-          params: { email: researcherEmail } 
-        }
-      )
+      .get(url, {
+        headers: { Authorization: "Bearer " + token },
+        params: { email: researcherEmail }
+      })
       .then(res => {
         dispatch({ type: GET_UNREGISTERED_USERS, payload: res.data.users });
       })
@@ -234,12 +229,7 @@ export const getUnregisteredUsers = (
 };
 
 //approve request of a user
-export const approveUser = (
-  token,
-  email, 
-  redcapID, 
-  researcherEmail
-  ) => {
+export const approveUser = (token, email, redcapID, researcherEmail) => {
   const user = {
     userEmail: email,
     redcapID: redcapID
@@ -248,13 +238,10 @@ export const approveUser = (
     var ip = getIP();
     var url = ip + "researcher/accept";
     await axios
-      .put(
-        url, 
-        user, { 
-          headers: { Authorization: "Bearer " + token },
-          params: { email: researcherEmail } 
-        }
-      )
+      .put(url, user, {
+        headers: { Authorization: "Bearer " + token },
+        params: { email: researcherEmail }
+      })
       .then(res => {
         dispatch({ type: USER_APPROVE });
       })
@@ -266,11 +253,7 @@ export const approveUser = (
 };
 
 //decline request of a user
-export const declineUser = (
-  token,
-  email, 
-  researcherEmail
-  ) => {
+export const declineUser = (token, email, researcherEmail) => {
   const user = {
     userEmail: email
   };
@@ -278,15 +261,37 @@ export const declineUser = (
     var ip = getIP();
     var url = ip + "researcher/deny";
     await axios
-      .post(
-        url, 
-        user, { 
-          headers: { Authorization: "Bearer " + token },
-          params: { email: researcherEmail } 
-        }
-      )
+      .post(url, user, {
+        headers: { Authorization: "Bearer " + token },
+        params: { email: researcherEmail }
+      })
       .then(res => {
         dispatch({ type: USER_DECLINE });
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
+      });
+  };
+};
+
+//send the user their password to their email
+export const passwordRequest = email => {
+  const user = {
+    email: email
+  };
+  return async dispatch => {
+    var ip = getIP();
+    var url = ip + "public/request";
+    console.log("first here!");
+    await axios
+      .post(url, user)
+      .then(res => {
+        if (res.data.msg == "Success") {
+          Alert.alert("Success! Please check your email.");
+        } else {
+          Alert.alert("Something went wrong. Please try again later.");
+        }
       })
       .catch(err => {
         console.log(err);

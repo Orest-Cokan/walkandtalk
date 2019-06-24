@@ -7,6 +7,7 @@ const userPolicy = require("../policies/user.policy");
 const bcryptService = require("../services/bcrypt.service");
 const Transporter = require("../utils/email/email");
 const newUserEmail = require("../utils/email/msgs/newUser");
+const password = require("../utils/email/msgs/password");
 
 // User controller
 const UserController = () => {
@@ -163,13 +164,31 @@ const UserController = () => {
       });
   };
 
+  // emails users their password to their account
+  const requestPassword = async (req, res) => {
+    const { email } = req.body;
+    console.log("What are these values: " + email);
+    try {
+      const user = await User.findOne({
+        where: {
+          email
+        }
+      });
+      Transporter.sendMail(password(email, user.password));
+      return res.status(200).json({ msg: "Success" });
+    } catch (err) {
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
   return {
     register,
     login,
     validate,
     getAll,
     getUser,
-    updateUser
+    updateUser,
+    requestPassword
   };
 };
 

@@ -16,7 +16,7 @@ const names = [
   "Researcher 9"
 ];
 const email = [
-  "Beate@gmail.com",
+  "cokan@ualberta.ca",
   "Researcher1@gmail.com",
   "Researcher2@gmail.com",
   "Researcher3@gmail.com",

@@ -44,7 +44,7 @@
     "sequelize-embed": "^2.1.1",
     "sequelize-test-helpers": "^1.0.10",
     "socket.io": "^2.2.0",
-    "sqlite3": "^4.0.6"
+    "sqlite3": "^4.0.9"
   },
   "devDependencies": {
     "cross-env": "^5.1.4",

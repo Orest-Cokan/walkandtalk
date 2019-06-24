@@ -24,8 +24,10 @@ import HelplineScreen from "./components/profile/HelplineScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
 import Dispatch from "./components/form/FormDispatch";
-import EditEventSceen from "./components/event/EditEventScreen"
-import IconWithBadge from './constants/IconWithBadge';
+import EditEventSceen from "./components/event/EditEventScreen";
+import RequestScreen from "./components/login/RequestScreen";
+// icon
+import IconWithBadge from "./constants/IconWithBadge";
 
 // Navigation logic for the entire app
 const RouterComponent = () => (
@@ -35,6 +37,7 @@ const RouterComponent = () => (
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
         <Scene key="consent" component={ConsentScreen} />
+        <Scene key="password" component={RequestScreen} />
       </Stack>
       <Stack key="app" hideNavBar panHandlers={null} type="reset">
         <Tabs
@@ -42,25 +45,26 @@ const RouterComponent = () => (
           activeBackgroundColor="#A680B8"
           inactiveBackgroundColor="#A680B8"
         >
-          <Scene 
+          <Scene
             key="homeTab"
             icon={({ focused }) => (
-              <IconWithBadge icon={
-                <Image
-                  source={
-                    focused
-                      ? require("./assets/icons/home-full.png")
-                      : require("./assets/icons/home.png")
-                  }
-                  style={{ width: 28, height: 28 }}
-                />
+              <IconWithBadge
+                icon={
+                  <Image
+                    source={
+                      focused
+                        ? require("./assets/icons/home-full.png")
+                        : require("./assets/icons/home.png")
+                    }
+                    style={{ width: 28, height: 28 }}
+                  />
                 }
               />
             )}
             hideNavBar
           >
-            <Scene key="home" component={HomeScreen}/>
-            <Scene key="notifications" component={NotificationScreen}/>
+            <Scene key="home" component={HomeScreen} />
+            <Scene key="notifications" component={NotificationScreen} />
           </Scene>
           <Scene
             key="search"
@@ -143,7 +147,7 @@ const RouterComponent = () => (
               />
             )}
             hideNavBar
-          > 
+          >
             <Scene key="mainProfile" component={ProfileScreen} />
             <Scene key="editProfile" component={EditProfileScreen} />
             <Scene key="pastEvents" component={PastEventListScreen} />
