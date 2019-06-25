@@ -7,7 +7,7 @@ const config = {
   privateRoutes,
   publicRoutes,
   researcherRoutes,
-  port: process.env.PORT || "2017"
+  port: process.env.PORT || "2019"
 };
 
 module.exports = config;
