@@ -8,7 +8,7 @@ import {
   Body,
   Title,
   Right,
-  Button,
+  Button
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
@@ -44,7 +44,7 @@ class QuestionnaireScreen extends Component {
   };
 
   /*
-    This fucntion gets the record from redcap first, check if the last instance if completed or not, 
+    This fucntion gets the record from redcap first, check if the last instance is completed or not, 
     if not, set instance number to last instance number, else, increment the instance number.
     Then get the survey link by calling getSurveyLink
     */

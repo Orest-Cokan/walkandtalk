@@ -25,7 +25,6 @@ import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
 import Dispatch from "./components/form/FormDispatch";
 import EditEventSceen from "./components/event/EditEventScreen";
-import RequestScreen from "./components/login/RequestScreen";
 // icon
 import IconWithBadge from "./constants/IconWithBadge";
 
@@ -37,7 +36,6 @@ const RouterComponent = () => (
         <Scene key="login" component={AuthScreen} />
         <Scene key="signup" component={SignupScreen} />
         <Scene key="consent" component={ConsentScreen} />
-        <Scene key="password" component={RequestScreen} />
       </Stack>
       <Stack key="app" hideNavBar panHandlers={null} type="reset">
         <Tabs

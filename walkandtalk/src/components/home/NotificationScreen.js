@@ -1,26 +1,30 @@
-import React, { Component } from 'react';
-import { Button, 
-  Container, 
-  Content, 
+import React, { Component } from "react";
+import {
+  Button,
+  Container,
+  Content,
   Left,
   Header,
-  Right, 
-  Body, 
-  Title, 
-  ListItem 
-} from 'native-base';
+  Right,
+  Body,
+  Title,
+  ListItem
+} from "native-base";
 import moment from "moment";
-import { Image, View } from 'react-native';
+import { Image, View } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { StyledText as Text } from "../../constants/StyledText";
-import { Actions}  from 'react-native-router-flux';
+import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
-import { getNotifications, updateNotification } from "../../actions/NotificationActions"
+import {
+  getNotifications,
+  updateNotification
+} from "../../actions/NotificationActions";
 import { fetchEvents } from "../../actions/EventActions";
-import { getUncompletedRecords } from "../../actions/RecordActions"
+import { getUncompletedRecords } from "../../actions/RecordActions";
 
 // This components displays the user's notifications
-class NotificationScreen extends Component{
+class NotificationScreen extends Component {
   constructor(props) {
     super(props);
 
@@ -28,33 +32,49 @@ class NotificationScreen extends Component{
     this.state = {
       isRead: 1,
       loading: false
-    }
+    };
 
     // Grabs all needed data for this screen
-    this.props.getNotifications( this.props.user.token, this.props.user.user.email);
+    this.props.getNotifications(
+      this.props.user.token,
+      this.props.user.user.email
+    );
     this.props.fetchEvents(this.props.user.token);
-    this.props.getUncompletedRecords( this.props.user.token, this.props.user.user.email);
+    this.props.getUncompletedRecords(
+      this.props.user.token,
+      this.props.user.user.email
+    );
   }
 
   componentDidMount() {
-    this.willFocusListener = this.props.navigation.addListener('willFocus', 
-    async () => { 
-      this.setState({loading: true});
-      await this.props.getNotifications( this.props.user.token, this.props.user.user.email);
-      await this.props.fetchEvents(this.props.user.token);
-      await this.props.getUncompletedRecords(this.props.user.token, this.props.user.user.email);
-      this.setState({loading: false});
-    });
-    this.willBlurListener = this.props.navigation.addListener('willBlur', 
-    async () => {
-      await this.props.notifications.map( async (notification) => {
-        await this.props.updateNotification(
+    this.willFocusListener = this.props.navigation.addListener(
+      "willFocus",
+      async () => {
+        this.setState({ loading: true });
+        await this.props.getNotifications(
           this.props.user.token,
-          notification.id,
-          this.state.isRead
+          this.props.user.user.email
         );
-      });
-    });
+        await this.props.fetchEvents(this.props.user.token);
+        await this.props.getUncompletedRecords(
+          this.props.user.token,
+          this.props.user.user.email
+        );
+        this.setState({ loading: false });
+      }
+    );
+    this.willBlurListener = this.props.navigation.addListener(
+      "willBlur",
+      async () => {
+        await this.props.notifications.map(async notification => {
+          await this.props.updateNotification(
+            this.props.user.token,
+            notification.id,
+            this.state.isRead
+          );
+        });
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -66,12 +86,11 @@ class NotificationScreen extends Component{
   // Redirects the user to the viewEvent screen
   viewEvent(subjectId) {
     let event = this.props.events.find(event => event.id == subjectId);
-    if (event){
+    if (event) {
       let badge = null;
       if (this.props.user.user.email == event.email) {
         badge = "HOSTING";
-      } 
-      else {
+      } else {
         for (let i = 0; i < event.attendees.length; i++) {
           if (event.attendees[i].email == this.props.user.user.email) {
             badge = "GOING";
@@ -79,10 +98,10 @@ class NotificationScreen extends Component{
           }
         }
       }
-      Actions.viewEvent( { 
+      Actions.viewEvent({
         event: event,
         badge: badge
-       });
+      });
     } else {
       null;
     }
@@ -91,21 +110,21 @@ class NotificationScreen extends Component{
   // Called when an 'eventRecord' notification is pressed
   // Redirects the user to the submitRecord screen
   submitRecord(subjectId) {
-    let record = this.props.uncompleted_records.find(record => record.id == subjectId);
-    if (record){
+    let record = this.props.uncompleted_records.find(
+      record => record.id == subjectId
+    );
+    if (record) {
       Actions.submitRecord({ record: record });
     } else {
       null;
     }
   }
 
-
   // Called when a 'questionnaire' notification is pressed
   // Redirects the user to the mainFormPage screen
   goToForms() {
     Actions.mainFormPage();
   }
-
 
   // Takes the user back to home
   onBack() {
@@ -118,31 +137,32 @@ class NotificationScreen extends Component{
     let notifications = [];
     let message = "";
     let onPress = null;
-    let createdAt = '';
+    let createdAt = "";
     this.props.notifications.map((notification, index) => {
       createdAt = moment(notification.createdAt).fromNow();
-      if (notification.type == 'updatedEvent') {
-        message = "The details for " + notification.title + " have been updated."
+      if (notification.type == "updatedEvent") {
+        message =
+          "The details for " + notification.title + " have been updated.";
         onPress = this.viewEvent.bind(this, notification.subjectId);
         icon = require("../../assets/icons/updated.png");
-      } 
-      if (notification.type == 'cancelledEvent') {
+      }
+      if (notification.type == "cancelledEvent") {
         message = notification.title + " has been cancelled.";
         onPress = null;
         icon = require("../../assets/icons/disabled.png");
       }
-      if (notification.type == 'upcomingEvent') {
-        message = "You have " + notification.title + " coming up today."
+      if (notification.type == "upcomingEvent") {
+        message = "You have " + notification.title + " coming up today.";
         onPress = this.viewEvent.bind(this, notification.subjectId);
         icon = require("../../assets/icons/calendar.png");
       }
-      if (notification.type == 'eventRecord') {
-        message = "Let us know how " + notification.title + " went. Tap to fill in your record."
+      if (notification.type == "eventRecord") {
+        message = "Let us know how " + notification.title + " went.";
         icon = require("../../assets/icons/test.png");
         onPress = this.submitRecord.bind(this, notification.subjectId);
       }
-      if (notification.type == 'questionnaire') {
-        message = "It is time to fill in your monthly questionnaires."
+      if (notification.type == "questionnaire") {
+        message = "It is time to fill in your monthly questionnaires.";
         icon = require("../../assets/icons/test.png");
         onPress = this.goToForms.bind(this);
       }
@@ -152,37 +172,36 @@ class NotificationScreen extends Component{
         color = "grey";
       }
       notifications.unshift(
-        <ListItem
-            button={true}
-            key={index}
-            onPress={onPress}
-        >
-          <Image
-            style={ScreenStyleSheet.notificationIcon}
-            source={icon}
-          />
-          <View style={[{flexDirection: 'column'}, ScreenStyleSheet.notificationTextItem]}>
-            <View style={{flex: 1}}>
-              <Text style={{color: color}}>{message}</Text>
+        <ListItem button={true} key={index} onPress={onPress}>
+          <Image style={ScreenStyleSheet.notificationIcon} source={icon} />
+          <View
+            style={[
+              { flexDirection: "column" },
+              ScreenStyleSheet.notificationTextItem
+            ]}
+          >
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: color }}>{message}</Text>
             </View>
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <Text>{createdAt}</Text>
             </View>
           </View>
         </ListItem>
-      )
+      );
     });
     return notifications;
   }
 
-  render(){
+  render() {
     return (
       <Container>
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
           androidStatusBarColor={"white"}
-          iosBarStyle={"dark-content"}>
+          iosBarStyle={"dark-content"}
+        >
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack.bind(this)}>
               <Image
@@ -194,16 +213,18 @@ class NotificationScreen extends Component{
           <Body style={ScreenStyleSheet.headerBody}>
             <Title style={ScreenStyleSheet.headerTitle}>Notifications</Title>
           </Body>
-          <Right style={ScreenStyleSheet.headerSides}/>
+          <Right style={ScreenStyleSheet.headerSides} />
         </Header>
 
         {!this.state.loading && (
-        <Content>
-          <View><Text> </Text></View>
-          {this.getNotifications()}
-        </Content>
+          <Content>
+            <View>
+              <Text> </Text>
+            </View>
+            {this.getNotifications()}
+          </Content>
         )}
-    </Container>
+      </Container>
     );
   }
 }
@@ -218,10 +239,11 @@ const mapStateToProps = state => {
 };
 
 export default connect(
-  mapStateToProps, { 
-    getNotifications, 
-    updateNotification, 
-    fetchEvents, 
-    getUncompletedRecords 
+  mapStateToProps,
+  {
+    getNotifications,
+    updateNotification,
+    fetchEvents,
+    getUncompletedRecords
   }
 )(NotificationScreen);

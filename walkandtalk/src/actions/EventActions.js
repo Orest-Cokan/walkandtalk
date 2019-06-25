@@ -11,12 +11,12 @@ import getIP from "../constants/Ip";
 import { Alert } from "react-native";
 
 // action to fetch all events
-export const fetchEvents = (token) => {
+export const fetchEvents = token => {
   return async dispatch => {
     var ip = getIP();
     var url = ip + "private/walkingevents";
     await axios
-      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
+      .get(url, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         dispatch({ type: SET_EVENTS, payload: res.data.events });
       })
@@ -33,7 +33,7 @@ export const fetchUserEvents = (token, email) => {
     var ip = getIP();
     var url = ip + "private/walkingevents/" + email;
     await axios
-      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
+      .get(url, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         dispatch({ type: SET_USER_EVENTS, payload: res.data.events });
       })
@@ -80,7 +80,9 @@ export const createEvent = (
       }
     };
     await axios
-      .post(url, walking_event, { headers: { Authorization: 'Bearer ' + token } } )
+      .post(url, walking_event, {
+        headers: { Authorization: "Bearer " + token }
+      })
       .then(async res => {
         if (res.status === 200) {
           await dispatch({ type: EVENT_CREATE });
@@ -89,7 +91,7 @@ export const createEvent = (
         }
       })
       .catch(err => {
-        Alert.alert("Something went wrong. Please try again later.")
+        Alert.alert("Something went wrong. Please try again later.");
       });
   };
 };
@@ -122,14 +124,14 @@ export const editEvent = (
     var ip = getIP();
     var url = ip + "private/walkingevent";
     await axios
-      .put(url, event, { headers: { Authorization: 'Bearer ' + token } } )
+      .put(url, event, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         if (res.status === 200) {
           dispatch({ type: EVENT_EDIT, payload: res.data.event });
         }
       })
       .catch(err => {
-        console.log('THIS IS THE ERROR', err);
+        console.log("THIS IS THE ERROR", err);
         Alert.alert("Something went wrong. Please try again later.");
       });
   };
@@ -141,7 +143,7 @@ export const deleteEvent = (token, id) => {
     var ip = getIP();
     var url = ip + "private/walkingevent/";
     await axios
-      .delete(url + id, { headers: { Authorization: 'Bearer ' + token } } )
+      .delete(url + id, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         dispatch({ type: EVENT_DELETE, payload: res.data.event });
         Actions.reset("app");

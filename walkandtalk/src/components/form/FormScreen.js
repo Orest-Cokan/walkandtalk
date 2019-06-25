@@ -28,18 +28,25 @@ class FormScreen extends Component {
       refreshing: false,
       records: [],
       loading: false
-    }
-    this.props.getUncompletedRecords(this.props.user.token, this.props.user.user.email);
-
+    };
+    this.props.getUncompletedRecords(
+      this.props.user.token,
+      this.props.user.user.email
+    );
   }
 
   componentDidMount() {
-    this.willFocusListener = this.props.navigation.addListener('willFocus', 
-    async () => { 
-      await this.setState({loading: true})
-      await this.props.getUncompletedRecords(this.props.user.token, this.props.user.user.email);
-      this.setState({loading: false})
-    });
+    this.willFocusListener = this.props.navigation.addListener(
+      "willFocus",
+      async () => {
+        await this.setState({ loading: true });
+        await this.props.getUncompletedRecords(
+          this.props.user.token,
+          this.props.user.user.email
+        );
+        this.setState({ loading: false });
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -87,13 +94,13 @@ class FormScreen extends Component {
           </Body>
         </Header>
         {!this.state.loading && (
-        <Content contentContainerStyle={ScreenStyleSheet.content}>
-          <Text style={ScreenStyleSheet.sectionTitle}>Questionnaires</Text>
-          <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
-          <View style={ScreenStyleSheet.lineSeparator} />
-          <Text style={ScreenStyleSheet.sectionTitle}>Records</Text>
-          {this.getRecords()}
-        </Content>
+          <Content contentContainerStyle={ScreenStyleSheet.content}>
+            <Text style={ScreenStyleSheet.sectionTitle}>Questionnaires</Text>
+            <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
+            <View style={ScreenStyleSheet.lineSeparator} />
+            <Text style={ScreenStyleSheet.sectionTitle}>Walking Logs</Text>
+            {this.getRecords()}
+          </Content>
         )}
       </Container>
     );

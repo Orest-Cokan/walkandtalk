@@ -14,7 +14,7 @@ import {
 import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { StyledText as Text } from "../../constants/StyledText";
-import AwesomeAlert from 'react-native-awesome-alerts';
+import AwesomeAlert from "react-native-awesome-alerts";
 import UserCard from "../../cardview/userCard";
 import Modal from "react-native-modal";
 import { Actions } from "react-native-router-flux";
@@ -46,9 +46,8 @@ class ViewEventScreen extends Component {
       alreadyGoingAlert: false,
       alreadyGoingText: "",
       refresh: false
-    }
+    };
   }
-
 
   // Navigate back to previous screen
   onBack = () => {
@@ -56,37 +55,35 @@ class ViewEventScreen extends Component {
   };
 
   hideAlert(name) {
-    this.setState( { [name] : false })
-  };
+    this.setState({ [name]: false });
+  }
 
   //Used to update the Going/Not going buttons after cancel is pressed
   hideAlertNoChange(name) {
-
-    this.setState( { [name] : false  })
-  };
-
+    this.setState({ [name]: false });
+  }
 
   showAlert(value) {
-    if(this.state.badge == value){
-      if(this.state.badge == "GOING"){
+    if (this.state.badge == value) {
+      if (this.state.badge == "GOING") {
         this.setState({
           alreadyGoingAlert: true,
-          alreadyGoingText : "You are already going to this event!"
-        })
-      }else{
+          alreadyGoingText: "You are already going to this event!"
+        });
+      } else {
         this.setState({
           alreadyGoingAlert: true,
-          alreadyGoingText : "You are not going to this event!"
-        })
+          alreadyGoingText: "You are not going to this event!"
+        });
       }
-    }else{
-    if (value == "GOING") {
-      this.setState( { goingAlert : true })
     } else {
-      this.setState( { notGoingAlert : true })
+      if (value == "GOING") {
+        this.setState({ goingAlert: true });
+      } else {
+        this.setState({ notGoingAlert: true });
+      }
     }
   }
-  };
 
   // Deletes the event
   deleteEvent = async () => {
@@ -94,33 +91,32 @@ class ViewEventScreen extends Component {
     await this.props.sendNotification(
       this.props.user.token,
       this.state.id,
-      'cancelledEvent',
-      this.state.title,
-      );
+      "cancelledEvent",
+      this.state.title
+    );
   };
   // When edit event button is clicked
   goToEditEvent = () => {
     // Navigate to edit event
-    Actions.editEvent({ event: this.props.event});
+    Actions.editEvent({ event: this.props.event });
   };
 
   viewOtherProfile = email => {
     // Navigate to view this event
-    this.setState({visibleModal:false})
-    Actions.otherProfile({email:email})
+    this.setState({ visibleModal: false });
+    Actions.otherProfile({ email: email });
   };
-
 
   // When edit event button is clicked
   openModal = () => {
     // Navigate to edit event
-    this.setState({visibleModal: true})
+    this.setState({ visibleModal: true });
   };
 
   //Used when scrolling in the Modal
   handleOnScroll = event => {
     this.setState({
-      scrollOffset: event.nativeEvent.contentOffset.y,
+      scrollOffset: event.nativeEvent.contentOffset.y
     });
   };
 
@@ -133,18 +129,21 @@ class ViewEventScreen extends Component {
 
   confirm() {
     Alert.alert(
-      'Alert Title',
-      'My Alert Msg',
+      "Alert Title",
+      "My Alert Msg",
       [
-        {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
         {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+          text: "Ask me later",
+          onPress: () => console.log("Ask me later pressed")
         },
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") }
       ],
-      {cancelable: false},
+      { cancelable: false }
     );
   }
   // Set state
@@ -154,9 +153,9 @@ class ViewEventScreen extends Component {
     });
   }
 
-  updateAttendees = async() => {
+  updateAttendees = async () => {
     await new Promise((resolve, reject) => {
-      if (this.state.badge == "GOING"){
+      if (this.state.badge == "GOING") {
         this.props.addAttendees(
           this.props.user.token,
           this.state.id,
@@ -173,30 +172,31 @@ class ViewEventScreen extends Component {
       resolve();
       Actions.homeTab();
     });
-  }
+  };
 
-  getAttendees(){
+  getAttendees() {
     let attendee_list = [];
     this.state.attendees.map((a, index) => {
       attendee_list.unshift(
-        <TouchableOpacity 
-        key={index}
-        disabled={!this.props.user.user.researcher}
-         onPress={this.viewOtherProfile.bind(this, a.email)}>
-        <UserCard
-          key={a.email}
-          email={a.email}
-          fullname={a.fullname}
-          researcher = {this.state.researcher}
-        />
+        <TouchableOpacity
+          key={index}
+          disabled={!this.props.user.user.researcher}
+          onPress={this.viewOtherProfile.bind(this, a.email)}
+        >
+          <UserCard
+            key={a.email}
+            email={a.email}
+            fullname={a.fullname}
+            researcher={this.state.researcher}
+          />
         </TouchableOpacity>
       );
     });
     return attendee_list;
   }
-    // Conditional rendering for the buttons present on view event
-    // If going or not going, will display those buttons
-    // Otherwise, you're hosting the event and edit and delete buttons will be displayed
+  // Conditional rendering for the buttons present on view event
+  // If going or not going, will display those buttons
+  // Otherwise, you're hosting the event and edit and delete buttons will be displayed
   showOptions() {
     if (this.state.badge == "GOING" || this.state.badge == null) {
       //const attendingOptions = ["Not Going", "Going"];
@@ -209,7 +209,7 @@ class ViewEventScreen extends Component {
         if (this.state.badge == option.value) {
           default_status = index;
         }
-      console.log(default_status, "default")
+        console.log(default_status, "default");
       });
 
       return (
@@ -227,8 +227,8 @@ class ViewEventScreen extends Component {
           />
         </View>
       );
-  } else {
-    return (
+    } else {
+      return (
         <View>
           <TouchableOpacity
             style={styles.editButton}
@@ -249,7 +249,7 @@ class ViewEventScreen extends Component {
       );
     }
   }
-  
+
   render() {
     return (
       <Container>
@@ -268,7 +268,9 @@ class ViewEventScreen extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>{this.state.title}</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>
+              {this.state.title}
+            </Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
@@ -340,7 +342,7 @@ class ViewEventScreen extends Component {
               <TouchableOpacity onPress={this.openModal}>
                 <Text style={ScreenStyleSheet.numAttendees}>
                   {this.state.attending} people
-                <Text> are attending this event.</Text>
+                  <Text> are attending this event.</Text>
                 </Text>
               </TouchableOpacity>
             </View>
@@ -378,18 +380,19 @@ class ViewEventScreen extends Component {
           swipeDirection="down"
           scrollTo={this.handleScrollTo}
           scrollOffset={this.state.scrollOffset}
-          scrollOffsetMax={400 - 300} 
-          style={styles.bottomModal}>
+          scrollOffsetMax={400 - 300}
+          style={styles.bottomModal}
+        >
           <View style={styles.scrollableModal}>
             <View style={styles.modalTextView}>
-            <Text style={styles.modalText}>Going </Text>
+              <Text style={styles.modalText}>Going </Text>
             </View>
             <ScrollView
               ref={ref => (this.scrollViewRef = ref)}
               onScroll={this.handleOnScroll}
-              scrollEventThrottle={16}>
+              scrollEventThrottle={16}
+            >
               {this.getAttendees()}
-                    
             </ScrollView>
           </View>
         </Modal>
@@ -403,16 +406,16 @@ class ViewEventScreen extends Component {
           closeOnHardwareBackPress={true}
           showConfirmButton={true}
           confirmText="Yes"
-          confirmButtonColor= {"#A680B8"}
+          confirmButtonColor={"#A680B8"}
           showCancelButton={true}
           cancelText="No"
-          cancelButtonColor= {"grey"}
+          cancelButtonColor={"grey"}
           onConfirmPressed={() => {
             this.onChangeStatus(null);
-            this.hideAlert('notGoingAlert');
+            this.hideAlert("notGoingAlert");
           }}
           onCancelPressed={() => {
-            this.hideAlertNoChange('notGoingAlert');
+            this.hideAlertNoChange("notGoingAlert");
           }}
         />
         <AwesomeAlert
@@ -423,19 +426,19 @@ class ViewEventScreen extends Component {
           closeOnHardwareBackPress={true}
           showConfirmButton={true}
           confirmText="Yes"
-          confirmButtonColor= {"#A680B8"}
+          confirmButtonColor={"#A680B8"}
           showCancelButton={true}
           cancelText="No"
-          cancelButtonColor= {"grey"}
+          cancelButtonColor={"grey"}
           onConfirmPressed={() => {
             this.onChangeStatus("GOING");
-            this.hideAlert('goingAlert');
+            this.hideAlert("goingAlert");
           }}
           onCancelPressed={() => {
-            this.hideAlertNoChange('goingAlert');
+            this.hideAlertNoChange("goingAlert");
           }}
         />
-         <AwesomeAlert
+        <AwesomeAlert
           show={this.state.alreadyGoingAlert}
           showProgress={false}
           message={this.state.alreadyGoingText}
@@ -443,11 +446,10 @@ class ViewEventScreen extends Component {
           closeOnHardwareBackPress={true}
           showConfirmButton={true}
           confirmText="OK"
-          confirmButtonColor= {"#A680B8"}
+          confirmButtonColor={"#A680B8"}
           onConfirmPressed={() => {
-            this.hideAlert('alreadyGoingAlert');
+            this.hideAlert("alreadyGoingAlert");
           }}
-          
         />
       </Container>
     );
@@ -462,10 +464,7 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { deleteEvent, 
-    addAttendees, 
-    removeAttendees, 
-    sendNotification }
+  { deleteEvent, addAttendees, removeAttendees, sendNotification }
 )(ViewEventScreen);
 
 const styles = {
@@ -503,28 +502,28 @@ const styles = {
   buttonText: {
     color: "white",
     textAlign: "center",
-    fontSize: 15,
+    fontSize: 15
   },
   scrollableModal: {
     height: 300,
-    backgroundColor:"white",
+    backgroundColor: "white"
   },
   bottomModal: {
     display: "flex",
     justifyContent: "center",
-    margin:"auto",
+    margin: "auto",
     margin: 0,
     marginRight: 20,
-    marginLeft:20
+    marginLeft: 20
   },
-  modalTextView:{
+  modalTextView: {
     height: 50,
     backgroundColor: "#A680B8",
-    alignItems:"center"
+    alignItems: "center"
   },
-  modalText: { 
-    color:  "white", 
-    borderBottomColor:"gray",
+  modalText: {
+    color: "white",
+    borderBottomColor: "gray",
     fontSize: 20,
     textAlign: "center",
     fontWeight: "bold",

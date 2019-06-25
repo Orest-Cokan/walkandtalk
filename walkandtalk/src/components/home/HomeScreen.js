@@ -25,21 +25,35 @@ class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.props.getPicture(this.props.user.token, this.props.user.user.email);
-    this.props.getUnreadNotifications(this.props.user.token, this.props.user.user.email);
-    this.props.fetchUserEvents(this.props.user.token, this.props.user.user.email);
+    this.props.getUnreadNotifications(
+      this.props.user.token,
+      this.props.user.user.email
+    );
+    this.props.fetchUserEvents(
+      this.props.user.token,
+      this.props.user.user.email
+    );
     this.state = {
       loading: false
-    }
+    };
   }
 
   componentDidMount() {
-    this.willFocusListener = this.props.navigation.addListener('willFocus', 
-    async () => { 
-      this.setState({loading: true})
-      await this.props.fetchUserEvents(this.props.user.token, this.props.user.user.email);
-      await this.props.getUnreadNotifications(this.props.user.token, this.props.user.user.email);
-      this.setState({loading: false})
-    })
+    this.willFocusListener = this.props.navigation.addListener(
+      "willFocus",
+      async () => {
+        this.setState({ loading: true });
+        await this.props.fetchUserEvents(
+          this.props.user.token,
+          this.props.user.user.email
+        );
+        await this.props.getUnreadNotifications(
+          this.props.user.token,
+          this.props.user.user.email
+        );
+        this.setState({ loading: false });
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -47,44 +61,42 @@ class HomeScreen extends Component {
   }
 
   viewEvent(index, badge) {
-    Actions.viewEvent( {
+    Actions.viewEvent({
       event: this.props.events[index],
       badge: badge
-    })
+    });
   }
-
 
   getEvents() {
     let events = [];
     this.props.events.map((event, index) => {
       let badge = null;
-      if ( this.props.user.user.email == event.email) {
+      if (this.props.user.user.email == event.email) {
         badge = "HOSTING";
       } else {
         badge = "GOING";
       }
       events.unshift(
         <TouchableOpacity
-        key={index}
-        onPress={this.viewEvent.bind(this, index, badge)}
-      >
-        <BaseCard
-          date={event.date}
-          start_time={event.start_time}
-          title={event.title}
-          location={event.location.streetName}
-          badge={badge}
-        />
-      </TouchableOpacity>
-          
-        );
-      }); 
+          key={index}
+          onPress={this.viewEvent.bind(this, index, badge)}
+        >
+          <BaseCard
+            date={event.date}
+            start_time={event.start_time}
+            title={event.title}
+            location={event.location.streetName}
+            badge={badge}
+          />
+        </TouchableOpacity>
+      );
+    });
     return events;
   }
 
   showNotifications() {
     Actions.notifications({});
-  };
+  }
 
   render() {
     return (
@@ -103,7 +115,7 @@ class HomeScreen extends Component {
           </Body>
           <Right style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.showNotifications.bind(this)}>
-              <IconWithBadge 
+              <IconWithBadge
                 icon={
                   <Image
                     style={ScreenStyleSheet.headerIcon}
@@ -117,9 +129,9 @@ class HomeScreen extends Component {
         </Header>
 
         {!this.state.loading && (
-        <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {this.getEvents()}
-        </Content>
+          <Content contentContainerStyle={ScreenStyleSheet.content}>
+            {this.getEvents()}
+          </Content>
         )}
       </Container>
     );
@@ -130,7 +142,7 @@ const mapStateToProps = state => {
   return {
     unread_notifications: state.notification.unread_notifications,
     events: state.event.userEvents,
-    user: state.user,
+    user: state.user
   };
 };
 

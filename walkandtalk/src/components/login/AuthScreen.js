@@ -81,15 +81,6 @@ class AuthScreen extends Component {
               placeholderColor={"grey"}
             />
           </View>
-          <View style={styles.nestedButtonView}>
-            {/* Forgot Password Button - redirect user to forgot password screen if successfull */}
-            <TouchableOpacity
-              style={styles.signupButton}
-              onPress={this.onPressPassword}
-            >
-              <Text style={styles.forgot}>Forgot your password?</Text>
-            </TouchableOpacity>
-          </View>
           <TouchableOpacity
             style={styles.loginButton}
             onPress={this.onPressLogin}

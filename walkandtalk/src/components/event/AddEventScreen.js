@@ -8,7 +8,7 @@ import DatePicker from "react-native-datepicker";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { createEvent } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 import {
   StyledText as Text,
@@ -69,29 +69,28 @@ class AddEventScreen extends Component {
     }
   }
 
-//Check end date
-checkEndDate(err, input){
-  this.setState({endTime: input})
-  if (this.state.startTime > this.state.endTime) {
-    this.startTime.current.setNativeProps(
-      ScreenStyleSheet.formInputValid
-    );
-    this.endTime.current.setNativeProps(ScreenStyleSheet.formInputError);
-    this.setState({ errorStartTime: null });
-    this.setState({
-      errorEndTime: this.errorMessageDate(
-        "The end time must be later than the start time."
-      )
-    }, console.log("set error text for end TIME"))
-  } else {
-      this.startTime.current.setNativeProps(
-        ScreenStyleSheet.formInputValid
+  //Check end date
+  checkEndDate(err, input) {
+    this.setState({ endTime: input });
+    if (this.state.startTime > this.state.endTime) {
+      this.startTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.endTime.current.setNativeProps(ScreenStyleSheet.formInputError);
+      this.setState({ errorStartTime: null });
+      this.setState(
+        {
+          errorEndTime: this.errorMessageDate(
+            "The end time must be later than the start time."
+          )
+        },
+        console.log("set error text for end TIME")
       );
+    } else {
+      this.startTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
       this.endTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
       this.setState({ errorStartTime: null });
       this.setState({ errorEndTime: null });
+    }
   }
-}
   // Checks if start and end times work
   isValidTime = () => {
     if (this.state.startTime > this.state.endTime) {
@@ -391,6 +390,62 @@ checkEndDate(err, input){
             </View>
           </View>
 
+          {/* Location */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Location
+                <Text style={ScreenStyleSheet.asterisk}> *</Text>
+              </Text>
+            </View>
+          </View>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
+              <GooglePlacesAutocomplete
+                placeholder="Add a Location"
+                minLength={2}
+                autoFocus={false}
+                returnKeyType={"search"}
+                keyboardAppearance={"light"}
+                // Exit search dropdown results when result selected
+                listViewDisplayed={false}
+                fetchDetails={true}
+                renderDescription={row => row.description}
+                onPress={(data, details = null) => {
+                  console.log(data, details);
+                  this.setState({
+                    location: details.name,
+                    lat: details.geometry.location.lat,
+                    long: details.geometry.location.lng
+                  });
+                }}
+                getDefaultValue={() => ""}
+                query={{
+                  key: "AIzaSyBBHT8WPQQ1XJRxFufvc0D9SKdAZn_TKeo",
+                  language: "en",
+                  types: "geocode",
+                  // Unique token for a session of searching
+                  sessionToken: Math.random()
+                    .toString(36)
+                    .substr(2, 5)
+                }}
+                styles={{
+                  textInputContainer: {
+                    width: "100%"
+                  },
+                  description: {
+                    fontWeight: "bold"
+                  }
+                }}
+                currentLocation={true}
+                currentLocationLabel="Current location"
+                // Time in ms of when to issue a request after the user stops typing
+                debounce={0}
+              />
+            </View>
+          </View>
+          {this.state.errorLocation}
+
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -438,58 +493,6 @@ checkEndDate(err, input){
               accessibilityLabel="createEventVenue"
             />
           </View>
-
-          {/* Location */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Location
-                <Text style={ScreenStyleSheet.asterisk}> *</Text>
-              </Text>
-            </View>
-          </View>
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
-            <GooglePlacesAutocomplete
-            placeholder='Add a Location'
-            minLength={2}
-            autoFocus={false}
-            returnKeyType={'search'}
-            keyboardAppearance={'light'}
-            // Exit search dropdown results when result selected
-            listViewDisplayed={false}
-            fetchDetails={true}
-            renderDescription={row => row.description}
-            onPress={(data, details = null) => {
-              this.setState({
-                location: details.name,
-                lat: details.geometry.location.lat,
-                long: details.geometry.location.lng
-              });
-            }}
-      
-            getDefaultValue={() => ''}
-            query={{
-              key: 'AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0',
-              language: 'en',
-              types: 'geocode',
-              // Unique token for a session of searching
-              sessionToken: Math.random().toString(36).substr(2, 5)
-            }}
-            styles={{
-              textInputContainer: {
-                width: '100%'
-              },
-              description: {
-                fontWeight: 'bold'
-              }
-            }}
-            // Time in ms of when to issue a request after the user stops typing
-            debounce={800}
-            /> 
-            </View>
-          </View>
-          {this.state.errorLocation}
 
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
