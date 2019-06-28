@@ -1,19 +1,10 @@
 import React, { Component } from "react";
-import {
-  Text,
-  StyleSheet,
-  TouchableHighlight,
-  Dimensions
-} from "react-native";
+import { Text, StyleSheet, TouchableHighlight, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import {
-  Container,
-  Content
-} from "native-base";
+import { Container, Content } from "native-base";
 import MapView, { PROVIDER_GOOGLE, Marker, Callout } from "react-native-maps";
-
 
 /*
 This is the search screen. Users can search for events in this screen.
@@ -28,15 +19,14 @@ class SearchMapViewScreen extends Component {
         latitude: this.props.region.latitude,
         longitude: this.props.region.longitude
       }
-    }
+    };
   }
-//Function for navigating to view the selected event
-  goToEvent = (event) => {
+  //Function for navigating to view the selected event
+  goToEvent = event => {
     let badge = null;
     if (this.props.user.user.email == event.email) {
       badge = "HOSTING";
-    } 
-    else {
+    } else {
       for (let i = 0; i < event.attendees.length; i++) {
         if (event.attendees[i].email == this.props.user.user.email) {
           badge = "GOING";
@@ -51,51 +41,48 @@ class SearchMapViewScreen extends Component {
   };
 
   showMarkers() {
-    if (this.props.results.length == 0){
+    if (this.props.results.length == 0) {
       markers = this.props.events;
     } else {
       markers = this.props.results;
     }
-    return(
-      markers.map((event, index) => (
-        <Marker
-          key={index}
-          coordinate={{
-            latitude: event.location.lat,
-            longitude: event.location.long
-          }}
-          pinColor={
-            event.intensity == "Slow"
-              ? "green"
-              : event.intensity == "Intermediate"
-              ? "yellow"
-              : event.intensity == "Brisk"
-              ? "red"
-              : "purple"
-          }
-        >
-          <Callout onPress={() => this.goToEvent(event)}>
-            <TouchableHighlight underlayColor="transparent">
-              <Text>{event.title}</Text>
-            </TouchableHighlight>
-          </Callout>
-        </Marker>
-      ))
-    )
+    return markers.map((event, index) => (
+      <Marker
+        key={index}
+        coordinate={{
+          latitude: event.location.lat,
+          longitude: event.location.long
+        }}
+        pinColor={
+          event.intensity == "Slow"
+            ? "green"
+            : event.intensity == "Intermediate"
+            ? "yellow"
+            : event.intensity == "Brisk"
+            ? "red"
+            : "purple"
+        }
+      >
+        <Callout onPress={() => this.goToEvent(event)}>
+          <TouchableHighlight underlayColor="transparent">
+            <Text>{event.title}</Text>
+          </TouchableHighlight>
+        </Callout>
+      </Marker>
+    ));
   }
 
-  getCoords(){
+  getCoords() {
     if (this.props.resultsCoords.length == 0) {
       return [this.state.defaultCoords];
-    } else{
+    } else {
       return this.props.resultsCoords;
     }
   }
-  
+
   render() {
     return (
       <Container>
-
         <Content
           contentContainerStyle={[ScreenStyleSheet.content, { flex: 1 }]}
         >
@@ -105,24 +92,26 @@ class SearchMapViewScreen extends Component {
               this.mapRef = ref;
             }}
             onMapReady={() => {
-              this.mapRef.fitToCoordinates(this.getCoords(), { 
-                edgePadding: { 
-                  top: 200, 
-                  right: 40, 
-                  bottom: 40, 
-                  left: 40 }, 
-                  animated: true 
-                })
+              this.mapRef.fitToCoordinates(this.getCoords(), {
+                edgePadding: {
+                  top: 200,
+                  right: 40,
+                  bottom: 40,
+                  left: 40
+                },
+                animated: true
+              });
             }}
             onLayout={() => {
-              this.mapRef.fitToCoordinates(this.getCoords(), { 
-                edgePadding: { 
-                  top: 200, 
-                  right: 40, 
-                  bottom: 200, 
-                  left: 40 }, 
-                  animated: true 
-                })
+              this.mapRef.fitToCoordinates(this.getCoords(), {
+                edgePadding: {
+                  top: 200,
+                  right: 40,
+                  bottom: 200,
+                  left: 40
+                },
+                animated: true
+              });
             }}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
@@ -186,12 +175,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    events: state.event.events,
+    events: state.event.nonUserEvents,
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  null  
+  null
 )(SearchMapViewScreen);

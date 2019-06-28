@@ -21,11 +21,13 @@ import { Actions } from "react-native-router-flux";
 import { deleteEvent } from "../../actions/EventActions";
 import { sendNotification } from "../../actions/NotificationActions";
 import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
+import MapView from "react-native-maps";
 
 class ViewEventScreen extends Component {
   constructor(props) {
     super(props);
-
+    console.log(props + "these are the props");
+    console.log(this.props.event.location.lat, this.props.event.location.long);
     // Mapping the passed props to the component state
     this.state = {
       id: this.props.event.id,
@@ -35,6 +37,8 @@ class ViewEventScreen extends Component {
       startTime: this.props.event.start_time,
       endTime: this.props.event.end_time,
       location: this.props.event.location.streetName,
+      lat: this.props.event.location.lat,
+      long: this.props.event.location.long,
       organizer: this.props.event.organizer,
       intensity: this.props.event.intensity,
       attending: this.props.event.total_attendees,
@@ -47,6 +51,23 @@ class ViewEventScreen extends Component {
       alreadyGoingText: "",
       refresh: false
     };
+  }
+
+  // initial region
+  getInitialState() {
+    return {
+      region: {
+        latitude: this.state.lat,
+        longitude: this.state.long,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
+      }
+    };
+  }
+
+  // when it changes
+  onRegionChange(region) {
+    this.setState({ region });
   }
 
   // Navigate back to previous screen
@@ -369,6 +390,27 @@ class ViewEventScreen extends Component {
             </Text>
           </View>
 
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: this.state.lat,
+              longitude: this.state.long,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421
+            }}
+          >
+            <MapView.Marker
+              coordinate={{
+                latitude: this.state.lat,
+                longitude: this.state.long
+              }}
+            >
+              <View style={styles.radius}>
+                <View style={styles.marker} />
+              </View>
+            </MapView.Marker>
+          </MapView>
+
           {/* User options depending on their badge */}
           {this.showOptions()}
         </Content>
@@ -473,14 +515,6 @@ const styles = {
     marginRight: 15,
     marginBottom: 15
   },
-  buttonContainer: {
-    marginVertical: 10,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "48%",
-    borderRadius: 10
-  },
   editButton: {
     marginTop: 10,
     marginBottom: 10,
@@ -505,7 +539,7 @@ const styles = {
     fontSize: 15
   },
   scrollableModal: {
-    height: 300,
+    height: 400,
     backgroundColor: "white"
   },
   bottomModal: {
@@ -528,5 +562,34 @@ const styles = {
     textAlign: "center",
     fontWeight: "bold",
     paddingTop: 15
+  },
+  map: {
+    height: 250,
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 10
+  },
+  radius: {
+    height: 50,
+    width: 50,
+    borderRadius: 50 / 2,
+    overflow: "hidden",
+    backgroundColor: "rgba(0, 122, 255, 0.1)",
+    borderWidth: 1,
+    borderColor: "rgba(0, 112, 255, 0.3)",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  marker: {
+    height: 20,
+    width: 20,
+    borderWidth: 3,
+    borderColor: "white",
+    borderRadius: 20 / 2,
+    overflow: "hidden",
+    backgroundColor: "#007AFF"
+  },
+  container: {
+    flex: 1
   }
 };

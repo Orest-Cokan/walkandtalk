@@ -1,6 +1,7 @@
 import {
   SET_EVENTS,
   SET_USER_EVENTS,
+  SET_NON_USER_EVENTS,
   EVENT_CREATE,
   EVENT_DELETE,
   EVENT_EDIT
@@ -36,6 +37,23 @@ export const fetchUserEvents = (token, email) => {
       .get(url, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         dispatch({ type: SET_USER_EVENTS, payload: res.data.events });
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
+      });
+  };
+};
+
+// action to fetch events user isn't attending yet
+export const fetchNonUserEvents = (token, email) => {
+  return async dispatch => {
+    var ip = getIP();
+    var url = ip + "private/walkingevent/" + email;
+    await axios
+      .get(url, { headers: { Authorization: "Bearer " + token } })
+      .then(res => {
+        dispatch({ type: SET_NON_USER_EVENTS, payload: res.data.events });
       })
       .catch(err => {
         console.log(err);
