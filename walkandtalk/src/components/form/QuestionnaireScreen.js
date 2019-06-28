@@ -23,7 +23,18 @@ class QuestionnaireScreen extends Component {
     //questionnaire cardview passes in the questionnaire card id on redcap as props
     super(props);
     this.state = {
-      loading: false
+      //gives warning when initial url is null
+      source: {
+        uri: null
+      },
+      instance: 1,
+      header: {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      },
+      loading: true
     };
   }
 
@@ -31,6 +42,111 @@ class QuestionnaireScreen extends Component {
     // Navigate back to form page
     Actions.pop();
   };
+
+  /*
+    This fucntion gets the record from redcap first, check if the last instance is completed or not, 
+    if not, set instance number to last instance number, else, increment the instance number.
+    Then get the survey link by calling getSurveyLink
+    */
+  setSurveyLink = async () => {
+    //get instance number
+    const instanceData =
+      "token=8038CE0F65642ECC477913BE85991380" +
+      "&content=record" +
+      "&format=json" +
+      "&type=flat" +
+      "&records[0]=" +
+      this.props.user.user.redcap.id.toString() + //to be changed to user redcap id
+      "&forms[0]=" +
+      this.props.questionnaire +
+      "&returnFormat=json";
+    await axios
+      .post(
+        "https://med-rcdev.med.ualberta.ca/api/",
+        instanceData,
+        this.state.header
+      )
+      .then(res => {
+        return res.data;
+      })
+      .then(body => {
+        var lastInstanceStatus;
+        //checks if body is empty, empty body meaning questionnaire has not been created on redcap
+        // if body is not empty, get the staus of the last instance
+        if (body.length != 0) {
+          if (this.props.questionnaire === "menqol") {
+            lastInstanceStatus = body[body.length - 1].menqol_complete;
+          } else {
+            lastInstanceStatus =
+              body[body.length - 1]
+                .menopause_symptom_severity_questionnaire_complete;
+          }
+        } else {
+          //if body is empty, assign with "3" which is not a status code on redcap
+          lastInstanceStatus = "3";
+        }
+
+        //status code from redcap, 0: imcomplete, 1: unverified, 2: complete
+        //status code defined here, 3: survey not created
+        //if survey not created, get the first survey link
+        if (lastInstanceStatus == "3") {
+          this.getSurveyLink();
+        }
+        // if last survey is completed, get next survey link
+        else if (lastInstanceStatus == "2") {
+          //callback gets survey link after this.state.instance is updated
+          this.setState({ instance: parseInt(body.length, 10) + 1 }, () => {
+            this.getSurveyLink();
+          });
+        }
+        // last survey is created but not completed, get the last survey link
+        else {
+          //callback gets survey link after this.state.instance is updated
+          this.setState({ instance: parseInt(body.length, 10) }, () => {
+            this.getSurveyLink();
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({ loading: false });
+        Alert.alert("Something went wrong, please try again later.");
+      });
+  };
+
+  getSurveyLink = async () => {
+    const linkData =
+      "token=8038CE0F65642ECC477913BE85991380" +
+      "&content=surveyLink" +
+      "&format=json" +
+      "&instrument=" +
+      this.props.questionnaire +
+      "&event=" +
+      "&record=" +
+      this.props.user.user.redcap.id.toString() + //to be changed to user redcap id
+      "&repeat_instance=" +
+      this.state.instance.toString() +
+      "&returnFormat=json";
+    await axios
+      .post(
+        "https://med-rcdev.med.ualberta.ca/api/",
+        linkData,
+        this.state.header
+      )
+      .then(res => {
+        this.setState({ source: { uri: res.data } });
+        this.setState({ loading: false });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({ loading: false });
+        Alert.alert("Something went wrong, please try again later.");
+      });
+  };
+
+  componentWillMount() {
+    this.setSurveyLink();
+  }
 
   render() {
     return (
@@ -55,11 +171,7 @@ class QuestionnaireScreen extends Component {
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
-        <WebView
-          source={{
-            uri: "https://redcap.ualberta.ca/surveys/index.php?s=TF9RTY8P9C"
-          }}
-        />
+        <WebView source={this.state.source} />
       </Container>
     );
   }

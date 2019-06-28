@@ -13,6 +13,11 @@ class QuestionnaireCard extends Component {
     Actions.questionnaire({ questionnaire: "menqol" });
   };
 
+  goToSymptomSeverity = () => {
+    Actions.questionnaire({
+      questionnaire: "menopause_symptom_severity_questionnaire"
+    });
+  };
   render() {
     return (
       <View>
@@ -21,6 +26,12 @@ class QuestionnaireCard extends Component {
           onPress={this.goToMenqol}
         >
           <Text style={styles.quesText}>{this.props.quesOne}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.questionnaires}
+          onPress={this.goToSymptomSeverity}
+        >
+          <Text style={styles.quesText}>{this.props.quesTwo}</Text>
         </TouchableOpacity>
       </View>
     );

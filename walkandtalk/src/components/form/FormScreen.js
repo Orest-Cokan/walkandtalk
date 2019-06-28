@@ -96,7 +96,7 @@ class FormScreen extends Component {
         {!this.state.loading && (
           <Content contentContainerStyle={ScreenStyleSheet.content}>
             <Text style={ScreenStyleSheet.sectionTitle}>Questionnaires</Text>
-            <QuestionnaireCard quesOne="MENQOL" />
+            <QuestionnaireCard quesOne="MENQOL" quesTwo="Symptom Severity" />
             <View style={ScreenStyleSheet.lineSeparator} />
             <Text style={ScreenStyleSheet.sectionTitle}>Walking Logs</Text>
             {this.getRecords()}

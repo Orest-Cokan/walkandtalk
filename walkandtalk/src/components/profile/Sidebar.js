@@ -79,6 +79,17 @@ class SideBar extends Component {
             <Text style={ScreenStyleSheet.sideBarTextItem}>Helpline Links</Text>
           </ListItem>
 
+          {/* Change Password */}
+          <ListItem button={true} onPress={() => this.goToHelplineLinks()}>
+            <Image
+              style={ScreenStyleSheet.headerIcon}
+              source={require("../../assets/icons/icons8-password-reset.png")}
+            />
+            <Text style={ScreenStyleSheet.sideBarTextItem}>
+              Change Password
+            </Text>
+          </ListItem>
+
           {/* Logout */}
           <ListItem button={true} onPress={() => this.logout()}>
             <Image
