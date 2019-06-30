@@ -31,7 +31,7 @@ export default StyleSheet.create({
   },
   sideBarTextItem: {
     marginLeft: 10
-  }, 
+  },
 
   // Header icons
   headerIcon: {
@@ -44,8 +44,8 @@ export default StyleSheet.create({
     height: 30,
     width: 30
   },
-   notificationTextItem: {
-    marginLeft: 20,
+  notificationTextItem: {
+    marginLeft: 20
   },
 
   // Content
@@ -57,7 +57,7 @@ export default StyleSheet.create({
   // Side-by-side buttons
   rowContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   leftRightButton: {
     width: "45%",
@@ -106,7 +106,6 @@ export default StyleSheet.create({
     borderRadius: 10
   },
 
-  
   // Basecard
   baseCard: {
     borderWidth: 1,
@@ -151,11 +150,11 @@ export default StyleSheet.create({
   // Rendering info
   eventTimeInfo: {
     color: "#A680B8",
-    fontSize: 20,
-  }, 
+    fontSize: 20
+  },
   eventTitleInfo: {
     fontWeight: "bold"
-  }, 
+  },
   infoByIcon: {
     marginLeft: 10
   },
@@ -282,14 +281,14 @@ export default StyleSheet.create({
   // Validation
   formInputError: {
     borderBottomWidth: 2,
-    borderBottomColor: "red",
+    borderBottomColor: "red"
   },
   formInputValid: {
     borderBottomWidth: 0,
-    borderBottomColor: "transparent",
+    borderBottomColor: "transparent"
   },
   formErrorMessage: {
-    color: "red",
+    color: "red"
   },
 
   //Events
@@ -360,7 +359,8 @@ export default StyleSheet.create({
     fontSize: 16,
     marginLeft: 2,
     marginRight: 2,
-    height: 230
+    alignSelf: "baseline",
+    marginBottom: 15
   },
   eventDescription1: {
     textAlign: "left",
@@ -374,5 +374,5 @@ export default StyleSheet.create({
   headerWithBack: {
     flexDirection: "row",
     justifyContent: "flex-start"
-  },
+  }
 });

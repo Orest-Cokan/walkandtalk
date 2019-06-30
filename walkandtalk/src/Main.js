@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import reducer from "./reducers";
+console.disableYellowBox = true;
 
 // Initializes app and redux
 export default class Main extends Component {

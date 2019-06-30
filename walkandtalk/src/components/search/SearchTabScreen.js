@@ -26,11 +26,10 @@ import BaseCard from "../../cardview/baseCard";
 import geolib from "geolib";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
-import { fetchEvents } from "../../actions/EventActions";
+import { fetchNonUserEvents } from "../../actions/EventActions";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { Actions } from "react-native-router-flux";
 import Loader from "../../constants/loader";
-
 
 //Below are the items in the filters
 // For Intensity - Slow, Intermediate, Brisk
@@ -89,17 +88,16 @@ const items = [
   }
 ];
 
-
 // Returns user's current location
 // Defaults to San Francisco on simulators
 export const getCurrentLocation = () => {
- return new Promise((resolve, reject) => {
-   navigator.geolocation.getCurrentPosition(position =>
-     resolve(position),
-     e => reject(e));
- });
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      position => resolve(position),
+      e => reject(e)
+    );
+  });
 };
-
 
 class SearchTabScreen extends Component {
   constructor(props) {
@@ -114,32 +112,42 @@ class SearchTabScreen extends Component {
       lastLong: null,
       loading: false
     };
-    this.props.fetchEvents(this.props.user.token);
+    this.props.fetchNonUserEvents(
+      this.props.user.token,
+      this.props.user.user.email
+    );
   }
 
   componentDidMount() {
-    this.willFocusListener = this.props.navigation.addListener('willFocus',
-    async () => { 
-      this.setState({loading: true});
-      await this.props.fetchEvents(this.props.user.token);
-      const position = await getCurrentLocation();
-      this.setState({loading: false});
-      if (position) {
-        //Tracking location is still necessary for distance queries
-        this.watchID = navigator.geolocation.watchPosition((position) => {
-          let region = {
-            latitude:       position.coords.latitude,
-            longitude:      position.coords.longitude,
-            latitudeDelta:  0.001*1.5,
-            longitudeDelta: 0.0421*1.5
-          }
-          this.onRegionChange(region, region.latitude, region.longitude);
-        }, (error)=>console.log(error));
+    this.willFocusListener = this.props.navigation.addListener(
+      "willFocus",
+      async () => {
+        this.setState({ loading: true });
+        await this.props.fetchNonUserEvents(
+          this.props.user.token,
+          this.props.user.user.email
+        );
+        const position = await getCurrentLocation();
+        this.setState({ loading: false });
+        if (position) {
+          //Tracking location is still necessary for distance queries
+          this.watchID = navigator.geolocation.watchPosition(
+            position => {
+              let region = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                latitudeDelta: 0.001 * 1.5,
+                longitudeDelta: 0.0421 * 1.5
+              };
+              this.onRegionChange(region, region.latitude, region.longitude);
+            },
+            error => console.log(error)
+          );
+        }
+        this.keywordSearch();
       }
-      this.keywordSearch();
-    });
+    );
   }
-
 
   //Before leaving the component clear the watch of the device
   componentWillUnmount() {
@@ -147,14 +155,12 @@ class SearchTabScreen extends Component {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
-
-  viewEvent(index, badge){
+  viewEvent(index, badge) {
     Actions.viewEvent({
       event: this.state.searchResults[index],
       badge: badge
     });
   }
-
 
   //Function for setting the region and lat and lon when movement occurs
   onRegionChange(region, lastLat, lastLong) {
@@ -171,26 +177,21 @@ class SearchTabScreen extends Component {
     this.setState({ selectedItems: selectedItems });
   };
 
-
-//Function when the select button is selected in the multi picker, and it is closed
+  //Function when the select button is selected in the multi picker, and it is closed
   onConfirm = () => {
     filters = this.state.selectedItems;
 
-    this.setState(
-      {selectedItems: [],
-    },
-      () => {
-        console.log(this.state.selectedItems, "confirm SI state updated");
-      }
-    );
+    this.setState({ selectedItems: [] }, () => {
+      console.log(this.state.selectedItems, "confirm SI state updated");
+    });
 
     this.search(filters);
   };
 
-   //Takes in an array of intensity filter ids selected
+  //Takes in an array of intensity filter ids selected
   // Returns an array of events that contain the filters selected
-  check_intensity = i_arr =>{
-    var results = []
+  check_intensity = i_arr => {
+    var results = [];
     i_arr.forEach(function(i) {
       if (i == 11) {
         var i1 = events.filter(event => {
@@ -212,15 +213,13 @@ class SearchTabScreen extends Component {
       }
     });
 
-    return results
-  }
-
-
+    return results;
+  };
 
   //Takes in an array of venue filter ids selected
   // Returns an array of events that contain the filters selected
-  check_venue = v_arr =>{
-    var results = []
+  check_venue = v_arr => {
+    var results = [];
     v_arr.forEach(function(v) {
       if (v == 44) {
         var v1 = events.filter(event => {
@@ -235,46 +234,47 @@ class SearchTabScreen extends Component {
         results = results.concat(v2);
       }
     });
-    return results
-  }
-
-
+    return results;
+  };
 
   //Takes in an array of distance filter ids selected
   // Returns an array of events that contain the filters selected
   // Uses geolib library to calculate the distance between two points
-  check_distance = d_arr =>{
-    var results = []
+  check_distance = d_arr => {
+    var results = [];
     var i;
     var j;
     for (i = 0; i < d_arr.length; i++) {
-      for(j=0; j< events.length; j++){
+      for (j = 0; j < events.length; j++) {
         //distance given in meters
         distance = geolib.getDistance(
-          {latitude: this.state.lastLat, longitude: this.state.lastLong},
-          {latitude: events[j].location.lat, longitude: events[j].location.long})
-        distance = distance /1000
+          { latitude: this.state.lastLat, longitude: this.state.lastLong },
+          {
+            latitude: events[j].location.lat,
+            longitude: events[j].location.long
+          }
+        );
+        distance = distance / 1000;
 
-          if(d_arr[i]==66){
-            if (distance<=5){
-              results.push(events[j])
-            }
+        if (d_arr[i] == 66) {
+          if (distance <= 5) {
+            results.push(events[j]);
           }
-          if(d_arr[i]==77){
-            if(distance<=10){
-              results.push(events[j])
-            }
+        }
+        if (d_arr[i] == 77) {
+          if (distance <= 10) {
+            results.push(events[j]);
           }
-          if(d_arr[i]==88){
-            if(distance<=15){
-              results.push(events[j])
-            }
+        }
+        if (d_arr[i] == 88) {
+          if (distance <= 15) {
+            results.push(events[j]);
           }
-
+        }
       }
     }
-    return results
-  }
+    return results;
+  };
 
   //MAIN SEARCH function
   // Splits the array of filters into smaller arrays of filter ids in section intensity, venue and distance
@@ -282,12 +282,11 @@ class SearchTabScreen extends Component {
   // Calls combine result
   // Sumbits results to submit results function to save to state
   search = filters => {
-
     filters = this.state.selectedItems;
     events = this.props.events;
 
-    if(filters.length ==0){
-      return
+    if (filters.length == 0) {
+      return;
     }
 
     //Array for intensity, venue and distance filters
@@ -301,201 +300,214 @@ class SearchTabScreen extends Component {
       if (f == 11 || f == 22 || f == 33) {
         i_arr.push(f);
       }
-      if(f == 44 || f == 55){
+      if (f == 44 || f == 55) {
         v_arr.push(f);
       }
-      if(f == 66 || f == 77 || f == 88){
-        d_arr.push(f)
+      if (f == 66 || f == 77 || f == 88) {
+        d_arr.push(f);
       }
     });
 
-    var howmany = 3
+    var howmany = 3;
 
-    if (i_arr.length!=0){
-      temp = this.check_intensity(i_arr)
-      results.push(temp)
-    }else{
-      howmany = howmany -1
+    if (i_arr.length != 0) {
+      temp = this.check_intensity(i_arr);
+      results.push(temp);
+    } else {
+      howmany = howmany - 1;
     }
 
-    if (v_arr.length!=0){
-      temp = this.check_venue(v_arr)
-      results.push(temp)
-    }else{
-      howmany = howmany -1
+    if (v_arr.length != 0) {
+      temp = this.check_venue(v_arr);
+      results.push(temp);
+    } else {
+      howmany = howmany - 1;
     }
 
-    if (d_arr.length!=0){
-      temp = this.check_distance(d_arr)
-      results.push(temp)
-    }else{
-      howmany = howmany -1
+    if (d_arr.length != 0) {
+      temp = this.check_distance(d_arr);
+      results.push(temp);
+    } else {
+      howmany = howmany - 1;
     }
 
-  total_results = this.combineResults(results, howmany)
+    total_results = this.combineResults(results, howmany);
 
-  //SubmitSearch function to save to state
-  this.submitSearch(total_results);
+    //SubmitSearch function to save to state
+    this.submitSearch(total_results);
+  };
 
-  }
-
-
-// Aggregate search results
-// If only one filter was selected - total_arr == 1, then return results
-// If two filters selected - total_arr == 2, check for where items exist in both arrays and return those
-// If three filters selected - total_arr == 3, check for where items exist in first 2 arrays, then repeat again with the last array and return those
-  combineResults = (results , total_arr) => {
-    var combine_res =[]
-    if (total_arr == 1){
-      return results[0]
+  // Aggregate search results
+  // If only one filter was selected - total_arr == 1, then return results
+  // If two filters selected - total_arr == 2, check for where items exist in both arrays and return those
+  // If three filters selected - total_arr == 3, check for where items exist in first 2 arrays, then repeat again with the last array and return those
+  combineResults = (results, total_arr) => {
+    var combine_res = [];
+    if (total_arr == 1) {
+      return results[0];
     }
     //Two arrays results [0] and results [1]
-    if(total_arr == 2){
-      results[0].forEach( function (res) {
-      if(results[1].indexOf(res) > -1) {
-        combine_res.push(res);
+    if (total_arr == 2) {
+      results[0].forEach(function(res) {
+        if (results[1].indexOf(res) > -1) {
+          combine_res.push(res);
         }
       });
-      return combine_res
+      return combine_res;
     }
 
-    if(total_arr == 3){
-      results[0].forEach( function (res) {
-      if(results[1].indexOf(res) > -1) {
-        combine_res.push(res);
+    if (total_arr == 3) {
+      results[0].forEach(function(res) {
+        if (results[1].indexOf(res) > -1) {
+          combine_res.push(res);
         }
       });
 
-      var final_res = combine_res
-      combine_res.forEach( function (res) {
-      if(results[2].indexOf(res) > -1) {
-        final_res.push(res);
+      var final_res = combine_res;
+      combine_res.forEach(function(res) {
+        if (results[2].indexOf(res) > -1) {
+          final_res.push(res);
         }
       });
-      return final_res
+      return final_res;
     }
-  }
+  };
 
-submitSearch = results => {
-  this.setState({ searchResults: results }, () => {
-    console.log(this.state.searchResults, "make sure state updated");
-  });
-};
-
-
-
-//Set the keyword entered to the state, and clear it after
-setKeyword = text => {
-  this.setState(
-    {
-      text: text,
-      selectedItems: [],
-    },
-    () => {
-      console.log(this.state.text, "keyword state updated");
-      console.log(this.state.selectedItems, "SI state updated");
-    }
-  );
-};
-
-//Key word search
-// Searches through out the whole object
-keywordSearch = () => {
-  this.props.fetchEvents(this.props.user.token);
-  events = this.props.events;
-  keyword = this.state.text;
-  //convert each item to a string and see if the key word exists as a subset
-  // if so, push that event to the list of results to be displayed
-  // Case insensitive
-  if (keyword) {
-    keyword = keyword.toUpperCase()
-    var results = [];
-    events.forEach(function(e) {
-      var stringItem = JSON.stringify(e);
-      stringItem = stringItem.toUpperCase()
-      if (stringItem.includes(keyword)) {
-        if (results.indexOf(e) == -1) {
-          results.push(e);
-        }
-      }
+  submitSearch = results => {
+    this.setState({ searchResults: results }, () => {
+      console.log(this.state.searchResults, "make sure state updated");
     });
+  };
+
+  //Set the keyword entered to the state, and clear it after
+  setKeyword = text => {
     this.setState(
       {
-        searchResults: results,
+        text: text,
+        selectedItems: []
       },
       () => {
-        console.log(this.state.searchResults, "updated searchResults for display");
+        console.log(this.state.text, "keyword state updated");
+        console.log(this.state.selectedItems, "SI state updated");
       }
     );
-  }
-};
+  };
 
-//Using the search results from state, convert them to coordinate objects that can be placed on the map
-makeCoords = (results) => {
-  coords = [];
-  results.forEach(function(e) {
-    coords.push({
-      latitude: e.location.lat,
-      longitude: e.location.long,
-      latitudeDelta: 0.001 * 1.5,
-      longitudeDelta: 0.04 * 1.5
+  //Key word search
+  // Searches through out the whole object
+  keywordSearch = () => {
+    this.props.fetchNonUserEvents(
+      this.props.user.token,
+      this.props.user.user.email
+    );
+    events = this.props.events;
+    keyword = this.state.text;
+    //convert each item to a string and see if the key word exists as a subset
+    // if so, push that event to the list of results to be displayed
+    // Case insensitive
+    if (keyword) {
+      keyword = keyword.toUpperCase();
+      var results = [];
+      events.forEach(function(e) {
+        var stringItem = JSON.stringify(e);
+        stringItem = stringItem.toUpperCase();
+        if (stringItem.includes(keyword)) {
+          if (results.indexOf(e) == -1) {
+            results.push(e);
+          }
+        }
+      });
+      this.setState(
+        {
+          searchResults: results
+        },
+        () => {
+          console.log(
+            this.state.searchResults,
+            "updated searchResults for display"
+          );
+        }
+      );
+    }
+  };
+
+  //Using the search results from state, convert them to coordinate objects that can be placed on the map
+  makeCoords = results => {
+    coords = [];
+    results.forEach(function(e) {
+      coords.push({
+        latitude: e.location.lat,
+        longitude: e.location.long,
+        latitudeDelta: 0.001 * 1.5,
+        longitudeDelta: 0.04 * 1.5
+      });
     });
-  });
-  return coords
-};
+    return coords;
+  };
 
-getCoords() {
-  if (this.state.searchResults.length == 0) {
-    coords = this.makeCoords(this.props.events);
-  } else {
-    coords = this.makeCoords(this.state.searchResults)
+  getCoords() {
+    if (this.state.searchResults.length == 0) {
+      coords = this.makeCoords(this.props.events);
+    } else {
+      coords = this.makeCoords(this.state.searchResults);
+    }
+    return coords;
   }
-  return coords
-}
 
-//Maps the search results to card view items that can be clicked to view further detials
-getSearchResults() {
-  let events = [];
-  searchItems = this.state.searchResults;
-  searchItems.map((event, index) => {
-    let badge = null;
-    if (this.props.user.user.email == event.email) {
-      badge = "HOSTING";
-    } 
-    else {
-      for (let i = 0; i < event.attendees.length; i++) {
-        if (event.attendees[i].email == this.props.user.user.email) {
-          badge = "GOING";
-          break;
+  //Maps the search results to card view items that can be clicked to view further detials
+  getSearchResults() {
+    let events = [];
+    searchItems = this.state.searchResults;
+    searchItems.map((event, index) => {
+      let badge = null;
+      let attending = false;
+      if (this.props.user.user.email == event.email) {
+        badge = "HOSTING";
+      } else {
+        for (let i = 0; i < event.attendees.length; i++) {
+          if (event.attendees[i].email == this.props.user.user.email) {
+            badge = "GOING";
+            break;
+          }
         }
       }
-    }
-    events.unshift(
-      <TouchableOpacity
-        key={index}
-        onPress={this.viewEvent.bind(this, index, badge)}
-      >
-        <BaseCard
-          date={event.date}
-          start_time={event.start_time}
-          title={event.title}
-          location={event.location.streetName}
-          badge={badge}
-        />
-      </TouchableOpacity>
-    );
-  });
-  return events;
+      if (this.props.user.user.email == event.email) {
+        attending == true;
+      } else {
+        for (let i = 0; i < event.attendees.length; i++) {
+          if (event.attendees[i].email == this.props.user.user.email) {
+            attending = true;
+          }
+        }
+      }
 
-}
-
-returnMargin(){
-  if(Platform.OS == 'ios'){
-    return 15
-  }else{
-    return 10
+      if (!attending) {
+        events.unshift(
+          <TouchableOpacity
+            key={index}
+            onPress={this.viewEvent.bind(this, index, badge)}
+          >
+            <BaseCard
+              date={event.date}
+              start_time={event.start_time}
+              title={event.title}
+              location={event.location.streetName}
+              badge={badge}
+            />
+          </TouchableOpacity>
+        );
+      }
+    });
+    return events;
   }
-}
+
+  returnMargin() {
+    if (Platform.OS == "ios") {
+      return 15;
+    } else {
+      return 10;
+    }
+  }
   render() {
     filterHeader = (
       <Header
@@ -557,7 +569,9 @@ returnMargin(){
               borderColor: "grey",
               borderTopRightRadius: 3,
               borderBottomRightRadius: 3,
-              marginLeft: Dimensions.get("screen").width - Dimensions.get("screen").width * 0.4,
+              marginLeft:
+                Dimensions.get("screen").width -
+                Dimensions.get("screen").width * 0.4,
               marginRight: 5,
               paddingTop: 5,
               backgroundColor: "#A680B8",
@@ -572,63 +586,74 @@ returnMargin(){
     );
     return (
       <Container>
-      <Loader loading={this.state.loading} />
-      <Header
-        style={ScreenStyleSheet.header}
-        androidStatusBarColor={"white"}
-        iosBarStyle={"dark-content"}
-      >
-        <Body style={ScreenStyleSheet.headerBody}>
-          <Title style={ScreenStyleSheet.headerTitle}>Search</Title>
-        </Body>
-      </Header>
-
-      {!this.state.loading && (
-      <Content
-          contentContainerStyle={[ScreenStyleSheet.content, { flex: 1 }]}
+        <Loader loading={this.state.loading} />
+        <Header
+          style={ScreenStyleSheet.header}
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
         >
-          {/* Search bar */}
-          <View style={Platform.OS == 'ios' ? styles.boxIos : styles.boxAndroid}>
-            <TouchableOpacity onPress={this.search} activeOpacity={0}>
-              <Image
-                style={ScreenStyleSheet.searchIcon}
-                source={require("../../assets/icons/search-bar.png")}
+          <Body style={ScreenStyleSheet.headerBody}>
+            <Title style={ScreenStyleSheet.headerTitle}>Search</Title>
+          </Body>
+        </Header>
+
+        {!this.state.loading && (
+          <Content
+            contentContainerStyle={[ScreenStyleSheet.content, { flex: 1 }]}
+          >
+            {/* Search bar */}
+            <View
+              style={Platform.OS == "ios" ? styles.boxIos : styles.boxAndroid}
+            >
+              <TouchableOpacity onPress={this.search} activeOpacity={0}>
+                <Image
+                  style={ScreenStyleSheet.searchIcon}
+                  source={require("../../assets/icons/search-bar.png")}
+                />
+              </TouchableOpacity>
+              <TextInput
+                value={this.state.text}
+                placeholder="Search"
+                style={styles.placeHolder}
+                onChangeText={this.setKeyword}
+                onEndEditing={this.keywordSearch}
               />
-            </TouchableOpacity>
-            <TextInput
-              value={this.state.text}
-              placeholder="Search"
-              style={styles.placeHolder}
-              onChangeText={this.setKeyword}
-              onEndEditing={this.keywordSearch}
-            />
-            {Platform.OS == 'ios' ? filterPopup : null}
-          </View>
-          {Platform.OS == 'android' ? filterPopup : null}
-          <Tabs tabBarUnderlineStyle={{borderBottomWidth:2, borderColor: '#A680B8'}}>
-            <Tab heading={
-                <TabHeading style={{backgroundColor: "#FFFFFF"}}>
-                  <Text style={{color: '#A680B8'}}>List</Text>
-                </TabHeading>
-              }>
-              <TabOne results={this.getSearchResults()}/>
-            </Tab>
-            <Tab heading={
-              <TabHeading style={{backgroundColor: "#FFFFFF"}}>
-                <Text style={{color: '#A680B8'}}>Map</Text>
-              </TabHeading>
-            }>
-            <TabTwo 
-              onRegionChange={this.onRegionChange.bind(this)}
-              resultsCoords={this.getCoords()}
-              results={this.state.searchResults}
-              region={this.state.mapRegion}
-            />
-          </Tab>
-        </Tabs>  
-      </Content>
-      )}
-    </Container>
+              {Platform.OS == "ios" ? filterPopup : null}
+            </View>
+            {Platform.OS == "android" ? filterPopup : null}
+            <Tabs
+              tabBarUnderlineStyle={{
+                borderBottomWidth: 2,
+                borderColor: "#A680B8"
+              }}
+            >
+              <Tab
+                heading={
+                  <TabHeading style={{ backgroundColor: "#FFFFFF" }}>
+                    <Text style={{ color: "#A680B8" }}>List</Text>
+                  </TabHeading>
+                }
+              >
+                <TabOne results={this.getSearchResults()} />
+              </Tab>
+              <Tab
+                heading={
+                  <TabHeading style={{ backgroundColor: "#FFFFFF" }}>
+                    <Text style={{ color: "#A680B8" }}>Map</Text>
+                  </TabHeading>
+                }
+              >
+                <TabTwo
+                  onRegionChange={this.onRegionChange.bind(this)}
+                  resultsCoords={this.getCoords()}
+                  results={this.state.searchResults}
+                  region={this.state.mapRegion}
+                />
+              </Tab>
+            </Tabs>
+          </Content>
+        )}
+      </Container>
     );
   }
 }
@@ -661,7 +686,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginBottom: 10,
     marginTop: 10,
-    alignSelf: "flex-start",
+    alignSelf: "flex-start"
   },
   boxWithFilter: {
     height: 40,
@@ -694,12 +719,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    events: state.event.events,
+    events: state.event.nonUserEvents,
     user: state.user
   };
 };
 
 export default connect(
   mapStateToProps,
-  { fetchEvents }
+  { fetchNonUserEvents }
 )(SearchTabScreen);

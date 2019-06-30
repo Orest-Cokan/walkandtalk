@@ -4,7 +4,7 @@ import { getUnreadNotifications } from "../../actions/NotificationActions";
 import { fetchUserEvents } from "../../actions/EventActions";
 import { getPicture } from "../../actions/PictureActions";
 import { connect } from "react-redux";
-import { Image, TouchableOpacity } from "react-native";
+import { Image, TouchableOpacity, YellowBox } from "react-native";
 import {
   Container,
   Header,
