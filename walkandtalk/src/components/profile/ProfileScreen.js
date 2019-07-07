@@ -15,7 +15,7 @@ import {
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { StyledText as Text } from "../../constants/StyledText";
-import Sidebar from "./Sidebar";
+import Sidebar from "../sidebar/Sidebar";
 
 // Profile tab
 class ProfileScreen extends Component {

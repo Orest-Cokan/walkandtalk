@@ -1,10 +1,12 @@
-// Past Event List Screen View
+// Helpline links Screen View
 import React, { Component } from "react";
-import { Image, TouchableOpacity } from "react-native";
+import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
+import { StyleSheet, View, Image, Text, Linking } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
   Header,
+  Accordion,
   Left,
   Body,
   Title,
@@ -12,32 +14,22 @@ import {
   Content,
   Button
 } from "native-base";
-import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
-import BaseCard from "../../cardview/baseCard";
-import { getRecords } from "../../actions/RecordActions";
-import Loader from "../../constants/loader";
 
-class ChangePassword extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true
-    };
-  }
-
-  async componentDidMount() {
-    await this.props.getRecords;
-    this.setState({ loading: false });
-  }
-
+class EventRatingScreen extends Component {
   onBack = () => {
+    // Navigate back to profile page
     Actions.pop();
   };
+
   render() {
+    const dataArray = [
+      { title: "First Element", content: "Lorem ipsum dolor sit amet" },
+      { title: "Second Element", content: "Lorem ipsum dolor sit amet" },
+      { title: "Third Element", content: "Lorem ipsum dolor sit amet" }
+    ];
     return (
       <Container>
-        <Loader loading={this.state.loading} />
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
@@ -53,27 +45,35 @@ class ChangePassword extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Past Events</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Location Ratings</Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
-        {!this.state.loading && (
-          <Content contentContainerStyle={ScreenStyleSheet.content}>
-            {this.getPastEvents()}
-          </Content>
-        )}
+
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
+          <Accordion dataArray={dataArray} expanded={0} />
+        </Content>
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.user
-  };
-};
+const mapStateToProps = state => state;
 
 export default connect(
   mapStateToProps,
-  { getRecords }
-)(ChangePassword);
+  null
+)(EventRatingScreen);
+
+// Styles
+const styles = StyleSheet.create({
+  HelplineTitle: {
+    marginHorizontal: 10,
+    paddingTop: 10
+  },
+  HelplineLink: {
+    color: "#A680B8",
+    marginHorizontal: 10,
+    paddingBottom: 10
+  }
+});

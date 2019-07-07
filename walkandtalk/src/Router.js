@@ -1,7 +1,6 @@
 import React from "react";
 import { Image } from "react-native";
 import { Router, Stack, Scene, Tabs } from "react-native-router-flux";
-
 import AuthScreen from "./components/login/AuthScreen";
 import ConsentScreen from "./components/login/ConsentScreen";
 import SignupScreen from "./components/login/SignupScreen";
@@ -18,13 +17,14 @@ import ViewRequestScreen from "./components/form/ViewRequestScreen";
 import FormScreen from "./components/form/FormScreen";
 import SubmitRecordScreen from "./components/form/SubmitRecord";
 import EditProfileScreen from "./components/profile/EditProfileScreen";
-import PastEventListScreen from "./components/profile/ViewPastEventList";
-import ViewPastEventRecord from "./components/profile/ViewPastEventRecord";
-import HelplineScreen from "./components/profile/HelplineScreen";
+import PastEventListScreen from "./components/sidebar/ViewPastEventList";
+import ViewPastEventRecord from "./components/sidebar/ViewPastEventRecord";
+import HelplineScreen from "./components/sidebar/HelplineScreen";
 import QuestionnaireScreen from "./components/form/QuestionnaireScreen";
 import ViewEventScreen from "./components/event/ViewEventScreen";
 import Dispatch from "./components/form/FormDispatch";
 import EditEventSceen from "./components/event/EditEventScreen";
+import EventRatingScreen from "./components/sidebar/EventRatingScreen";
 // icon
 import IconWithBadge from "./constants/IconWithBadge";
 
@@ -114,24 +114,6 @@ const RouterComponent = () => (
             <Scene key="mainRequestPage" component={RequestsScreen} />
             <Scene key="viewRequest" component={ViewRequestScreen} />
           </Scene>
-          {/*If the user is a researcher, this tab will show instead of forms tab*/}
-          {/* <Scene
-            key="request"
-            icon={({ focused }) => (
-              <Image
-                source={
-                  focused
-                    ? require("./assets/icons/request-full.png")
-                    : require("./assets/icons/request.png")
-                }
-                style={{ width: 28, height: 28 }}
-              />
-            )}
-            hideNavBar
-          >
-            <Scene key="mainRequestPage" component={RequestsScreen} />
-            <Scene key="viewRequest" component={ViewRequestScreen} />
-          </Scene> */}
           <Scene
             key="profile"
             icon={({ focused }) => (
@@ -151,6 +133,7 @@ const RouterComponent = () => (
             <Scene key="pastEvents" component={PastEventListScreen} />
             <Scene key="viewPastEvent" component={ViewPastEventRecord} />
             <Scene key="helplines" component={HelplineScreen} />
+            <Scene key="eventRatings" component={EventRatingScreen} />
           </Scene>
         </Tabs>
         <Scene key="questionnaire" component={QuestionnaireScreen} />

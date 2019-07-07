@@ -2,29 +2,24 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { StyledText as Text } from "../../constants/StyledText";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { width } from "react-native-dimension";
-import NumericInput from "react-native-numeric-input";
 import SwitchSelector from "react-native-switch-selector";
 import { Actions } from "react-native-router-flux";
 
-
 class RecordInfo extends React.Component {
-
   constructor(props) {
     super(props);
   }
-  
+
   // For numeric input fields
   requiredFunc() {
     console.log();
   }
 
-  onFill(){
+  onFill() {
     Actions.submitRecord({ record: this.props.record });
   }
 
   render() {
-
     // All the options displayed in radio buttons
     const intensities = [
       { label: "Slow", value: "Slow" },
@@ -72,29 +67,24 @@ class RecordInfo extends React.Component {
       }
     });
 
-    
     if (this.props.record.completed == 1) {
-      return ( 
+      return (
         <View>
-           {/* Distance */}
-           <View style={[ScreenStyleSheet.rowContainer, { marginBottom: 10 }]}>
-              <Text style={ScreenStyleSheet.profileInfo}>
-                Length of Walk (by distance)
-                <Text style={ScreenStyleSheet.asterisk}> *</Text>
-              </Text>
-              <Text>
-                {this.props.record.distance} km
-              </Text>
+          {/* Distance */}
+          <View style={[ScreenStyleSheet.rowContainer, { marginBottom: 10 }]}>
+            <Text style={ScreenStyleSheet.profileInfo}>
+              Length of Walk (by distance)
+              <Text style={ScreenStyleSheet.asterisk}> *</Text>
+            </Text>
+            <Text>{this.props.record.distance} km</Text>
           </View>
           {/* Duration */}
           <View style={[ScreenStyleSheet.rowContainer, { marginBottom: 10 }]}>
-              <Text style={ScreenStyleSheet.profileInfo}>
-                Length of Walk (by duration)
-                <Text style={ScreenStyleSheet.asterisk}> *</Text>
-              </Text>
-              <Text>
-                {this.props.record.duration} min
-              </Text>
+            <Text style={ScreenStyleSheet.profileInfo}>
+              Length of Walk (by duration)
+              <Text style={ScreenStyleSheet.asterisk}> *</Text>
+            </Text>
+            <Text>{this.props.record.duration} min</Text>
           </View>
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
@@ -190,16 +180,19 @@ class RecordInfo extends React.Component {
         </View>
       );
     } else {
-      return(
+      return (
         <View style={ScreenStyleSheet.formRowInfo}>
           <TouchableOpacity
-            style={[ScreenStyleSheet.button, { backgroundColor: "#A680B8", width: "100%" }]}
+            style={[
+              ScreenStyleSheet.button,
+              { backgroundColor: "#A680B8", width: "100%" }
+            ]}
             onPress={this.onFill.bind(this)}
           >
             <Text style={{ color: "white" }}>FILL IN RECORD</Text>
           </TouchableOpacity>
         </View>
-      )
+      );
     }
   }
 }

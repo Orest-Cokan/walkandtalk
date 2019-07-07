@@ -17,9 +17,7 @@ import { Actions } from "react-native-router-flux";
 import { StyledText as Text } from "../../constants/StyledText";
 import { RecordInfo as Record } from "./RecordInfo";
 
-
 class ViewPastEventRecord extends Component {
-
   constructor(props) {
     super(props);
 
@@ -38,7 +36,7 @@ class ViewPastEventRecord extends Component {
       intensity: this.props.record.intensity,
       walkRating: this.props.record.walk_rating,
       locationRating: this.props.record.location_rating
-    }
+    };
   }
 
   onBack = () => {
@@ -47,9 +45,7 @@ class ViewPastEventRecord extends Component {
   };
 
   render() {
-
     return (
-
       <Container>
         {/* Header */}
         <Header
@@ -66,7 +62,9 @@ class ViewPastEventRecord extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>{this.state.title}</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>
+              {this.state.title}
+            </Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
@@ -133,12 +131,8 @@ class ViewPastEventRecord extends Component {
           {/* On screen separator */}
           <View style={ScreenStyleSheet.lineSeparator} />
 
-          <Record 
-            record={this.props.record} 
-          />
-
+          <Record record={this.props.record} />
         </Content>
-
       </Container>
     );
   }
@@ -150,12 +144,9 @@ const mapStateToProps = state => {
   };
 };
 
+export default connect(mapStateToProps)(ViewPastEventRecord);
 
-export default connect(
-  mapStateToProps,
-)(ViewPastEventRecord);
-
-const styles= {
+const styles = {
   controls: {
     marginBottom: 15,
     justifyContent: "center",
@@ -168,6 +159,6 @@ const styles= {
     justifyContent: "center",
     alignItems: "center",
     width: "48%",
-    borderRadius: 10,
+    borderRadius: 10
   }
 };
