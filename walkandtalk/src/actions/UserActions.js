@@ -91,19 +91,26 @@ export const loginUser = (email, password) => {
   return async dispatch => {
     var ip = getIP();
     var url = ip + "public/login";
+    console.log("Do we get here!?");
     dispatch({ type: USER_LOGIN });
     await axios
       .post(url, user)
       .then(res => {
+        console.log("this is the status" + res.status);
         if (res.status === 200) {
-          if (res.data.user.registered) {
-            loginUserSuccess(dispatch, res.data);
-          } else {
-            loginUserFail(dispatch);
-            Alert.alert(
-              "Please wait for the researchers to review your profile."
-            );
-          }
+          loginUserSuccess(dispatch, res.data);
+        } else if (res.status === 201) {
+          Alert.alert("", "Your password is incorrect! Please try again.");
+        } else if (res.status === 202) {
+          Alert.alert("", "Username doesn't exist!");
+        } else if (res.status === 203) {
+          Alert.alert(
+            "Please wait for the researchers to review your profile."
+          );
+        } else {
+          Alert.alert(
+            "Please wait for the researchers to review your profile."
+          );
         }
       })
       .catch(err => {
