@@ -134,9 +134,9 @@ class ViewRequestScreen extends Component {
       //import New user into REDCap
       await this.importToRedcap();
       this.props.approveUser(
-        this.props.user.token, 
-        this.state.email, 
-        this.state.redcapID, 
+        this.props.token,
+        this.state.email,
+        this.state.redcapID,
         this.props.user.user.email
       );
       if (this.state.responseStatus) {
@@ -159,8 +159,8 @@ class ViewRequestScreen extends Component {
       this.setState({ loading: true });
     }
     this.props.declineUser(
-      this.props.user.token, 
-      this.state.email, 
+      this.props.token,
+      this.state.email,
       this.props.user.user.email
     );
     this.setState({ showButtons: false });
@@ -368,7 +368,8 @@ class ViewRequestScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 

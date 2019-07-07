@@ -30,6 +30,8 @@ export const fetchEvents = token => {
 
 // action to fetch only the user's events
 export const fetchUserEvents = (token, email) => {
+  console.log("We are sending this action with these parameters");
+  console.log(email, token);
   return async dispatch => {
     var ip = getIP();
     var url = ip + "private/walkingevents/" + email;

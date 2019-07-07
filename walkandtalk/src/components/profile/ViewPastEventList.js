@@ -10,7 +10,7 @@ import {
   Title,
   Right,
   Content,
-  Button,
+  Button
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
@@ -22,17 +22,17 @@ class PastEventListScreen extends Component {
   constructor(props) {
     super(props);
     this.props.getRecords = this.props.getRecords(
-      this.props.user.token,
+      this.props.token,
       this.props.user.user.email
     );
     this.state = {
       loading: true
-    }
+    };
   }
 
   async componentDidMount() {
     await this.props.getRecords;
-    this.setState({loading: false})
+    this.setState({ loading: false });
   }
 
   viewPastEvent(index) {
@@ -71,10 +71,10 @@ class PastEventListScreen extends Component {
         <Loader loading={this.state.loading} />
         {/* Header */}
         <Header
-        style={ScreenStyleSheet.header}
-        androidStatusBarColor={"white"}
-        iosBarStyle={"dark-content"}
-      >
+          style={ScreenStyleSheet.header}
+          androidStatusBarColor={"white"}
+          iosBarStyle={"dark-content"}
+        >
           <Left style={ScreenStyleSheet.headerSides}>
             <Button transparent onPress={this.onBack}>
               <Image
@@ -89,9 +89,9 @@ class PastEventListScreen extends Component {
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
         {!this.state.loading && (
-        <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {this.getPastEvents()}
-        </Content>
+          <Content contentContainerStyle={ScreenStyleSheet.content}>
+            {this.getPastEvents()}
+          </Content>
         )}
       </Container>
     );
@@ -101,7 +101,8 @@ class PastEventListScreen extends Component {
 const mapStateToProps = state => {
   return {
     records: state.record.records,
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 

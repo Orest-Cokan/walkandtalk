@@ -24,15 +24,12 @@ import Loader from "../../constants/loader";
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
-    this.props.getPicture(this.props.user.token, this.props.user.user.email);
+    this.props.getPicture(this.props.token, this.props.user.user.email);
     this.props.getUnreadNotifications(
-      this.props.user.token,
+      this.props.token,
       this.props.user.user.email
     );
-    this.props.fetchUserEvents(
-      this.props.user.token,
-      this.props.user.user.email
-    );
+    this.props.fetchUserEvents(this.props.token, this.props.user.user.email);
     this.state = {
       loading: false
     };
@@ -44,11 +41,11 @@ class HomeScreen extends Component {
       async () => {
         this.setState({ loading: true });
         await this.props.fetchUserEvents(
-          this.props.user.token,
+          this.props.token,
           this.props.user.user.email
         );
         await this.props.getUnreadNotifications(
-          this.props.user.token,
+          this.props.token,
           this.props.user.user.email
         );
         this.setState({ loading: false });
@@ -142,7 +139,8 @@ const mapStateToProps = state => {
   return {
     unread_notifications: state.notification.unread_notifications,
     events: state.event.userEvents,
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 

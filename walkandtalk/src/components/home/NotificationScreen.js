@@ -35,13 +35,10 @@ class NotificationScreen extends Component {
     };
 
     // Grabs all needed data for this screen
-    this.props.getNotifications(
-      this.props.user.token,
-      this.props.user.user.email
-    );
-    this.props.fetchEvents(this.props.user.token);
+    this.props.getNotifications(this.props.token, this.props.user.user.email);
+    this.props.fetchEvents(this.props.token);
     this.props.getUncompletedRecords(
-      this.props.user.token,
+      this.props.token,
       this.props.user.user.email
     );
   }
@@ -52,12 +49,12 @@ class NotificationScreen extends Component {
       async () => {
         this.setState({ loading: true });
         await this.props.getNotifications(
-          this.props.user.token,
+          this.props.token,
           this.props.user.user.email
         );
-        await this.props.fetchEvents(this.props.user.token);
+        await this.props.fetchEvents(this.props.token);
         await this.props.getUncompletedRecords(
-          this.props.user.token,
+          this.props.token,
           this.props.user.user.email
         );
         this.setState({ loading: false });
@@ -68,7 +65,7 @@ class NotificationScreen extends Component {
       async () => {
         await this.props.notifications.map(async notification => {
           await this.props.updateNotification(
-            this.props.user.token,
+            this.props.token,
             notification.id,
             this.state.isRead
           );
@@ -234,7 +231,8 @@ const mapStateToProps = state => {
     notifications: state.notification.notifications,
     events: state.event.events,
     uncompleted_records: state.record.uncompleted_records,
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 

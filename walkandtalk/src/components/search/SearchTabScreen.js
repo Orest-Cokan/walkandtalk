@@ -112,10 +112,7 @@ class SearchTabScreen extends Component {
       lastLong: null,
       loading: false
     };
-    this.props.fetchNonUserEvents(
-      this.props.user.token,
-      this.props.user.user.email
-    );
+    this.props.fetchNonUserEvents(this.props.token, this.props.user.user.email);
   }
 
   componentDidMount() {
@@ -124,7 +121,7 @@ class SearchTabScreen extends Component {
       async () => {
         this.setState({ loading: true });
         await this.props.fetchNonUserEvents(
-          this.props.user.token,
+          this.props.token,
           this.props.user.user.email
         );
         const position = await getCurrentLocation();
@@ -396,10 +393,7 @@ class SearchTabScreen extends Component {
   //Key word search
   // Searches through out the whole object
   keywordSearch = () => {
-    this.props.fetchNonUserEvents(
-      this.props.user.token,
-      this.props.user.user.email
-    );
+    this.props.fetchNonUserEvents(this.props.token, this.props.user.user.email);
     events = this.props.events;
     keyword = this.state.text;
     //convert each item to a string and see if the key word exists as a subset
@@ -720,7 +714,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   return {
     events: state.event.nonUserEvents,
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 

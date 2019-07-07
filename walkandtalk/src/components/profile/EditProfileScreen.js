@@ -5,16 +5,10 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight,
-  Alert,
+  Alert
 } from "react-native";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import {
-  Container,
-  Header,
-  Body,
-  Title,
-  Content
-} from "native-base";
+import { Container, Header, Body, Title, Content } from "native-base";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import { editUser } from "../../actions/UserActions";
@@ -22,8 +16,8 @@ import { editPicture } from "../../actions/PictureActions";
 import DatePicker from "react-native-datepicker";
 import SwitchSelector from "react-native-switch-selector";
 import NumericInput from "react-native-numeric-input";
-import ImagePicker from 'react-native-image-picker';
-import ImageResizer from 'react-native-image-resizer';
+import ImagePicker from "react-native-image-picker";
+import ImageResizer from "react-native-image-resizer";
 import { width } from "react-native-dimension";
 import {
   StyledText as Text,
@@ -35,7 +29,6 @@ class EditProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
       // Fields
       fullname: this.props.user.user.fullname,
       email: this.props.user.user.email,
@@ -53,20 +46,19 @@ class EditProfileScreen extends Component {
       errorLocation: null
     };
 
-    // Component refs 
+    // Component refs
     this.fullname = React.createRef();
     this.location = React.createRef();
-
   }
 
   // Set state
   onChange(name, value) {
     this.setState({ [name]: value });
-  };
+  }
 
   // Checks if input is null or empty
   isValid(input) {
-    if (input == null || input == '' ) {
+    if (input == null || input == "") {
       return false;
     } else {
       return true;
@@ -75,16 +67,18 @@ class EditProfileScreen extends Component {
 
   // Shows error message
   showError(input, ref, error) {
-    // If input is valid 
+    // If input is valid
     if (this.isValid(input)) {
-      // Keep or set back to default 
+      // Keep or set back to default
       ref.current.setNativeProps(ScreenStyleSheet.formInputValid);
-      this.setState({ [error] : null });
+      this.setState({ [error]: null });
     }
     // Otherwise, show errors
     else {
       ref.current.setNativeProps(ScreenStyleSheet.formInputError);
-      this.setState({ [error] : this.errorMessage("This is a required field.") });
+      this.setState({
+        [error]: this.errorMessage("This is a required field.")
+      });
     }
   }
 
@@ -93,49 +87,50 @@ class EditProfileScreen extends Component {
     return (
       <View style={ScreenStyleSheet.rowContainer}>
         <View style={ScreenStyleSheet.formRowInfo}>
-          <Text style={ScreenStyleSheet.formErrorMessage}>
-            {message}
-          </Text>
+          <Text style={ScreenStyleSheet.formErrorMessage}>{message}</Text>
         </View>
-      </View>);
+      </View>
+    );
   }
 
   // Checks if all input fields are valid
   inputCheck = () => {
-    if (this.isValid(this.state.fullname) 
-      && this.isValid(this.state.location)) {
+    if (
+      this.isValid(this.state.fullname) &&
+      this.isValid(this.state.location)
+    ) {
       return true;
     } else {
-      this.showError(this.state.fullname, this.fullname, 'errorFullname');
-      this.showError(this.state.location, this.location, 'errorLocation');
+      this.showError(this.state.fullname, this.fullname, "errorFullname");
+      this.showError(this.state.location, this.location, "errorLocation");
       return false;
     }
-  }
+  };
 
   addPicture = () => {
     const options = {
       storageOptions: {
         skipBackup: true,
-        path: 'images',
-      },
+        path: "images"
+      }
     };
     // Shows options for selecting a photo and returns image data once image selected
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker.showImagePicker(options, response => {
       if (response.didCancel) {
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        console.log("ImagePicker Error: ", response.error);
       } else {
-        const base64 = 'data:image/jpeg;base64,' + response.data;
+        const base64 = "data:image/jpeg;base64," + response.data;
         // Reduce image size and store as compressed JPEG
-        ImageResizer.createResizedImage(base64, 180, 240, 'JPEG', 80)
-        .then((response) => {
-          this.setState({
-            picture: response.uri,
+        ImageResizer.createResizedImage(base64, 180, 240, "JPEG", 80)
+          .then(response => {
+            this.setState({
+              picture: response.uri
+            });
+          })
+          .catch(err => {
+            console.log(err);
           });
-        })
-        .catch(err => {
-          console.log(err);
-        });
       }
     });
   };
@@ -143,9 +138,10 @@ class EditProfileScreen extends Component {
   // When save changes button is clicked
   onSaveChanges = async () => {
     if (this.inputCheck()) {
+      console.log("edit user screen token" + this.props.token);
       await new Promise((resolve, reject) => {
         this.props.editUser(
-          this.props.user.token,
+          this.props.token,
           this.state.fullname,
           this.state.email,
           this.state.dob,
@@ -155,20 +151,20 @@ class EditProfileScreen extends Component {
           this.state.duration,
           this.state.venue,
           this.state.location
-        )
-      resolve();
-    });
-    this.props.editPicture(
-      this.props.user.token,
-      this.state.email,
-      this.state.picture
-    )
-    Alert.alert("Your changes have been saved.");
-    Actions.mainProfile();
+        );
+        resolve();
+      });
+      this.props.editPicture(
+        this.props.token,
+        this.state.email,
+        this.state.picture
+      );
+      Alert.alert("Your changes have been saved.");
+      Actions.mainProfile();
     } else {
-    Alert.alert("You must fill in all required fields.");
+      Alert.alert("You must fill in all required fields.");
     }
-  }
+  };
 
   // When cancel button is clicked
   onCancel() {
@@ -232,10 +228,18 @@ class EditProfileScreen extends Component {
         <Content contentContainerStyle={ScreenStyleSheet.content}>
           <View style={ScreenStyleSheet.profileHeader}>
             {/* Profile picture */}
-            <TouchableHighlight onPress={this.addPicture} activeOpacity={0} underlayColor={'transparent'}>
+            <TouchableHighlight
+              onPress={this.addPicture}
+              activeOpacity={0}
+              underlayColor={"transparent"}
+            >
               <Image
                 style={ScreenStyleSheet.avatar}
-                source={this.state.picture ? {uri: this.state.picture} : require("../../assets/icons/default-profile.png")}
+                source={
+                  this.state.picture
+                    ? { uri: this.state.picture }
+                    : require("../../assets/icons/default-profile.png")
+                }
               />
             </TouchableHighlight>
           </View>
@@ -257,13 +261,16 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View 
-              ref={this.fullname}
-              style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.fullname} style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChange.bind(this, 'fullname')}
-                onEndEditing={this.showError.bind(this, this.state.fullname, this.fullname, 'errorFullname')}
+                onChangeText={this.onChange.bind(this, "fullname")}
+                onEndEditing={this.showError.bind(
+                  this,
+                  this.state.fullname,
+                  this.fullname,
+                  "errorFullname"
+                )}
               >
                 {this.state.fullname}
               </TextInput>
@@ -327,8 +334,8 @@ class EditProfileScreen extends Component {
             <SwitchSelector
               options={menopausal_stage}
               initial={default_menopausal_stage}
-              onPress={this.onChange.bind(this, 'menopausal_stage')}
-              textColor={"#A680B8"} 
+              onPress={this.onChange.bind(this, "menopausal_stage")}
+              textColor={"#A680B8"}
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
@@ -361,7 +368,7 @@ class EditProfileScreen extends Component {
               initValue={this.state.distance}
               value={this.state.distance}
               minValue={0}
-              onChange={this.onChange.bind(this, 'distance')}
+              onChange={this.onChange.bind(this, "distance")}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -389,7 +396,7 @@ class EditProfileScreen extends Component {
               initValue={this.state.duration}
               value={this.state.duration}
               minValue={0}
-              onChange={this.onChange.bind(this, 'duration')}
+              onChange={this.onChange.bind(this, "duration")}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -416,7 +423,7 @@ class EditProfileScreen extends Component {
             <SwitchSelector
               options={intensities}
               initial={default_intensity}
-              onPress={this.onChange.bind(this, 'intensity')}
+              onPress={this.onChange.bind(this, "intensity")}
               textColor={"#A680B8"}
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -436,7 +443,7 @@ class EditProfileScreen extends Component {
             <SwitchSelector
               options={venues}
               initial={default_venue}
-              onPress={this.onChange.bind(this, 'venue')}
+              onPress={this.onChange.bind(this, "venue")}
               textColor={"#A680B8"}
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -456,13 +463,16 @@ class EditProfileScreen extends Component {
             </View>
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
-            <View
-              ref={this.location} 
-              style={ScreenStyleSheet.formRowInfo}>
+            <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChange.bind(this, 'location')}
-                onEndEditing={this.showError.bind(this, this.state.location, this.location, 'errorLocation')}
+                onChangeText={this.onChange.bind(this, "location")}
+                onEndEditing={this.showError.bind(
+                  this,
+                  this.state.location,
+                  this.location,
+                  "errorLocation"
+                )}
               >
                 {this.state.location}
               </TextInput>
@@ -500,7 +510,8 @@ class EditProfileScreen extends Component {
 const mapStateToProps = state => {
   return {
     user: state.user,
-    picture: state.picture
+    picture: state.picture,
+    token: state.token.token
   };
 };
 

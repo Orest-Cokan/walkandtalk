@@ -25,7 +25,7 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { editEvent } from "../../actions/EventActions";
 import { sendNotification } from "../../actions/NotificationActions";
 import { Actions } from "react-native-router-flux";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 class EditEventScreen extends Component {
   constructor(props) {
@@ -43,15 +43,15 @@ class EditEventScreen extends Component {
       intensity: this.props.event.intensity,
       venue: this.props.event.venue,
       description: this.props.event.description,
-      notifType: 'updatedEvent',
+      notifType: "updatedEvent",
 
-       // Error messages
-       errorTitle: null,
-       errorDate: null,
-       errorStartTime: null,
-       errorEndTime: null,
-       errorLocation: null
-    }
+      // Error messages
+      errorTitle: null,
+      errorDate: null,
+      errorStartTime: null,
+      errorEndTime: null,
+      errorLocation: null
+    };
 
     // Component refs
     this.title = React.createRef();
@@ -59,12 +59,10 @@ class EditEventScreen extends Component {
     this.startTime = React.createRef();
     this.endTime = React.createRef();
     this.location = React.createRef();
-
-
   }
 
   onChange(name, value) {
-    this.setState({ [name] : value } )
+    this.setState({ [name]: value });
     // For datetime pickers
     if (name == "date") {
       this.showError(this.state.date, this.date, "errorDate");
@@ -96,26 +94,25 @@ class EditEventScreen extends Component {
   }
 
   //Check end date
-  checkEndDate(err, input){
-    this.setState({endTime: input})
+  checkEndDate(err, input) {
+    this.setState({ endTime: input });
     if (this.state.startTime > this.state.endTime) {
-      this.startTime.current.setNativeProps(
-        ScreenStyleSheet.formInputValid
-      );
+      this.startTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
       this.endTime.current.setNativeProps(ScreenStyleSheet.formInputError);
       this.setState({ errorStartTime: null });
-      this.setState({
-        errorEndTime: this.errorMessageDate(
-          "The end time must be later than the start time."
-        )
-      }, console.log("set error text for end TIME"))
+      this.setState(
+        {
+          errorEndTime: this.errorMessageDate(
+            "The end time must be later than the start time."
+          )
+        },
+        console.log("set error text for end TIME")
+      );
     } else {
-        this.startTime.current.setNativeProps(
-          ScreenStyleSheet.formInputValid
-        );
-        this.endTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
-        this.setState({ errorStartTime: null });
-        this.setState({ errorEndTime: null });
+      this.startTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.endTime.current.setNativeProps(ScreenStyleSheet.formInputValid);
+      this.setState({ errorStartTime: null });
+      this.setState({ errorEndTime: null });
     }
   }
 
@@ -138,11 +135,14 @@ class EditEventScreen extends Component {
           );
           this.endTime.current.setNativeProps(ScreenStyleSheet.formInputError);
           this.setState({ errorStartTime: null });
-          this.setState({
-            errorEndTime: this.errorMessageDate(
-              "The end time must be later than the start time."
-            )
-          }, console.log("set error text for end TIME"));
+          this.setState(
+            {
+              errorEndTime: this.errorMessageDate(
+                "The end time must be later than the start time."
+              )
+            },
+            console.log("set error text for end TIME")
+          );
         }
       }
       // Otherwise, keep or set back to default
@@ -213,39 +213,39 @@ class EditEventScreen extends Component {
       return false;
     }
   };
-  
-  // Has to be asynchronous in case edit finishes before 
+
+  // Has to be asynchronous in case edit finishes before
   // fetching which will cause state not to be updated
   onFinish = async () => {
-    if (this.inputCheck()){
-    await new Promise((resolve, reject) => {
+    if (this.inputCheck()) {
+      await new Promise((resolve, reject) => {
         // Edit the event user clicks
         this.props.editEvent(
-          this.props.user.token,
-          this.state.title, 
-          this.state.id, 
-          this.state.date, 
-          this.state.startTime, 
-          this.state.endTime, 
-          this.state.description, 
-          this.state.intensity, 
-          this.state.venue, 
+          this.props.token,
+          this.state.title,
+          this.state.id,
+          this.state.date,
+          this.state.startTime,
+          this.state.endTime,
+          this.state.description,
+          this.state.intensity,
+          this.state.venue,
           this.state.location
         );
         this.props.sendNotification(
-          this.props.user.token,
+          this.props.token,
           this.state.id,
           this.state.notifType,
           this.state.title
-        )  
+        );
         resolve();
         Actions.homeTab();
-    });
-  }else {
-    Alert.alert("You must fill in all required fields.");
-  }
-  }
-  
+      });
+    } else {
+      Alert.alert("You must fill in all required fields.");
+    }
+  };
+
   onCancel = () => {
     Actions.homeTab();
   };
@@ -253,14 +253,14 @@ class EditEventScreen extends Component {
   render() {
     // All the options displayed in radio buttons
     const intensities = [
-        { label: "Slow", value: "Slow" },
-        { label: "Intermediate", value: "Intermediate" },
-        { label: "Brisk", value: "Brisk" }
-      ];
-      const venues = [
-        { label: "Indoor", value: "Indoor" },
-        { label: "Outdoor", value: "Outdoor" }
-      ];
+      { label: "Slow", value: "Slow" },
+      { label: "Intermediate", value: "Intermediate" },
+      { label: "Brisk", value: "Brisk" }
+    ];
+    const venues = [
+      { label: "Indoor", value: "Indoor" },
+      { label: "Outdoor", value: "Outdoor" }
+    ];
     // Setting default values for slide bars
     let default_intensity = null;
     intensities.map((intensity, index) => {
@@ -298,7 +298,7 @@ class EditEventScreen extends Component {
             <View ref={this.title} style={ScreenStyleSheet.formRowInfo}>
               <TextInput
                 style={ScreenStyleSheet.formInput}
-                onChangeText={this.onChange.bind(this, 'title')}
+                onChangeText={this.onChange.bind(this, "title")}
                 onEndEditing={this.showError.bind(
                   this,
                   this.state.title,
@@ -306,7 +306,7 @@ class EditEventScreen extends Component {
                   "errorTitle"
                 )}
               >
-              {this.state.title}
+                {this.state.title}
               </TextInput>
             </View>
           </View>
@@ -323,13 +323,12 @@ class EditEventScreen extends Component {
                 mode="date"
                 showIcon={false}
                 date={this.state.date}
-                
                 format="ddd, MMM D"
                 minDate={new Date()} // why was this commented out????? @eivenlour
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{}}
-                onDateChange={this.onChange.bind(this, 'date')}
+                onDateChange={this.onChange.bind(this, "date")}
               />
             </View>
           </View>
@@ -355,7 +354,7 @@ class EditEventScreen extends Component {
                     alignItems: "center"
                   }
                 }}
-                onDateChange={this.onChange.bind(this, 'startTime')}
+                onDateChange={this.onChange.bind(this, "startTime")}
               />
             </View>
           </View>
@@ -381,12 +380,11 @@ class EditEventScreen extends Component {
                     alignItems: "center"
                   }
                 }}
-                onDateChange={this.checkEndDate.bind(this, 'endTime')}
+                onDateChange={this.checkEndDate.bind(this, "endTime")}
               />
             </View>
           </View>
           {this.state.errorEndTime}
-
 
           {/* Description */}
           <View style={ScreenStyleSheet.rowContainer}>
@@ -401,9 +399,9 @@ class EditEventScreen extends Component {
                 multiline={true}
                 numberOfLines={4}
                 maxLength={140}
-                onChangeText={this.onChange.bind(this, 'description')}
+                onChangeText={this.onChange.bind(this, "description")}
               >
-              {this.state.description}
+                {this.state.description}
               </TextInput>
             </View>
           </View>
@@ -418,7 +416,7 @@ class EditEventScreen extends Component {
             <SwitchSelector
               options={intensities}
               initial={default_intensity}
-              onPress={this.onChange.bind(this, 'intensity')}
+              onPress={this.onChange.bind(this, "intensity")}
               textColor={"#A680B8"} //'#7a44cf'
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -438,7 +436,7 @@ class EditEventScreen extends Component {
             <SwitchSelector
               options={venues}
               initial={default_venue}
-              onPress={this.onChange.bind(this, 'venue')}
+              onPress={this.onChange.bind(this, "venue")}
               textColor={"#A680B8"} //'#7a44cf'
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -459,44 +457,50 @@ class EditEventScreen extends Component {
           </View>
           <View style={ScreenStyleSheet.rowContainer}>
             <View ref={this.location} style={ScreenStyleSheet.formRowInfo}>
-            <GooglePlacesAutocomplete
-            placeholder={this.state.location.streetName ? this.state.location.streetName : 'Add a Location'}
-            minLength={2}
-            autoFocus={false}
-            returnKeyType={'search'}
-            keyboardAppearance={'light'}
-            // Exit search dropdown results when result selected
-            listViewDisplayed={false}
-            fetchDetails={true}
-            renderDescription={row => row.description}
-            onPress={(data, details = null) => {
-              this.setState({
-                location: {
-                  streetName: details.name,
-                  lat: details.geometry.location.lat,
-                  long: details.geometry.location.lng
+              <GooglePlacesAutocomplete
+                placeholder={
+                  this.state.location.streetName
+                    ? this.state.location.streetName
+                    : "Add a Location"
                 }
-              });
-            }}
-            getDefaultValue={() => ''}
-            query={{
-              key: 'AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0',
-              language: 'en',
-              types: 'geocode',
-              // Unique token for a session of searching
-              sessionToken: Math.random().toString(36).substr(2, 5)
-            }}
-            styles={{
-              textInputContainer: {
-                width: '100%'
-              },
-              description: {
-                fontWeight: 'bold'
-              }
-            }}
-            // Time in ms of when to issue a request after the user stops typing
-            debounce={800}
-            /> 
+                minLength={2}
+                autoFocus={false}
+                returnKeyType={"search"}
+                keyboardAppearance={"light"}
+                // Exit search dropdown results when result selected
+                listViewDisplayed={false}
+                fetchDetails={true}
+                renderDescription={row => row.description}
+                onPress={(data, details = null) => {
+                  this.setState({
+                    location: {
+                      streetName: details.name,
+                      lat: details.geometry.location.lat,
+                      long: details.geometry.location.lng
+                    }
+                  });
+                }}
+                getDefaultValue={() => ""}
+                query={{
+                  key: "AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0",
+                  language: "en",
+                  types: "geocode",
+                  // Unique token for a session of searching
+                  sessionToken: Math.random()
+                    .toString(36)
+                    .substr(2, 5)
+                }}
+                styles={{
+                  textInputContainer: {
+                    width: "100%"
+                  },
+                  description: {
+                    fontWeight: "bold"
+                  }
+                }}
+                // Time in ms of when to issue a request after the user stops typing
+                debounce={800}
+              />
             </View>
           </View>
           {this.state.errorLocation}
@@ -528,14 +532,15 @@ class EditEventScreen extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-      user: state.user
-    };
+  return {
+    user: state.user,
+    token: state.token.token
   };
+};
 
 export default connect(
-    mapStateToProps,
-    { editEvent, sendNotification }
+  mapStateToProps,
+  { editEvent, sendNotification }
 )(EditEventScreen);
 
 // Styles

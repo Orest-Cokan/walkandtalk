@@ -18,10 +18,9 @@ export const INITIAL_STATE = {
   errorCreating: "",
   loading: false,
   user: "",
-  otherUser:'',
-  users:[],
-  unregisteredUsers: [],
-  token: ""
+  otherUser: "",
+  users: [],
+  unregisteredUsers: []
 };
 
 // user reducer
@@ -31,7 +30,7 @@ export const user = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         ...INITIAL_STATE,
-        loading: true,
+        loading: true
       };
     case USER_CREATE_FAIL:
       return {
@@ -40,7 +39,7 @@ export const user = (state = INITIAL_STATE, action) => {
         loading: false
       };
     case USER_CREATE_SUCCESS:
-      return { ...state, loading: false, error: ""};
+      return { ...state, loading: false, error: "" };
     case USER_LOGIN:
       return {
         ...state,
@@ -56,8 +55,8 @@ export const user = (state = INITIAL_STATE, action) => {
       };
     case USER_EDIT:
       return {
-         ...state, 
-         ...INITIAL_STATE,
+        ...state,
+        ...INITIAL_STATE,
         loading: true,
         user: action.payload
       };
@@ -66,8 +65,7 @@ export const user = (state = INITIAL_STATE, action) => {
         ...state,
         ...INITIAL_STATE,
         loading: true,
-        user: action.payload.user,
-        token: action.payload.token
+        user: action.payload.user
       };
     case SET_USER:
       return { ...state, otherUser: action.payload };
@@ -76,11 +74,10 @@ export const user = (state = INITIAL_STATE, action) => {
     case GET_UNREGISTERED_USERS:
       return { ...state, unregisteredUsers: action.payload };
     case USER_APPROVE:
-      return { ...state};
+      return { ...state };
     case USER_DECLINE:
-      return { ...state};
+      return { ...state };
     default:
       return state;
-    
   }
 };

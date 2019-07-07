@@ -108,9 +108,9 @@ class ViewEventScreen extends Component {
 
   // Deletes the event
   deleteEvent = async () => {
-    await this.props.deleteEvent(this.props.user.token, this.state.id);
+    await this.props.deleteEvent(this.props.token, this.state.id);
     await this.props.sendNotification(
-      this.props.user.token,
+      this.props.token,
       this.state.id,
       "cancelledEvent",
       this.state.title
@@ -178,14 +178,14 @@ class ViewEventScreen extends Component {
     await new Promise((resolve, reject) => {
       if (this.state.badge == "GOING") {
         this.props.addAttendees(
-          this.props.user.token,
+          this.props.token,
           this.state.id,
           this.props.user.user.fullname,
           this.props.user.user.email
         );
       } else {
         this.props.removeAttendees(
-          this.props.user.token,
+          this.props.token,
           this.state.id,
           this.props.user.user.email
         );
@@ -500,7 +500,8 @@ class ViewEventScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 

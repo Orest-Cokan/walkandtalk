@@ -208,7 +208,7 @@ class AddEventScreen extends Component {
   onFinish = async () => {
     if (this.inputCheck()) {
       await this.props.createEvent(
-        this.props.user.token,
+        this.props.token,
         this.state.organizer,
         this.state.email,
         this.state.title,
@@ -525,7 +525,8 @@ class AddEventScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 

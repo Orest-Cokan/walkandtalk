@@ -15,8 +15,10 @@ This is the requests screen. Researchers will see the users that have signed up 
 class RequestsScreen extends Component {
   constructor(props) {
     super(props);
-    console.log('token', this.props.user.token);
-    this.props.getUnregisteredUsers(this.props.user.token, this.props.user.user.email);
+    this.props.getUnregisteredUsers(
+      this.props.token,
+      this.props.user.user.email
+    );
     this.state = {
       loading: false
     };
@@ -27,9 +29,12 @@ class RequestsScreen extends Component {
     this.willFocusListener = this.props.navigation.addListener(
       "willFocus",
       async () => {
-        await this.setState({loading: true})
-        await this.props.getUnregisteredUsers(this.props.user.token, this.props.user.user.email);
-        this.setState({loading: false})
+        await this.setState({ loading: true });
+        await this.props.getUnregisteredUsers(
+          this.props.token,
+          this.props.user.user.email
+        );
+        this.setState({ loading: false });
       }
     );
   }
@@ -72,9 +77,9 @@ class RequestsScreen extends Component {
           </Body>
         </Header>
         {!this.state.loading && (
-        <Content contentContainerStyle={ScreenStyleSheet.content}>
-          {this.getRequests()}
-        </Content>
+          <Content contentContainerStyle={ScreenStyleSheet.content}>
+            {this.getRequests()}
+          </Content>
         )}
       </Container>
     );
@@ -84,7 +89,8 @@ class RequestsScreen extends Component {
 const mapStateToProps = state => {
   return {
     unregisteredUsers: state.user.unregisteredUsers,
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 

@@ -10,7 +10,8 @@ import {
   SET_ALL_USERS,
   USER_APPROVE,
   USER_DECLINE,
-  GET_UNREGISTERED_USERS
+  GET_UNREGISTERED_USERS,
+  SET_TOKEN
 } from "./types";
 import { Actions } from "react-native-router-flux";
 import axios from "axios";
@@ -91,7 +92,6 @@ export const loginUser = (email, password) => {
   return async dispatch => {
     var ip = getIP();
     var url = ip + "public/login";
-    console.log("Do we get here!?");
     dispatch({ type: USER_LOGIN });
     await axios
       .post(url, user)
@@ -126,6 +126,8 @@ const loginUserFail = dispatch => {
 
 // dispatch user login success
 const loginUserSuccess = (dispatch, user) => {
+  console.log("this is the token" + user.token);
+  dispatch({ type: SET_TOKEN, payload: user.token });
   dispatch({
     type: USER_LOGIN_SUCCESS,
     payload: user

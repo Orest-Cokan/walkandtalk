@@ -1,19 +1,9 @@
 // Submit Event Record Screen View
 
 import React, { Component } from "react";
-import {
-  View,
-  TouchableOpacity,
-  Image
-} from "react-native";
+import { View, TouchableOpacity, Image } from "react-native";
 import { connect } from "react-redux";
-import {
-  Container,
-  Header,
-  Body,
-  Title,
-  Content,
-} from "native-base";
+import { Container, Header, Body, Title, Content } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { updateRecord } from "../../actions/RecordActions";
@@ -50,20 +40,20 @@ class SubmitRecordScreen extends Component {
       venue: "Indoor",
       walkRating: "1",
       locationRating: "1",
-      walkRatingComment: '',
-      locationRatingComment: ''
+      walkRatingComment: "",
+      locationRatingComment: ""
     };
   }
 
   // Set state
   onChange(name, value) {
-    this.setState({ [name] : value });
-  };
+    this.setState({ [name]: value });
+  }
 
   // When submit button is tapped
   onSubmit = () => {
     this.props.updateRecord(
-      this.props.user.token,
+      this.props.token,
       this.state.id,
       this.state.email,
       this.state.venue,
@@ -74,7 +64,7 @@ class SubmitRecordScreen extends Component {
       this.state.walkRatingComment,
       this.state.locationRating,
       this.state.locationRatingComment,
-      this.state.completed,
+      this.state.completed
     );
     Actions.reset("mainFormPage");
   };
@@ -179,8 +169,7 @@ class SubmitRecordScreen extends Component {
               </Text>
             </View>
           </View>
-          
-          
+
           {/* On screen separator */}
           <View style={ScreenStyleSheet.lineSeparator} />
 
@@ -198,7 +187,7 @@ class SubmitRecordScreen extends Component {
               initValue={this.state.distance}
               value={this.state.distance}
               minValue={0}
-              onChange={this.onChange.bind(this, 'distance')}
+              onChange={this.onChange.bind(this, "distance")}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -226,7 +215,7 @@ class SubmitRecordScreen extends Component {
               initValue={this.state.duration}
               value={this.state.duration}
               minValue={0}
-              onChange={this.onChange.bind(this, 'duration')}
+              onChange={this.onChange.bind(this, "duration")}
               totalWidth={width(94)}
               totalHeight={40}
               valueType="real"
@@ -253,7 +242,7 @@ class SubmitRecordScreen extends Component {
             <SwitchSelector
               options={intensities}
               initial={0}
-              onPress={this.onChange.bind(this, 'intensity')}
+              onPress={this.onChange.bind(this, "intensity")}
               textColor={"#A680B8"} //'#7a44cf'
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -276,7 +265,7 @@ class SubmitRecordScreen extends Component {
             <SwitchSelector
               options={venues}
               initial={0}
-              onPress={this.onChange.bind(this, 'venue')}
+              onPress={this.onChange.bind(this, "venue")}
               textColor={"#A680B8"} //'#7a44cf'
               selectedColor={"#ffffff"}
               buttonColor={"#A680B8"}
@@ -299,7 +288,7 @@ class SubmitRecordScreen extends Component {
             <SwitchSelector
               options={walkRatings}
               initial={0}
-              onPress={this.onChange.bind(this, 'walkRating')}
+              onPress={this.onChange.bind(this, "walkRating")}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
               borderRadius={8}
@@ -324,7 +313,7 @@ class SubmitRecordScreen extends Component {
                 multiline={true}
                 numberOfLines={4}
                 maxLength={140}
-                onChangeText={this.onChange.bind(this, 'walkRatingComment')}
+                onChangeText={this.onChange.bind(this, "walkRatingComment")}
               />
             </View>
           </View>
@@ -342,7 +331,7 @@ class SubmitRecordScreen extends Component {
             <SwitchSelector
               options={locationRatings}
               initial={0}
-              onPress={this.onChange.bind(this, 'locationRating')}
+              onPress={this.onChange.bind(this, "locationRating")}
               buttonColor={"#A680B8"}
               borderColor={"#A680B8"}
               borderRadius={8}
@@ -367,7 +356,7 @@ class SubmitRecordScreen extends Component {
                 multiline={true}
                 numberOfLines={4}
                 maxLength={140}
-                onChangeText={this.onChange.bind(this, 'locationRatingComment')}
+                onChangeText={this.onChange.bind(this, "locationRatingComment")}
               />
             </View>
           </View>
@@ -388,7 +377,7 @@ class SubmitRecordScreen extends Component {
             {/* Finish button */}
             <TouchableOpacity
               style={[ScreenStyleSheet.button, { backgroundColor: "#A680B8" }]}
-              onPress={(this.onSubmit)}
+              onPress={this.onSubmit}
             >
               <Text style={{ color: "white" }}>Submit</Text>
             </TouchableOpacity>
@@ -401,7 +390,8 @@ class SubmitRecordScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 

@@ -30,7 +30,7 @@ class FormScreen extends Component {
       loading: false
     };
     this.props.getUncompletedRecords(
-      this.props.user.token,
+      this.props.token,
       this.props.user.user.email
     );
   }
@@ -41,7 +41,7 @@ class FormScreen extends Component {
       async () => {
         await this.setState({ loading: true });
         await this.props.getUncompletedRecords(
-          this.props.user.token,
+          this.props.token,
           this.props.user.user.email
         );
         this.setState({ loading: false });
@@ -110,7 +110,8 @@ class FormScreen extends Component {
 const mapStateToProps = state => {
   return {
     uncompleted_records: state.record.uncompleted_records,
-    user: state.user
+    user: state.user,
+    token: state.token.token
   };
 };
 
