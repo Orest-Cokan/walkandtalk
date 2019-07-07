@@ -60,7 +60,7 @@ const UserController = () => {
         });
 
         if (!user) {
-          return res.status(400).json({ msg: "Bad Request: User not found" });
+          return res.status(202).json({ msg: "Bad Request: User not found" });
         }
 
         if (
@@ -69,9 +69,14 @@ const UserController = () => {
         ) {
           const token = authService().issue({ email: user.email });
           return res.status(200).json({ user, token });
+        } else if (
+          bcryptService().comparePassword(password, user.password) &&
+          !userPolicy(user.registered)
+        ) {
+          return res.status(203).json({ msg: "User is not registered!" });
+        } else {
+          return res.status(201).json({ msg: "Unauthorized" });
         }
-
-        return res.status(401).json({ msg: "Unauthorized" });
       } catch (err) {
         return res.status(500).json({ msg: "Internal server error" });
       }

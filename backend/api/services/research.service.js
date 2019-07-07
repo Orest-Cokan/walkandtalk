@@ -62,5 +62,29 @@ const initializeResearchers = () => {
       include: [Preference, Picture, Redcap]
     }
   );
+
+  User.create(
+    {
+      fullname: "testaccount",
+      email: "testaccount101@gmail.com",
+      password: "password1",
+      password2: "password1",
+      dob: "Researcher Account",
+      menopausal_stage: "Researcher Account",
+      registered: 0,
+      researcher: 0,
+      preference: {
+        intensity: "Researcher Account",
+        venue: "Researcher Account",
+        distance: 0,
+        duration: 0,
+        location: "Researcher Account"
+      },
+      picture: {}
+    },
+    {
+      include: [Preference, Picture, Redcap]
+    }
+  );
 };
 module.exports = initializeResearchers;
