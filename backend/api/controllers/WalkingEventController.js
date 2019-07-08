@@ -62,6 +62,7 @@ const WalkingEventController = () => {
   // get user walkingevents
   const getUserEvents = async (req, res) => {
     const { email } = req.params;
+    console.log(email + "what is this value");
     let events = [];
     await WalkingEvent.findAll({
       include: [
