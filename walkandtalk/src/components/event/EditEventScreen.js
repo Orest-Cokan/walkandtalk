@@ -346,7 +346,7 @@ class EditEventScreen extends Component {
                 mode="time"
                 showIcon={false}
                 placeholder="Select start time"
-                format="hh:mma"
+                format="hh:mm a"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{
@@ -372,7 +372,7 @@ class EditEventScreen extends Component {
                 mode="time"
                 showIcon={false}
                 placeholder="Select end time"
-                format="hh:mma"
+                format="hh:mm a"
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{

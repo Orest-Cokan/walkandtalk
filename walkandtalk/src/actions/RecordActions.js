@@ -1,6 +1,7 @@
 import {
   RECORD_UPDATE,
   SET_RECORDS,
+  SET_ALL_RECORDS,
   SET_COMPLETED_RECORDS,
   SET_UNCOMPLETED_RECORDS
 } from "./types";
@@ -41,7 +42,9 @@ export const updateRecord = (
     };
 
     await axios
-      .put(url, walking_record, { headers: { Authorization: 'Bearer ' + token } } )
+      .put(url, walking_record, {
+        headers: { Authorization: "Bearer " + token }
+      })
       .then(res => {
         dispatch({ type: RECORD_UPDATE });
       })
@@ -58,7 +61,7 @@ export const getRecords = (token, email) => {
     var ip = getIP();
     var url = ip + "private/walkingrecord/" + email;
     await axios
-      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
+      .get(url, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         dispatch({
           type: SET_RECORDS,
@@ -78,7 +81,7 @@ export const getCompletedRecords = (token, email) => {
     var ip = getIP();
     var url = ip + "private/walkingrecord/completed/" + email;
     await axios
-      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
+      .get(url, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         dispatch({
           type: SET_COMPLETED_RECORDS,
@@ -98,10 +101,30 @@ export const getUncompletedRecords = (token, email) => {
     var ip = getIP();
     var url = ip + "private/walkingrecord/uncompleted/" + email;
     await axios
-      .get(url, { headers: { Authorization: 'Bearer ' + token } } )
+      .get(url, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
         dispatch({
           type: SET_UNCOMPLETED_RECORDS,
+          payload: res.data.records
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
+      });
+  };
+};
+
+// action to get completed event records by user
+export const getAllRecords = token => {
+  return async dispatch => {
+    var ip = getIP();
+    var url = ip + "private/walkingrecords";
+    await axios
+      .get(url, { headers: { Authorization: "Bearer " + token } })
+      .then(res => {
+        dispatch({
+          type: SET_ALL_RECORDS,
           payload: res.data.records
         });
       })

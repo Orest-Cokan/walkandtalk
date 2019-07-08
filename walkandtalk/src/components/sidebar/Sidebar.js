@@ -66,15 +66,6 @@ class SideBar extends Component {
           </Right>
         </Header>
         <Content>
-          {/* Past Events */}
-          <ListItem button={true} onPress={() => this.goToPastEvents()}>
-            <Image
-              style={ScreenStyleSheet.headerIcon}
-              source={require("../../assets/icons/past-events.png")}
-            />
-            <Text style={ScreenStyleSheet.sideBarTextItem}>Past Events</Text>
-          </ListItem>
-
           {/* Helpline Links */}
           <ListItem button={true} onPress={() => this.goToHelplineLinks()}>
             <Image
@@ -82,6 +73,15 @@ class SideBar extends Component {
               source={require("../../assets/icons/helpline-links.png")}
             />
             <Text style={ScreenStyleSheet.sideBarTextItem}>Helpline Links</Text>
+          </ListItem>
+
+          {/* Past Events */}
+          <ListItem button={true} onPress={() => this.goToPastEvents()}>
+            <Image
+              style={ScreenStyleSheet.headerIcon}
+              source={require("../../assets/icons/past-events.png")}
+            />
+            <Text style={ScreenStyleSheet.sideBarTextItem}>Past Events</Text>
           </ListItem>
 
           {/* Event Ratings */}

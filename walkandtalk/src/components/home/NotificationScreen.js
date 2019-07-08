@@ -17,7 +17,7 @@ import { StyledText as Text } from "../../constants/StyledText";
 import { Actions } from "react-native-router-flux";
 import { connect } from "react-redux";
 import {
-  getNotifications,
+  getUnreadNotifications,
   updateNotification
 } from "../../actions/NotificationActions";
 import { fetchEvents } from "../../actions/EventActions";
@@ -35,7 +35,10 @@ class NotificationScreen extends Component {
     };
 
     // Grabs all needed data for this screen
-    this.props.getNotifications(this.props.token, this.props.user.user.email);
+    this.props.getUnreadNotifications(
+      this.props.token,
+      this.props.user.user.email
+    );
     this.props.fetchEvents(this.props.token);
     this.props.getUncompletedRecords(
       this.props.token,
@@ -48,7 +51,7 @@ class NotificationScreen extends Component {
       "willFocus",
       async () => {
         this.setState({ loading: true });
-        await this.props.getNotifications(
+        await this.props.getUnreadNotifications(
           this.props.token,
           this.props.user.user.email
         );
@@ -65,9 +68,9 @@ class NotificationScreen extends Component {
       async () => {
         await this.props.notifications.map(async notification => {
           await this.props.updateNotification(
-            this.props.token,
             notification.id,
-            this.state.isRead
+            this.state.isRead,
+            this.props.token
           );
         });
       }
@@ -111,6 +114,7 @@ class NotificationScreen extends Component {
       record => record.id == subjectId
     );
     if (record) {
+      Actions.pop();
       Actions.submitRecord({ record: record });
     } else {
       null;
@@ -130,7 +134,13 @@ class NotificationScreen extends Component {
 
   // Gets all user notification objects and
   // Transforms them for rendering
-  getNotifications() {
+  getUnreadNotifications() {
+    this.props.notifications.forEach(notif => {
+      console.log(notif);
+    });
+    this.props.uncompleted_records.forEach(record => {
+      console.log(record);
+    });
     let notifications = [];
     let message = "";
     let onPress = null;
@@ -218,7 +228,7 @@ class NotificationScreen extends Component {
             <View>
               <Text> </Text>
             </View>
-            {this.getNotifications()}
+            {this.getUnreadNotifications()}
           </Content>
         )}
       </Container>
@@ -228,7 +238,7 @@ class NotificationScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    notifications: state.notification.notifications,
+    notifications: state.notification.unread_notifications,
     events: state.event.events,
     uncompleted_records: state.record.uncompleted_records,
     user: state.user,
@@ -239,7 +249,7 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   {
-    getNotifications,
+    getUnreadNotifications,
     updateNotification,
     fetchEvents,
     getUncompletedRecords

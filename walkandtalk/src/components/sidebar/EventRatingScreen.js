@@ -1,12 +1,10 @@
-// Helpline links Screen View
+// Past Event List Screen View
 import React, { Component } from "react";
-import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import { StyleSheet, View, Image, Text, Linking } from "react-native";
+import { Image, TouchableOpacity } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
   Header,
-  Accordion,
   Left,
   Body,
   Title,
@@ -14,22 +12,60 @@ import {
   Content,
   Button
 } from "native-base";
+import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
+import BaseCard from "../../cardview/baseCard";
+import { getAllRecords } from "../../actions/RecordActions";
+import Loader from "../../constants/loader";
 
-class EventRatingScreen extends Component {
+class PastEventListScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.props.getRecords = this.props.getAllRecords(this.props.token);
+    this.state = {
+      loading: true
+    };
+  }
+
+  async componentDidMount() {
+    await this.props.getAllRecords;
+    this.setState({ loading: false });
+  }
+
+  viewPastEvent(index) {
+    Actions.viewPastEvent({
+      record: this.props.records[index]
+    });
+  }
+
+  getPastEvents() {
+    let past_events = [];
+    this.props.records.map((past_event, index) => {
+      past_events.unshift(
+        <TouchableOpacity
+          key={index}
+          onPress={this.viewPastEvent.bind(this, index)}
+        >
+          <BaseCard
+            key={past_event.id}
+            date={past_event.date}
+            start_time={past_event.start_time}
+            title={past_event.title}
+            location={past_event.location}
+          />
+        </TouchableOpacity>
+      );
+    });
+    return past_events;
+  }
+
   onBack = () => {
-    // Navigate back to profile page
     Actions.pop();
   };
-
   render() {
-    const dataArray = [
-      { title: "First Element", content: "Lorem ipsum dolor sit amet" },
-      { title: "Second Element", content: "Lorem ipsum dolor sit amet" },
-      { title: "Third Element", content: "Lorem ipsum dolor sit amet" }
-    ];
     return (
       <Container>
+        <Loader loading={this.state.loading} />
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
@@ -45,35 +81,29 @@ class EventRatingScreen extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Location Ratings</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>Past Events</Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
-
-        <Content contentContainerStyle={ScreenStyleSheet.content}>
-          <Accordion dataArray={dataArray} expanded={0} />
-        </Content>
+        {!this.state.loading && (
+          <Content contentContainerStyle={ScreenStyleSheet.content}>
+            {this.getPastEvents()}
+          </Content>
+        )}
       </Container>
     );
   }
 }
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => {
+  return {
+    records: state.record.all_records,
+    user: state.user,
+    token: state.token.token
+  };
+};
 
 export default connect(
   mapStateToProps,
-  null
-)(EventRatingScreen);
-
-// Styles
-const styles = StyleSheet.create({
-  HelplineTitle: {
-    marginHorizontal: 10,
-    paddingTop: 10
-  },
-  HelplineLink: {
-    color: "#A680B8",
-    marginHorizontal: 10,
-    paddingBottom: 10
-  }
-});
+  { getAllRecords }
+)(PastEventListScreen);
