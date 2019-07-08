@@ -20,6 +20,7 @@ const privateRoutes = {
   "GET /walkingrecord/uncompleted/:email":
     "WalkingRecordController.uncompletedRecords",
   "PUT /walkingrecord": "WalkingRecordController.update",
+  "GET /walkingrecords": "WalkingRecordController.getAll",
 
   // Attendee routes
   "PUT /attendee/add": "AttendeeController.addAttendees",
@@ -32,6 +33,7 @@ const privateRoutes = {
   "GET /notification/:email": "NotificationController.getNotifications",
   "GET /notification/unread/:email":
     "NotificationController.getUnreadNotifications",
+  "GET /notification/flag/:email": "NotificationController.getNotificationFlag",
 
   // Picture routes
   "PUT /user/picture": "PictureController.updateImage",

@@ -11,7 +11,7 @@ const rejectEmails = ["cokan@ualberta.ca", "beate@gmail.com"];
 
 // cron job check for events to delete every hour
 const task = () =>
-  cron.schedule("*/5 * * * *", () => {
+  cron.schedule("* * * * *", () => {
     // vars
     let nukedTotal = 0;
     let recordsMade = 0;
@@ -19,7 +19,7 @@ const task = () =>
 
     // const
     const today = dateFormat(new Date(), "ddd, mmm d");
-    const now = dateFormat(new Date(), "ddd, mmm d hh:MMtt");
+    const now = dateFormat(new Date(), "hh:MM tt");
 
     // query
     WalkingEvent.findAll({
@@ -33,13 +33,11 @@ const task = () =>
         }
       ]
     }).then(events => {
-      let compareDateTime = null;
       events.map(event => {
-        compareDateTime = event.date + " " + event.start_time;
         console.log(
-          "Executing cron job: " + time(now.toString(), compareDateTime)
+          "Executing cron job: " + time(now.toString(), event.start_time)
         );
-        if (time(now, compareDateTime)) {
+        if (time(now, event.start_time)) {
           event.attendees.map(person => {
             // attendees
             if (!rejectEmails.includes(person.email)) {

@@ -2,7 +2,6 @@ const Notification = require("../models/Notification");
 
 // Notification Controller
 const NotificationController = () => {
-  
   // Create a notification
   const create = async (req, res) => {
     const { body } = req;
@@ -10,13 +9,11 @@ const NotificationController = () => {
       Notification.create({
         email: body.email,
         isRead: body.isRead,
-        type: body.type,              // types: upcomingEvent, updatedEvent, cancelledEvent, eventRecord, questionnaire
-        subjectId: body.subjectId,    // the subject's id (event or record) depending on the notif type
+        type: body.type, // types: upcomingEvent, updatedEvent, cancelledEvent, eventRecord, questionnaire
+        subjectId: body.subjectId, // the subject's id (event or record) depending on the notif type
         title: body.title
       });
-      return res
-        .status(200)
-        .json({ msg: "Successfully added a notification" });
+      return res.status(200).json({ msg: "Successfully added a notification" });
     } catch (err) {
       console.log(err);
       return res.status(500).json({ msg: "Internal server error" });
@@ -65,8 +62,8 @@ const NotificationController = () => {
     }
   };
 
-   // Get unread notifications for a user
-   const getUnreadNotifications = async (req, res) => {
+  // Get unread notifications for a user
+  const getUnreadNotifications = async (req, res) => {
     const { email } = req.params;
     try {
       const notifications = await Notification.findAll({
@@ -79,12 +76,31 @@ const NotificationController = () => {
     }
   };
 
+  // Return 0 or 1 to notify user if there are any new notifications
+  const getNotificationFlag = async (req, res) => {
+    const { email } = req.params;
+    try {
+      const notify = await Notification.findAll({
+        where: { email: email, isRead: 0 }
+      });
+      if (notify.length === 0) {
+        return res.status(200).json({ msg: 1 });
+      } else {
+        return res.status(200).json({ msg: 0 });
+      }
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({ msg: "Internal server error" });
+    }
+  };
+
   return {
     create,
     update,
     getAll,
     getNotifications,
-    getUnreadNotifications
+    getUnreadNotifications,
+    getNotificationFlag
   };
 };
 

@@ -1,4 +1,5 @@
 const WalkingRecord = require("../models/WalkingRecord");
+const Notification = require("../models/Notification");
 
 // walking record controller
 const WalkingRecordController = () => {
@@ -6,26 +7,35 @@ const WalkingRecordController = () => {
   const create = async (req, res) => {
     const { body } = req;
     try {
-      WalkingRecord.create({
-        organizer: body.organizer,
-        fullname: body.organizer,
-        title: body.title,
-        email: body.email,
-        venue: body.venue,
-        date: body.date,
-        location: body.location.streetName,
-        start_time: body.start_time,
-        end_time: body.end_time,
-        distance: body.distance,
-        duration: body.duration,
-        intensity: body.intensity,
-        walk_rating: body.walk_rating,
-        walk_rating_comment: body.walk_rating_comment,
-        location_rating: body.location_rating,
-        location_rating_comment: body.location_rating_comment,
-        completed: body.completed,
-        total_attendees: body.total_attendees
-      });
+      WalkingRecord.create(
+        {
+          organizer: body.organizer,
+          fullname: body.organizer,
+          title: body.title,
+          email: body.email,
+          venue: body.venue,
+          date: body.date,
+          location: body.location.streetName,
+          start_time: body.start_time,
+          end_time: body.end_time,
+          distance: body.distance,
+          duration: body.duration,
+          intensity: body.intensity,
+          walk_rating: body.walk_rating,
+          walk_rating_comment: body.walk_rating_comment,
+          location_rating: body.location_rating,
+          location_rating_comment: body.location_rating_comment,
+          completed: body.completed,
+          total_attendees: body.total_attendees
+        },
+        {
+          include: [
+            {
+              model: Notification
+            }
+          ]
+        }
+      );
 
       return res
         .status(200)

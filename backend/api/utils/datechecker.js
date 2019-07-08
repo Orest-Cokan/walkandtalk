@@ -1,43 +1,23 @@
 // Bad way to check the time
-const time = (now, event_time) => {
-  if (
-    now.slice(-2).toLowerCase() == "am" &&
-    event_time.slice(-2).toLowerCase() == "am"
-  ) {
-    if (now.slice(-7) >= event_time.slice(-7)) {
-      return true;
-    } else {
-      return false;
-    }
-  } else if (
-    now.slice(-2).toLowerCase() == "am" &&
-    event_time.slice(-2).toLowerCase() == "pm"
-  ) {
+const time = (dt1, dt2) => {
+  var jdt1 = Date.parse("20 Aug 2000 " + dt1);
+  var jdt2 = Date.parse("20 Aug 2000 " + dt2);
+  console.log(dt1, "is this shwon");
+  console.log(dt2, "is this shown");
+  if (isNaN(jdt1)) {
+    console.log(jdt1 + "we are NAN");
     return false;
-  } else if (
-    now.slice(-2).toLowerCase() == "pm" &&
-    event_time.slice(-2).toLowerCase() == "am"
-  ) {
+  }
+  if (isNaN(jdt2)) {
+    console.log(jdt2 + "WE ARE NAN");
+    return false;
+  }
+  if (jdt1 > jdt2) {
+    console.log(jdt1 + "\n" + jdt2);
     return true;
-  } else if (
-    now.slice(-2).toLowerCase() == "pm" &&
-    event_time.slice(-2).toLowerCase() == "pm"
-  ) {
-    if (
-      now.slice(-2).toLowerCase() == "pm" &&
-      event_time.slice(-7, -5) == "12" &&
-      event_time.slice(-2).toLowerCase() == "pm" &&
-      now.slice(-7, -5) == "12"
-    ) {
-      return true;
-    } else if (now.slice(-7, -5) == "12" && event_time != "12") {
-      return false;
-    }
-    if (now.slice(-7) >= event_time.slice(-7)) {
-      return true;
-    } else {
-      return false;
-    }
+  } else {
+    console.log(jdt1 + "\n" + jdt2);
+    return false;
   }
 };
 
