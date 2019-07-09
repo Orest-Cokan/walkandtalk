@@ -6,9 +6,9 @@ import { Platform } from "react-native";
 // http://142.244.87.142:2019/ server
 const getIP = () => {
   if (Platform.OS === "android") {
-    return "http://10.0.2.2:2019/";
+    return "http://142.244.87.142:2019/";
   } else if (Platform.OS === "ios") {
-    return "http://127.0.0.1:2019/";
+    return "http://142.244.87.142:2019/";
   } else {
     return "http://142.244.87.142:2019/";
   }
