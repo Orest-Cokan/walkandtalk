@@ -9,6 +9,8 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { createEvent } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import tags from "../../constants/Tags";
+import SectionedMultiSelect from "react-native-sectioned-multi-select";
 
 import {
   StyledText as Text,
@@ -34,6 +36,7 @@ class AddEventScreen extends Component {
       location: null,
       lat: null,
       long: null,
+      tags: [],
 
       // Error messages
       errorTitle: null,
@@ -216,6 +219,7 @@ class AddEventScreen extends Component {
         this.state.startTime,
         this.state.endTime,
         this.state.description,
+        this.state.tags,
         this.state.intensity,
         this.state.venue,
         this.state.location,
@@ -230,6 +234,11 @@ class AddEventScreen extends Component {
   // When cancel button is clicked
   onCancel = () => {
     Actions.home();
+  };
+
+  // When a new tag is selected
+  onSelectedItemsChange = tags => {
+    this.setState({ tags });
   };
 
   render() {
@@ -388,6 +397,37 @@ class AddEventScreen extends Component {
                 accessibilityLabel="createEventDescription"
               />
             </View>
+          </View>
+
+          {/* Tags */}
+          <View>
+            <SectionedMultiSelect
+              items={tags}
+              uniqueKey="id"
+              subKey="children"
+              selectText="Add some tags..."
+              showDropDowns={true}
+              expandDropDowns={true}
+              hideSearch={true}
+              readOnlyHeadings={true}
+              colors={{
+                primary: "#a680b8",
+                text: "grey",
+                selectToggleTextColor: "grey"
+              }}
+              styles={{
+                selectToggle: {
+                  width: "100%",
+                  marginBottom: 10,
+                  marginVertical: 10
+                },
+                container: { height: "50%" },
+                chipContainer: { marginBottom: 10 }
+              }}
+              itemFontFamily={ScreenStyleSheet.formInfo}
+              onSelectedItemsChange={this.onSelectedItemsChange}
+              selectedItems={this.state.tags}
+            />
           </View>
 
           {/* Location */}

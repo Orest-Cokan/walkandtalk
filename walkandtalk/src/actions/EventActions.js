@@ -72,6 +72,7 @@ export const createEvent = (
   start_time,
   end_time,
   description,
+  tags,
   intensity,
   venue,
   location,
@@ -89,6 +90,7 @@ export const createEvent = (
       start_time: start_time,
       end_time: end_time,
       description: description,
+      tags: tags.toString(),
       intensity: intensity,
       venue: venue,
       location: {

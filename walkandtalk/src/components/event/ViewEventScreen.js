@@ -22,6 +22,8 @@ import { deleteEvent } from "../../actions/EventActions";
 import { sendNotification } from "../../actions/NotificationActions";
 import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 import MapView from "react-native-maps";
+import tags from "../../constants/Tags";
+import SectionedMultiSelect from "react-native-sectioned-multi-select";
 
 class ViewEventScreen extends Component {
   constructor(props) {
@@ -43,6 +45,7 @@ class ViewEventScreen extends Component {
       intensity: this.props.event.intensity,
       attending: this.props.event.total_attendees,
       description: this.props.event.description,
+      tags: this.props.event.tags.split(", "),
       attendees: this.props.event.attendees,
       badge: this.props.badge,
       goingAlert: false,
@@ -215,6 +218,12 @@ class ViewEventScreen extends Component {
     });
     return attendee_list;
   }
+
+  // When a new tag is selected
+  onSelectedItemsChange = tags => {
+    this.setState({ tags });
+  };
+
   // Conditional rendering for the buttons present on view event
   // If going or not going, will display those buttons
   // Otherwise, you're hosting the event and edit and delete buttons will be displayed
@@ -272,6 +281,7 @@ class ViewEventScreen extends Component {
   }
 
   render() {
+    console.log(this.state.tags + "these are our tags");
     return (
       <Container>
         {/* Header */}
@@ -367,6 +377,31 @@ class ViewEventScreen extends Component {
                 </Text>
               </TouchableOpacity>
             </View>
+          </View>
+
+          {/* Tags */}
+          <View>
+            <SectionedMultiSelect
+              items={tags}
+              uniqueKey="id"
+              subKey="children"
+              showDropDowns={true}
+              expandDropDowns={true}
+              hideSearch={true}
+              readOnlyHeadings={true}
+              hideSelect={true}
+              colors={{
+                primary: "#a680b8",
+                text: "grey",
+                selectToggleTextColor: "grey"
+              }}
+              styles={{
+                selectToggle: { width: "100%" },
+                container: { height: "50%" }
+              }}
+              onSelectedItemsChange={this.onSelectedItemsChange}
+              selectedItems={this.state.tags}
+            />
           </View>
 
           {/* On screen separator */}

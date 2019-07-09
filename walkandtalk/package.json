@@ -40,7 +40,7 @@
     "react-native-push-notification": "^3.1.2",
     "react-native-radio-buttons": "^1.0.0",
     "react-native-router-flux": "^4.0.6",
-    "react-native-sectioned-multi-select": "^0.6.5",
+    "react-native-sectioned-multi-select": "^0.6.7",
     "react-native-switch-selector": "^1.1.12",
     "react-native-vector-icons": "^4.6.0",
     "react-native-webview": "^5.3.1",

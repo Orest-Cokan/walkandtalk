@@ -13,6 +13,7 @@ const WalkingEventController = () => {
         email: body.email,
         title: body.title,
         description: body.description,
+        tags: body.tags,
         date: body.date,
         start_time: body.start_time,
         end_time: body.end_time,

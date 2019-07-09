@@ -29,6 +29,10 @@ const WalkingEvent = sequelize.define(tableName, {
     type: Sequelize.STRING,
     allowNull: false
   },
+  tags: {
+    type: Sequelize.STRING,
+    allowNull: true
+  },
   date: {
     type: Sequelize.STRING,
     allowNull: false

@@ -35,7 +35,7 @@ const RouterComponent = () => (
   <Router>
     <Stack key="root">
       <Stack key="auth" hideNavBar>
-        <Scene key="login" component={AuthScreen} />
+        <Scene key="login" component={AddEventScreen} />
         <Scene key="signup" component={SignupScreen} />
         <Scene key="consent" component={ConsentScreen} />
       </Stack>
