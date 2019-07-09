@@ -16,6 +16,7 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
 import { StyledText as Text } from "../../constants/StyledText";
 import { RecordInfo as Record } from "./RecordInfo";
+import MapView from "react-native-maps";
 
 class ViewPastEventRecord extends Component {
   constructor(props) {
@@ -28,6 +29,8 @@ class ViewPastEventRecord extends Component {
       startTime: this.props.record.start_time,
       endTime: this.props.record.end_time,
       location: this.props.record.location,
+      long: this.props.record.long,
+      lat: this.props.record.lat,
       numAttendees: this.props.record.total_attendees,
       completed: this.props.record.completed,
       venue: this.props.record.venue,
@@ -128,6 +131,27 @@ class ViewPastEventRecord extends Component {
             </View>
           </View>
 
+          <MapView
+            style={ScreenStyleSheet.map}
+            initialRegion={{
+              latitude: this.state.lat,
+              longitude: this.state.long,
+              latitudeDelta: 0.0422,
+              longitudeDelta: 0.0421
+            }}
+          >
+            <MapView.Marker
+              coordinate={{
+                latitude: this.state.lat,
+                longitude: this.state.long
+              }}
+            >
+              <View style={ScreenStyleSheet.radius}>
+                <View style={ScreenStyleSheet.marker} />
+              </View>
+            </MapView.Marker>
+          </MapView>
+
           {/* On screen separator */}
           <View style={ScreenStyleSheet.lineSeparator} />
 
@@ -145,20 +169,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(ViewPastEventRecord);
-
-const styles = {
-  controls: {
-    marginBottom: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  buttonContainer: {
-    marginVertical: 10,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "48%",
-    borderRadius: 10
-  }
-};

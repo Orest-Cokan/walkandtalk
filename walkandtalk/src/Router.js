@@ -25,6 +25,8 @@ import ViewEventScreen from "./components/event/ViewEventScreen";
 import Dispatch from "./components/form/FormDispatch";
 import EditEventSceen from "./components/event/EditEventScreen";
 import EventRatingScreen from "./components/sidebar/EventRatingScreen";
+import EventRatingList from "./components/sidebar/EventRatingList";
+
 // icon
 import IconWithBadge from "./constants/IconWithBadge";
 
@@ -133,7 +135,8 @@ const RouterComponent = () => (
             <Scene key="pastEvents" component={PastEventListScreen} />
             <Scene key="viewPastEvent" component={ViewPastEventRecord} />
             <Scene key="helplines" component={HelplineScreen} />
-            <Scene key="eventRatings" component={EventRatingScreen} />
+            <Scene key="eventRatings" component={EventRatingList} />
+            <Scene key="eventRatingScreen" component={EventRatingScreen} />
           </Scene>
         </Tabs>
         <Scene key="questionnaire" component={QuestionnaireScreen} />

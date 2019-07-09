@@ -391,7 +391,7 @@ class ViewEventScreen extends Component {
           </View>
 
           <MapView
-            style={styles.map}
+            style={ScreenStyleSheet.map}
             initialRegion={{
               latitude: this.state.lat,
               longitude: this.state.long,
@@ -405,8 +405,8 @@ class ViewEventScreen extends Component {
                 longitude: this.state.long
               }}
             >
-              <View style={styles.radius}>
-                <View style={styles.marker} />
+              <View style={ScreenStyleSheet.radius}>
+                <View style={ScreenStyleSheet.marker} />
               </View>
             </MapView.Marker>
           </MapView>
@@ -563,34 +563,5 @@ const styles = {
     textAlign: "center",
     fontWeight: "bold",
     paddingTop: 15
-  },
-  map: {
-    height: 250,
-    marginLeft: 15,
-    marginRight: 15,
-    marginBottom: 10
-  },
-  radius: {
-    height: 50,
-    width: 50,
-    borderRadius: 50 / 2,
-    overflow: "hidden",
-    backgroundColor: "rgba(0, 122, 255, 0.1)",
-    borderWidth: 1,
-    borderColor: "rgba(0, 112, 255, 0.3)",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  marker: {
-    height: 20,
-    width: 20,
-    borderWidth: 3,
-    borderColor: "white",
-    borderRadius: 20 / 2,
-    overflow: "hidden",
-    backgroundColor: "#007AFF"
-  },
-  container: {
-    flex: 1
   }
 };

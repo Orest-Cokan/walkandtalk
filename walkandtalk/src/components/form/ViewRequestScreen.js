@@ -145,6 +145,7 @@ class ViewRequestScreen extends Component {
         Alert.alert(
           "The request from " + this.state.fullname + " has been approved."
         );
+        Actions.reset("mainRequestPage");
         return;
       }
     }
@@ -168,6 +169,7 @@ class ViewRequestScreen extends Component {
     Alert.alert(
       "The request from " + this.state.fullname + " has been declined."
     );
+    Actions.reset("mainRequestPage");
   };
 
   // Navigate back to Requests page

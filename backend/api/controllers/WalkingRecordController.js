@@ -16,6 +16,8 @@ const WalkingRecordController = () => {
           venue: body.venue,
           date: body.date,
           location: body.location.streetName,
+          lat: body.location.lat,
+          long: body.location.long,
           start_time: body.start_time,
           end_time: body.end_time,
           distance: body.distance,

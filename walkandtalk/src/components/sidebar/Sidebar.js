@@ -84,7 +84,7 @@ class SideBar extends Component {
             <Text style={ScreenStyleSheet.sideBarTextItem}>Past Events</Text>
           </ListItem>
 
-          {/* Event Ratings */}
+          {/* Location Ratings */}
           <ListItem button={true} onPress={() => this.goToEventRatings()}>
             <Image
               style={ScreenStyleSheet.headerIcon}

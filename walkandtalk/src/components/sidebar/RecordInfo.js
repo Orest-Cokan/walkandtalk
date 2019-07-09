@@ -56,13 +56,13 @@ class RecordInfo extends React.Component {
     });
     let default_walkRating = null;
     walkRatings.map((walkRating, index) => {
-      if (this.props.record.walkRating == walkRating.value) {
+      if (this.props.record.walk_rating == walkRating.value) {
         default_walkRating = index;
       }
     });
     let default_locationRating = null;
     locationRatings.map((locationRating, index) => {
-      if (this.props.record.locationRating == locationRating.value) {
+      if (this.props.record.location_rating == locationRating.value) {
         default_locationRating = index;
       }
     });

@@ -23,6 +23,8 @@ const WalkingRecord = sequelize.define(tableName, {
   duration: Sequelize.INTEGER,
   start_time: Sequelize.STRING,
   location: Sequelize.STRING,
+  lat: Sequelize.FLOAT,
+  long: Sequelize.FLOAT,
   intensity: Sequelize.STRING,
   walk_rating: Sequelize.STRING,
   walk_rating_comment: Sequelize.STRING,

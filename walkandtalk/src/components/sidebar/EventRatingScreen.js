@@ -1,6 +1,6 @@
-// Past Event List Screen View
+// View Past Event Record Screen
 import React, { Component } from "react";
-import { Image, TouchableOpacity } from "react-native";
+import { View, Image } from "react-native";
 import { connect } from "react-redux";
 import {
   Container,
@@ -14,58 +14,42 @@ import {
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
-import BaseCard from "../../cardview/baseCard";
-import { getAllRecords } from "../../actions/RecordActions";
-import Loader from "../../constants/loader";
+import { StyledText as Text } from "../../constants/StyledText";
+import MapView from "react-native-maps";
 
-class PastEventListScreen extends Component {
+class EventRatingScreen extends Component {
   constructor(props) {
     super(props);
-    this.props.getRecords = this.props.getAllRecords(this.props.token);
+
     this.state = {
-      loading: true
+      organizer: this.props.record.organizer,
+      title: this.props.record.title,
+      date: this.props.record.date,
+      startTime: this.props.record.start_time,
+      endTime: this.props.record.end_time,
+      location: this.props.record.location,
+      long: this.props.record.long,
+      lat: this.props.record.lat,
+      numAttendees: this.props.record.total_attendees,
+      completed: this.props.record.completed,
+      venue: this.props.record.venue,
+      distance: this.props.record.distance,
+      duration: this.props.record.duration,
+      intensity: this.props.record.intensity,
+      walkRating: this.props.record.walk_rating,
+      locationRating: this.props.record.location_rating
     };
   }
 
-  async componentDidMount() {
-    await this.props.getAllRecords;
-    this.setState({ loading: false });
-  }
-
-  viewPastEvent(index) {
-    Actions.viewPastEvent({
-      record: this.props.records[index]
-    });
-  }
-
-  getPastEvents() {
-    let past_events = [];
-    this.props.records.map((past_event, index) => {
-      past_events.unshift(
-        <TouchableOpacity
-          key={index}
-          onPress={this.viewPastEvent.bind(this, index)}
-        >
-          <BaseCard
-            key={past_event.id}
-            date={past_event.date}
-            start_time={past_event.start_time}
-            title={past_event.title}
-            location={past_event.location}
-          />
-        </TouchableOpacity>
-      );
-    });
-    return past_events;
-  }
-
   onBack = () => {
+    // Navigate back to Past Events List screen
     Actions.pop();
   };
+
   render() {
+    console.log(this.state.long, this.state.lat);
     return (
       <Container>
-        <Loader loading={this.state.loading} />
         {/* Header */}
         <Header
           style={ScreenStyleSheet.header}
@@ -81,15 +65,96 @@ class PastEventListScreen extends Component {
             </Button>
           </Left>
           <Body style={ScreenStyleSheet.headerBody}>
-            <Title style={ScreenStyleSheet.headerTitle}>Past Events</Title>
+            <Title style={ScreenStyleSheet.headerTitle}>
+              {this.state.title}
+            </Title>
           </Body>
           <Right style={ScreenStyleSheet.headerSides} />
         </Header>
-        {!this.state.loading && (
-          <Content contentContainerStyle={ScreenStyleSheet.content}>
-            {this.getPastEvents()}
-          </Content>
-        )}
+
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
+          {/* Event info */}
+
+          {/* Date and time */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.eventTimeInfo}>
+                {this.state.date.toUpperCase()} {" AT "}
+                {this.state.startTime.toUpperCase()} {" - "}
+                {this.state.endTime.toUpperCase()}
+              </Text>
+            </View>
+          </View>
+          {/* Title */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.eventTitleInfo}>
+                {this.state.title}
+              </Text>
+            </View>
+          </View>
+          {/* Location */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/pin.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.infoByIcon}>
+                {this.state.location}
+              </Text>
+            </View>
+          </View>
+          {/* Organizer */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/default-profile.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.infoByIcon}>
+                {this.state.organizer}
+              </Text>
+            </View>
+          </View>
+          {/* Number of attendees */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              source={require("../../assets/icons/user-group.png")}
+            />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.numAttendees}>
+                {this.state.numAttendees} people
+                <Text> attended this event.</Text>
+              </Text>
+            </View>
+          </View>
+
+          <MapView
+            style={ScreenStyleSheet.map}
+            initialRegion={{
+              latitude: this.state.lat,
+              longitude: this.state.long,
+              latitudeDelta: 0.0422,
+              longitudeDelta: 0.0421
+            }}
+          >
+            <MapView.Marker
+              coordinate={{
+                latitude: this.state.lat,
+                longitude: this.state.long
+              }}
+            >
+              <View style={ScreenStyleSheet.radius}>
+                <View style={ScreenStyleSheet.marker} />
+              </View>
+            </MapView.Marker>
+          </MapView>
+
+          {/* On screen separator */}
+          <View style={ScreenStyleSheet.lineSeparator} />
+        </Content>
       </Container>
     );
   }
@@ -97,13 +162,25 @@ class PastEventListScreen extends Component {
 
 const mapStateToProps = state => {
   return {
-    records: state.record.all_records,
-    user: state.user,
-    token: state.token.token
+    user: state.user
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { getAllRecords }
-)(PastEventListScreen);
+export default connect(mapStateToProps)(EventRatingScreen);
+
+const styles = {
+  controls: {
+    marginBottom: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
+  },
+  buttonContainer: {
+    marginVertical: 10,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "48%",
+    borderRadius: 10
+  }
+};
