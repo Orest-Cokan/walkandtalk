@@ -45,7 +45,7 @@ class ViewEventScreen extends Component {
       intensity: this.props.event.intensity,
       attending: this.props.event.total_attendees,
       description: this.props.event.description,
-      tags: this.props.event.tags.split(", "),
+      tags: JSON.parse("[" + this.props.event.tags + "]"),
       attendees: this.props.event.attendees,
       badge: this.props.badge,
       goingAlert: false,
@@ -380,28 +380,37 @@ class ViewEventScreen extends Component {
           </View>
 
           {/* Tags */}
-          <View>
-            <SectionedMultiSelect
-              items={tags}
-              uniqueKey="id"
-              subKey="children"
-              showDropDowns={true}
-              expandDropDowns={true}
-              hideSearch={true}
-              readOnlyHeadings={true}
-              hideSelect={true}
-              colors={{
-                primary: "#a680b8",
-                text: "grey",
-                selectToggleTextColor: "grey"
-              }}
-              styles={{
-                selectToggle: { width: "100%" },
-                container: { height: "50%" }
-              }}
-              onSelectedItemsChange={this.onSelectedItemsChange}
-              selectedItems={this.state.tags}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <Image
+              style={ScreenStyleSheet.iconByInfo}
+              styles={{ marginTop: 40 }}
+              source={require("../../assets/icons/tag.png")}
             />
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <View>
+                <SectionedMultiSelect
+                  items={tags}
+                  uniqueKey="id"
+                  subKey="children"
+                  hideSearch={true}
+                  readOnlyHeadings={true}
+                  hideSelect={true}
+                  chipRemoveIconComponent
+                  colors={{
+                    primary: "#a680b8",
+                    text: "grey",
+                    selectToggleTextColor: "grey"
+                  }}
+                  styles={{
+                    selectToggle: { width: "100%" },
+                    chipText: { marginRight: 10, fontSize: 12 },
+                    chipContainer: { height: 30 }
+                  }}
+                  onSelectedItemsChange={this.onSelectedItemsChange}
+                  selectedItems={this.state.tags}
+                />
+              </View>
+            </View>
           </View>
 
           {/* On screen separator */}

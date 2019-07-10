@@ -44,3 +44,14 @@ task wrapper(type: Wrapper) {
     gradleVersion = '4.6'
     distributionUrl = distributionUrl.replace("bin", "all")
 }
+
+subprojects {
+    afterEvaluate {project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion 28
+                buildToolsVersion "28.0.3"
+            }
+        }
+    }
+}

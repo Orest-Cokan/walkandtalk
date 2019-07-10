@@ -421,10 +421,17 @@ class AddEventScreen extends Component {
                   marginBottom: 10,
                   marginVertical: 10
                 },
-                container: { height: "50%" },
-                chipContainer: { marginBottom: 10 }
+                container: {
+                  height: 50,
+                  paddinHorizontal: 20
+                },
+                modalWrapper: {
+                  height: 100,
+                  width: 100
+                },
+                chipContainer: { marginBottom: 10 },
+                chipsWrapper: { width: "100%" }
               }}
-              itemFontFamily={ScreenStyleSheet.formInfo}
               onSelectedItemsChange={this.onSelectedItemsChange}
               selectedItems={this.state.tags}
             />

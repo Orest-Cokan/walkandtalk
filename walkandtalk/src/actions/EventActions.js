@@ -125,6 +125,7 @@ export const editEvent = (
   startTime,
   endTime,
   description,
+  tags,
   intensity,
   venue,
   location
@@ -136,6 +137,7 @@ export const editEvent = (
     start_time: startTime,
     end_time: endTime,
     description: description,
+    tags: tags.toString(),
     intensity: intensity,
     venue: venue,
     location: location

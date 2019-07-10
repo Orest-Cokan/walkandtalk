@@ -17,11 +17,11 @@ const tags = [
       },
       {
         name: "Chilly",
-        id: 12
+        id: 13
       },
       {
         name: "Cold",
-        id: 11
+        id: 14
       }
     ]
   }

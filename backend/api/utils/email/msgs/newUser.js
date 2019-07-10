@@ -3,7 +3,7 @@
 
 const newUserEmail = {
   from: '"Walk and Talk" cmput401walkandtalk@gmail.ca',
-  to: "cokan@ualberta.ca",
+  to: "orestcokan101@gmail.com",
   subject: "Walk and Talk",
   text: "A new user has applied to join Walk and Talk!"
 };

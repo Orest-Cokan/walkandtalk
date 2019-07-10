@@ -62,7 +62,36 @@ class ConsentScreen extends Component {
     if (!this.state.checked3) {
       this.setState({ colour3: "red" });
     }
-    if (this.state.checked1 && this.state.checked2 && this.state.checked3) {
+    if (!this.state.checked4) {
+      this.setState({ colour4: "red" });
+    }
+    if (!this.state.checked5) {
+      this.setState({ colour5: "red" });
+    }
+    if (!this.state.checked6) {
+      this.setState({ colour6: "red" });
+    }
+    if (!this.state.checked7) {
+      this.setState({ colour7: "red" });
+    }
+    if (!this.state.checked8) {
+      this.setState({ colour8: "red" });
+    }
+    if (!this.state.checked9) {
+      this.setState({ colour9: "red" });
+    }
+
+    if (
+      this.state.checked1 &&
+      this.state.checked2 &&
+      this.state.checked3 &&
+      this.state.checked4 &&
+      this.state.checked5 &&
+      this.state.checked6 &&
+      this.state.checked7 &&
+      this.state.checked8 &&
+      this.state.checked9
+    ) {
       Actions.signup();
     }
   };
@@ -257,7 +286,7 @@ class ConsentScreen extends Component {
           <CheckBox
             onClick={() => {
               this.setState({
-                checked3: !this.state.checked4
+                checked4: !this.state.checked4
               });
             }}
             isChecked={this.state.checked4}
@@ -270,7 +299,7 @@ class ConsentScreen extends Component {
           <CheckBox
             onClick={() => {
               this.setState({
-                checked3: !this.state.checked5
+                checked5: !this.state.checked5
               });
             }}
             isChecked={this.state.checked5}
@@ -283,7 +312,7 @@ class ConsentScreen extends Component {
           <CheckBox
             onClick={() => {
               this.setState({
-                checked3: !this.state.checked6
+                checked6: !this.state.checked6
               });
             }}
             isChecked={this.state.checked6}
@@ -296,7 +325,7 @@ class ConsentScreen extends Component {
           <CheckBox
             onClick={() => {
               this.setState({
-                checked3: !this.state.checked7
+                checked7: !this.state.checked7
               });
             }}
             isChecked={this.state.checked7}
@@ -307,7 +336,7 @@ class ConsentScreen extends Component {
           <CheckBox
             onClick={() => {
               this.setState({
-                checked3: !this.state.checked8
+                checked8: !this.state.checked8
               });
             }}
             isChecked={this.state.checked8}
@@ -320,7 +349,7 @@ class ConsentScreen extends Component {
           <CheckBox
             onClick={() => {
               this.setState({
-                checked3: !this.state.checked9
+                checked9: !this.state.checked9
               });
             }}
             isChecked={this.state.checked9}

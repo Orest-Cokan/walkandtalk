@@ -26,11 +26,14 @@ import { editEvent } from "../../actions/EventActions";
 import { sendNotification } from "../../actions/NotificationActions";
 import { Actions } from "react-native-router-flux";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import SectionedMultiSelect from "react-native-sectioned-multi-select";
+import tags from "../../constants/Tags";
 
 class EditEventScreen extends Component {
   constructor(props) {
     super(props);
     // Mapping the passed props to the component state
+
     this.state = {
       id: this.props.event.id,
       email: this.props.event.email,
@@ -43,6 +46,7 @@ class EditEventScreen extends Component {
       intensity: this.props.event.intensity,
       venue: this.props.event.venue,
       description: this.props.event.description,
+      tags: JSON.parse("[" + this.props.event.tags + "]"),
       notifType: "updatedEvent",
 
       // Error messages
@@ -228,6 +232,7 @@ class EditEventScreen extends Component {
           this.state.startTime,
           this.state.endTime,
           this.state.description,
+          this.state.tags,
           this.state.intensity,
           this.state.venue,
           this.state.location
@@ -248,6 +253,11 @@ class EditEventScreen extends Component {
 
   onCancel = () => {
     Actions.homeTab();
+  };
+
+  // When a new tag is selected
+  onSelectedItemsChange = tags => {
+    this.setState({ tags });
   };
 
   render() {
@@ -404,6 +414,43 @@ class EditEventScreen extends Component {
                 {this.state.description}
               </TextInput>
             </View>
+          </View>
+
+          {/* Tags */}
+          <View>
+            <SectionedMultiSelect
+              items={tags}
+              uniqueKey="id"
+              subKey="children"
+              selectText="Add some tags..."
+              showDropDowns={true}
+              expandDropDowns={true}
+              readOnlyHeadings={true}
+              colors={{
+                primary: "#a680b8",
+                text: "grey",
+                selectToggleTextColor: "grey"
+              }}
+              styles={{
+                selectToggle: {
+                  width: "100%",
+                  marginBottom: 10,
+                  marginVertical: 10
+                },
+                container: {
+                  height: 50,
+                  paddinHorizontal: 20
+                },
+                modalWrapper: {
+                  height: 100,
+                  width: 100
+                },
+                chipContainer: { marginBottom: 10 },
+                chipsWrapper: { width: "100%" }
+              }}
+              onSelectedItemsChange={this.onSelectedItemsChange}
+              selectedItems={this.state.tags}
+            />
           </View>
 
           {/* Intensity */}

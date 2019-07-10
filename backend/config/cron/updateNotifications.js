@@ -11,7 +11,7 @@ const rejectEmails = ["cokan@ualberta.ca", "beate@gmail.com"];
 
 // cron job check for events to delete every hour
 const task = () =>
-  cron.schedule("* * * * *", () => {
+  cron.schedule("* 1 * * *", () => {
     // vars
     let nukedTotal = 0;
     let recordsMade = 0;
