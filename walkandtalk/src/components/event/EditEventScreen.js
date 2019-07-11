@@ -27,7 +27,7 @@ import { sendNotification } from "../../actions/NotificationActions";
 import { Actions } from "react-native-router-flux";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
-import tags from "../../constants/Tags";
+import { tags } from "../../constants/Tags";
 
 class EditEventScreen extends Component {
   constructor(props) {
@@ -426,6 +426,17 @@ class EditEventScreen extends Component {
               showDropDowns={true}
               expandDropDowns={true}
               readOnlyHeadings={true}
+              headerComponent={
+                <Header
+                  style={ScreenStyleSheet.header}
+                  androidStatusBarColor="#A680B8"
+                  androidStatusBarStyle="light-content"
+                >
+                  <Body style={ScreenStyleSheet.headerBody}>
+                    <Title>Filter</Title>
+                  </Body>
+                </Header>
+              }
               colors={{
                 primary: "#a680b8",
                 text: "grey",

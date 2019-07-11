@@ -1,6 +1,12 @@
 // Create Event Screen View
 import React, { Component } from "react";
-import { StyleSheet, View, TouchableOpacity, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Alert,
+  Dimensions
+} from "react-native";
 import { connect } from "react-redux";
 import { Container, Header, Body, Title, Content } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
@@ -9,7 +15,7 @@ import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { createEvent } from "../../actions/EventActions";
 import { Actions } from "react-native-router-flux";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import tags from "../../constants/Tags";
+import { tags } from "../../constants/Tags";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 
 import {
@@ -21,6 +27,7 @@ class AddEventScreen extends Component {
   constructor(props) {
     super(props);
     // State
+    console.log(tags);
     this.state = {
       organizer: this.props.user.user.fullname,
       email: this.props.user.user.email,
@@ -406,13 +413,23 @@ class AddEventScreen extends Component {
               uniqueKey="id"
               subKey="children"
               selectText="Add some tags..."
-              showDropDowns={true}
+              showDropDowns={false}
               expandDropDowns={true}
+              headerComponent={
+                <Header
+                  style={ScreenStyleSheet.header}
+                  androidStatusBarColor="#A680B8"
+                  androidStatusBarStyle="light-content"
+                >
+                  <Body style={ScreenStyleSheet.headerBody}>
+                    <Title>Filter</Title>
+                  </Body>
+                </Header>
+              }
               hideSearch={true}
               readOnlyHeadings={true}
               colors={{
                 primary: "#a680b8",
-                text: "grey",
                 selectToggleTextColor: "grey"
               }}
               styles={{
@@ -422,8 +439,7 @@ class AddEventScreen extends Component {
                   marginVertical: 10
                 },
                 container: {
-                  height: 50,
-                  paddinHorizontal: 20
+                  marginBottom: 300
                 },
                 modalWrapper: {
                   height: 100,

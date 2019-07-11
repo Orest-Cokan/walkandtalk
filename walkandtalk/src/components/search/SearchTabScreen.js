@@ -30,63 +30,7 @@ import { fetchNonUserEvents } from "../../actions/EventActions";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 import { Actions } from "react-native-router-flux";
 import Loader from "../../constants/loader";
-
-//Below are the items in the filters
-// For Intensity - Slow, Intermediate, Brisk
-// For Venue - Indoor, Outdoor
-// For Distance - 5km, 10km, 15km
-const items = [
-  {
-    name: "Intensity",
-    id: 0,
-    children: [
-      {
-        name: "Slow",
-        id: 11
-      },
-      {
-        name: "Intermediate",
-        id: 22
-      },
-      {
-        name: "Brisk",
-        id: 33
-      }
-    ]
-  },
-  {
-    name: "Venue",
-    id: 2,
-    children: [
-      {
-        name: "Indoor",
-        id: 44
-      },
-      {
-        name: "Outdoor",
-        id: 55
-      }
-    ]
-  },
-  {
-    name: "Within",
-    id: 1,
-    children: [
-      {
-        name: "5 km",
-        id: 66
-      },
-      {
-        name: "10 km",
-        id: 77
-      },
-      {
-        name: "15 km",
-        id: 88
-      }
-    ]
-  }
-];
+import { items } from "../../constants/Tags";
 
 // Returns user's current location
 // Defaults to San Francisco on simulators
@@ -224,11 +168,70 @@ class SearchTabScreen extends Component {
         });
         results = results.concat(v1);
       }
-      if (v == 44) {
+      if (v == 55) {
         var v2 = events.filter(event => {
           return event.venue == "Outdoor";
         });
         results = results.concat(v2);
+      }
+    });
+    return results;
+  };
+
+  //Takes in an array of tag filter ids selected
+  // Returns an array of events that contain the filters selected
+  check_tags = t_arr => {
+    var results = [];
+    t_arr.forEach(function(v) {
+      if (v == 100) {
+        events.forEach(event => {
+          const tags = JSON.parse("[" + event.tags + "]");
+          tags.forEach(tag => {
+            if (tag == 100) {
+              results.push(event);
+            }
+          });
+        });
+      }
+      if (v == 101) {
+        events.forEach(event => {
+          const tags = JSON.parse("[" + event.tags + "]");
+          tags.forEach(tag => {
+            if (tag == 101) {
+              results.push(event);
+            }
+          });
+        });
+      }
+      if (v == 102) {
+        events.forEach(event => {
+          const tags = JSON.parse("[" + event.tags + "]");
+          tags.forEach(tag => {
+            if (tag == 102) {
+              results.push(event);
+            }
+          });
+        });
+      }
+      if (v == 103) {
+        events.forEach(event => {
+          const tags = JSON.parse("[" + event.tags + "]");
+          tags.forEach(tag => {
+            if (tag == 103) {
+              results.push(event);
+            }
+          });
+        });
+      }
+      if (v == 104) {
+        events.forEach(event => {
+          const tags = JSON.parse("[" + event.tags + "]");
+          tags.forEach(tag => {
+            if (tag == 104) {
+              results.push(event);
+            }
+          });
+        });
       }
     });
     return results;
@@ -268,6 +271,11 @@ class SearchTabScreen extends Component {
             results.push(events[j]);
           }
         }
+        if (d_arr[i] == 99) {
+          if (distance <= 20) {
+            results.push(events[j]);
+          }
+        }
       }
     }
     return results;
@@ -291,6 +299,7 @@ class SearchTabScreen extends Component {
     var v_arr = [];
     var i_arr = [];
     var d_arr = [];
+    var t_arr = [];
 
     //sort selected filters into categories
     filters.forEach(function(f) {
@@ -303,9 +312,12 @@ class SearchTabScreen extends Component {
       if (f == 66 || f == 77 || f == 88) {
         d_arr.push(f);
       }
+      if (f == 100 || f == 101 || f == 102 || f == 103 || f == 104) {
+        t_arr.push(f);
+      }
     });
 
-    var howmany = 3;
+    var howmany = 4;
 
     if (i_arr.length != 0) {
       temp = this.check_intensity(i_arr);
@@ -328,6 +340,13 @@ class SearchTabScreen extends Component {
       howmany = howmany - 1;
     }
 
+    if (t_arr.length != 0) {
+      temp = this.check_tags(t_arr);
+      results.push(temp);
+    } else {
+      howmany = howmany - 1;
+    }
+
     total_results = this.combineResults(results, howmany);
 
     //SubmitSearch function to save to state
@@ -340,7 +359,7 @@ class SearchTabScreen extends Component {
   // If three filters selected - total_arr == 3, check for where items exist in first 2 arrays, then repeat again with the last array and return those
   combineResults = (results, total_arr) => {
     var combine_res = [];
-    if (total_arr == 1) {
+    if (total_arr == 1 || total_arr == 4) {
       return results[0];
     }
     //Two arrays results [0] and results [1]

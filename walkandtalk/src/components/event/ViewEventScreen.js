@@ -22,7 +22,7 @@ import { deleteEvent } from "../../actions/EventActions";
 import { sendNotification } from "../../actions/NotificationActions";
 import { addAttendees, removeAttendees } from "../../actions/AttendeeActions";
 import MapView from "react-native-maps";
-import tags from "../../constants/Tags";
+import { tags } from "../../constants/Tags";
 import SectionedMultiSelect from "react-native-sectioned-multi-select";
 
 class ViewEventScreen extends Component {
@@ -30,6 +30,7 @@ class ViewEventScreen extends Component {
     super(props);
     console.log(props + "these are the props");
     console.log(this.props.event.location.lat, this.props.event.location.long);
+    console.log(tags);
     // Mapping the passed props to the component state
     this.state = {
       id: this.props.event.id,
@@ -281,7 +282,6 @@ class ViewEventScreen extends Component {
   }
 
   render() {
-    console.log(this.state.tags + "these are our tags");
     return (
       <Container>
         {/* Header */}
