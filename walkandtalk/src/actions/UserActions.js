@@ -308,3 +308,21 @@ export const passwordRequest = email => {
       });
   };
 };
+
+// action to login a user
+export const getExcelData = (email, token) => {
+  return async dispatch => {
+    var ip = getIP();
+    var url = ip + "private/excel/" + email;
+    console.log("this is the url" + url);
+    await axios
+      .get(url, { headers: { Authorization: "Bearer " + token } })
+      .then(res => {
+        Alert.alert("Sucessfully sent the email!");
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
+      });
+  };
+};

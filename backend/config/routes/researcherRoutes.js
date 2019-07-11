@@ -8,10 +8,7 @@ const researcherRoutes = {
   "POST /deny": "ResearcherController.denyUser",
 
   "GET /registered": "ResearcherController.getRegisteredUsers",
-  "GET /unregistered": "ResearcherController.getUnregisteredUsers",
-
-  // Excel route
-  "GET /excel": "ExcelController.getData"
+  "GET /unregistered": "ResearcherController.getUnregisteredUsers"
 };
 
 module.exports = researcherRoutes;

@@ -1,5 +1,7 @@
 const WalkingRecord = require("../models/WalkingRecord");
 const Notification = require("../models/Notification");
+const WalkingEvent = require("../models/WalkingEvent");
+const Review = require("../models/Review");
 
 // walking record controller
 const WalkingRecordController = () => {
@@ -105,6 +107,11 @@ const WalkingRecordController = () => {
   // update record
   const update = async (req, res) => {
     const { body } = req;
+    const walkingevent = await WalkingEvent.findByPk(body.walkingId, {
+      include: [Review]
+    });
+    console.log(walkingevent.title + "make sure we have the walking event");
+
     WalkingRecord.update(
       {
         duration: body.duration,
@@ -117,12 +124,21 @@ const WalkingRecordController = () => {
         location_rating_comment: body.location_rating_comment,
         completed: body.completed
       },
-      { returning: true, where: { email: body.email, id: body.id } }
+      { where: { email: body.email, id: body.id } }
     )
       .then(self => {
-        return res.status(200).json(self[1]);
+        Review.create({
+          location_comment: body.walk_rating_comment,
+          location_rating: body.location_rating
+        }).then(resp => {
+          walkingevent.addReviews(resp);
+        });
+        return res
+          .status(200)
+          .json({ msg: "Succesfully updated the Walking Record!" });
       })
-      .catch(function(err) {
+      .catch(err => {
+        console.log(err);
         return res.status(500).json({ msg: "Internal server error" });
       });
   };

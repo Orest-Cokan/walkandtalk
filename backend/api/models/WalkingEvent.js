@@ -2,6 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../../config/database");
 const Attendee = require("./Attendee");
 const Location = require("./Location");
+const Review = require("./Review");
 
 // table name
 const tableName = "walkingevents";
@@ -56,7 +57,8 @@ const WalkingEvent = sequelize.define(tableName, {
   total_attendees: {
     type: Sequelize.INTEGER,
     allowNull: true
-  }
+  },
+  completed: Sequelize.BOOLEAN
 });
 
 // set the associations
@@ -64,7 +66,14 @@ WalkingEvent.hasMany(Attendee, {
   onDelete: "CASCADE",
   hooks: true
 });
+
+WalkingEvent.hasMany(Review, {
+  onDelete: "CASCADE",
+  hooks: true
+});
+Review.belongsTo(WalkingEvent);
 Attendee.belongsTo(WalkingEvent);
+
 WalkingEvent.hasOne(Location, {
   onDelete: "CASCADE",
   hooks: true

@@ -10,6 +10,7 @@ import {
   Title,
   Right,
   Content,
+  Accordion,
   Button
 } from "native-base";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
@@ -20,30 +21,45 @@ import MapView from "react-native-maps";
 class EventRatingScreen extends Component {
   constructor(props) {
     super(props);
-
+    console.log(JSON.stringify(this.props.event.reviews) + "what is this");
     this.state = {
-      organizer: this.props.record.organizer,
-      title: this.props.record.title,
-      date: this.props.record.date,
-      startTime: this.props.record.start_time,
-      endTime: this.props.record.end_time,
-      location: this.props.record.location,
-      long: this.props.record.long,
-      lat: this.props.record.lat,
-      numAttendees: this.props.record.total_attendees,
-      completed: this.props.record.completed,
-      venue: this.props.record.venue,
-      distance: this.props.record.distance,
-      duration: this.props.record.duration,
-      intensity: this.props.record.intensity,
-      walkRating: this.props.record.walk_rating,
-      locationRating: this.props.record.location_rating
+      organizer: this.props.event.organizer,
+      title: this.props.event.title,
+      date: this.props.event.date,
+      startTime: this.props.event.start_time,
+      endTime: this.props.event.end_time,
+      location: this.props.event.location.streetName,
+      long: this.props.event.location.long,
+      lat: this.props.event.location.lat,
+      numAttendees: this.props.event.total_attendees,
+      completed: this.props.event.completed,
+      venue: this.props.event.venue,
+      distance: this.props.event.distance,
+      duration: this.props.event.duration,
+      intensity: this.props.event.intensity,
+      walkRating: this.props.event.walk_rating,
+      locationRating: this.props.event.location_rating,
+      reviews: this.props.event.reviews
     };
   }
 
   onBack = () => {
     // Navigate back to Past Events List screen
     Actions.pop();
+  };
+
+  getArray = reviews => {
+    var dataArray = [];
+    let i = 1;
+    reviews.forEach(review => {
+      dataArray.push({
+        title: "Anonymous User #" + i,
+        content: review.location_comment
+      });
+      i++;
+    });
+    console.log(JSON.stringify(dataArray) + "this is our data array");
+    return dataArray;
   };
 
   render() {
@@ -154,6 +170,18 @@ class EventRatingScreen extends Component {
 
           {/* On screen separator */}
           <View style={ScreenStyleSheet.lineSeparator} />
+
+          {/* Accordian View*/}
+          <View>
+            <Accordion
+              dataArray={this.getArray(this.state.reviews)}
+              icon="add"
+              expandedIcon="remove"
+              iconStyle={{ color: "green" }}
+              expandedIconStyle={{ color: "red" }}
+              contentStyle={{ backgroundColor: "white" }}
+            />
+          </View>
         </Content>
       </Container>
     );
@@ -167,20 +195,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(EventRatingScreen);
-
-const styles = {
-  controls: {
-    marginBottom: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  },
-  buttonContainer: {
-    marginVertical: 10,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    width: "48%",
-    borderRadius: 10
-  }
-};

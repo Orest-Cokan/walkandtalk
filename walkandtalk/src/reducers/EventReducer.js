@@ -1,5 +1,6 @@
 import {
   SET_EVENTS,
+  SET_ALL_EVENTS,
   SET_USER_EVENTS,
   SET_NON_USER_EVENTS,
   EVENT_CREATE,
@@ -9,6 +10,7 @@ import {
 
 export const INITIAL_STATE = {
   events: [],
+  all_events: [],
   userEvents: [],
   nonUserEvents: []
 };
@@ -18,6 +20,8 @@ export const event = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SET_EVENTS:
       return { ...state, events: action.payload };
+    case SET_ALL_EVENTS:
+      return { ...state, all_events: action.payload };
     case SET_USER_EVENTS:
       return { ...state, userEvents: action.payload };
     case SET_NON_USER_EVENTS:

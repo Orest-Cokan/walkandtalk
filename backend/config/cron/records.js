@@ -13,7 +13,7 @@ const rejectEmails = ["cokan@ualberta.ca", "beate@gmail.com"];
 const task = () =>
   cron.schedule("* * * * *", () => {
     // vars
-    let nukedTotal = 0;
+    let completedEvent = 0;
     let recordsMade = 0;
     let notificationsMade = 0;
 
@@ -23,7 +23,7 @@ const task = () =>
 
     // query
     WalkingEvent.findAll({
-      where: { date: today },
+      where: { date: today, completed: false },
       include: [
         {
           model: Attendee
@@ -118,14 +118,20 @@ const task = () =>
             recordsMade = recordsMade + 1;
             notificationsMade = notificationsMade + 1;
           }
-          WalkingEvent.destroy({
-            where: {
-              id: event.id
+          WalkingEvent.update(
+            {
+              completed: true
             },
-            include: [Attendee, Location]
-          });
-          nukedTotal = nukedTotal + 1;
-          console.log("Nuked a total of " + nukedTotal + " walking events");
+            {
+              where: {
+                id: event.id
+              }
+            }
+          );
+          completedEvent = completedEvent + 1;
+          console.log(
+            "Total of  " + completedEvent + " walking events were completed"
+          );
           console.log(
             "Made a total of  " +
               recordsMade +

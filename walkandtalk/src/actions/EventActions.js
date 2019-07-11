@@ -1,5 +1,6 @@
 import {
   SET_EVENTS,
+  SET_ALL_EVENTS,
   SET_USER_EVENTS,
   SET_NON_USER_EVENTS,
   EVENT_CREATE,
@@ -11,15 +12,32 @@ import axios from "axios";
 import getIP from "../constants/Ip";
 import { Alert } from "react-native";
 
-// action to fetch all events
+// action to fetch all events that are uncompleted
 export const fetchEvents = token => {
+  return async dispatch => {
+    var ip = getIP();
+    var url = ip + "private/walkingevents/uncompleted";
+    await axios
+      .get(url, { headers: { Authorization: "Bearer " + token } })
+      .then(res => {
+        dispatch({ type: SET_EVENTS, payload: res.data.events });
+      })
+      .catch(err => {
+        console.log(err);
+        Alert.alert("Something went wrong. Please try again later.");
+      });
+  };
+};
+
+// action to fetch all events regardless of completion
+export const fetchAllEvents = token => {
   return async dispatch => {
     var ip = getIP();
     var url = ip + "private/walkingevents";
     await axios
       .get(url, { headers: { Authorization: "Bearer " + token } })
       .then(res => {
-        dispatch({ type: SET_EVENTS, payload: res.data.events });
+        dispatch({ type: SET_ALL_EVENTS, payload: res.data.events });
       })
       .catch(err => {
         console.log(err);
@@ -99,6 +117,10 @@ export const createEvent = (
         long: long
       }
     };
+    console.log(
+      JSON.stringify(walking_event) +
+        "this is the walking event we want to create"
+    );
     await axios
       .post(url, walking_event, {
         headers: { Authorization: "Bearer " + token }

@@ -22,7 +22,8 @@ export const updateRecord = (
   walk_rating_comment,
   location_rating,
   location_rating_comment,
-  completed
+  completed,
+  walkingId
 ) => {
   return async dispatch => {
     var ip = getIP();
@@ -38,7 +39,8 @@ export const updateRecord = (
       walk_rating_comment: walk_rating_comment,
       location_rating: location_rating,
       location_rating_comment: location_rating_comment,
-      completed: completed
+      completed: completed,
+      walkingId: walkingId
     };
 
     await axios

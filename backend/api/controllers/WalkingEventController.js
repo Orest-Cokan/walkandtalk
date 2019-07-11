@@ -1,6 +1,7 @@
 const WalkingEvent = require("../models/WalkingEvent");
 const Attendee = require("../models/Attendee");
 const Location = require("../models/Location");
+const Review = require("../models/Review");
 
 // WalkingEvent controller
 const WalkingEventController = () => {
@@ -20,7 +21,8 @@ const WalkingEventController = () => {
         intensity: body.intensity,
         venue: body.venue,
         location: body.location,
-        total_attendees: 1
+        total_attendees: 1,
+        completed: false
       },
       {
         include: [
@@ -40,9 +42,10 @@ const WalkingEventController = () => {
       });
   };
 
-  // get all walkingevents
-  const getAll = async (req, res) => {
+  // get all walkingevents that are NOT COMPLETED
+  const getAllUncompleted = async (req, res) => {
     await WalkingEvent.findAll({
+      where: { completed: false },
       include: [
         {
           model: Attendee
@@ -60,12 +63,37 @@ const WalkingEventController = () => {
       });
   };
 
+  // get all walkingevents
+  const getAll = async (req, res) => {
+    await WalkingEvent.findAll({
+      where: { completed: true },
+      include: [
+        {
+          model: Attendee
+        },
+        {
+          model: Location
+        },
+        {
+          model: Review
+        }
+      ]
+    })
+      .then(events => {
+        return res.status(200).json({ events });
+      })
+      .catch(err => {
+        return res.status(500).json({ msg: "Internal server error" });
+      });
+  };
+
   // get user walkingevents
   const getUserEvents = async (req, res) => {
     const { email } = req.params;
     console.log(email + "what is this value");
     let events = [];
     await WalkingEvent.findAll({
+      where: { completed: false },
       include: [
         {
           model: Attendee
@@ -103,6 +131,8 @@ const WalkingEventController = () => {
     const { email } = req.params;
     let events = [];
     await WalkingEvent.findAll({
+      where: { completed: false },
+
       include: [
         {
           model: Attendee
@@ -211,6 +241,7 @@ const WalkingEventController = () => {
 
   return {
     create,
+    getAllUncompleted,
     getAll,
     getUserEvents,
     getNonUserEvents,

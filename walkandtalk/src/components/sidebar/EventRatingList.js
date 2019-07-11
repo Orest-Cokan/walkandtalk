@@ -15,32 +15,32 @@ import {
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { Actions } from "react-native-router-flux";
 import BaseCard from "../../cardview/baseCard";
-import { getAllRecords } from "../../actions/RecordActions";
+import { fetchAllEvents } from "../../actions/EventActions";
 import Loader from "../../constants/loader";
 
 class EventRatingList extends Component {
   constructor(props) {
     super(props);
-    this.props.getRecords = this.props.getAllRecords(this.props.token);
+    this.props.getEvents = this.props.fetchAllEvents(this.props.token);
     this.state = {
       loading: true
     };
   }
 
   async componentDidMount() {
-    await this.props.getAllRecords;
+    await this.props.fetchAllEvents;
     this.setState({ loading: false });
   }
 
   eventRatingScreen(index) {
     Actions.eventRatingScreen({
-      record: this.props.records[index]
+      event: this.props.events[index]
     });
   }
 
   getPastEvents() {
     let past_events = [];
-    this.props.records.map((past_event, index) => {
+    this.props.events.map((past_event, index) => {
       past_events.unshift(
         <TouchableOpacity
           key={index}
@@ -51,7 +51,7 @@ class EventRatingList extends Component {
             date={past_event.date}
             start_time={past_event.start_time}
             title={past_event.title}
-            location={past_event.location}
+            location={past_event.location.streetName}
           />
         </TouchableOpacity>
       );
@@ -97,7 +97,7 @@ class EventRatingList extends Component {
 
 const mapStateToProps = state => {
   return {
-    records: state.record.all_records,
+    events: state.event.all_events,
     user: state.user,
     token: state.token.token
   };
@@ -105,5 +105,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { getAllRecords }
+  { fetchAllEvents }
 )(EventRatingList);

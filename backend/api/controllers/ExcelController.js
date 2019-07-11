@@ -10,6 +10,8 @@ const fs = require("fs");
 const ExcelController = () => {
   // hmm
   const getData = async (req, res) => {
+    const { email } = req.params;
+    console.log("excel data email" + email);
     // Create a new instance of a Workbook class
     const workbook = await new excel.Workbook();
 
@@ -60,7 +62,6 @@ const ExcelController = () => {
       "Venue",
       "Distance",
       "Duration",
-      "RedCapID",
       ""
     ];
 
@@ -145,11 +146,6 @@ const ExcelController = () => {
           .cell(idx + 2, 9)
           .string(user.preference.duration.toString())
           .style(normal);
-
-        userSheet
-          .cell(idx + 2, 10)
-          .number(user.redcapID)
-          .style(number);
       });
     });
 
@@ -218,16 +214,21 @@ const ExcelController = () => {
       })
       .then(() => {
         Transporter.sendMail(excelData, (err, info) => {
+          console.log(JSON.stringify(info) + "this is the info for excel doc");
           if (err) {
             console.log(err);
             fs.unlink("./Walk-and-Talk-DATA.xlsx");
             return res.status(500).json({ msg: "Failed to send Excel Data!" });
           }
           fs.unlink("./Walk-and-Talk-DATA.xlsx");
+          console.log("do we get here???");
           return res
             .status(200)
             .json({ msg: "Succesfully sent the Excel Data!" });
         });
+        return res
+          .status(200)
+          .json({ msg: "Succesfully sent the Excel Data!" });
       });
   };
   return {

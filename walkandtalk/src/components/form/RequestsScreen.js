@@ -1,11 +1,15 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Alert } from "react-native";
+import { TouchableOpacity, Alert, StyleSheet } from "react-native";
 import RequestCard from "../../cardview/requestCard";
-import { getUnregisteredUsers } from "../../actions/UserActions";
+import { getUnregisteredUsers, getExcelData } from "../../actions/UserActions";
 import { connect } from "react-redux";
+import {
+  StyledText as Text,
+  StyledTextInput as TextInput
+} from "../../constants/StyledText";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import Loader from "../../constants/loader";
-import { Container, Header, Body, Title, Content } from "native-base";
+import { Container, Header, Body, Title, Content, View } from "native-base";
 import { Actions } from "react-native-router-flux";
 
 /*
@@ -23,6 +27,19 @@ class RequestsScreen extends Component {
       loading: false
     };
   }
+
+  onPressExcel = async () => {
+    await new Promise((resolve, reject) => {
+      console.log(
+        "user email :" +
+          this.props.user.user.email +
+          "   token: " +
+          this.props.token
+      );
+      this.props.getExcelData(this.props.user.user.email, this.props.token);
+      resolve();
+    });
+  };
 
   /* Listener that updates the list view of the unregiesterd users  */
   componentDidMount() {
@@ -81,6 +98,16 @@ class RequestsScreen extends Component {
             {this.getRequests()}
           </Content>
         )}
+
+        <View>
+          <TouchableOpacity
+            style={styles.excelButton}
+            onPress={this.onPressExcel}
+          >
+            {/* Excel Sheet Button - redirect user to home screen if successfull */}
+            <Text style={styles.buttonText}> SEND EXCEL SHEET </Text>
+          </TouchableOpacity>
+        </View>
       </Container>
     );
   }
@@ -96,5 +123,23 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { getUnregisteredUsers }
+  { getUnregisteredUsers, getExcelData }
 )(RequestsScreen);
+
+//Style Sheet
+const styles = StyleSheet.create({
+  excelButton: {
+    padding: 10,
+    bottom: 20,
+    backgroundColor: "#A680B8",
+    borderRadius: 8,
+    marginRight: 50,
+    marginLeft: 50
+  },
+  buttonText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "bold"
+  }
+});

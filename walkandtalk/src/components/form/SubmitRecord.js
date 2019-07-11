@@ -31,6 +31,7 @@ class SubmitRecordScreen extends Component {
       endTime: this.props.record.end_time,
       location: this.props.record.location,
       numAttendees: this.props.record.total_attendees,
+      walkingId: this.props.record.walkingId,
       completed: 1,
 
       // Editable fields
@@ -64,7 +65,8 @@ class SubmitRecordScreen extends Component {
       this.state.walkRatingComment,
       this.state.locationRating,
       this.state.locationRatingComment,
-      this.state.completed
+      this.state.completed,
+      this.state.walkingId
     );
     Actions.reset("mainFormPage");
   };

@@ -4,6 +4,7 @@ const privateRoutes = {
   "PUT /user": "UserController.updateUser",
 
   // Walkingevent routes
+  "GET /walkingevents/uncompleted": "WalkingEventController.getAllUncompleted",
   "GET /walkingevents": "WalkingEventController.getAll",
   "POST /walkingevent": "WalkingEventController.create",
   "GET /walkingrecord/:email": "WalkingRecordController.getRecords",
@@ -40,7 +41,10 @@ const privateRoutes = {
   "GET /user/picture/:email": "PictureController.getImage",
 
   // Redcap routes
-  "PUT /redcap/:email": "RedcapController.updateUser"
+  "PUT /redcap/:email": "RedcapController.updateUser",
+
+  // Excel route
+  "GET /excel/:email": "ExcelController.getData"
 };
 
 module.exports = privateRoutes;
