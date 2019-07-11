@@ -213,19 +213,36 @@ const ExcelController = () => {
         workbook.write("Walk-and-Talk-DATA.xlsx");
       })
       .then(() => {
-        Transporter.sendMail(excelData, (err, info) => {
-          console.log(JSON.stringify(info) + "this is the info for excel doc");
-          if (err) {
-            console.log(err);
+        Transporter.sendMail(
+          {
+            from: '"Walk and Talk" cmput401walkandtalk@gmail.ca',
+            to: email,
+            subject: "Walk and Talk - Excel Data",
+            text: "Attached is the Excel Data",
+            attachments: [
+              {
+                path: "./Walk-and-Talk-DATA.xlsx"
+              }
+            ]
+          },
+          (err, info) => {
+            console.log(
+              JSON.stringify(info) + "this is the info for excel doc"
+            );
+            if (err) {
+              console.log(err);
+              fs.unlink("./Walk-and-Talk-DATA.xlsx");
+              return res
+                .status(500)
+                .json({ msg: "Failed to send Excel Data!" });
+            }
             fs.unlink("./Walk-and-Talk-DATA.xlsx");
-            return res.status(500).json({ msg: "Failed to send Excel Data!" });
+            console.log("do we get here???");
+            return res
+              .status(200)
+              .json({ msg: "Succesfully sent the Excel Data!" });
           }
-          fs.unlink("./Walk-and-Talk-DATA.xlsx");
-          console.log("do we get here???");
-          return res
-            .status(200)
-            .json({ msg: "Succesfully sent the Excel Data!" });
-        });
+        );
         return res
           .status(200)
           .json({ msg: "Succesfully sent the Excel Data!" });
