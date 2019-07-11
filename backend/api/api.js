@@ -31,9 +31,6 @@ const mappedResearcherRoutes = mapRoutes(
   "api/controllers/"
 );
 const DB = dbService(environment, config.migrate).start();
-const redcapTask = require("../config/cron/redcap");
-const recordTask = require("../config/cron/records");
-const upcomingEventTask = require("../config/cron/upcomingEvent");
 
 // allow cross origin requests
 // configure to only allow requests from certain origins

@@ -359,7 +359,8 @@ class SearchTabScreen extends Component {
   // If three filters selected - total_arr == 3, check for where items exist in first 2 arrays, then repeat again with the last array and return those
   combineResults = (results, total_arr) => {
     var combine_res = [];
-    if (total_arr == 1 || total_arr == 4) {
+    console.log("these are our results: " + JSON.stringify(results));
+    if (total_arr == 1) {
       return results[0];
     }
     //Two arrays results [0] and results [1]
@@ -376,6 +377,7 @@ class SearchTabScreen extends Component {
       results[0].forEach(function(res) {
         if (results[1].indexOf(res) > -1) {
           combine_res.push(res);
+          console.log("we pushed 1");
         }
       });
 
@@ -383,8 +385,10 @@ class SearchTabScreen extends Component {
       combine_res.forEach(function(res) {
         if (results[2].indexOf(res) > -1) {
           final_res.push(res);
+          console.log("we pushed 2");
         }
       });
+      console.log(final_res + "why is this wrong");
       return final_res;
     }
   };

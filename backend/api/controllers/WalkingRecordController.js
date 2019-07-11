@@ -28,7 +28,8 @@ const WalkingRecordController = () => {
           location_rating: body.location_rating,
           location_rating_comment: body.location_rating_comment,
           completed: body.completed,
-          total_attendees: body.total_attendees
+          total_attendees: body.total_attendees,
+          walkingId: body.walkingId
         },
         {
           include: [

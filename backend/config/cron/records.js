@@ -11,7 +11,7 @@ const rejectEmails = ["cokan@ualberta.ca", "beate@gmail.com"];
 
 // cron job check for events to delete every hour
 const task = () =>
-  cron.schedule("* 1 * * *", () => {
+  cron.schedule("* * * * *", () => {
     // vars
     let nukedTotal = 0;
     let recordsMade = 0;
@@ -37,6 +37,7 @@ const task = () =>
         console.log(
           "Executing cron job: " + time(now.toString(), event.start_time)
         );
+        console.log(event.id + "this is our ID of the prev event");
         if (time(now, event.start_time)) {
           event.attendees.map(person => {
             // attendees
@@ -61,7 +62,8 @@ const task = () =>
                 walk_rating_comment: null,
                 location_rating: null,
                 location_rating_comment: null,
-                completed: 0
+                completed: 0,
+                walkingId: event.id
               });
 
               // Send notification to event attendees
@@ -101,7 +103,8 @@ const task = () =>
               walk_rating_comment: null,
               location_rating: null,
               location_rating_comment: null,
-              completed: 0
+              completed: 0,
+              walkingId: event.id
             });
 
             // Send notification to event organizer
