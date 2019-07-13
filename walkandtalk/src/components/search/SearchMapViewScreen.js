@@ -17,7 +17,9 @@ class SearchMapViewScreen extends Component {
     this.state = {
       defaultCoords: {
         latitude: 53.5232,
-        longitude: 113.5263
+        longitude: -113.5263,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421
       }
     };
   }
