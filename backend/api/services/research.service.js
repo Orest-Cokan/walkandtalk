@@ -86,5 +86,29 @@ const initializeResearchers = () => {
       include: [Preference, Picture, Redcap]
     }
   );
+
+  User.create(
+    {
+      fullname: "Prachi Shah",
+      email: "pkshah@ualberta.ca",
+      password: "Researchstudy",
+      password2: "Researchstudy",
+      dob: "Researcher Account",
+      menopausal_stage: "post",
+      registered: 1,
+      researcher: 1,
+      preference: {
+        intensity: "Slow",
+        venue: "Indoor",
+        distance: 0,
+        duration: 0,
+        location: "University of Alberta"
+      },
+      picture: {}
+    },
+    {
+      include: [Preference, Picture, Redcap]
+    }
+  );
 };
 module.exports = initializeResearchers;
