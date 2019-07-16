@@ -2,6 +2,7 @@ const privateRoutes = {
   // User routes
   "GET /user/:email": "UserController.getUser",
   "PUT /user": "UserController.updateUser",
+  "GET /users": "UserController.getAll",
 
   // Walkingevent routes
   "GET /walkingevents/uncompleted": "WalkingEventController.getAllUncompleted",

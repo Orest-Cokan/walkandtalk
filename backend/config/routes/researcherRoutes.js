@@ -1,7 +1,5 @@
 const researcherRoutes = {
   // Contain routes only researchers can access
-  // User routes
-  "GET /users": "UserController.getAll",
 
   // Researcher routes
   "PUT /accept": "ResearcherController.acceptUser",
