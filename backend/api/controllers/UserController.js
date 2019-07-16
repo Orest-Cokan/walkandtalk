@@ -62,18 +62,15 @@ const UserController = () => {
         if (!user) {
           return res.status(202).json({ msg: "Bad Request: User not found" });
         }
-
+        if (!userPolicy(user.registered)) {
+          return res.status(203).json({ msg: "User is not registered!" });
+        }
         if (
           bcryptService().comparePassword(password, user.password) &&
           userPolicy(user.registered)
         ) {
           const token = authService().issue({ email: user.email });
           return res.status(200).json({ user, token });
-        } else if (
-          bcryptService().comparePassword(password, user.password) &&
-          !userPolicy(user.registered)
-        ) {
-          return res.status(203).json({ msg: "User is not registered!" });
         } else {
           return res.status(201).json({ msg: "Unauthorized" });
         }
@@ -83,7 +80,7 @@ const UserController = () => {
     }
 
     return res
-      .status(400)
+      .status(204)
       .json({ msg: "Bad Request: Email or password is wrong" });
   };
 

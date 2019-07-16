@@ -33,7 +33,7 @@ export const createUser = (
   distance
 ) => {
   const user = {
-    email: email,
+    email: email.toLowerCase(),
     password: password,
     password2: password2,
     fullname: fullname,
@@ -86,7 +86,7 @@ const createUserSuccess = dispatch => {
 // action to login a user
 export const loginUser = (email, password) => {
   const user = {
-    email: email,
+    email: email.toLowerCase(),
     password: password
   };
   return async dispatch => {
@@ -106,6 +106,10 @@ export const loginUser = (email, password) => {
         } else if (res.status === 203) {
           Alert.alert(
             "Please wait for the researchers to review your profile."
+          );
+        } else if (res.status === 204) {
+          Alert.alert(
+            "Please ensure that both the Username and Password fields are not empty!"
           );
         } else {
           Alert.alert(
