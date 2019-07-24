@@ -19,7 +19,7 @@ const UserController = () => {
       try {
         const user = await User.create(
           {
-            email: body.email,
+            email: body.email.toLowerCase(),
             fullname: body.fullname,
             password: body.password,
             menopausal_stage: body.menopausal_stage,
