@@ -25,6 +25,7 @@ const dbService = (environment, migrate) => {
     return process.exit(1);
   };
 
+  // Reminder to change INIT tasks upon initilizing the DB
   const initTasks = async () => {
     try {
       await makeResearchers();
