@@ -1,7 +1,15 @@
 // Submit Event Record Screen View
 
 import React, { Component } from "react";
-import { View, TouchableOpacity, Image } from "react-native";
+import {
+  View,
+  Button,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  FlatList
+} from "react-native";
+import Modal from "react-native-modal";
 import { connect } from "react-redux";
 import { Container, Header, Body, Title, Content } from "native-base";
 import SwitchSelector from "react-native-switch-selector";
@@ -10,6 +18,8 @@ import { updateRecord } from "../../actions/RecordActions";
 import NumericInput from "react-native-numeric-input";
 import { Actions } from "react-native-router-flux";
 import { width } from "react-native-dimension";
+import ImagePicker from "react-native-image-picker";
+import ImageResizer from "react-native-image-resizer";
 import {
   StyledText as Text,
   StyledTextInput as TextInput
@@ -42,9 +52,45 @@ class SubmitRecordScreen extends Component {
       walkRating: "1",
       locationRating: "1",
       walkRatingComment: "",
-      locationRatingComment: ""
+      locationRatingComment: "",
+      pictureList: [],
+
+      // Modal flag
+      isModalVisible: false
     };
   }
+
+  onPressUpload = () => {
+    const options = {
+      storageOptions: {
+        skipBackup: true,
+        path: "images"
+      }
+    };
+    // Shows options for selecting a photo and returns image data once image selected
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+      } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
+      } else {
+        const base64 = "data:image/jpeg;base64," + response.data;
+        // Reduce image size and store as compressed JPEG
+        ImageResizer.createResizedImage(base64, 180, 240, "JPEG", 80)
+          .then(response => {
+            this.state.pictureList.push({ key: response.uri });
+            this.toggleModal();
+            console.log(this.state.pictureList);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    });
+  };
+
+  toggleModal = () => {
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+  };
 
   // Set state
   onChange(name, value) {
@@ -363,6 +409,36 @@ class SubmitRecordScreen extends Component {
             </View>
           </View>
 
+          {/* Comments about the location */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>
+                Optional * Attach Photos to the Walking Log
+              </Text>
+            </View>
+          </View>
+
+          {/* Upload Button */}
+          <View>
+            <TouchableOpacity
+              style={styles.uploadButton}
+              onPress={this.onPressUpload}
+            >
+              <Text style={styles.buttonText}> Upload Photos </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Flat View */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <FlatList
+              extraData={this.state}
+              data={this.state.pictureList}
+              renderItem={({ item }) => (
+                <Text style={ScreenStyleSheet.flatListInfo}>{item.key}</Text>
+              )}
+            />
+          </View>
+
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}
@@ -376,13 +452,32 @@ class SubmitRecordScreen extends Component {
               <Text style={{ color: "#A680B8" }}>Cancel</Text>
             </TouchableOpacity>
 
-            {/* Finish button */}
+            {/* Submit button */}
             <TouchableOpacity
               style={[ScreenStyleSheet.button, { backgroundColor: "#A680B8" }]}
               onPress={this.onSubmit}
             >
               <Text style={{ color: "white" }}>Submit</Text>
             </TouchableOpacity>
+          </View>
+
+          {/* Modal View */}
+          <View style={styles.modalContainer}>
+            <Modal
+              isVisible={this.state.isModalVisible}
+              hasBackdrop={true}
+              backdropOpacity={0.0}
+              onBackdropPress={() => this.setState({ isModalVisible: false })}
+            >
+              <View style={styles.content}>
+                <Text style={styles.contentTitle}> ✔️ Upload Successful!</Text>
+                <Button
+                  onPress={this.toggleModal}
+                  title="Close"
+                  style={{ backgroundColor: "#A680B8" }}
+                />
+              </View>
+            </Modal>
           </View>
         </Content>
       </Container>
@@ -401,3 +496,41 @@ export default connect(
   mapStateToProps,
   { updateRecord }
 )(SubmitRecordScreen);
+
+//Style Sheet
+const styles = StyleSheet.create({
+  uploadButton: {
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: "#A680B8",
+    borderRadius: 8,
+    marginRight: 50,
+    marginLeft: 50
+  },
+  buttonText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "bold"
+  },
+  content: {
+    backgroundColor: "white",
+    padding: 17,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "#e2e2e2"
+  },
+  contentTitle: {
+    fontSize: 20,
+    marginBottom: 12,
+    color: "black"
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
+    width: "50%"
+  }
+});

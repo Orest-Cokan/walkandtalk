@@ -22,6 +22,38 @@ export const tags = [
       {
         name: "Cold",
         id: 104
+      },
+      {
+        name: "Snow",
+        id: 105
+      },
+      {
+        name: "Icy",
+        id: 106
+      },
+      {
+        name: "Foggy",
+        id: 107
+      },
+      {
+        name: "Overcast",
+        id: 108
+      },
+      {
+        name: "Breeze",
+        id: 109
+      },
+      {
+        name: "Drizzle",
+        id: 110
+      },
+      {
+        name: "Thunder",
+        id: 111
+      },
+      {
+        name: "Gentle Rain",
+        id: 112
       }
     ]
   }
@@ -84,7 +116,7 @@ export const items = [
   },
   {
     name: "Tags",
-    id: 3,
+    id: 0,
     children: [
       {
         name: "Muddy",
@@ -105,6 +137,38 @@ export const items = [
       {
         name: "Cold",
         id: 104
+      },
+      {
+        name: "Snow",
+        id: 105
+      },
+      {
+        name: "Icy",
+        id: 106
+      },
+      {
+        name: "Foggy",
+        id: 107
+      },
+      {
+        name: "Overcast",
+        id: 108
+      },
+      {
+        name: "Breeze",
+        id: 109
+      },
+      {
+        name: "Drizzle",
+        id: 110
+      },
+      {
+        name: "Thunder",
+        id: 111
+      },
+      {
+        name: "Gentle Rain",
+        id: 112
       }
     ]
   }

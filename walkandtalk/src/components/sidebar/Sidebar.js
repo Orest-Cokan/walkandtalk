@@ -81,7 +81,9 @@ class SideBar extends Component {
               style={ScreenStyleSheet.headerIcon}
               source={require("../../assets/icons/past-events.png")}
             />
-            <Text style={ScreenStyleSheet.sideBarTextItem}>Past Events</Text>
+            <Text style={ScreenStyleSheet.sideBarTextItem}>
+              Your Past Events
+            </Text>
           </ListItem>
 
           {/* Location Ratings */}

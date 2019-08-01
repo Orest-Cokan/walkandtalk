@@ -387,72 +387,6 @@ class AddEventScreen extends Component {
           </View>
           {this.state.errorEndTime}
 
-          {/* Description */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>Description *</Text>
-            </View>
-          </View>
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <TextInput
-                style={ScreenStyleSheet.formDescriptionInput}
-                multiline={true}
-                numberOfLines={4}
-                maxLength={140}
-                onChangeText={this.onChange.bind(this, "description")}
-                accessibilityLabel="createEventDescription"
-              />
-            </View>
-          </View>
-
-          {/* Tags */}
-          <View>
-            <SectionedMultiSelect
-              items={tags}
-              uniqueKey="id"
-              subKey="children"
-              selectText="Add some tags..."
-              showDropDowns={false}
-              expandDropDowns={true}
-              headerComponent={
-                <Header
-                  style={ScreenStyleSheet.header}
-                  androidStatusBarColor="#A680B8"
-                  androidStatusBarStyle="light-content"
-                >
-                  <Body style={ScreenStyleSheet.headerBody}>
-                    <Title>Filter</Title>
-                  </Body>
-                </Header>
-              }
-              hideSearch={true}
-              readOnlyHeadings={true}
-              colors={{
-                primary: "#a680b8",
-                selectToggleTextColor: "grey"
-              }}
-              styles={{
-                selectToggle: {
-                  width: "100%",
-                  marginBottom: 10,
-                  marginVertical: 10
-                },
-                container: {
-                  marginBottom: 300
-                },
-                modalWrapper: {
-                  height: 100,
-                  width: 100
-                },
-                chipContainer: { marginBottom: 10 },
-                chipsWrapper: { width: "100%" }
-              }}
-              onSelectedItemsChange={this.onSelectedItemsChange}
-              selectedItems={this.state.tags}
-            />
-          </View>
-
           {/* Location */}
           <View style={ScreenStyleSheet.rowContainer}>
             <View style={ScreenStyleSheet.formRowInfo}>
@@ -508,6 +442,76 @@ class AddEventScreen extends Component {
             </View>
           </View>
           {this.state.errorLocation}
+
+          {/* Description */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Description *</Text>
+            </View>
+          </View>
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <TextInput
+                style={ScreenStyleSheet.formDescriptionInput}
+                multiline={true}
+                numberOfLines={4}
+                maxLength={140}
+                onChangeText={this.onChange.bind(this, "description")}
+                accessibilityLabel="createEventDescription"
+              />
+            </View>
+          </View>
+
+          {/* Tags */}
+          <View style={ScreenStyleSheet.rowContainer}>
+            <View style={ScreenStyleSheet.formRowInfo}>
+              <Text style={ScreenStyleSheet.formInfo}>Tags *</Text>
+            </View>
+          </View>
+          <View>
+            <SectionedMultiSelect
+              items={tags}
+              uniqueKey="id"
+              subKey="children"
+              selectText="Add some tags..."
+              showDropDowns={false}
+              expandDropDowns={true}
+              headerComponent={
+                <Header
+                  style={ScreenStyleSheet.header}
+                  androidStatusBarColor="#A680B8"
+                  androidStatusBarStyle="light-content"
+                >
+                  <Body style={ScreenStyleSheet.headerBody}>
+                    <Title>Filter</Title>
+                  </Body>
+                </Header>
+              }
+              hideSearch={true}
+              readOnlyHeadings={true}
+              colors={{
+                primary: "#a680b8",
+                selectToggleTextColor: "grey"
+              }}
+              styles={{
+                selectToggle: {
+                  width: "100%",
+                  marginBottom: 10
+                },
+                container: {
+                  marginBottom: 300
+                },
+                modalWrapper: {
+                  height: 100,
+                  width: 100
+                },
+                chipContainer: { marginBottom: 10 },
+                chipsWrapper: { width: "100%" }
+              }}
+              onSelectedItemsChange={this.onSelectedItemsChange}
+              selectedItems={this.state.tags}
+            />
+          </View>
 
           {/* Intensity */}
           <View style={ScreenStyleSheet.rowContainer}>
@@ -607,8 +611,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   buttonContainer: {
-    marginVertical: 10,
-    marginBottom: 10,
+    marginBottom: 30,
     height: 50,
     justifyContent: "center",
     alignItems: "center",

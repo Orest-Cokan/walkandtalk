@@ -98,7 +98,7 @@ export default StyleSheet.create({
   // Submit, Finish, Save Changes, Cancel button
   button: {
     marginVertical: 10,
-    marginBottom: 10,
+    marginBottom: 30,
     height: 50,
     justifyContent: "center",
     alignItems: "center",
@@ -224,6 +224,10 @@ export default StyleSheet.create({
   },
   formInfo: {
     color: "gray",
+    fontSize: 15
+  },
+  flatListInfo: {
+    color: "blue",
     fontSize: 15
   },
   formRowInfo: {
