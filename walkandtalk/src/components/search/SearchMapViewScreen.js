@@ -16,10 +16,10 @@ class SearchMapViewScreen extends Component {
     super(props);
     this.state = {
       defaultCoords: {
-        latitude: 53.5232,
-        longitude: -113.5263,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421
+        latitude: 53.5325,
+        longitude: -113.4964,
+        latitudeDelta: 0.252,
+        longitudeDelta: 0.00421
       }
     };
   }
@@ -76,6 +76,7 @@ class SearchMapViewScreen extends Component {
 
   getCoords() {
     if (this.props.resultsCoords.length == 0) {
+      console.log("");
       return [this.state.defaultCoords];
     } else {
       return this.props.resultsCoords;
@@ -90,35 +91,10 @@ class SearchMapViewScreen extends Component {
         >
           {/* Map View */}
           <MapView
-            ref={ref => {
-              this.mapRef = ref;
-            }}
-            onMapReady={() => {
-              this.mapRef.fitToCoordinates(this.getCoords(), {
-                edgePadding: {
-                  top: 200,
-                  right: 40,
-                  bottom: 40,
-                  left: 40
-                },
-                animated: true
-              });
-            }}
-            onLayout={() => {
-              this.mapRef.fitToCoordinates(this.getCoords(), {
-                edgePadding: {
-                  top: 200,
-                  right: 40,
-                  bottom: 200,
-                  left: 40
-                },
-                animated: true
-              });
-            }}
             provider={PROVIDER_GOOGLE}
             style={styles.map}
             showsUserLocation={true}
-            initialRegion={this.props.region}
+            initialRegion={this.state.defaultCoords}
             onRegionChange={this.props.onRegionChange}
           >
             {this.showMarkers()}

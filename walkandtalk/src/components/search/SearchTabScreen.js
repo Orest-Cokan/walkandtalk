@@ -60,7 +60,7 @@ class SearchTabScreen extends Component {
   }
 
   componentDidMount() {
-    this.setState({ loading: false });
+    this.setState({ loading: true });
     this.willFocusListener = this.props.navigation.addListener(
       "willFocus",
       async () => {
@@ -77,8 +77,8 @@ class SearchTabScreen extends Component {
               let region = {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
-                latitudeDelta: 0.001 * 1.5,
-                longitudeDelta: 0.0421 * 1.5
+                latitudeDelta: 0.0421,
+                longitudeDelta: 0.0922
               };
               this.onRegionChange(region, region.latitude, region.longitude);
             },
