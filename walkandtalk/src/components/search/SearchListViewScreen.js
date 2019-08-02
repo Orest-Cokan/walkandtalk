@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
-import {
-  Container,
-  Content
-} from "native-base";
+import { Container, Content } from "native-base";
 
 /*
 This is the list view search screen. Users can search for events in this screen.
@@ -19,9 +16,7 @@ class SearchListViewScreen extends Component {
   render() {
     return (
       <Container>
-        <Content
-          contentContainerStyle={ScreenStyleSheet.content}
-        >
+        <Content contentContainerStyle={ScreenStyleSheet.content}>
           {this.props.results}
         </Content>
       </Container>

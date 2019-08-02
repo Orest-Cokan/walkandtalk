@@ -52,11 +52,13 @@ class EventRatingScreen extends Component {
     var dataArray = [];
     let i = 1;
     reviews.forEach(review => {
-      dataArray.push({
-        title: "Anonymous User #" + i,
-        content: review.location_comment
-      });
-      i++;
+      if (review.location_comment != "") {
+        dataArray.push({
+          title: "Anonymous User #" + i,
+          content: review.location_comment
+        });
+        i++;
+      }
     });
     console.log(JSON.stringify(dataArray) + "this is our data array");
     return dataArray;

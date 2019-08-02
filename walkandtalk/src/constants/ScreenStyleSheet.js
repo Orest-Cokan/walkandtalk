@@ -1,6 +1,4 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "../constants/Colors";
-import { Right } from "native-base";
 
 export default StyleSheet.create({
   // Screen

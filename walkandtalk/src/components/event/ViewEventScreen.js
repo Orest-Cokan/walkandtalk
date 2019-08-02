@@ -53,6 +53,7 @@ class ViewEventScreen extends Component {
       notGoingAlert: false,
       alreadyGoingAlert: false,
       alreadyGoingText: "",
+
       refresh: false
     };
   }

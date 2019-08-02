@@ -60,10 +60,10 @@ class SearchTabScreen extends Component {
   }
 
   componentDidMount() {
+    this.setState({ loading: false });
     this.willFocusListener = this.props.navigation.addListener(
       "willFocus",
       async () => {
-        this.setState({ loading: true });
         await this.props.fetchNonUserEvents(
           this.props.token,
           this.props.user.user.email

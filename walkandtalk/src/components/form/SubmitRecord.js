@@ -409,36 +409,6 @@ class SubmitRecordScreen extends Component {
             </View>
           </View>
 
-          {/* Comments about the location */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <View style={ScreenStyleSheet.formRowInfo}>
-              <Text style={ScreenStyleSheet.formInfo}>
-                Optional * Attach Photos to the Walking Log
-              </Text>
-            </View>
-          </View>
-
-          {/* Upload Button */}
-          <View>
-            <TouchableOpacity
-              style={styles.uploadButton}
-              onPress={this.onPressUpload}
-            >
-              <Text style={styles.buttonText}> Upload Photos </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Flat View */}
-          <View style={ScreenStyleSheet.rowContainer}>
-            <FlatList
-              extraData={this.state}
-              data={this.state.pictureList}
-              renderItem={({ item }) => (
-                <Text style={ScreenStyleSheet.flatListInfo}>{item.key}</Text>
-              )}
-            />
-          </View>
-
           {/* Options */}
           <View style={ScreenStyleSheet.rowContainer}>
             {/* Cancel button */}
@@ -459,25 +429,6 @@ class SubmitRecordScreen extends Component {
             >
               <Text style={{ color: "white" }}>Submit</Text>
             </TouchableOpacity>
-          </View>
-
-          {/* Modal View */}
-          <View style={styles.modalContainer}>
-            <Modal
-              isVisible={this.state.isModalVisible}
-              hasBackdrop={true}
-              backdropOpacity={0.0}
-              onBackdropPress={() => this.setState({ isModalVisible: false })}
-            >
-              <View style={styles.content}>
-                <Text style={styles.contentTitle}> ✔️ Upload Successful!</Text>
-                <Button
-                  onPress={this.toggleModal}
-                  title="Close"
-                  style={{ backgroundColor: "#A680B8" }}
-                />
-              </View>
-            </Modal>
           </View>
         </Content>
       </Container>
