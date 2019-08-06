@@ -23,7 +23,6 @@ import {
 import TabOne from "./SearchListViewScreen";
 import TabTwo from "./SearchMapViewScreen";
 import BaseCard from "../../cardview/baseCard";
-import geolib from "geolib";
 import ScreenStyleSheet from "../../constants/ScreenStyleSheet";
 import { connect } from "react-redux";
 import { fetchNonUserEvents } from "../../actions/EventActions";
@@ -32,17 +31,6 @@ import { Actions } from "react-native-router-flux";
 import Loader from "../../constants/loader";
 import { items } from "../../constants/Tags";
 
-// Returns user's current location
-// Defaults to San Francisco on simulators
-export const getCurrentLocation = () => {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      position => resolve(position),
-      e => reject(e)
-    );
-  });
-};
-
 class SearchTabScreen extends Component {
   constructor(props) {
     super(props);
@@ -50,8 +38,14 @@ class SearchTabScreen extends Component {
       confirmed: false,
       selectedItems: [],
       text: null,
+      searchProps: [],
       searchResults: [],
-      mapRegion: null,
+      mapRegion: {
+        latitude: 53.5325,
+        longitude: -113.4964,
+        latitudeDelta: 0.252,
+        longitudeDelta: 0.00421
+      },
       lastLat: null,
       lastLong: null,
       loading: false
@@ -60,57 +54,18 @@ class SearchTabScreen extends Component {
   }
 
   componentDidMount() {
-    this.setState({ loading: true });
     this.willFocusListener = this.props.navigation.addListener(
       "willFocus",
       async () => {
+        this.setState({ loading: true });
         await this.props.fetchNonUserEvents(
           this.props.token,
           this.props.user.user.email
         );
-        const position = await getCurrentLocation();
+        this.getInitialEvents();
         this.setState({ loading: false });
-        if (position) {
-          //Tracking location is still necessary for distance queries
-          this.watchID = navigator.geolocation.watchPosition(
-            position => {
-              let region = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                latitudeDelta: 0.0421,
-                longitudeDelta: 0.0922
-              };
-              this.onRegionChange(region, region.latitude, region.longitude);
-            },
-            error => console.log(error)
-          );
-        }
-        this.keywordSearch();
       }
     );
-  }
-
-  //Before leaving the component clear the watch of the device
-  componentWillUnmount() {
-    this.willFocusListener.remove();
-    navigator.geolocation.clearWatch(this.watchID);
-  }
-
-  viewEvent(index, badge) {
-    Actions.viewEvent({
-      event: this.state.searchResults[index],
-      badge: badge
-    });
-  }
-
-  //Function for setting the region and lat and lon when movement occurs
-  onRegionChange(region, lastLat, lastLong) {
-    this.setState({
-      mapRegion: region,
-      // If there are no new values set the current ones
-      lastLat: lastLat || this.state.lastLat,
-      lastLong: lastLong || this.state.lastLong
-    });
   }
 
   //Updates the list of filters selected
@@ -127,6 +82,125 @@ class SearchTabScreen extends Component {
     });
 
     this.search(filters);
+  };
+
+  // Loads the initial events into the view
+  getInitialEvents() {
+    let events = [];
+    this.props.events.map((event, index) => {
+      let badge = null;
+      let attending = false;
+      if (this.props.user.user.email == event.email) {
+        badge = "HOSTING";
+      } else {
+        for (let i = 0; i < event.attendees.length; i++) {
+          if (event.attendees[i].email == this.props.user.user.email) {
+            badge = "GOING";
+            break;
+          }
+        }
+      }
+      if (this.props.user.user.email == event.email) {
+        attending == true;
+      } else {
+        for (let i = 0; i < event.attendees.length; i++) {
+          if (event.attendees[i].email == this.props.user.user.email) {
+            attending = true;
+          }
+        }
+      }
+
+      if (!attending) {
+        events.unshift(
+          <TouchableOpacity
+            key={index}
+            onPress={this.viewEvent.bind(this, index, badge)}
+          >
+            <BaseCard
+              date={event.date}
+              start_time={event.start_time}
+              title={event.title}
+              location={event.location.streetName}
+              badge={badge}
+            />
+          </TouchableOpacity>
+        );
+      }
+    });
+    this.setState({ searchProps: events, searchResults: this.props.events });
+  }
+
+  //Before leaving the component clear the watch of the device
+  componentWillUnmount() {
+    this.willFocusListener.remove();
+  }
+
+  viewEvent(index, badge) {
+    Actions.viewEvent({
+      event: this.props.events[index],
+      badge: badge
+    });
+  }
+
+  //MAIN SEARCH function
+  // Splits the array of filters into smaller arrays of filter ids in section intensity, venue and distance
+  // If the length of the array is greater thatn zero will get events that fit that filter using check_*** function
+  // Calls combine result
+  // Sumbits results to submit results function to save to state
+  search = filters => {
+    filters = this.state.selectedItems;
+    events = this.props.events;
+
+    if (filters.length == 0) {
+      return;
+    }
+
+    //Array for intensity, venue and distance filters
+    var results = [];
+    var v_arr = [];
+    var i_arr = [];
+    var t_arr = [];
+
+    //sort selected filters into categories
+    filters.forEach(function(f) {
+      if (f == 11 || f == 22 || f == 33) {
+        i_arr.push(f);
+      }
+      if (f == 44 || f == 55) {
+        v_arr.push(f);
+      }
+      if (f == 100 || f == 101 || f == 102 || f == 103 || f == 104) {
+        t_arr.push(f);
+      }
+    });
+
+    var howmany = 3;
+
+    if (i_arr.length != 0) {
+      temp = this.check_intensity(i_arr);
+      results.push(temp);
+    } else {
+      howmany = howmany - 1;
+    }
+
+    if (v_arr.length != 0) {
+      temp = this.check_venue(v_arr);
+      results.push(temp);
+    } else {
+      howmany = howmany - 1;
+    }
+
+    if (t_arr.length != 0) {
+      temp = this.check_tags(t_arr);
+      results.push(temp);
+    } else {
+      howmany = howmany - 1;
+    }
+
+    total_results = this.combineResults(results, howmany);
+
+    //SubmitSearch function to save to state
+    this.submitSearch(total_results);
   };
 
   //Takes in an array of intensity filter ids selected
@@ -178,181 +252,6 @@ class SearchTabScreen extends Component {
     return results;
   };
 
-  //Takes in an array of tag filter ids selected
-  // Returns an array of events that contain the filters selected
-  check_tags = t_arr => {
-    var results = [];
-    t_arr.forEach(function(v) {
-      if (v == 100) {
-        events.forEach(event => {
-          const tags = JSON.parse("[" + event.tags + "]");
-          tags.forEach(tag => {
-            if (tag == 100) {
-              results.push(event);
-            }
-          });
-        });
-      }
-      if (v == 101) {
-        events.forEach(event => {
-          const tags = JSON.parse("[" + event.tags + "]");
-          tags.forEach(tag => {
-            if (tag == 101) {
-              results.push(event);
-            }
-          });
-        });
-      }
-      if (v == 102) {
-        events.forEach(event => {
-          const tags = JSON.parse("[" + event.tags + "]");
-          tags.forEach(tag => {
-            if (tag == 102) {
-              results.push(event);
-            }
-          });
-        });
-      }
-      if (v == 103) {
-        events.forEach(event => {
-          const tags = JSON.parse("[" + event.tags + "]");
-          tags.forEach(tag => {
-            if (tag == 103) {
-              results.push(event);
-            }
-          });
-        });
-      }
-      if (v == 104) {
-        events.forEach(event => {
-          const tags = JSON.parse("[" + event.tags + "]");
-          tags.forEach(tag => {
-            if (tag == 104) {
-              results.push(event);
-            }
-          });
-        });
-      }
-    });
-    return results;
-  };
-
-  //Takes in an array of distance filter ids selected
-  // Returns an array of events that contain the filters selected
-  // Uses geolib library to calculate the distance between two points
-  check_distance = d_arr => {
-    var results = [];
-    var i;
-    var j;
-    for (i = 0; i < d_arr.length; i++) {
-      for (j = 0; j < events.length; j++) {
-        //distance given in meters
-        distance = geolib.getDistance(
-          { latitude: this.state.lastLat, longitude: this.state.lastLong },
-          {
-            latitude: events[j].location.lat,
-            longitude: events[j].location.long
-          }
-        );
-        distance = distance / 1000;
-
-        if (d_arr[i] == 66) {
-          if (distance <= 5) {
-            results.push(events[j]);
-          }
-        }
-        if (d_arr[i] == 77) {
-          if (distance <= 10) {
-            results.push(events[j]);
-          }
-        }
-        if (d_arr[i] == 88) {
-          if (distance <= 15) {
-            results.push(events[j]);
-          }
-        }
-        if (d_arr[i] == 99) {
-          if (distance <= 20) {
-            results.push(events[j]);
-          }
-        }
-      }
-    }
-    return results;
-  };
-
-  //MAIN SEARCH function
-  // Splits the array of filters into smaller arrays of filter ids in section intensity, venue and distance
-  // If the length of the array is greater thatn zero will get events that fit that filter using check_*** function
-  // Calls combine result
-  // Sumbits results to submit results function to save to state
-  search = filters => {
-    filters = this.state.selectedItems;
-    events = this.props.events;
-
-    if (filters.length == 0) {
-      return;
-    }
-
-    //Array for intensity, venue and distance filters
-    var results = [];
-    var v_arr = [];
-    var i_arr = [];
-    var d_arr = [];
-    var t_arr = [];
-
-    //sort selected filters into categories
-    filters.forEach(function(f) {
-      if (f == 11 || f == 22 || f == 33) {
-        i_arr.push(f);
-      }
-      if (f == 44 || f == 55) {
-        v_arr.push(f);
-      }
-      if (f == 66 || f == 77 || f == 88) {
-        d_arr.push(f);
-      }
-      if (f == 100 || f == 101 || f == 102 || f == 103 || f == 104) {
-        t_arr.push(f);
-      }
-    });
-
-    var howmany = 4;
-
-    if (i_arr.length != 0) {
-      temp = this.check_intensity(i_arr);
-      results.push(temp);
-    } else {
-      howmany = howmany - 1;
-    }
-
-    if (v_arr.length != 0) {
-      temp = this.check_venue(v_arr);
-      results.push(temp);
-    } else {
-      howmany = howmany - 1;
-    }
-
-    if (d_arr.length != 0) {
-      temp = this.check_distance(d_arr);
-      results.push(temp);
-    } else {
-      howmany = howmany - 1;
-    }
-
-    if (t_arr.length != 0) {
-      temp = this.check_tags(t_arr);
-      results.push(temp);
-    } else {
-      howmany = howmany - 1;
-    }
-
-    total_results = this.combineResults(results, howmany);
-
-    //SubmitSearch function to save to state
-    this.submitSearch(total_results);
-  };
-
   // Aggregate search results
   // If only one filter was selected - total_arr == 1, then return results
   // If two filters selected - total_arr == 2, check for where items exist in both arrays and return those
@@ -394,88 +293,8 @@ class SearchTabScreen extends Component {
   };
 
   submitSearch = results => {
-    this.setState({ searchResults: results }, () => {
-      console.log(this.state.searchResults, "make sure state updated");
-    });
-  };
-
-  //Set the keyword entered to the state, and clear it after
-  setKeyword = text => {
-    this.setState(
-      {
-        text: text,
-        selectedItems: []
-      },
-      () => {
-        console.log(this.state.text, "keyword state updated");
-        console.log(this.state.selectedItems, "SI state updated");
-      }
-    );
-  };
-
-  //Key word search
-  // Searches through out the whole object
-  keywordSearch = () => {
-    this.props.fetchNonUserEvents(this.props.token, this.props.user.user.email);
-    events = this.props.events;
-    keyword = this.state.text;
-    //convert each item to a string and see if the key word exists as a subset
-    // if so, push that event to the list of results to be displayed
-    // Case insensitive
-    if (keyword) {
-      keyword = keyword.toUpperCase();
-      var results = [];
-      events.forEach(function(e) {
-        var stringItem = JSON.stringify(e);
-        stringItem = stringItem.toUpperCase();
-        if (stringItem.includes(keyword)) {
-          if (results.indexOf(e) == -1) {
-            results.push(e);
-          }
-        }
-      });
-      this.setState(
-        {
-          searchResults: results
-        },
-        () => {
-          console.log(
-            this.state.searchResults,
-            "updated searchResults for display"
-          );
-        }
-      );
-    }
-  };
-
-  //Using the search results from state, convert them to coordinate objects that can be placed on the map
-  makeCoords = results => {
-    coords = [];
-    results.forEach(function(e) {
-      coords.push({
-        latitude: e.location.lat,
-        longitude: e.location.long,
-        latitudeDelta: 0.001 * 1.5,
-        longitudeDelta: 0.04 * 1.5
-      });
-    });
-    return coords;
-  };
-
-  getCoords() {
-    if (this.state.searchResults.length == 0) {
-      coords = this.makeCoords(this.props.events);
-    } else {
-      coords = this.makeCoords(this.state.searchResults);
-    }
-    return coords;
-  }
-
-  //Maps the search results to card view items that can be clicked to view further detials
-  getSearchResults() {
     let events = [];
-    searchItems = this.state.searchResults;
-    searchItems.map((event, index) => {
+    results.map((event, index) => {
       let badge = null;
       let attending = false;
       if (this.props.user.user.email == event.email) {
@@ -515,9 +334,44 @@ class SearchTabScreen extends Component {
         );
       }
     });
-    return events;
+    this.setState({ searchProps: events, searchResults: results });
+    this.setState({ searchResults: results }, () => {
+      console.log(this.state.searchResults, "make sure state updated");
+    });
+  };
+
+  //Using the search results from state, convert them to coordinate objects that can be placed on the map
+  makeCoords = results => {
+    coords = [];
+    results.forEach(function(e) {
+      coords.push({
+        latitude: e.location.lat,
+        longitude: e.location.long,
+        latitudeDelta: 0.001 * 1.5,
+        longitudeDelta: 0.04 * 1.5
+      });
+    });
+    return coords;
+  };
+
+  //Function for setting the region and lat and lon when movement occurs
+  onRegionChange(region, lastLat, lastLong) {
+    this.setState({
+      mapRegion: region,
+      // If there are no new values set the current ones
+      lastLat: lastLat || this.state.lastLat,
+      lastLong: lastLong || this.state.lastLong
+    });
   }
 
+  getCoords() {
+    if (this.state.searchResults.length == 0) {
+      coords = this.makeCoords(this.props.events);
+    } else {
+      coords = this.makeCoords(this.state.searchResults);
+    }
+    return coords;
+  }
   returnMargin() {
     if (Platform.OS == "ios") {
       return 15;
@@ -651,7 +505,7 @@ class SearchTabScreen extends Component {
                   </TabHeading>
                 }
               >
-                <TabOne results={this.getSearchResults()} />
+                <TabOne results={this.state.searchProps} />
               </Tab>
               <Tab
                 heading={
@@ -661,10 +515,10 @@ class SearchTabScreen extends Component {
                 }
               >
                 <TabTwo
-                  onRegionChange={this.onRegionChange.bind(this)}
                   resultsCoords={this.getCoords()}
                   results={this.state.searchResults}
                   region={this.state.mapRegion}
+                  onRegionChange={this.onRegionChange.bind(this)}
                 />
               </Tab>
             </Tabs>

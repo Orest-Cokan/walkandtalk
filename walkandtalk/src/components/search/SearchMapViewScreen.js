@@ -67,20 +67,11 @@ class SearchMapViewScreen extends Component {
       >
         <Callout onPress={() => this.goToEvent(event)}>
           <TouchableHighlight underlayColor="transparent">
-            <Text>{event.title}</Text>
+            <Text>{event.title + "\n" + "Date: " + event.date}</Text>
           </TouchableHighlight>
         </Callout>
       </Marker>
     ));
-  }
-
-  getCoords() {
-    if (this.props.resultsCoords.length == 0) {
-      console.log("");
-      return [this.state.defaultCoords];
-    } else {
-      return this.props.resultsCoords;
-    }
   }
 
   render() {
@@ -93,7 +84,7 @@ class SearchMapViewScreen extends Component {
           <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
-            showsUserLocation={true}
+            showsUserLocation={false}
             initialRegion={this.state.defaultCoords}
             onRegionChange={this.props.onRegionChange}
           >

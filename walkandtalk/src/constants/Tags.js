@@ -80,7 +80,7 @@ export const items = [
   },
   {
     name: "Venue",
-    id: 2,
+    id: 1,
     children: [
       {
         name: "Indoor",
@@ -93,30 +93,8 @@ export const items = [
     ]
   },
   {
-    name: "Within",
-    id: 1,
-    children: [
-      {
-        name: "5 km",
-        id: 66
-      },
-      {
-        name: "10 km",
-        id: 77
-      },
-      {
-        name: "15 km",
-        id: 88
-      },
-      {
-        name: "20 km",
-        id: 99
-      }
-    ]
-  },
-  {
     name: "Tags",
-    id: 3,
+    id: 2,
     children: [
       {
         name: "Muddy",
@@ -165,10 +143,6 @@ export const items = [
       {
         name: "Thunder",
         id: 111
-      },
-      {
-        name: "Gentle Rain",
-        id: 112
       }
     ]
   }
