@@ -14,8 +14,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  [GMSPlacesClient provideAPIKey:@"AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0"];
-  [GMSServices provideAPIKey:@"AIzaSyDvhU6eGVtP6KZX90_CNSiaO5gQG7gRRw0"];
+  [GMSPlacesClient provideAPIKey:@"AIzaSyBBHT8WPQQ1XJRxFufvc0D9SKdAZn_TKeo"];
+  [GMSServices provideAPIKey:@"AIzaSyBBHT8WPQQ1XJRxFufvc0D9SKdAZn_TKeo"];
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
