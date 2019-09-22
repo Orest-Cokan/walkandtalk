@@ -3,13 +3,8 @@ const Redcap = require("../../api/models/Redcap");
 const Preference = require("../../api/models/Preference");
 const Picture = require("../../api/models/Picture");
 
-const names = ["Beate Sydora", "Researcher 1", "Researcher 2", "Researcher 3"];
-const email = [
-  "cokan@ualberta.ca",
-  "Researcher1@gmail.com",
-  "Researcher2@gmail.com",
-  "Researcher3@gmail.com"
-];
+const names = ["Beate Sydora", "Researcher 1"];
+const email = ["cokan@ualberta.ca", "Researcher1@gmail.com"];
 
 // initialize all the required researches upon initializing the DB.
 const initializeResearchers = () => {
@@ -89,8 +84,8 @@ const initializeResearchers = () => {
 
   User.create(
     {
-      fullname: "Prachi Shah",
-      email: "pkshah@ualberta.ca",
+      fullname: "RS4WOMEN",
+      email: "rs4women@ualberta.ca",
       password: "Researchstudy",
       password2: "Researchstudy",
       dob: "Researcher Account",
