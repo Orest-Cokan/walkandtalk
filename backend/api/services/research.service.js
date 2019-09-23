@@ -86,8 +86,8 @@ const initializeResearchers = () => {
     {
       fullname: "RS4WOMEN",
       email: "rs4women@ualberta.ca",
-      password: "Researchstudy",
-      password2: "Researchstudy",
+      password: "Walkingstudy",
+      password2: "Walkingstudy",
       dob: "Researcher Account",
       menopausal_stage: "post",
       registered: 1,
